@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       isConfigOpen: false,
-
+      headercolor: null,
       colors: [
         'bg-primary text-lighter',
         'bg-secondary text-lighter',
