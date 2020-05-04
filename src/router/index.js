@@ -21,5 +21,10 @@ export default new Router({
             name: 'bounty',
             component: () => import('../Layout/Components/Header/Bounty'),
         },
+        {
+            path: '/newStartUp',
+            name: 'newStartUp',
+            component: ()=> import('../Layout/Components/Header/NewStartup'),
+        }
     ]
 })
