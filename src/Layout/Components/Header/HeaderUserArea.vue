@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex">
-    <div class="header-btn-lg pr-0">
+    <div>
       <div class="widget-content p-0">
         <div class="widget-content-wrapper">
           <div class="widget-content-left">
@@ -9,7 +9,7 @@
                 <!-- 按钮内容 -->
                 <div class="dropdown-btn" slot="button-content">
                   <div class="icon-wrapper icon-wrapper-alt rounded">
-                    <img width="42" class="rounded-circle" src="@/assets/images/avatars/1.jpg" alt="">
+                    <img width="19" class="rounded-circle" src="@/assets/images/avatars/1.jpg" alt="">
                   </div>
                   <div class="content">
                     <div class="widget-heading">Alina Mclourd</div>
@@ -117,11 +117,28 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: row;
+  .icon-wrapper {
+    height: unset;
+    width: unset;
+    margin-right: 7px;
+  }
 
   .content {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    .widget-heading {
+      font-size: 7px;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      color: rgba(0,0,0,1);
+    }
+    .widget-subheading {
+      font-size: 7px;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      color: rgba(187,188,200,1);
+    }
   }
 }
 
@@ -146,6 +163,5 @@ export default {
      }
    }
  }
-
 }
 </style>

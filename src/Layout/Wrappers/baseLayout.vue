@@ -44,7 +44,7 @@ export default {
   flex-direction: column;
   margin: 0;
   .header {
-    height: 50px;
+    height: 40px;
     display: flex;
     align-items: center;
     align-content: center;

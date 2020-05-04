@@ -1,29 +1,18 @@
 <template>
   <div class="header-connect">
-    <button type="button" class="btn-shadow d-inline-flex align-items-center btn btn-success" @click="connectAccount">
-      <font-awesome-icon class="mr-2" icon="plus"/>
+    <button type="button" @click="connectAccount">
       Connect account
     </button>
   </div>
 </template>
 
 <script>
-import {library} from '@fortawesome/fontawesome-svg-core'
-import {
-  faEllipsisV,
-} from '@fortawesome/free-solid-svg-icons'
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import { mapGetters } from 'vuex'
 
-library.add(
-  faEllipsisV,
-);
+
 
 export default {
   name: "HeaderConnect",
-  components: {
-    'font-awesome-icon': FontAwesomeIcon,
-  },
 
   data() {
     return {
@@ -122,5 +111,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+  .header-connect {
+    width: 138px;
+    height: 19px;
+    border-radius: 2px;
+    button {
+      background: rgba(255,255,255,1);
+      font-size: 8px;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      color: rgba(153,153,153,1);
+      padding: 0 19px;
+    }
+  }
 </style>
