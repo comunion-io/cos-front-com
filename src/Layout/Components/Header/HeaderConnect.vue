@@ -13,6 +13,7 @@ import {
   faEllipsisV,
 } from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+import { mapGetters } from 'vuex'
 
 library.add(
   faEllipsisV,
@@ -38,11 +39,9 @@ export default {
   },
 
   computed: {
-    /** metamask 是否连接了 */
-    isMetaMaskConnected() {
-      return this.accounts && this.accounts.length > 0;
-    }
+    ...mapGetters(['isMetaMaskConnected'])
   },
+
   methods: {
     /**
      * @description 检查用户是否安装了metamask
@@ -56,8 +55,8 @@ export default {
      * @description 点击连接按钮
      */
     connectAccount() {
-      const isInatslled = this.isMetaMaskInstalled();
-      if (!isInatslled) {
+      const isInstalled = this.isMetaMaskInstalled();
+      if (!isInstalled) {
         console.log('you have not install metamask');
         window.open('https://metamask.io/');
       } else {
@@ -70,10 +69,9 @@ export default {
      */
     async connect() {
       // eslint-disable-next-line no-debugger
-      debugger;
       try {
         const accounts = await this.ethereum.enable();
-        this.accounts = accounts;
+        this.$store.commit('updateAccount', accounts);
         if (this.isMetaMaskConnected) {
           this.registerEvents();
         }
@@ -115,7 +113,7 @@ export default {
      * @param newAccounts
      */
     handleNewAccounts(newAccounts) {
-      this.accounts = newAccounts;
+      this.$store.commit('updateAccount', newAccounts);
       console.log('newAccounts:::', newAccounts);
       console.log('isMetaMaskConnected:::', this.isMetaMaskConnected);
     },
