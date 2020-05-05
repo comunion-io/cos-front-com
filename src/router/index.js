@@ -9,64 +9,63 @@ Vue.use(VueRouter);
 require('nprogress/nprogress.css');
 
 const routes = [
+  // {
+  //   path: '/',
+  //   name: 'welcome',
+  //   component: () => import(/* webpackChunkName: 'welcome-layout' */ '@/layouts/WelcomeLayout.vue'),
+  //   children: [
+  //     {
+  //       path: '/',
+  //       name: 'welcome',
+  //       meta: { title: 'Welcome', skipAuth: true },
+  //       component: () => import(/* webpackChunkName: 'welcome' */ '@/views/welcome/Welcome.vue')
+  //     }
+  //   ]
+  // },
+  // {
+  // path: '/dashboard',
+  // name: 'index',
+  // redirect: '/dashboard/square',
+  // component: () => import(/* webpackChunkName: 'basic-layout' */ '@/layouts/BasicLayout.vue'),
+  // children: [
   {
-    path: '/',
-    name: 'welcome',
-    component: () => import(/* webpackChunkName: 'welcome-layout' */ '@/layouts/WelcomeLayout.vue'),
-    children: [
-      {
-        path: '/',
-        name: 'welcome',
-        meta: { title: 'Welcome', skipAuth: true },
-        component: () => import(/* webpackChunkName: 'welcome' */ '@/views/welcome/Welcome.vue')
-      }
-    ]
+    path: '/square',
+    name: 'square',
+    meta: { title: 'Home', skipAuth: true },
+    component: () => import(/* webpackChunkName: 'square' */ '@/views/square/List.vue')
   },
   {
-    path: '/dashboard',
-    name: 'index',
-    redirect: '/dashboard/square',
-    component: () => import(/* webpackChunkName: 'basic-layout' */ '@/layouts/BasicLayout.vue'),
-    children: [
-      {
-        path: '/square',
-        name: 'square',
-        meta: { title: 'Home', skipAuth: true },
-        component: () => import(/* webpackChunkName: 'square' */ '@/views/square/List.vue')
-      },
-      {
-        path: '/bounty',
-        name: 'bounty',
-        meta: { title: 'Bounty', skipAuth: true },
-        component: () => import(/* webpackChunkName: 'bounty' */ '@/views/bounty/List.vue')
-      },
-      {
-        path: '/exchange',
-        name: 'exchange',
-        meta: { title: 'Exchange', skipAuth: true },
-        component: () => import(/* webpackChunkName: 'exchange' */ '@/views/exchange/List.vue')
-      },
-      {
-        path: '/governace',
-        name: 'governace',
-        meta: { title: 'Governace', skipAuth: true },
-        component: () => import(/* webpackChunkName: 'governace' */ '@/views/governace/List.vue')
-      },
-      {
-        path: '/startup/new',
-        name: 'newStartup',
-        meta: { title: 'New Startup' },
-        component: () => import(/* webpackChunkName: 'newStartup' */ '@/views/startup/New.vue')
-      },
-      {
-        path: '/startup/setting',
-        name: 'startupSetting',
-        meta: { title: 'Startup Setting' },
-        component: () =>
-          import(/* webpackChunkName: 'startupSetting' */ '@/views/startup/Setting.vue')
-      }
-    ]
+    path: '/bounty',
+    name: 'bounty',
+    meta: { title: 'Bounty', skipAuth: true },
+    component: () => import(/* webpackChunkName: 'bounty' */ '@/views/bounty/List.vue')
   },
+  {
+    path: '/exchange',
+    name: 'exchange',
+    meta: { title: 'Exchange', skipAuth: true },
+    component: () => import(/* webpackChunkName: 'exchange' */ '@/views/exchange/List.vue')
+  },
+  {
+    path: '/governace',
+    name: 'governace',
+    meta: { title: 'Governace', skipAuth: true },
+    component: () => import(/* webpackChunkName: 'governace' */ '@/views/governace/List.vue')
+  },
+  {
+    path: '/startup/new',
+    name: 'newStartup',
+    meta: { title: 'New Startup' },
+    component: () => import(/* webpackChunkName: 'newStartup' */ '@/views/startup/New.vue')
+  },
+  {
+    path: '/startup/setting',
+    name: 'startupSetting',
+    meta: { title: 'Startup Setting' },
+    component: () => import(/* webpackChunkName: 'startupSetting' */ '@/views/startup/Setting.vue')
+  },
+  // ]
+  // },
   {
     path: '*',
     component: {
