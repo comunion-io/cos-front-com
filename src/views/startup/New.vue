@@ -1,7 +1,5 @@
 <template>
-  <div id="new-start-up">
-    这是new start up
-  </div>
+  <div id="new-start-up"></div>
 </template>
 
 <script>
@@ -10,4 +8,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+#new-start-up {
+}
+</style>

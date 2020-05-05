@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Header from './components/Header';
+import Header from '../Components/Header';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
@@ -39,7 +39,7 @@ export default {
   flex-direction: column;
   margin: 0;
   .header {
-    height: 50px;
+    height: 40px;
     display: flex;
     align-items: center;
     align-content: center;
@@ -54,10 +54,10 @@ export default {
     flex-direction: column;
     display: flex;
     z-index: 8;
-    padding: 60px 0 0 0;
+    padding: 40px 0 0 0;
     transition: all 0.2s;
     .app-main__inner {
-      padding: 30px 180px 0 180px;
+      padding: 0 180px 0 180px;
       flex: 1;
     }
   }
