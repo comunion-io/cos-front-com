@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Header from '../Components/Header';
+import Header from './components/Header';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCog } from '@fortawesome/free-solid-svg-icons';

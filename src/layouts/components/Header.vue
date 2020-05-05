@@ -35,9 +35,9 @@
 </template>
 
 <script>
-import MegaMenu from './Header/MegaMenu';
-import UserArea from './Header/HeaderUserArea';
-import HeaderConnect from './Header/HeaderConnect';
+import MegaMenu from './MegaMenu';
+import UserArea from './HeaderUserArea';
+import HeaderConnect from './HeaderConnect';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
