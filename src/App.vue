@@ -2,7 +2,6 @@
   <div id="app">
     <component :is="layout">
       <transition name="fade" mode="out-in">
-        <!-- 投影到 default-layout 下的slot中 -->
         <router-view></router-view>
       </transition>
     </component>
@@ -10,18 +9,17 @@
 </template>
 
 <script>
-const default_layout = "default";
-
+const defaultLayout = 'default';
 export default {
   computed: {
     layout() {
       // 自动加载default-layout（baseLayout）
-      return (this.$route.meta.layout || default_layout) + "-layout";
+      return (this.$route.meta.layout || defaultLayout) + 'Layout';
     }
   }
-}
+};
 </script>
 
 <style lang="scss">
-@import "assets/base.scss";
+@import './assets/styles/base.scss';
 </style>
