@@ -9,12 +9,12 @@
     <div class="search">
       <div class="select-box">
         <b-container fluid="false">
-          <b-row no-gutters="true">
+          <b-row :no-gutters="true">
             <b-col sm="3">
               <b-form-select v-model="selected" :options="options"></b-form-select>
             </b-col>
             <b-col sm="9">
-              <b-form-input v-model="inputTxt" :type="search"></b-form-input>
+              <b-form-input v-model="inputTxt" :type="'search'"></b-form-input>
             </b-col>
           </b-row>
         </b-container>

@@ -12,7 +12,7 @@
       <div class="new-start-up-btn">
         <button type="button">
           <img src="@/assets/images/plus@2x.png" alt="" />
-          <router-link class="new-up" to="/newStartUp">New Startup</router-link>
+          <router-link :to="{ name: 'newStartup' }" class="new-up">New Startup</router-link>
         </button>
       </div>
       <!-- 用户信息 -->

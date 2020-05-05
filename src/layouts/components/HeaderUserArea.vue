@@ -31,7 +31,7 @@
                 <div class="dropdown-content">
                   <div class="metamask">
                     <div class="logo">
-                      <img src="@/assets/images/metamask/metamask@2x.png" alt="" />
+                      <img src="@/assets/images/metamask@2x.png" alt="" />
                     </div>
                     <div class="content" v-if="isMetaMaskConnected">
                       <span>

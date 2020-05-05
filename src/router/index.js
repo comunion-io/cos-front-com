@@ -41,6 +41,12 @@ const routes = [
     component: () => import(/* webpackChunkName: 'bounty' */ '@/views/bounty/List.vue')
   },
   {
+    path: '/startup/new',
+    name: 'newStartup',
+    meta: { title: 'New Startup' },
+    component: () => import(/* webpackChunkName: 'newStartup' */ '@/views/startup/New.vue')
+  },
+  {
     path: '/exchange',
     name: 'exchange',
     meta: { title: 'Exchange', skipAuth: true },
@@ -51,12 +57,6 @@ const routes = [
     name: 'governace',
     meta: { title: 'Governace', skipAuth: true },
     component: () => import(/* webpackChunkName: 'governace' */ '@/views/governace/List.vue')
-  },
-  {
-    path: '/startup/new',
-    name: 'newStartup',
-    meta: { title: 'New Startup' },
-    component: () => import(/* webpackChunkName: 'newStartup' */ '@/views/startup/New.vue')
   },
   {
     path: '/startup/setting',
