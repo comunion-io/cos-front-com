@@ -1,9 +1,9 @@
 <template>
   <div class="row">
-    <div class="col-4">
+    <div class="col-3">
       <help-center />
     </div>
-    <div class="col-8">
+    <div class="col-9">
       <v-stepper class="stepper" alt-labels v-model="step">
         <v-stepper-header class="bg-white">
           <v-stepper-step :complete="step > 1" step="1">Finance</v-stepper-step>
@@ -14,13 +14,13 @@
         </v-stepper-header>
         <v-stepper-items class="mt-4 bg-white">
           <v-stepper-content step="1">
-            <finance />
+            <finance @cancel="onCancel" @next="onNext" />
           </v-stepper-content>
           <v-stepper-content step="2">
-            <governance />
+            <governance @cancel="onCancel" @back="onBack" @next="onNext" />
           </v-stepper-content>
           <v-stepper-content step="3">
-            <fundraise />
+            <fundraise @cancel="onCancel" @ok="onOk" />
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
@@ -42,6 +42,21 @@ export default {
     Finance,
     Governance,
     Fundraise
+  },
+  methods: {
+    onCancel() {
+      // 临时存储数据
+      this.$router.go(-1);
+    },
+    onNext() {
+      this.step++;
+    },
+    onBack() {
+      this.step--;
+    },
+    onOk() {
+      //
+    }
   }
 };
 </script>

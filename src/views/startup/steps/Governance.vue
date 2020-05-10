@@ -1,41 +1,50 @@
 <template>
   <v-form ref="form" v-model="valid" lazy-validation>
-    <v-text-field
-      v-model="name"
-      :counter="10"
-      :rules="nameRules"
-      label="Name"
-      required
-    ></v-text-field>
-
-    <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
-
     <v-select
-      v-model="select"
-      :items="items"
-      :rules="[v => !!v || 'Item is required']"
-      label="Item"
+      v-model="form.governance"
+      :items="governanceList"
+      label="Governance"
       required
     ></v-select>
-
-    <v-checkbox
-      v-model="checkbox"
-      :rules="[v => !!v || 'You must agree to continue!']"
-      label="Do you agree?"
+    <v-text-field
+      v-for="(address, index) in form.assignAddress"
+      :key="index"
+      :value="address"
+      :label="index ? '' : 'Assign Address'"
+      placeholder="Ethereum Address"
       required
-    ></v-checkbox>
-
-    <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">
-      Validate
-    </v-btn>
-
-    <v-btn color="error" class="mr-4" @click="reset">
-      Reset Form
-    </v-btn>
-
-    <v-btn color="warning" @click="resetValidation">
-      Reset Validation
-    </v-btn>
+      @input="v => onAddressChange(index, v)"
+    >
+      <template #append>
+        <b-button v-if="!index" class="w-100" variant="outline-secondary" @click="addAssignAddress"
+          >+&nbsp;Add</b-button
+        >
+        <b-button
+          v-else
+          class="w-100"
+          variant="outline-secondary"
+          @click="removeAssignAddress(index)"
+          >x&nbsp;Remove</b-button
+        >
+      </template>
+    </v-text-field>
+    <div class="row">
+      <div class="col-3">
+        <b-button class="mr-2 mb-2 w-100" variant="outline-secondary" @click="cancel">
+          Cancel
+        </b-button>
+      </div>
+      <div class="col-3">
+        <b-button class="mr-2 mb-2 w-100" @click="back">
+          Back
+        </b-button>
+      </div>
+      <div class="col-6">
+        <b-button class="mr-2 mb-2 w-100" variant="primary" @click="next">
+          Next: Review information
+        </b-button>
+      </div>
+    </div>
   </v-form>
 </template>
 
@@ -43,22 +52,31 @@
 export default {
   data: () => ({
     valid: true,
-    name: '',
-    nameRules: [
-      v => !!v || 'Name is required',
-      v => (v && v.length <= 10) || 'Name must be less than 10 characters'
-    ],
-    email: '',
-    emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
-    ],
-    select: null,
-    items: ['Item 1', 'Item 2', 'Item 3', 'Item 4'],
-    checkbox: false
+    form: {
+      governance: 'FounderAssign',
+      assignAddress: [''],
+      tokenBalance: '',
+      supportPercent: 100,
+      minimumApproval: 100,
+      voteMinDuration: {
+        days: 0,
+        hours: 0
+      },
+      voteMaxDuration: {
+        days: 0,
+        hours: 0
+      }
+    },
+    governanceList: ['FounderAssign', 'POS', 'ALL']
   }),
-
   methods: {
+    cancel() {},
+    back() {
+      this.$emit('back');
+    },
+    next() {
+      this.$emit('next');
+    },
     validate() {
       this.$refs.form.validate();
     },
@@ -67,6 +85,15 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation();
+    },
+    onAddressChange(index, v) {
+      this.form.assignAddress.splice(index, 1, v);
+    },
+    addAssignAddress() {
+      this.form.assignAddress.push('');
+    },
+    removeAssignAddress(index) {
+      this.form.assignAddress.splice(index, 1);
     }
   }
 };

@@ -1,32 +1,34 @@
 <template>
   <div class="app-header header-shadow">
-    <div class="logo">
-      <img src="@/assets/images/logo@2x.png" alt="" />
-    </div>
-    <div class="menu">
-      <MegaMenu />
-    </div>
-
-    <div class="actions">
-      <!-- create startup -->
-      <div class="new-start-up-btn">
-        <button type="button">
-          <img src="@/assets/images/plus@2x.png" alt="" />
-          <router-link :to="{ name: 'newStartup' }" class="new-up">New Startup</router-link>
-        </button>
+    <div class="header-content">
+      <div class="logo">
+        <img src="@/assets/images/logo@2x.png" alt="" />
       </div>
-      <!-- 用户信息 -->
-      <div class="user-info">
-        <HeaderConnect v-if="!isMetaMaskConnected" />
-        <div v-else>
-          <UserArea />
-          <!-- 设置 -->
-          <div class="setting" @click="setting">
-            <img src="@/assets/images/setting@2x.png" alt="" />
-          </div>
-          <!-- 通知 -->
-          <div class="notification" @click="notification">
-            <img src="@/assets/images/notification@2x.png" alt="" />
+      <div class="menu">
+        <MegaMenu />
+      </div>
+
+      <div class="actions">
+        <!-- create startup -->
+        <div class="new-start-up-btn">
+          <button type="button">
+            <img src="@/assets/images/plus@2x.png" alt="" />
+            <router-link :to="{ name: 'newStartup' }" class="new-up">New Startup</router-link>
+          </button>
+        </div>
+        <!-- 用户信息 -->
+        <div class="user-info">
+          <HeaderConnect v-if="!isMetaMaskConnected" />
+          <div v-else>
+            <UserArea />
+            <!-- 设置 -->
+            <div class="setting" @click="setting">
+              <img src="@/assets/images/setting@2x.png" alt="" />
+            </div>
+            <!-- 通知 -->
+            <div class="notification" @click="notification">
+              <img src="@/assets/images/notification@2x.png" alt="" />
+            </div>
           </div>
         </div>
       </div>
@@ -80,10 +82,16 @@ export default {
 </script>
 <style scoped lang="scss">
 .app-header {
-  padding-left: 180px;
-  padding-right: 180px;
   height: 40px;
-
+  .header-content {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    margin: 0 auto;
+    // padding-left: 24px;
+    // padding-right: 24px;
+    max-width: 1200px;
+  }
   .logo {
     margin-right: 16px;
     width: 65px;

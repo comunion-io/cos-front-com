@@ -10,7 +10,10 @@
 }
 
 .app-main__inner {
-  padding: $grid-gutter-width $grid-gutter-width 0;
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 100%;
+  // padding: $grid-gutter-width $grid-gutter-width 0;
   flex: 1;
 }
 

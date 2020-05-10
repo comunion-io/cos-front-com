@@ -271,9 +271,9 @@
 }
 
 @include media-breakpoint-down(sm) {
-  .app-main__inner {
-    padding: 15px 15px 0;
-  }
+  // .app-main__inner {
+  //   padding: 15px 15px 0;
+  // }
 
   .mbg-3,
   body .card.mb-3 {

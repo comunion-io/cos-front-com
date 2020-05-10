@@ -2,9 +2,6 @@
 
 .app-header {
   height: $app-header-height;
-  display: flex;
-  align-items: center;
-  align-content: center;
   z-index: 10;
   transition: all .2s;
   position: fixed;

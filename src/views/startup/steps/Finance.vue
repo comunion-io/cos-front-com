@@ -24,16 +24,21 @@
       placeholder="Contract Name"
       required
     ></v-text-field>
+    <b-button class="w-100" variant="outline-secondary">+&nbsp;Add More</b-button>
+    <div class="my-4">
+      If you have not created token, you can use <a href="">Erc20-Generator</a> to create your
+      token.
+    </div>
     <b-row>
       <b-col lg="6">
-        <b-btn class="mr-2 mb-2 w-100 btn-square btn-transition link" variant="link">
+        <b-button class="mr-2 mb-2 w-100" variant="outline-secondary" @click="cancel">
           Cancel
-        </b-btn>
+        </b-button>
       </b-col>
       <b-col lg="6">
-        <b-btn class="mr-2 mb-2 w-100 btn-square btn-transition primary">
+        <b-button class="mr-2 mb-2 w-100" variant="primary" @click="next">
           Next: Review information
-        </b-btn>
+        </b-button>
       </b-col>
     </b-row>
   </v-form>
@@ -50,6 +55,10 @@ export default {
     }
   }),
   methods: {
+    cancel() {},
+    next() {
+      this.$emit('next');
+    },
     validate() {
       this.$refs.form.validate();
     },

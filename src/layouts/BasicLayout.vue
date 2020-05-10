@@ -56,10 +56,10 @@ export default {
     z-index: 8;
     padding: 70px 0 0 0;
     transition: all 0.2s;
-    .app-main__inner {
-      padding: 0 180px 0 180px;
-      flex: 1;
-    }
+    // .app-main__inner {
+    //   padding: 0 180px 0 180px;
+    //   flex: 1;
+    // }
   }
 }
 </style>
