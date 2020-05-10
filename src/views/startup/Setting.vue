@@ -61,7 +61,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="less">
 .stepper {
   background: none !important;
   box-shadow: none;

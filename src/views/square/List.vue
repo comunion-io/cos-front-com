@@ -46,7 +46,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 #home {
   background: rgba(242, 243, 244, 1);
   height: calc(100vh - 70px);

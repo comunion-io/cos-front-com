@@ -8,7 +8,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 #new-start-up {
 }
 </style>

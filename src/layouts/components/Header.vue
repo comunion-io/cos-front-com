@@ -80,7 +80,7 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
+<style scoped lang="less">
 .app-header {
   height: 40px;
   .header-content {

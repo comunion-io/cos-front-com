@@ -1,7 +1,7 @@
 import Vue from 'vue';
 
 const components = {
-  HelpCenter: () => import('./HelpCenter')
+  HelpCenter: () => import('./help/HelpCenter')
 };
 
 Object.keys(components).forEach(key => {

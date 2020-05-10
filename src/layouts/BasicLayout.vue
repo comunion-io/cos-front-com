@@ -32,7 +32,7 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
+<style scoped lang="less">
 .app-container {
   display: flex;
   min-height: 100vh;

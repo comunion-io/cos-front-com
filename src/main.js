@@ -1,12 +1,9 @@
 import Vue from 'vue';
 import router from './router';
 import store from './store';
-import App from './App';
-import './libs';
 import './components';
-import Default from './layouts/BasicLayout';
+import App from './App';
 
-Vue.component('defaultLayout', Default);
 Vue.config.productionTip = false;
 
 new Vue({
