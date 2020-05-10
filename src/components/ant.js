@@ -5,7 +5,7 @@ import 'moment/locale/zh-cn';
 import {
   LocaleProvider,
   Layout,
-  // Avatar,
+  Avatar,
   Button,
   message,
   notification,
@@ -44,7 +44,7 @@ moment.locale('zh-cn');
 
 Vue.use(LocaleProvider);
 Vue.use(Layout);
-// Vue.use(Avatar);
+Vue.use(Avatar);
 Vue.use(Button);
 // Vue.use(Menu);
 Vue.use(Modal);

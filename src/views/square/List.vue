@@ -8,7 +8,7 @@
     <!-- search -->
     <div class="search">
       <div class="select-box">
-        <b-container fluid="false">
+        <!-- <b-container fluid="false">
           <b-row :no-gutters="true">
             <b-col sm="3">
               <b-form-select v-model="selected" :options="options"></b-form-select>
@@ -17,7 +17,7 @@
               <b-form-input v-model="inputTxt" :type="'search'"></b-form-input>
             </b-col>
           </b-row>
-        </b-container>
+        </b-container> -->
       </div>
     </div>
 
@@ -60,8 +60,8 @@ export default {
     margin-bottom: 12px;
 
     img {
-      width: 19px;
-      height: 19px;
+      width: 38px;
+      height: 38px;
       margin-right: 10px;
     }
 

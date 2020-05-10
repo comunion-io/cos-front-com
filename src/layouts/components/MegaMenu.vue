@@ -2,22 +2,22 @@
   <div>
     <ul class="header-megamenu nav">
       <li class="nav-item">
-        <b-button variant="link">
+        <a-button variant="link">
           <span>
             <!--<i class="nav-link-icon pe-7s-gift"> </i>-->
             <router-link :to="{ name: 'square' }">Home</router-link>
             <!--<font-awesome-icon class="ml-2 opacity-5" icon="angle-down"/>-->
           </span>
-        </b-button>
+        </a-button>
       </li>
       <li class="nav-item">
-        <b-button variant="link">
+        <a-button variant="link">
           <span>
             <!--<i class="nav-link-icon pe-7s-gift"> </i>-->
             <router-link :to="{ name: 'bounty' }">Bounty</router-link>
             <!--<font-awesome-icon class="ml-2 opacity-5" icon="angle-down"/>-->
           </span>
-        </b-button>
+        </a-button>
       </li>
       <!--<li class="nav-item">-->
       <!--    <b-dropdown variant="link" no-caret>-->

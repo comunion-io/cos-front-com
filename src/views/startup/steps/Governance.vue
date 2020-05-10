@@ -16,33 +16,33 @@
       @input="v => onAddressChange(index, v)"
     >
       <template #append>
-        <b-button v-if="!index" class="w-100" variant="outline-secondary" @click="addAssignAddress"
-          >+&nbsp;Add</b-button
+        <a-button v-if="!index" class="w-100" variant="outline-secondary" @click="addAssignAddress"
+          >+&nbsp;Add</a-button
         >
-        <b-button
+        <a-button
           v-else
           class="w-100"
           variant="outline-secondary"
           @click="removeAssignAddress(index)"
-          >x&nbsp;Remove</b-button
+          >x&nbsp;Remove</a-button
         >
       </template>
     </v-text-field>
     <div class="row">
       <div class="col-3">
-        <b-button class="mr-2 mb-2 w-100" variant="outline-secondary" @click="cancel">
+        <a-button class="mr-2 mb-2 w-100" variant="outline-secondary" @click="cancel">
           Cancel
-        </b-button>
+        </a-button>
       </div>
       <div class="col-3">
-        <b-button class="mr-2 mb-2 w-100" @click="back">
+        <a-button class="mr-2 mb-2 w-100" @click="back">
           Back
-        </b-button>
+        </a-button>
       </div>
       <div class="col-6">
-        <b-button class="mr-2 mb-2 w-100" variant="primary" @click="next">
+        <a-button class="mr-2 mb-2 w-100" variant="primary" @click="next">
           Next: Review information
-        </b-button>
+        </a-button>
       </div>
     </div>
   </v-form>

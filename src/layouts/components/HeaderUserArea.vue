@@ -38,9 +38,9 @@
                         CONNECTED TO ETHEREUM MAINNET NETWORK
                       </span>
                       <span>
-                        <b-button variant="light" @click="disConnectWallet">
+                        <a-button variant="light" @click="disConnectWallet">
                           Disconnect Wallet
-                        </b-button>
+                        </a-button>
                       </span>
                     </div>
                     <div class="content" v-else>
@@ -48,9 +48,9 @@
                         X DISCONNECT TO ETHEREUM NETWORK
                       </span>
                       <span>
-                        <b-button variant="light" @click="connectWallet">
+                        <a-button variant="light" @click="connectWallet">
                           Connect Wallet
-                        </b-button>
+                        </a-button>
                       </span>
                     </div>
                   </div>
@@ -72,8 +72,8 @@
                         Hunt bounty with your
                       </span>
                       <span>
-                        <b-button variant="primary" @click="transformHunter"
-                          >Transform Hunter</b-button
+                        <a-button variant="primary" @click="transformHunter"
+                          >Transform Hunter</a-button
                         >
                       </span>
                     </div>

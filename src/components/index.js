@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import './ant';
 
 const components = {
   HelpCenter: () => import('./help/HelpCenter')
