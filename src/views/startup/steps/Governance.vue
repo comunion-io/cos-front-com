@@ -1,5 +1,62 @@
 <template>
-  <v-form ref="form" v-model="valid" lazy-validation>
+  <a-form
+    :labelCol="{ span: 24 }"
+    :wrapperCol="{ span: 24 }"
+    :form="form"
+    @submit.prevent="handleSubmit"
+  >
+    <a-form-item label="Governance" required>
+      <a-select v-decorator="['governance']" />
+    </a-form-item>
+    <a-form-item v-if="form.getFieldValue('governance') === 'FounderAssign'" label="Token Contract">
+      <a-input
+        placeholder="Contract Name"
+        v-decorator="[
+          'contract',
+          { rules: [{ required: true, message: 'Please input token symbol!' }] }
+        ]"
+      />
+    </a-form-item>
+    <a-form-item
+      v-for="(k, index) in form.getFieldValue('wallet')"
+      :key="k"
+      :label="index === 0 ? 'Wallet' : ''"
+      required
+    >
+      <a-row :gutter="20">
+        <a-col :span="16">
+          <a-input v-decorator="[`names[${k}]`]" placeholder="Wallet Name" />
+        </a-col>
+        <a-col :span="8">
+          <a-input v-decorator="[`ballances[${k}]`]" placeholder="Ballance" />
+        </a-col>
+      </a-row>
+      <a-row :gutter="20">
+        <a-col :span="20">
+          <a-input v-decorator="[`addresses[${k}]`]" placeholder="Ethereum Address" />
+        </a-col>
+        <a-col :span="4">
+          <a-icon type="delete" @click="removeAddress(index)" />
+        </a-col>
+      </a-row>
+    </a-form-item>
+    <a-button block size="large" @click="addAddress">+&nbsp;Add More</a-button>
+    <div class="my-32">
+      If you have not created token, you can use <a href="">Erc20-Generator</a> to create your
+      token.
+    </div>
+    <a-row :gutter="20">
+      <a-col :span="12">
+        <a-button block size="large">Cancel</a-button>
+      </a-col>
+      <a-col :span="12">
+        <a-button block size="large" type="primary" html-type="submit"
+          >Next：Review information</a-button
+        >
+      </a-col>
+    </a-row>
+  </a-form>
+  <!-- <v-form ref="form" v-model="valid" lazy-validation>
     <v-select
       v-model="form.governance"
       :items="governanceList"
@@ -45,7 +102,7 @@
         </a-button>
       </div>
     </div>
-  </v-form>
+  </v-form> -->
 </template>
 
 <script>
