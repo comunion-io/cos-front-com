@@ -1,8 +1,6 @@
 <template>
   <div class="header-connect">
-    <button type="button" @click="connectAccount">
-      Connect account
-    </button>
+    <a-button class="ml-auto mr-24" size="large" @click="connectAccount">Connect account</a-button>
   </div>
 </template>
 
@@ -110,16 +108,6 @@ export default {
 
 <style scoped lang="less">
 .header-connect {
-  width: 138px;
-  height: 19px;
-  border-radius: 2px;
-  button {
-    background: rgba(255, 255, 255, 1);
-    font-size: 8px;
-    font-family: Microsoft YaHei;
-    font-weight: 400;
-    color: rgba(153, 153, 153, 1);
-    padding: 0 19px;
-  }
+  margin-left: 10px;
 }
 </style>
