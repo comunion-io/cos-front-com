@@ -1,5 +1,7 @@
 <template>
-  <div id="new-start-up"></div>
+  <div id="new-start-up">
+    这是 new startup
+  </div>
 </template>
 
 <script>

@@ -11,19 +11,37 @@
           >{{ nav.title }}</router-link
         >
       </div>
-      <a-button class="ml-auto mr-24" type="green" size="large">+&nbsp;New Startup</a-button>
+      <a-button class="ml-auto mr-24" type="green" size="large">
+        <router-link :to="{ name: 'newStartup' }"> +&nbsp;New Startup </router-link>
+      </a-button>
       <MegaMenu />
-      <img class="ml-16" src="@/assets/images/setting@2x.png" alt="" width="38" />
-      <img class="ml-16" src="@/assets/images/notification@2x.png" alt="" width="38" />
+      <img
+        v-if="isMetaMaskConnected"
+        class="ml-16"
+        src="@/assets/images/setting@2x.png"
+        alt=""
+        width="38"
+      />
+      <img
+        v-if="isMetaMaskConnected"
+        class="ml-16"
+        src="@/assets/images/notification@2x.png"
+        alt=""
+        width="38"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import MegaMenu from './MegaMenu';
+import { mapGetters } from 'vuex';
 export default {
   components: {
     MegaMenu
+  },
+  computed: {
+    ...mapGetters(['isMetaMaskConnected'])
   },
   data() {
     return {

@@ -34,7 +34,8 @@ import {
   // Badge,
   Pagination,
   List,
-  Popconfirm
+  Popconfirm,
+  Popover
   // Cascader,
   // Progress,
   // Empty
@@ -72,6 +73,7 @@ Vue.use(Tooltip);
 Vue.use(Pagination);
 Vue.use(List);
 Vue.use(Popconfirm);
+Vue.use(Popover);
 // Vue.use(Cascader);
 // Vue.use(Progress);
 // Vue.use(Empty);

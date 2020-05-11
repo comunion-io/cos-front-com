@@ -12,8 +12,6 @@ const userModules = {
      * @param account
      */
     updateAccount(state, account) {
-      // eslint-disable-next-line no-debugger
-      debugger;
       state.accounts = account;
     }
   },
@@ -30,8 +28,7 @@ const userModules = {
      * @returns {boolean}
      */
     isMetaMaskConnected(state) {
-      console.log(state);
-      return true; // state.accounts && state.accounts.length > 0;
+      return state.accounts && state.accounts.length > 0;
     }
   }
 };
