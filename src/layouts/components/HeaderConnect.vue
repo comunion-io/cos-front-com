@@ -108,7 +108,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 .header-connect {
   width: 138px;
   height: 19px;
