@@ -13,6 +13,7 @@ import {
   Modal,
   DatePicker,
   Form,
+  FormModel,
   Input,
   InputNumber,
   Icon,
@@ -52,6 +53,7 @@ Vue.use(Button);
 Vue.use(Modal);
 Vue.use(DatePicker);
 Vue.use(Form);
+Vue.use(FormModel);
 Vue.use(Input);
 Vue.use(InputNumber);
 Vue.use(Icon);

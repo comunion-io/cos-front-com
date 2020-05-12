@@ -1,75 +1,196 @@
 <template>
-  <v-form ref="form" v-model="valid" lazy-validation>
-    <v-text-field
-      v-model="name"
-      :counter="10"
-      :rules="nameRules"
-      label="Name"
-      required
-    ></v-text-field>
-
-    <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
-
-    <v-select
-      v-model="select"
-      :items="items"
-      :rules="[v => !!v || 'Item is required']"
-      label="Item"
-      required
-    ></v-select>
-
-    <v-checkbox
-      v-model="checkbox"
-      :rules="[v => !!v || 'You must agree to continue!']"
-      label="Do you agree?"
-      required
-    ></v-checkbox>
-
-    <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">
-      Validate
-    </v-btn>
-
-    <v-btn color="error" class="mr-4" @click="reset">
-      Reset Form
-    </v-btn>
-
-    <v-btn color="warning" @click="resetValidation">
-      Reset Validation
-    </v-btn>
-  </v-form>
+  <a-form-model
+    ref="form"
+    :labelCol="{ span: 24 }"
+    :wrapperCol="{ span: 24 }"
+    :model="form"
+    :rules="rules"
+    @submit.prevent="handleSubmit"
+  >
+    <div class="flex jc-end my-8">
+      <a-switch v-model="enabled">
+        <a-icon slot="checkedChildren" type="check" />
+        <a-icon slot="unCheckedChildren" type="close" />
+      </a-switch>
+    </div>
+    <a-card :class="{ disabled: !enabled }">
+      <a-form-model-item label="The Fundraising Contact Address" class="mb-00"
+        >Auto generate after creation</a-form-model-item
+      >
+      <a-form-model-item label="Startup Fundraising Address" prop="fundraisingAddress">
+        <a-input
+          :disabled="!enabled"
+          v-model="form.fundraisingAddress"
+          placeholder="Ethereum Address"
+        />
+      </a-form-model-item>
+      <a-form-model-item label="Description on bbs" prop="descUrl" class="mb-00">
+        <a-input :disabled="!enabled" v-model="form.descUrl" placeholder="https://" />
+        <div class="flex jc-end">
+          No bbs description,<a href="https://bbs.comunion.io/">Go to Pos</a>
+        </div>
+      </a-form-model-item>
+      <a-form-model-item label="Fundraising Time" prop="fundraisingTime">
+        <a-date-picker :disabled="!enabled" v-model="form.fundraisingTime" class="w-100p" />
+      </a-form-model-item>
+      <a-form-model-item label="Fundraising ETH" prop="fundraising" class="mb-00">
+        <a-row :gutter="24">
+          <a-col :span="6">
+            <a-form-model-item prop="fundraising.eth">
+              <a-input-number
+                :disabled="!enabled"
+                v-model="form.fundraising.eth"
+                :min="0"
+                style="width:72%"
+              />
+              <span class="ml-4">ETH</span>
+            </a-form-model-item>
+          </a-col>
+          <a-col :span="1" class="t-center">=</a-col>
+          <a-col :span="6">
+            <a-form-model-item prop="fundraising.symbol">
+              <a-input-number
+                :disabled="!enabled"
+                v-model="form.fundraising.symbol"
+                :min="0"
+                style="width:72%"
+              />
+              <span class="ml-4">UVU</span>
+            </a-form-model-item>
+          </a-col>
+        </a-row>
+      </a-form-model-item>
+      <a-form-model-item label="Exchange Creation" prop="exchangeAddress">
+        <a-input
+          :disabled="!enabled"
+          v-model="form.exchangeAddress"
+          placeholder="Token Contrace Address"
+        />
+      </a-form-model-item>
+      <a-form-model-item
+        label="Exchange Initial Liquidity"
+        prop="exchangeInitialLiquidity"
+        class="mb-00"
+      >
+        <a-row :gutter="24">
+          <a-col :span="6">
+            <a-form-model-item prop="exchangeInitialLiquidity.eth">
+              <a-input-number
+                :disabled="!enabled"
+                v-model="form.exchangeInitialLiquidity.eth"
+                :min="0"
+                style="width:72%"
+              />
+              <span class="ml-4">ETH</span>
+            </a-form-model-item>
+          </a-col>
+          <a-col :span="1" class="t-center">=</a-col>
+          <a-col :span="6">
+            <a-form-model-item prop="exchangeInitialLiquidity.symbol">
+              <a-input-number
+                :disabled="!enabled"
+                v-model="form.exchangeInitialLiquidity.symbol"
+                :min="0"
+                style="width:72%"
+              />
+              <span class="ml-4">UVU</span>
+            </a-form-model-item>
+          </a-col>
+        </a-row>
+      </a-form-model-item>
+      <a-form-model-item label="Unlock  Token  (IRO Token + Liquitidy Token)" prop="unlockToken">
+        <a-input
+          :disabled="!enabled"
+          v-model="form.unlockToken"
+          placeholder="Token Contrace Address"
+        >
+          <div slot="suffix" class="flex ai-center">
+            <div class="mr-16 t-grey">UVU</div>
+            <a-button size="small" type="danger">Unlock</a-button>
+          </div>
+        </a-input>
+      </a-form-model-item>
+    </a-card>
+    <a-row class="mt-24" :gutter="20">
+      <a-col :span="6">
+        <a-button block size="large" @click="cancel">Cancel</a-button>
+      </a-col>
+      <a-col :span="6">
+        <a-button block size="large" @click="back">
+          <a-icon type="arrow-left"></a-icon>
+          Back
+        </a-button>
+      </a-col>
+      <a-col :span="12">
+        <a-button block size="large" type="primary" html-type="submit">
+          Next：Review information
+          <a-icon type="arrow-right"></a-icon>
+        </a-button>
+      </a-col>
+    </a-row>
+  </a-form-model>
 </template>
 
 <script>
 export default {
-  data: () => ({
-    valid: true,
-    name: '',
-    nameRules: [
-      v => !!v || 'Name is required',
-      v => (v && v.length <= 10) || 'Name must be less than 10 characters'
-    ],
-    email: '',
-    emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
-    ],
-    select: null,
-    items: ['Item 1', 'Item 2', 'Item 3', 'Item 4'],
-    checkbox: false
-  }),
-
+  data() {
+    return {
+      enabled: false,
+      form: {
+        fundraisingAddress: '',
+        descUrl: '',
+        fundraisingTime: '',
+        fundraising: {
+          eth: null,
+          symbol: null
+        },
+        exchangeAddress: '',
+        exchangeInitialLiquidity: {
+          eth: null,
+          symbol: null
+        },
+        unlockToken: ''
+      },
+      rules: {
+        fundraisingAddress: { required: true },
+        fundraisingTime: { required: true },
+        fundraising: {
+          type: 'object',
+          fields: {
+            eth: { required: true, type: 'number', min: 0 },
+            symbol: { required: true, type: 'number', min: 0 }
+          }
+        },
+        exchangeAddress: { required: true },
+        exchangeInitialLiquidity: {
+          type: 'object',
+          fields: {
+            eth: { required: true, type: 'number', min: 0 },
+            symbol: { required: true, type: 'number', min: 0 }
+          }
+        },
+        unlockToken: { required: true }
+      }
+    };
+  },
   methods: {
-    validate() {
-      this.$refs.form.validate();
+    cancel() {},
+    back() {
+      this.$emit('back');
     },
-    reset() {
-      this.$refs.form.reset();
-    },
-    resetValidation() {
-      this.$refs.form.resetValidation();
+    handleSubmit() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.$emit('next', this.form);
+        }
+      });
     }
   }
 };
 </script>
 
-<style></style>
+<style lang="less" scoped>
+.disabled {
+  background: #e8e8e8;
+}
+</style>
