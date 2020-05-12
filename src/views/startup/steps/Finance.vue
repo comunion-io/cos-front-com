@@ -68,12 +68,13 @@
     </div>
     <a-row :gutter="20">
       <a-col :span="12">
-        <a-button block size="large">Cancel</a-button>
+        <a-button block size="large" @click="cancel">Cancel</a-button>
       </a-col>
       <a-col :span="12">
-        <a-button block size="large" type="primary" html-type="submit"
-          >Next：Review information</a-button
-        >
+        <a-button block size="large" type="primary" html-type="submit">
+          Next：Review information
+          <a-icon type="arrow-right"></a-icon>
+        </a-button>
       </a-col>
     </a-row>
   </a-form>
