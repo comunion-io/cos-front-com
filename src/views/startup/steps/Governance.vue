@@ -8,51 +8,31 @@
     <a-form-item label="Governance" required>
       <a-select v-decorator="['governance']" />
     </a-form-item>
-    <a-form-item v-if="form.getFieldValue('governance') === 'FounderAssign'" label="Token Contract">
-      <a-input
-        placeholder="Contract Name"
-        v-decorator="[
-          'contract',
-          { rules: [{ required: true, message: 'Please input token symbol!' }] }
-        ]"
-      />
+    <a-form-item v-if="form.getFieldValue('governance') === 'FounderAssign'" label="Assign Address">
+      <a-input-group compact>
+        <a-input style="width: 80%" placeholder="Address" />
+        <a-button type="primary"> <a-icon type="plus" />Add </a-button>
+      </a-input-group>
     </a-form-item>
-    <a-form-item
-      v-for="(k, index) in form.getFieldValue('wallet')"
-      :key="k"
-      :label="index === 0 ? 'Wallet' : ''"
-      required
-    >
-      <a-row :gutter="20">
-        <a-col :span="16">
-          <a-input v-decorator="[`names[${k}]`]" placeholder="Wallet Name" />
-        </a-col>
-        <a-col :span="8">
-          <a-input v-decorator="[`ballances[${k}]`]" placeholder="Ballance" />
-        </a-col>
-      </a-row>
-      <a-row :gutter="20">
-        <a-col :span="20">
-          <a-input v-decorator="[`addresses[${k}]`]" placeholder="Ethereum Address" />
-        </a-col>
-        <a-col :span="4">
-          <a-icon type="delete" @click="removeAddress(index)" />
-        </a-col>
-      </a-row>
-    </a-form-item>
-    <a-button block size="large" @click="addAddress">+&nbsp;Add More</a-button>
     <div class="my-32">
-      If you have not created token, you can use <a href="">Erc20-Generator</a> to create your
-      token.
+      The support and minimum approval thresholds are strict requirements, such that votes will only
+      pass if they achieve approval percentages greater than these thresholds.
     </div>
     <a-row :gutter="20">
-      <a-col :span="12">
-        <a-button block size="large">Cancel</a-button>
+      <a-col :span="6">
+        <a-button block size="large" @click="cancel">Cancel</a-button>
+      </a-col>
+      <a-col :span="6">
+        <a-button block size="large" @click="back">
+          <a-icon type="arrow-left"></a-icon>
+          Back
+        </a-button>
       </a-col>
       <a-col :span="12">
-        <a-button block size="large" type="primary" html-type="submit"
-          >Next：Review information</a-button
-        >
+        <a-button block size="large" type="primary" html-type="submit">
+          Next：Review information
+          <a-icon type="arrow-right"></a-icon>
+        </a-button>
       </a-col>
     </a-row>
   </a-form>
