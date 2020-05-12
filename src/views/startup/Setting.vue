@@ -1,11 +1,11 @@
 <template>
   <a-row :gutter="38">
-    <a-col :span="6">
+    <a-col :span="7">
       <HelpCenter />
     </a-col>
-    <a-col :span="18">
+    <a-col :span="17">
       <a-card>
-        <a-steps v-model="step">
+        <a-steps :value="step">
           <a-step title="Finance"></a-step>
           <a-step title="Governance" />
           <a-step title="Fundraise" />
@@ -28,7 +28,7 @@ import Fundraise from './steps/Fundraise';
 export default {
   data() {
     return {
-      step: 0
+      step: 1
     };
   },
   components: {
