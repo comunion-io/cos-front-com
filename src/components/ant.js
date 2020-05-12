@@ -35,7 +35,8 @@ import {
   Pagination,
   List,
   Popconfirm,
-  Popover
+  Popover,
+  FormModel
   // Cascader,
   // Progress,
   // Empty
@@ -74,7 +75,8 @@ Vue.use(Pagination);
 Vue.use(List);
 Vue.use(Popconfirm);
 Vue.use(Popover);
-// Vue.use(Cascader);
+Vue.use(FormModel);
+// Vue.use(Cascader);de
 // Vue.use(Progress);
 // Vue.use(Empty);
 
