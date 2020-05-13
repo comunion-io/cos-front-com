@@ -132,24 +132,31 @@
 </template>
 
 <script>
+import mixins from './mixins';
+
 export default {
+  name: 'fundraise',
+  mixins: [mixins],
   data() {
     return {
       enabled: false,
       form: {
-        fundraisingAddress: '',
-        descUrl: '',
-        fundraisingTime: '',
-        fundraising: {
-          eth: null,
-          symbol: null
+        ...{
+          fundraisingAddress: '',
+          descUrl: '',
+          fundraisingTime: '',
+          fundraising: {
+            eth: null,
+            symbol: null
+          },
+          exchangeAddress: '',
+          exchangeInitialLiquidity: {
+            eth: null,
+            symbol: null
+          },
+          unlockToken: ''
         },
-        exchangeAddress: '',
-        exchangeInitialLiquidity: {
-          eth: null,
-          symbol: null
-        },
-        unlockToken: ''
+        ...this.defaultData
       },
       rules: {
         fundraisingAddress: { required: true },
@@ -173,19 +180,7 @@ export default {
       }
     };
   },
-  methods: {
-    cancel() {},
-    back() {
-      this.$emit('back');
-    },
-    handleSubmit() {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.$emit('next', this.form);
-        }
-      });
-    }
-  }
+  methods: {}
 };
 </script>
 

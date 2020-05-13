@@ -30,32 +30,37 @@
       :autoLink="false"
       class="mb-00"
     >
-      <a-row :gutter="20">
-        <a-col :span="16">
-          <a-form-model-item :prop="`wallets.${index}.name`" required class="mb-00">
-            <a-input v-model="form.wallets[index].name" placeholder="Wallet Name" />
-          </a-form-model-item>
-        </a-col>
-        <a-col :span="8">
-          <a-form-model-item :prop="`wallets.${index}.ballance`" class="mb-00">
-            <a-input v-model="form.wallets[index].ballance" placeholder="Ballance" />
-          </a-form-model-item>
-        </a-col>
-      </a-row>
-      <a-row :gutter="20">
-        <a-col :span="20">
-          <a-form-model-item :prop="`wallets.${index}.address`" class="mb-00">
-            <a-input v-model="form.wallets[index].address" placeholder="Ethereum Address" />
-          </a-form-model-item>
-        </a-col>
-        <a-col :span="4">
-          <a-icon type="delete" @click="removeAddress(index)" />
-        </a-col>
-      </a-row>
+      <a-card size="small">
+        <a-row :gutter="20">
+          <a-col :span="12">
+            <a-form-model-item :prop="`wallets.${index}.name`" required>
+              <a-input v-model="form.wallets[index].name" placeholder="Wallet Name" />
+            </a-form-model-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-model-item :prop="`wallets.${index}.ballance`">
+              <a-input v-model="form.wallets[index].ballance" placeholder="Ballance" />
+            </a-form-model-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="20">
+          <a-col :span="16">
+            <a-form-model-item :prop="`wallets.${index}.address`" class="mb-00">
+              <a-input v-model="form.wallets[index].address" placeholder="Ethereum Address" />
+            </a-form-model-item>
+          </a-col>
+          <a-col v-if="form.wallets.length > 1" :span="4">
+            <a-button style="line-height:40px" @click="removeAddress(index)">
+              <a-icon type="delete" />Remove
+            </a-button>
+          </a-col>
+        </a-row>
+      </a-card>
     </a-form-model-item>
-    <a-button block size="large" @click="addAddress">+&nbsp;Add More</a-button>
+    <a-button class="mt-16" block size="large" @click="addAddress">+&nbsp;Add More</a-button>
     <div class="my-32">
-      If you have not created token, you can use <a href="">Erc20-Generator</a> to create your
+      If you have not created token, you can use
+      <a href="https://vittominacori.github.io/erc20-generator/">Erc20-Generator</a> to create your
       token.
     </div>
     <a-row :gutter="20">
@@ -73,14 +78,21 @@
 </template>
 
 <script>
+import mixins from './mixins';
+
 export default {
+  name: 'finance',
+  mixins: [mixins],
   data() {
     return {
       form: {
-        name: '',
-        symbol: '',
-        contract: '',
-        wallets: [{ name: '', ballance: '', address: '' }]
+        ...{
+          name: '',
+          symbol: '',
+          contract: '',
+          wallets: [{ name: '', ballance: '', address: '' }]
+        },
+        ...this.defaultData
       },
       rules: {
         name: { required: true, message: 'Please input your organization name.' },
@@ -110,14 +122,6 @@ export default {
     };
   },
   methods: {
-    cancel() {},
-    handleSubmit() {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.$emit('next', this.form);
-        }
-      });
-    },
     // 添加地址
     addAddress() {
       this.$refs.form.validateField('wallets', errMsg => {

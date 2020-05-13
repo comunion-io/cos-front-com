@@ -34,11 +34,11 @@
           type="primary"
           class="ml-16"
           @click="addAddress"
-          style="width:12%"
+          style="width:16%"
         >
           <a-icon type="plus" />Add
         </a-button>
-        <a-button v-else class="ml-16" style="width:12%" @click="removeAddress(index)">
+        <a-button v-else class="ml-16" style="width:16%" @click="removeAddress(index)">
           <a-icon type="delete" />Remove
         </a-button>
       </a-form-model-item>
@@ -120,53 +120,51 @@
 
 <script>
 import { Slider } from 'ant-design-vue';
+import mixins from './mixins';
+
 export default {
+  name: 'governance',
+  mixins: [mixins],
   components: {
     [Slider.name]: Slider
   },
-  data: () => ({
-    form: {
-      governance: 'FounderAssign',
-      assignAddresses: [''],
-      tokenBalance: '',
-      supportPercent: 100,
-      minimumApproval: 100,
-      voteMinDuration: {
-        days: 0,
-        hours: 0
+  data() {
+    return {
+      form: {
+        ...{
+          governance: 'FounderAssign',
+          assignAddresses: [''],
+          tokenBalance: '',
+          supportPercent: 100,
+          minimumApproval: 100,
+          voteMinDuration: {
+            days: 0,
+            hours: 0
+          },
+          voteMaxDuration: {
+            days: 0,
+            hours: 0
+          }
+        },
+        ...this.defaultData
       },
-      voteMaxDuration: {
-        days: 0,
-        hours: 0
-      }
-    },
-    rules: {
-      assignAddresses: {
-        type: 'array',
-        validator: (rule, value, callback) => {
-          callback();
-        }
-      },
-      tokenBalance: {
-        type: 'string',
-        validator: (rule, value, callback) => {
-          callback();
+      rules: {
+        assignAddresses: {
+          type: 'array',
+          validator: (rule, value, callback) => {
+            callback();
+          }
+        },
+        tokenBalance: {
+          type: 'string',
+          validator: (rule, value, callback) => {
+            callback();
+          }
         }
       }
-    }
-  }),
+    };
+  },
   methods: {
-    cancel() {},
-    back() {
-      this.$emit('back');
-    },
-    handleSubmit() {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.$emit('next', this.form);
-        }
-      });
-    },
     // add assign address
     addAddress() {
       this.form.assignAddresses.push('');
