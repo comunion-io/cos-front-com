@@ -4,7 +4,7 @@
       <p>New Startup</p>
     </div>
     <section class="content">
-      <div class="form">
+      <div class="form" v-if="createState === 'beforeCreate'">
         <a-form-model ref="ruleForm" :model="form" :rules="rules" :layout="'horizontal'">
           <!-- name -->
           <a-form-model-item ref="name" label="Startup Name" prop="name">
@@ -66,8 +66,12 @@
           </a-form-model-item>
         </a-form-model>
       </div>
-      <div class="creating"></div>
-      <div class="success"></div>
+      <div class="creating" v-else-if="createState === 'creating'">
+        <Creating />
+      </div>
+      <div class="success" v-else-if="createState === 'successed'">
+        <Success />
+      </div>
     </section>
   </div>
 </template>
@@ -91,8 +95,12 @@ export default {
         logo: [{ required: true, message: 'Please upload logo' }],
         mission: [{ required: true, message: 'Please input mission', trigger: 'blur' }],
         description: [{ required: true, message: 'Please input description', trigger: 'blur' }]
-      }
+      },
+      createState: 'beforeCreate' | 'creating' | 'successed'
     };
+  },
+  mounted() {
+    this.createState = 'beforeCreate';
   },
   methods: {
     /**
@@ -139,6 +147,7 @@ export default {
   background: rgba(255, 255, 255, 1);
   display: flex;
   flex-direction: column;
+  height: 80vh;
 
   .title {
     line-height: 25px;

@@ -99,8 +99,6 @@ export default {
      */
     handleNewAccounts(newAccounts) {
       this.$store.commit('updateAccount', newAccounts);
-      console.log('newAccounts:::', newAccounts);
-      console.log('isMetaMaskConnected:::', this.isMetaMaskConnected);
     }
   }
 };
