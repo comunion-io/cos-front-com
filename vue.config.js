@@ -26,7 +26,6 @@ module.exports = {
     disableHostCheck: true
   },
   configureWebpack: {
-    watch: true,
     // webpack plugins
     plugins: [
       // Ignore all locale files of moment.js
