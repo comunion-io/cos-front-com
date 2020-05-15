@@ -42,7 +42,7 @@ const routes = [
         component: () => import(/* webpackChunkName: 'newStartup' */ '@/views/startup/New.vue')
       },
       {
-        path: '/startup/setting',
+        path: '/startup/settingStartUp',
         name: 'settingStartup',
         meta: {
           title: 'Setting Startup'

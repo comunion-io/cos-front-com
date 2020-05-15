@@ -25,11 +25,12 @@ export default {};
 .card {
   display: flex;
   flex-direction: row;
-  width: 100%;
   height: 128px;
   background: azure;
   font-size: 20px;
   margin-bottom: 22px;
+  margin-left: 30px;
+  margin-right: 30px;
   cursor: pointer;
   .image {
     align-items: center;
