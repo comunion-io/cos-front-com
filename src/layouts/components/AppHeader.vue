@@ -17,14 +17,15 @@
       <MegaMenu />
       <img
         v-if="isMetaMaskConnected"
-        class="ml-16"
+        class="ml-16 setting"
         src="@/assets/images/setting@2x.png"
         alt=""
         width="38"
+        @click="toSetting"
       />
       <img
         v-if="isMetaMaskConnected"
-        class="ml-16"
+        class="ml-16 notification"
         src="@/assets/images/notification@2x.png"
         alt=""
         width="38"
@@ -52,6 +53,14 @@ export default {
         { name: 'governace', title: 'Governace' }
       ]
     };
+  },
+  methods: {
+    /**
+     * @description 前往setting startup 页面
+     */
+    toSetting() {
+      this.$router.replace('/startup/setting');
+    }
   }
 };
 </script>
@@ -73,6 +82,9 @@ export default {
         color: @primary-color;
       }
     }
+  }
+  .setting {
+    cursor: pointer;
   }
 }
 </style>

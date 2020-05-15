@@ -9,19 +9,6 @@ Vue.use(VueRouter);
 require('nprogress/nprogress.css');
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: 'welcome',
-  //   component: () => import(/* webpackChunkName: 'welcome-layout' */ '@/layouts/WelcomeLayout.vue'),
-  //   children: [
-  //     {
-  //       path: '/',
-  //       name: 'welcome',
-  //       meta: { title: 'Welcome', skipAuth: true },
-  //       component: () => import(/* webpackChunkName: 'welcome' */ '@/views/welcome/Welcome.vue')
-  //     }
-  //   ]
-  // },
   {
     path: '/',
     name: 'index',
@@ -31,37 +18,62 @@ const routes = [
       {
         path: '',
         name: 'square',
-        meta: { title: 'Home', skipAuth: true },
+        meta: {
+          title: 'Home',
+          skipAuth: true
+        },
         component: () => import(/* webpackChunkName: 'square' */ '@/views/square/List.vue')
       },
       {
         path: '/bounty',
         name: 'bounty',
-        meta: { title: 'Bounty', skipAuth: true },
+        meta: {
+          title: 'Bounty',
+          skipAuth: true
+        },
         component: () => import(/* webpackChunkName: 'bounty' */ '@/views/bounty/List.vue')
       },
       {
         path: '/startup/new',
         name: 'newStartup',
-        meta: { title: 'New Startup' },
+        meta: {
+          title: 'New Startup'
+        },
         component: () => import(/* webpackChunkName: 'newStartup' */ '@/views/startup/New.vue')
+      },
+      {
+        path: '/startup/setting',
+        name: 'settingStartup',
+        meta: {
+          title: 'Setting Startup'
+        },
+        component: () =>
+          import(/* webpackChunkName: 'newStartup' */ '@/views/startup/SettingStartUp.vue')
       },
       {
         path: '/exchange',
         name: 'exchange',
-        meta: { title: 'Exchange', skipAuth: true },
+        meta: {
+          title: 'Exchange',
+          skipAuth: true
+        },
         component: () => import(/* webpackChunkName: 'exchange' */ '@/views/exchange/List.vue')
       },
       {
         path: '/governace',
         name: 'governace',
-        meta: { title: 'Governace', skipAuth: true },
+        meta: {
+          title: 'Governace',
+          skipAuth: true
+        },
         component: () => import(/* webpackChunkName: 'governace' */ '@/views/governace/List.vue')
       },
       {
         path: '/startup/setting',
         name: 'startupSetting',
-        meta: { title: 'Startup Setting' },
+        meta: {
+          title: 'Startup Setting'
+        },
         component: () =>
           import(/* webpackChunkName: 'startupSetting' */ '@/views/startup/Setting.vue')
       }
@@ -78,7 +90,9 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({
+    y: 0
+  }),
   linkActiveClass: 'active',
   routes
 });
