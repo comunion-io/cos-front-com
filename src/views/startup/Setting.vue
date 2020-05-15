@@ -1,3 +1,4 @@
+// comunion wait setting 页面
 <template>
   <div>
     <a-row v-if="!completed" :gutter="38">

@@ -76,13 +76,27 @@ module.exports = {
       .options({
         svgo: {
           plugins: [
-            { removeDoctype: true },
-            { removeXMLProcInst: true },
-            { removeComments: true },
-            { removeTitle: false },
-            { removeDesc: true },
-            { removeXMLNS: true },
-            { removeScriptElement: true }
+            {
+              removeDoctype: true
+            },
+            {
+              removeXMLProcInst: true
+            },
+            {
+              removeComments: true
+            },
+            {
+              removeTitle: false
+            },
+            {
+              removeDesc: true
+            },
+            {
+              removeXMLNS: true
+            },
+            {
+              removeScriptElement: true
+            }
           ]
         }
       });
