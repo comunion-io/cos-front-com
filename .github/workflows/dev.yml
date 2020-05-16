@@ -34,7 +34,7 @@ jobs:
           tag_with_ref: true
           repository: comunion/cos-front-com
       - name: Restart docker
-        uses: appleboy/ssh-action@0.0.9
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEV_HOST }}
           username: ${{ secrets.DEV_USERNAME }}
