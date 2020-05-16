@@ -59,7 +59,7 @@ export default {
      * @description 前往setting startup 页面
      */
     toSetting() {
-      this.$router.replace('/startup/settingStartUp');
+      this.$router.push({ name: 'startupSetting' });
     }
   }
 };

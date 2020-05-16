@@ -97,3 +97,19 @@ export async function request(method, url, paramsOrData, ext = {}) {
   removeCancelSource(source);
   return ret;
 }
+
+// api upload
+export async function uploadFile(file, ext = {}, onProgress = () => {}) {
+  const form = new FormData();
+  form.append('image', file);
+  for (const key in ext) {
+    form.append(key, ext[key]);
+  }
+  const { error, data } = await instance.post('/image', form, {
+    onUploadProgress: progressEvent => {
+      const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+      onProgress(percentCompleted);
+    }
+  });
+  return error ? {} : data;
+}

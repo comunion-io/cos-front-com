@@ -79,13 +79,13 @@ export default {
      *@description 创建startup
      */
     createStartUp() {
-      this.$router.replace('/startup/new');
+      this.$router.push('/startup/new');
     },
     /**
      *@description 操作comunion( waiting setting )
      */
     handleComunion() {
-      this.$router.replace('/startup/setting');
+      this.$router.push({ name: 'startupSettingDetail', params: { id: '12' } });
     }
   }
 };
