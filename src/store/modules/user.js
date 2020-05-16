@@ -1,4 +1,4 @@
-// import store from '..'
+import * as http from '../../services/user.services';
 
 const userModules = {
   state: {
@@ -17,9 +17,15 @@ const userModules = {
   },
   actions: {
     /**
-     * @description 连接钱包
+     * @description 登录
+     *
+     * @param state
      */
-    connectWallet() {}
+    login(context) {
+      http.login({
+        walletAddr: context.state.accounts[0]
+      });
+    }
   },
   getters: {
     /**

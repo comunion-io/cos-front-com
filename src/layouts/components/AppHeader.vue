@@ -11,7 +11,8 @@
           >{{ nav.title }}</router-link
         >
       </div>
-      <a-button class="ml-auto mr-24" type="green" size="large">
+      <!-- 未连接metamask, 暂时不能创建start up -->
+      <a-button class="ml-auto mr-24" type="primary" :disabled="!isMetaMaskConnected" size="large">
         <router-link :to="{ name: 'newStartup' }"> +&nbsp;New Startup </router-link>
       </a-button>
       <MegaMenu />

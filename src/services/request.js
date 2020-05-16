@@ -1,16 +1,33 @@
 import axios, { CancelToken } from 'axios';
 
-export const baseURL = 'https://xxx.xxx.xxx';
+// 测试环境
+const dev = 'dev.comunion.io';
+
+export const baseURL = `https://${dev}`;
 const instance = axios.create({
   baseURL,
-  timeout: 30000
+  timeout: 30000,
+  responseType: 'json',
+  withCredentials: true, // 是否允许带cookie这些
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+  }
 });
 
+// 请求拦截器
 instance.interceptors.request.use(config => {
   // do something
+  if (localStorage.getItem('token')) {
+    // 添加token
+    instance.defaults.headers.common['Authorization'] = document.cookie
+      .split(';')
+      .find(ele => ele.includes('COMUNION_SESSION'))
+      .split('=')[1];
+  }
   return config;
 });
 
+// 相应拦截器
 instance.interceptors.response.use(async res => {
   // 统一返回结果
   // if (res.status < 300 && res.status >= 200) {

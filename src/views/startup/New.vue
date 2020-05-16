@@ -77,8 +77,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import Tx from 'ethereumjs-tx';
+
 export default {
   name: 'NewStartup',
+  computed: {
+    ...mapGetters(['web3Info'])
+  },
   data() {
     return {
       imageUrl: '',
@@ -130,13 +136,38 @@ export default {
     /**
      *@description 提交表单
      */
-    async onSubmit() {
-      this.$refs.ruleForm.validate(valid => {
+    onSubmit() {
+      this.$refs.ruleForm.validate(async valid => {
         if (valid) {
           console.log(this.form);
-          this.$store.dispatch('sendTransaction', this.form);
+          await this.$store.dispatch('getBlock');
+          this.buildHex();
         }
       });
+    },
+    /**
+     * @description 构建hex, 生成txid
+     * @param commit
+     */
+    buildHex() {
+      console.log(this.web3Info);
+      const privateKey = Buffer.from(
+        'e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109',
+        'hex'
+      );
+      var rawTx = {
+        nonce: '0x00',
+        gasPrice: '0x09184e72a000',
+        gasLimit: '0x2710',
+        to: '0x0000000000000000000000000000000000000000',
+        value: '0x00',
+        data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057'
+      };
+      const tx = new Tx(rawTx);
+      tx.sign(privateKey);
+
+      const serializedTx = tx.serialize();
+      console.log(serializedTx);
     }
   }
 };
