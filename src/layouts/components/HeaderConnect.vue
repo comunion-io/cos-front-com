@@ -57,8 +57,11 @@ export default {
       try {
         const accounts = await this.ethereum.enable();
         this.$store.commit('updateAccount', accounts);
+        this.$store.dispatch('login');
         if (this.isMetaMaskConnected) {
           this.registerEvents();
+          // 登录注册web3
+          this.$store.dispatch('registerWeb3');
         }
         console.log('accounts:::', accounts);
       } catch (e) {
