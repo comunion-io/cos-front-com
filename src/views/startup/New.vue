@@ -15,8 +15,8 @@
             <a-input v-model="form.name" placeholder="Startup Name" />
           </a-form-model-item>
           <!--  type -->
-          <a-form-model-item label="Type" prop="type">
-            <a-select v-model="form.type" placeholder="Please select the type">
+          <a-form-model-item label="Type" prop="categoryId">
+            <a-select v-model="form.categoryId" placeholder="Please select the type">
               <a-select-option value="shanghai">
                 Zone one
               </a-select-option>
@@ -38,8 +38,8 @@
             />
           </a-form-model-item>
           <!--  description on bbs-->
-          <a-form-model-item label="Description on bbs" prop="description">
-            <a-input v-model="form.description" placeholder="https://" />
+          <a-form-model-item label="Description on bbs" prop="descriptionAddr">
+            <a-input v-model="form.descriptionAddr" placeholder="https://" />
             <div class="flex jc-end">
               No bbs description,<a href="https://bbs.comunion.io/">Go to Post</a>
             </div>
@@ -77,7 +77,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Tx from 'ethereumjs-tx';
 
 export default {
   name: 'NewStartup',
@@ -88,17 +87,17 @@ export default {
     return {
       form: {
         name: '',
-        type: '',
+        categoryId: '',
         logo: '',
         mission: '',
-        description: ''
+        descriptionAddr: ''
       },
       rules: {
         name: [{ required: true, message: 'Please input startup name', trigger: 'blur' }],
-        type: [{ required: true, message: 'Please select type', trigger: 'change' }],
-        logo: [{ required: true, message: 'Please upload logo' }],
+        categoryId: [{ required: true, message: 'Please select type', trigger: 'change' }],
+        logo: [{ required: false, message: 'Please upload logo' }],
         mission: [{ required: true, message: 'Please input mission', trigger: 'blur' }],
-        description: [{ required: true, message: 'Please input description', trigger: 'blur' }]
+        descriptionAddr: [{ required: true, message: 'Please input description', trigger: 'blur' }]
       },
       createState: 'beforeCreate'
     };
@@ -110,9 +109,7 @@ export default {
     onSubmit() {
       this.$refs.ruleForm.validate(async valid => {
         if (valid) {
-          console.log(this.form);
-          await this.$store.dispatch('getBlock');
-          this.buildHex();
+          this.getTxid(this.form);
         }
       });
     },
@@ -120,25 +117,10 @@ export default {
      * @description 构建hex, 生成txid
      * @param commit
      */
-    buildHex() {
-      console.log(this.web3Info);
-      const privateKey = Buffer.from(
-        'e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109',
-        'hex'
-      );
-      var rawTx = {
-        nonce: '0x00',
-        gasPrice: '0x09184e72a000',
-        gasLimit: '0x2710',
-        to: '0x0000000000000000000000000000000000000000',
-        value: '0x00',
-        data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057'
-      };
-      const tx = new Tx(rawTx);
-      tx.sign(privateKey);
-
-      const serializedTx = tx.serialize();
-      console.log(serializedTx);
+    getTxid(formData) {
+      debugger;
+      let txid = this.web3Info.web3Instance().utils.sha3(JSON.stringify(formData));
+      this.$store.dispatch('createStartup', { ...formData, txid });
     }
   }
 };

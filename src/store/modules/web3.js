@@ -1,8 +1,5 @@
-/**
- * @description web3
- * @type {{mutation: {}, state: {}, getters: {}, actions: {sendTransaction(*, *)}}}
- */
 import getWeb3 from '../../utils/getWeb3';
+import * as http from '../../services/startup.service';
 
 const transactionModule = {
   state: {
@@ -12,8 +9,7 @@ const transactionModule = {
       networkId: null,
       coinbase: null,
       balance: null,
-      error: null,
-      block: null
+      error: null
     }
   },
   mutations: {
@@ -31,18 +27,7 @@ const transactionModule = {
       web3Copy.balance = parseInt(result.balance, 10);
       web3Copy.isInjected = result.injectedWeb3;
       web3Copy.web3Instance = result.web3;
-      Object.assign({}, state.web3, web3Copy);
-    },
-
-    /**
-     * @description 获取链的信息
-     *
-     * @param state
-     * @param blockInfo
-     */
-    block(state, blockInfo) {
-      console.log('block信息', blockInfo);
-      state.web3.block = blockInfo;
+      state.web3 = web3Copy;
     }
   },
   getters: {
@@ -55,25 +40,19 @@ const transactionModule = {
       console.log('registerWeb3 Action being executed');
       getWeb3
         .then(result => {
-          console.log('committing result to registerWeb3Instance mutation');
           commit('registerWeb3Instance', result);
         })
         .catch(e => {
           console.log('error in action registerWeb3', e);
         });
     },
-
     /**
-     * @description 获取链
+     * @description 创建startup
      *
-     * @param {
-     *       commit
-     *     }
      */
-    async getBlock({ commit }) {
-      await window.web3.eth.getBlock(null, null, blockInfo => {
-        commit('block', blockInfo);
-      });
+    createStartup(context, data) {
+      http.createStartup(data);
+      console.log('%c 🍱 data: ', 'font-size:20px;background-color: #4b4b4b;color:#fff;', data);
     }
   }
 };
