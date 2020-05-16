@@ -31,7 +31,7 @@ jobs:
           username: ${{ secrets.DEV_REGISTRY_USERNAME }}
           password: ${{ secrets.DEV_REGISTRY_PASSWOrD }}
           registry: ${{ secrets.DEV_REGISTRY_URL }}
-          tag_with_ref: true
+          tags: latest,dev
           repository: comunion/cos-front-com
       - name: Restart docker
         uses: appleboy/ssh-action@master
