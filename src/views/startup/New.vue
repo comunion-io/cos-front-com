@@ -5,20 +5,19 @@
     </div>
     <section class="content">
       <div class="form" v-if="createState === 'beforeCreate'">
-        <a-form-model ref="ruleForm" :model="form" :rules="rules" :layout="'horizontal'">
+        <a-form-model
+          ref="ruleForm"
+          :model="form"
+          :rules="rules"
+          :layout="'horizontal'"
+          @submit.prevent="onSubmit"
+        >
           <!-- name -->
-          <a-form-model-item ref="name" label="Startup Name" prop="name">
-            <a-input
-              v-model="form.name"
-              @blur="
-                () => {
-                  $refs.name.onFieldBlur();
-                }
-              "
-            />
+          <a-form-model-item label="Startup Name" prop="name">
+            <a-input v-model="form.name" />
           </a-form-model-item>
           <!--  type -->
-          <a-form-model-item ref="type" label="Type" prop="type">
+          <a-form-model-item label="Type" prop="type">
             <a-select v-model="form.type" placeholder="please select type">
               <a-select-option value="shanghai">
                 Zone one
@@ -29,7 +28,7 @@
             </a-select>
           </a-form-model-item>
           <!--  logo-->
-          <a-form-model-item ref="logo" label="logo" prop="logo">
+          <a-form-model-item label="logo" prop="logo">
             <a-upload
               listType="picture-card"
               :show-upload-list="false"
@@ -44,23 +43,16 @@
             </a-upload>
           </a-form-model-item>
           <!--  mission-->
-          <a-form-model-item ref="mission" label="Mission" prop="mission">
+          <a-form-model-item label="Mission" prop="mission">
             <a-input v-model="form.mission" type="textarea" />
           </a-form-model-item>
           <!--  description on bbs-->
-          <a-form-model-item ref="description" label="Description on bbs" prop="description">
-            <a-input
-              v-model="form.description"
-              @blur="
-                () => {
-                  $refs.description.onFieldBlur();
-                }
-              "
-            />
+          <a-form-model-item label="Description on bbs" prop="description">
+            <a-input v-model="form.description" />
           </a-form-model-item>
           <!--  submit-->
           <a-form-model-item>
-            <a-button type="primary" class="submit" @click="onSubmit">
+            <a-button type="primary" html-type="submit">
               Submit
             </a-button>
           </a-form-model-item>
@@ -96,11 +88,8 @@ export default {
         mission: [{ required: true, message: 'Please input mission', trigger: 'blur' }],
         description: [{ required: true, message: 'Please input description', trigger: 'blur' }]
       },
-      createState: 'beforeCreate' | 'creating' | 'successed'
+      createState: 'beforeCreate'
     };
-  },
-  mounted() {
-    this.createState = 'beforeCreate';
   },
   methods: {
     /**

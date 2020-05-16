@@ -13,32 +13,32 @@
         <a-icon slot="unCheckedChildren" type="close" />
       </a-switch>
     </div>
-    <a-card :class="{ disabled: !enabled }">
+    <a-card :class="{ disabled: !form.enabled }">
       <a-form-model-item label="The Fundraising Contact Address" class="mb-00"
         >Auto generate after creation</a-form-model-item
       >
       <a-form-model-item label="Startup Fundraising Address" prop="fundraisingAddress">
         <a-input
-          :disabled="!enabled"
+          :disabled="!form.enabled"
           v-model="form.fundraisingAddress"
           placeholder="Ethereum Address"
         />
       </a-form-model-item>
       <a-form-model-item label="Description on bbs" prop="descUrl" class="mb-00">
-        <a-input :disabled="!enabled" v-model="form.descUrl" placeholder="https://" />
+        <a-input :disabled="!form.enabled" v-model="form.descUrl" placeholder="https://" />
         <div class="flex jc-end">
           No bbs description,<a href="https://bbs.comunion.io/">Go to Pos</a>
         </div>
       </a-form-model-item>
       <a-form-model-item label="Fundraising Time" prop="fundraisingTime">
-        <a-date-picker :disabled="!enabled" v-model="form.fundraisingTime" class="w-100p" />
+        <a-date-picker :disabled="!form.enabled" v-model="form.fundraisingTime" class="w-100p" />
       </a-form-model-item>
       <a-form-model-item label="Fundraising ETH" prop="fundraising" class="mb-00">
         <a-row :gutter="24">
           <a-col :span="6">
             <a-form-model-item prop="fundraising.eth">
               <a-input-number
-                :disabled="!enabled"
+                :disabled="!form.enabled"
                 v-model="form.fundraising.eth"
                 :min="0"
                 style="width:72%"
@@ -50,7 +50,7 @@
           <a-col :span="6">
             <a-form-model-item prop="fundraising.symbol">
               <a-input-number
-                :disabled="!enabled"
+                :disabled="!form.enabled"
                 v-model="form.fundraising.symbol"
                 :min="0"
                 style="width:72%"
@@ -62,7 +62,7 @@
       </a-form-model-item>
       <a-form-model-item label="Exchange Creation" prop="exchangeAddress">
         <a-input
-          :disabled="!enabled"
+          :disabled="!form.enabled"
           v-model="form.exchangeAddress"
           placeholder="Token Contrace Address"
         />
@@ -76,7 +76,7 @@
           <a-col :span="6">
             <a-form-model-item prop="exchangeInitialLiquidity.eth">
               <a-input-number
-                :disabled="!enabled"
+                :disabled="!form.enabled"
                 v-model="form.exchangeInitialLiquidity.eth"
                 :min="0"
                 style="width:72%"
@@ -88,7 +88,7 @@
           <a-col :span="6">
             <a-form-model-item prop="exchangeInitialLiquidity.symbol">
               <a-input-number
-                :disabled="!enabled"
+                :disabled="!form.enabled"
                 v-model="form.exchangeInitialLiquidity.symbol"
                 :min="0"
                 style="width:72%"
@@ -100,7 +100,7 @@
       </a-form-model-item>
       <a-form-model-item label="Unlock  Token  (IRO Token + Liquitidy Token)" prop="unlockToken">
         <a-input
-          :disabled="!enabled"
+          :disabled="!form.enabled"
           v-model="form.unlockToken"
           placeholder="Token Contrace Address"
         >
@@ -139,9 +139,9 @@ export default {
   mixins: [mixins],
   data() {
     return {
-      enabled: false,
       form: {
         ...{
+          enabled: false,
           fundraisingAddress: '',
           descUrl: '',
           fundraisingTime: '',
@@ -180,7 +180,19 @@ export default {
       }
     };
   },
-  methods: {}
+  methods: {
+    handleSubmit() {
+      if (this.enabled) {
+        this.$refs.form.validate(valid => {
+          if (valid) {
+            this.$emit('next', [this.$options.name, this.form]);
+          }
+        });
+      } else {
+        this.$emit('next', [this.$options.name, this.form]);
+      }
+    }
+  }
 };
 </script>
 

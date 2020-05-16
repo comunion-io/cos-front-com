@@ -34,23 +34,6 @@ const routes = [
         component: () => import(/* webpackChunkName: 'bounty' */ '@/views/bounty/List.vue')
       },
       {
-        path: '/startup/new',
-        name: 'newStartup',
-        meta: {
-          title: 'New Startup'
-        },
-        component: () => import(/* webpackChunkName: 'newStartup' */ '@/views/startup/New.vue')
-      },
-      {
-        path: '/startup/settingStartUp',
-        name: 'settingStartup',
-        meta: {
-          title: 'Setting Startup'
-        },
-        component: () =>
-          import(/* webpackChunkName: 'newStartup' */ '@/views/startup/SettingStartUp.vue')
-      },
-      {
         path: '/exchange',
         name: 'exchange',
         meta: {
@@ -69,13 +52,30 @@ const routes = [
         component: () => import(/* webpackChunkName: 'governace' */ '@/views/governace/List.vue')
       },
       {
+        path: '/startup/new',
+        name: 'newStartup',
+        meta: {
+          title: 'New Startup'
+        },
+        component: () => import(/* webpackChunkName: 'newStartup' */ '@/views/startup/New.vue')
+      },
+      {
         path: '/startup/setting',
         name: 'startupSetting',
+        meta: {
+          title: 'Setting Startup'
+        },
+        component: () =>
+          import(/* webpackChunkName: 'newStartup' */ '@/views/startup/SettingList.vue')
+      },
+      {
+        path: '/startup/setting/:id',
+        name: 'startupSettingDetail',
         meta: {
           title: 'Startup Setting'
         },
         component: () =>
-          import(/* webpackChunkName: 'startupSetting' */ '@/views/startup/Setting.vue')
+          import(/* webpackChunkName: 'startupSetting' */ '@/views/startup/SettingDetail.vue')
       }
     ]
   },
