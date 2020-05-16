@@ -1,8 +1,6 @@
 <template>
-  <div id="new-start-up">
-    <div class="title">
-      <p>New Startup</p>
-    </div>
+  <a-card id="new-start-up" :bordered="false" style="margin-bottom: 24px;">
+    <h1 class="title">New Startup</h1>
     <section class="content">
       <div class="form" v-if="createState === 'beforeCreate'">
         <a-form-model
@@ -14,11 +12,11 @@
         >
           <!-- name -->
           <a-form-model-item label="Startup Name" prop="name">
-            <a-input v-model="form.name" />
+            <a-input v-model="form.name" placeholder="Startup Name" />
           </a-form-model-item>
           <!--  type -->
           <a-form-model-item label="Type" prop="type">
-            <a-select v-model="form.type" placeholder="please select type">
+            <a-select v-model="form.type" placeholder="Please select the type">
               <a-select-option value="shanghai">
                 Zone one
               </a-select-option>
@@ -29,33 +27,42 @@
           </a-form-model-item>
           <!--  logo-->
           <a-form-model-item label="logo" prop="logo">
-            <a-upload
-              listType="picture-card"
-              :show-upload-list="false"
-              :customRequest="customRequest"
-            >
-              <img v-if="imageUrl" :src="imageUrl" alt="logo" />
-              <div v-else>
-                <div class="ant-upload-text">
-                  Upload
-                </div>
-              </div>
-            </a-upload>
+            <single-pic-upload v-model="form.logo" />
           </a-form-model-item>
           <!--  mission-->
           <a-form-model-item label="Mission" prop="mission">
-            <a-input v-model="form.mission" type="textarea" />
+            <a-input
+              v-model="form.mission"
+              type="textarea"
+              :auto-size="{ minRows: 3, maxRows: 6 }"
+            />
           </a-form-model-item>
           <!--  description on bbs-->
           <a-form-model-item label="Description on bbs" prop="description">
-            <a-input v-model="form.description" />
+            <a-input v-model="form.description" placeholder="https://" />
+            <div class="flex jc-end">
+              No bbs description,<a href="https://bbs.comunion.io/">Go to Post</a>
+            </div>
           </a-form-model-item>
           <!--  submit-->
           <a-form-model-item>
-            <a-button type="primary" html-type="submit">
+            <a-button type="primary" size="large" block html-type="submit">
               Submit
             </a-button>
+            <div>Balance:&nbsp;<span class="t-bold">0.01ETH</span></div>
           </a-form-model-item>
+          <p class="mt-32 t-grey">
+            When you have completed all the information,
+            <span class="t-bold">you will have a company on the blockchain</span>
+          </p>
+          <p class="t-grey">
+            the whole process is similar to how you register a company with the Trade and Industry
+            Bureau
+          </p>
+          <p class="t-grey">
+            All the information what u had inputed, all that wil be
+            <span class="t-bold">submited to the Ethereum Mainnet Blockchain</span>
+          </p>
         </a-form-model>
       </div>
       <div class="creating" v-else-if="createState === 'creating'">
@@ -65,7 +72,7 @@
         <Success />
       </div>
     </section>
-  </div>
+  </a-card>
 </template>
 
 <script>
@@ -73,7 +80,6 @@ export default {
   name: 'NewStartup',
   data() {
     return {
-      imageUrl: '',
       form: {
         name: '',
         type: '',
@@ -93,30 +99,6 @@ export default {
   },
   methods: {
     /**
-     * @description 自定义上传
-     * @param data
-     */
-    customRequest(data) {
-      const formData = new FormData();
-      formData.append('file', data.file);
-      this.form.logo = formData;
-      this.getBase64(data.file);
-    },
-
-    /**
-     * @description 图片转base64
-     * @param img
-     * @param callback
-     */
-    getBase64(img) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        this.imageUrl = reader.result;
-      };
-      reader.readAsDataURL(img);
-    },
-
-    /**
      *@description 提交表单
      */
     async onSubmit() {
@@ -133,35 +115,19 @@ export default {
 
 <style scoped lang="less">
 #new-start-up {
-  background: rgba(255, 255, 255, 1);
-  display: flex;
-  flex-direction: column;
-  height: 80vh;
-
   .title {
-    line-height: 25px;
+    margin-top: 32px;
     text-align: center;
-    font-size: 12px;
+    font-size: 24px;
     font-family: Microsoft YaHei;
     font-weight: bold;
-    color: rgba(0, 0, 0, 1);
-    margin-top: 40px;
+    color: #000;
   }
 
   .content {
-    margin-left: 110px;
-    margin-right: 110px;
-
-    .form {
-      img {
-        width: 103px;
-        height: 103px;
-      }
-
-      .submit {
-        width: 100%;
-      }
-    }
+    margin: 0 auto;
+    width: 100%;
+    max-width: 760px;
   }
 }
 </style>

@@ -43,7 +43,7 @@ export default {
     },
     beforeUpload(file) {
       if (file.size > this.maxSize) {
-        this.$message.error(`请选择小于${sizeFormat(this.maxSize)}的图片`);
+        this.$message.error(`Size limited: ${sizeFormat(this.maxSize)}.`);
         return false;
       }
       return true;
@@ -84,10 +84,7 @@ export default {
             )}
           </div>
         ) : (
-          <div>
-            <a-icon type={this.loading ? 'loading' : 'plus'} />
-            <div class="ant-upload-text">点击上传</div>
-          </div>
+          <div class="ant-upload-text">Click to upload</div>
         )}
       </a-upload>
     );
@@ -97,6 +94,9 @@ export default {
 
 <style lang="less">
 .single-pic-uploader {
+  .ant-upload-select-picture-card {
+    border-style: solid;
+  }
   .thumbnail-wrapper {
     position: relative;
     height: 100%;

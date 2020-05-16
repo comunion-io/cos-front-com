@@ -27,7 +27,7 @@
       <a-form-model-item label="Description on bbs" prop="descUrl" class="mb-00">
         <a-input :disabled="!form.enabled" v-model="form.descUrl" placeholder="https://" />
         <div class="flex jc-end">
-          No bbs description,<a href="https://bbs.comunion.io/">Go to Pos</a>
+          No bbs description,<a href="https://bbs.comunion.io/">Go to Post</a>
         </div>
       </a-form-model-item>
       <a-form-model-item label="Fundraising Time" prop="fundraisingTime">
