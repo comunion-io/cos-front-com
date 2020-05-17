@@ -14,8 +14,7 @@ let getWeb3 = new Promise(function(resolve, reject) {
   if (typeof web3js !== 'undefined') {
     var web3 = new Web3(web3js.currentProvider);
   } else {
-    const address =
-      'https://goerli.etherscan.io/address/0xaB51602001bac963CdA4d34b4B253C26dE7239Df';
+    const address = 'https://goerli.infura.io/v3/' + 'infuraKey';
     web3 = new Web3(new Web3.providers.HttpProvider(address));
   }
   resolve({
