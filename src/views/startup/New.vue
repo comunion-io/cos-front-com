@@ -81,7 +81,7 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'NewStartup',
   computed: {
-    ...mapGetters(['web3Info'])
+    ...mapGetters(['web3Info', 'getToAccount'])
   },
   data() {
     return {
@@ -117,12 +117,27 @@ export default {
      * @description 构建hex, 生成txid
      * @param commit
      */
-    getTxid(formData) {
+    async getTxid(formData) {
       let txid = this.web3Info.web3Instance().utils.sha3(JSON.stringify(formData));
-      this.$store.dispatch('createStartup', { ...formData, txid }).then(startup => {
+      const startup = await this.$store.dispatch('createStartup', { ...formData, txid });
+      if (startup) {
         // 发起交易
-        console.log(startup);
-      });
+        const options = {
+          from: this.web3Info.coinbase,
+          value: 20,
+          to: this.getToAccount,
+          data: JSON.stringify({ ...formData, txid }),
+          nonce: 1,
+          gas: 4465030,
+          gasPrice: 5000000000
+        };
+        const transaction = this.$store.dispatch('sendTransaction', options);
+        console.log(
+          '%c 🥑 transaction: ',
+          'font-size:20px;background-color: #42b983;color:#fff;',
+          transaction
+        );
+      }
     }
   }
 };

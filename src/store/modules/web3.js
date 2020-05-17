@@ -10,7 +10,8 @@ const transactionModule = {
       coinbase: null,
       balance: null,
       error: null
-    }
+    },
+    toAccount: 'https://goerli.etherscan.io/address/0xaB51602001bac963CdA4d34b4B253C26dE7239Df'
   },
   mutations: {
     /**
@@ -31,11 +32,31 @@ const transactionModule = {
     }
   },
   getters: {
+    /**
+     * @description 返回web3信息
+     *
+     * @param state
+     * @returns
+     */
     web3Info(state) {
       return state.web3;
+    },
+    /**
+     * @description 交易的收款方账户
+     *
+     * @param state
+     * @returns
+     */
+    getToAccount(state) {
+      return state.toAccount;
     }
   },
   actions: {
+    /**
+     * @description 注册web3
+     *
+     * @param { commit }
+     */
     registerWeb3({ commit }) {
       console.log('registerWeb3 Action being executed');
       getWeb3
@@ -51,14 +72,23 @@ const transactionModule = {
      *
      */
     async createStartup(context, data) {
-      const startup = await http.createStartup(data);
-      console.log('%c 🍱 data: ', 'font-size:20px;background-color: #4b4b4b;color:#fff;', data);
       try {
-        return Promise.resolve(startup);
+        const startup = await http.createStartup(data);
+        return startup;
       } catch (error) {
         console.error(console.error);
-        return Promise.reject(error);
+        return false;
       }
+    },
+
+    /**
+     * @description 发送交易
+     *
+     * @param options： 与生成txid的数据要一致
+     */
+    async sendTransaction(options) {
+      const transaction = await this.web3Info.web3Instance().eth.sendTransaction(options);
+      return transaction;
     }
   }
 };
