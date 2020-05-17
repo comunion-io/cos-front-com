@@ -13,20 +13,21 @@ let getWeb3 = new Promise(function(resolve, reject) {
   var web3js = window.web3;
   if (typeof web3js !== 'undefined') {
     var web3 = new Web3(web3js.currentProvider);
-    resolve({
-      injectedWeb3: web3.isConnected(),
-      web3() {
-        return web3;
-      }
-    });
   } else {
-    reject(new Error('Unable to connect to Metamask'));
+    const address =
+      'https://goerli.etherscan.io/address/0xaB51602001bac963CdA4d34b4B253C26dE7239Df';
+    web3 = new Web3(new Web3.providers.HttpProvider(address));
   }
+  resolve({
+    web3() {
+      return web3;
+    }
+  });
 })
   .then(result => {
     return new Promise(function(resolve, reject) {
       // 检查网络地址
-      result.web3().version.getNetwork((err, networkId) => {
+      result.web3().eth.net.getId((err, networkId) => {
         if (err) {
           // If we can't find a networkId keep result the same and reject the promise
           reject(new Error('Unable to retrieve network ID'));
