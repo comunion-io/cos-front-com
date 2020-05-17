@@ -53,7 +53,6 @@ export default {
      * @description 连接mteamask
      */
     async connect() {
-      // eslint-disable-next-line no-debugger
       try {
         const accounts = await this.ethereum.enable();
         this.$store.commit('updateAccount', accounts);
