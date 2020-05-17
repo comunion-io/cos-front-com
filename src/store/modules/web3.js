@@ -50,9 +50,16 @@ const transactionModule = {
      * @description 创建startup
      *
      */
-    createStartup(context, data) {
-      http.createStartup(data);
+    async createStartup(context, data) {
+      const startup = await http.createStartup(data);
       console.log('%c 🍱 data: ', 'font-size:20px;background-color: #4b4b4b;color:#fff;', data);
+      try {
+        return Promise.resolve(startup);
+      } catch (error) {
+        debugger;
+        console.error(console.error);
+        return Promise.reject(error);
+      }
     }
   }
 };

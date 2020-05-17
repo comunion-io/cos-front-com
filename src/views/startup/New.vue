@@ -118,9 +118,11 @@ export default {
      * @param commit
      */
     getTxid(formData) {
-      debugger;
       let txid = this.web3Info.web3Instance().utils.sha3(JSON.stringify(formData));
-      this.$store.dispatch('createStartup', { ...formData, txid });
+      this.$store.dispatch('createStartup', { ...formData, txid }).then(startup => {
+        // 发起交易
+        console.log(startup);
+      });
     }
   }
 };
