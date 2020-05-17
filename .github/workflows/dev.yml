@@ -40,7 +40,7 @@ jobs:
           username: ${{ secrets.DEV_USERNAME }}
           passphrase: ${{ secrets.DEV_PASSPHRASE }}
           key: ${{ secrets.DEV_KEY }}
-          script: sh restart-front.sh
+          script: ${{ secrets.DEV_RESTART_SCRIPT }}
       - name: Notification
         uses: erguotou520/instant-access-action@v1
         if: ${{ success() }}
