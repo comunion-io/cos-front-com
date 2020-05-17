@@ -56,7 +56,6 @@ const transactionModule = {
       try {
         return Promise.resolve(startup);
       } catch (error) {
-        debugger;
         console.error(console.error);
         return Promise.reject(error);
       }
