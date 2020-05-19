@@ -8,7 +8,7 @@
     @submit.prevent="handleSubmit"
   >
     <a-form-model-item label="Governance" prop="governance">
-      <a-select v-model="form.governance">
+      <a-select size="large" v-model="form.governance">
         <a-select-option value="FounderAssign">Founder Assign</a-select-option>
         <a-select-option value="pos">POS</a-select-option>
         <a-select-option value="all">ALL</a-select-option>
@@ -25,12 +25,14 @@
           <a-button type="primary"> <a-icon type="plus" />Add </a-button>
         </a-input> -->
         <a-input
+          size="large"
           v-model="form.assignAddresses[index]"
           placeholder="Ethereum Address"
           style="width: 80%"
         />
         <a-button
           v-if="index === form.assignAddresses.length - 1"
+          size="large"
           type="primary"
           class="ml-16"
           @click="addAddress"
@@ -38,24 +40,36 @@
         >
           <a-icon type="plus" />Add
         </a-button>
-        <a-button v-else class="ml-16" style="width:16%" @click="removeAddress(index)">
+        <a-button v-else size="large" class="ml-16" style="width:16%" @click="removeAddress(index)">
           <a-icon type="delete" />Remove
         </a-button>
       </a-form-model-item>
     </template>
     <a-form-model-item v-if="form.governance === 'pos'" label="TokenBalance" prop="tokenBalance">
-      <a-input v-model="form.tokenBalance" placeholder="Token Balance" />
+      <a-input size="large" v-model="form.tokenBalance" placeholder="Token Balance" />
     </a-form-model-item>
     <a-form-model-item label="Vote Setting">
       <a-card>
         <a-form-model-item label="SUPPORT %">
           <a-slider v-model="form.supportPercent" class="slider-item" />
-          <a-input-number v-model="form.supportPercent" style="width:12%" :min="0" :max="100" />
+          <a-input-number
+            size="large"
+            v-model="form.supportPercent"
+            style="width:12%"
+            :min="0"
+            :max="100"
+          />
           <span class="ml-4">%</span>
         </a-form-model-item>
         <a-form-model-item label="MINIMUM APPROVAL %" class="mb-00">
           <a-slider v-model="form.minimumApproval" class="slider-item" />
-          <a-input-number v-model="form.minimumApproval" style="width:12%" :min="0" :max="100" />
+          <a-input-number
+            size="large"
+            v-model="form.minimumApproval"
+            style="width:12%"
+            :min="0"
+            :max="100"
+          />
           <span class="ml-4">%</span>
         </a-form-model-item>
       </a-card>
@@ -65,13 +79,23 @@
             <a-col :span="4">MinDuration</a-col>
             <a-col :span="6">
               <a-form-model-item prop="voteMinDuration.days">
-                <a-input-number v-model="form.voteMinDuration.days" :min="0" :max="100" />
+                <a-input-number
+                  size="large"
+                  v-model="form.voteMinDuration.days"
+                  :min="0"
+                  :max="100"
+                />
                 <span class="ml-4">Days</span>
               </a-form-model-item>
             </a-col>
             <a-col :span="6">
               <a-form-model-item prop="voteMinDuration.hours">
-                <a-input-number v-model="form.voteMinDuration.hours" :min="0" :max="100" />
+                <a-input-number
+                  size="large"
+                  v-model="form.voteMinDuration.hours"
+                  :min="0"
+                  :max="100"
+                />
                 <span class="ml-4">Hours</span>
               </a-form-model-item>
             </a-col>
@@ -80,13 +104,23 @@
             <a-col :span="4">MaxDuration</a-col>
             <a-col :span="6">
               <a-form-model-item prop="voteMaxDuration.days">
-                <a-input-number v-model="form.voteMaxDuration.days" :min="0" :max="100" />
+                <a-input-number
+                  size="large"
+                  v-model="form.voteMaxDuration.days"
+                  :min="0"
+                  :max="100"
+                />
                 <span class="ml-4">Days</span>
               </a-form-model-item>
             </a-col>
             <a-col :span="6">
               <a-form-model-item prop="voteMaxDuration.hours">
-                <a-input-number v-model="form.voteMaxDuration.hours" :min="0" :max="100" />
+                <a-input-number
+                  size="large"
+                  v-model="form.voteMaxDuration.hours"
+                  :min="0"
+                  :max="100"
+                />
                 <span class="ml-4">Hours</span>
               </a-form-model-item>
             </a-col>

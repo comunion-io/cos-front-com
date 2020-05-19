@@ -19,13 +19,19 @@
       >
       <a-form-model-item label="Startup Fundraising Address" prop="fundraisingAddress">
         <a-input
+          size="large"
           :disabled="!form.enabled"
           v-model="form.fundraisingAddress"
           placeholder="Ethereum Address"
         />
       </a-form-model-item>
       <a-form-model-item label="Description on bbs" prop="descUrl" class="mb-00">
-        <a-input :disabled="!form.enabled" v-model="form.descUrl" placeholder="https://" />
+        <a-input
+          size="large"
+          :disabled="!form.enabled"
+          v-model="form.descUrl"
+          placeholder="https://"
+        />
         <div class="flex jc-end">
           No bbs description,<a href="https://bbs.comunion.io/">Go to Post</a>
         </div>
@@ -38,6 +44,7 @@
           <a-col :span="6">
             <a-form-model-item prop="fundraising.eth">
               <a-input-number
+                size="large"
                 :disabled="!form.enabled"
                 v-model="form.fundraising.eth"
                 :min="0"
@@ -50,6 +57,7 @@
           <a-col :span="6">
             <a-form-model-item prop="fundraising.symbol">
               <a-input-number
+                size="large"
                 :disabled="!form.enabled"
                 v-model="form.fundraising.symbol"
                 :min="0"
@@ -62,6 +70,7 @@
       </a-form-model-item>
       <a-form-model-item label="Exchange Creation" prop="exchangeAddress">
         <a-input
+          size="large"
           :disabled="!form.enabled"
           v-model="form.exchangeAddress"
           placeholder="Token Contrace Address"
@@ -76,6 +85,7 @@
           <a-col :span="6">
             <a-form-model-item prop="exchangeInitialLiquidity.eth">
               <a-input-number
+                size="large"
                 :disabled="!form.enabled"
                 v-model="form.exchangeInitialLiquidity.eth"
                 :min="0"
@@ -88,6 +98,7 @@
           <a-col :span="6">
             <a-form-model-item prop="exchangeInitialLiquidity.symbol">
               <a-input-number
+                size="large"
                 :disabled="!form.enabled"
                 v-model="form.exchangeInitialLiquidity.symbol"
                 :min="0"
@@ -100,6 +111,7 @@
       </a-form-model-item>
       <a-form-model-item label="Unlock  Token  (IRO Token + Liquitidy Token)" prop="unlockToken">
         <a-input
+          size="large"
           :disabled="!form.enabled"
           v-model="form.unlockToken"
           placeholder="Token Contrace Address"

@@ -12,11 +12,11 @@
         >
           <!-- name -->
           <a-form-model-item label="Startup Name" prop="name">
-            <a-input v-model="form.name" placeholder="Startup Name" />
+            <a-input size="large" v-model="form.name" placeholder="Startup Name" />
           </a-form-model-item>
           <!--  type -->
           <a-form-model-item label="Type" prop="categoryId">
-            <a-select v-model="form.categoryId" placeholder="Please select the type">
+            <a-select size="large" v-model="form.categoryId" placeholder="Please select the type">
               <a-select-option value="shanghai">
                 Zone one
               </a-select-option>
@@ -32,6 +32,7 @@
           <!--  mission-->
           <a-form-model-item label="Mission" prop="mission">
             <a-input
+              size="large"
               v-model="form.mission"
               type="textarea"
               :auto-size="{ minRows: 3, maxRows: 6 }"
@@ -39,7 +40,7 @@
           </a-form-model-item>
           <!--  description on bbs-->
           <a-form-model-item label="Description on bbs" prop="descriptionAddr">
-            <a-input v-model="form.descriptionAddr" placeholder="https://" />
+            <a-input size="large" v-model="form.descriptionAddr" placeholder="https://" />
             <div class="flex jc-end">
               No bbs description,<a href="https://bbs.comunion.io/">Go to Post</a>
             </div>

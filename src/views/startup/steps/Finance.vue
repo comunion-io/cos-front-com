@@ -10,17 +10,17 @@
     <a-row :gutter="20">
       <a-col :span="14">
         <a-form-model-item label="Token Name" prop="name">
-          <a-input v-model="form.name" placeholder="My Organization Token" />
+          <a-input size="large" v-model="form.name" placeholder="My Organization Token" />
         </a-form-model-item>
       </a-col>
       <a-col :span="10">
         <a-form-model-item label="Token Symbol" prop="symbol">
-          <a-input v-model="form.symbol" placeholder="Token Symbol" />
+          <a-input size="large" v-model="form.symbol" placeholder="Token Symbol" />
         </a-form-model-item>
       </a-col>
     </a-row>
     <a-form-model-item label="Token Contract" prop="contract">
-      <a-input v-model="form.contract" placeholder="Contract Name" />
+      <a-input size="large" v-model="form.contract" placeholder="Contract Name" />
     </a-form-model-item>
     <a-form-model-item
       v-for="(wallet, index) in form.wallets"
@@ -34,23 +34,27 @@
         <a-row :gutter="20">
           <a-col :span="12">
             <a-form-model-item :prop="`wallets.${index}.name`" required>
-              <a-input v-model="form.wallets[index].name" placeholder="Wallet Name" />
+              <a-input size="large" v-model="form.wallets[index].name" placeholder="Wallet Name" />
             </a-form-model-item>
           </a-col>
           <a-col :span="12">
             <a-form-model-item :prop="`wallets.${index}.ballance`">
-              <a-input v-model="form.wallets[index].ballance" placeholder="Ballance" />
+              <a-input size="large" v-model="form.wallets[index].ballance" placeholder="Ballance" />
             </a-form-model-item>
           </a-col>
         </a-row>
         <a-row :gutter="20">
           <a-col :span="16">
             <a-form-model-item :prop="`wallets.${index}.address`" class="mb-00">
-              <a-input v-model="form.wallets[index].address" placeholder="Ethereum Address" />
+              <a-input
+                size="large"
+                v-model="form.wallets[index].address"
+                placeholder="Ethereum Address"
+              />
             </a-form-model-item>
           </a-col>
           <a-col v-if="form.wallets.length > 1" :span="4">
-            <a-button style="line-height:40px" @click="removeAddress(index)">
+            <a-button size="large" style="line-height:40px" @click="removeAddress(index)">
               <a-icon type="delete" />Remove
             </a-button>
           </a-col>
