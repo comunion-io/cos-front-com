@@ -12,7 +12,7 @@
         >
       </div>
       <!-- 未连接metamask, 暂时不能创建start up -->
-      <a-button class="ml-auto mr-24" type="primary" :disabled="!isMetaMaskConnected" size="large">
+      <a-button class="ml-auto mr-24" type="primary" :disabled="!isMetaMaskConnected">
         <router-link :to="{ name: 'newStartup' }"> +&nbsp;New Startup </router-link>
       </a-button>
       <MegaMenu />
