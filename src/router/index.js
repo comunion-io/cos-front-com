@@ -76,6 +76,16 @@ const routes = [
         },
         component: () =>
           import(/* webpackChunkName: 'startupSetting' */ '@/views/startup/SettingDetail.vue')
+      },
+      // welcome 页面， 未登录metamas情况下，点击new startup 进入欢迎页
+      {
+        path: '/welcome',
+        name: 'welcome',
+        meta: {
+          title: 'welcome'
+        },
+        component: () =>
+          import(/* webpackChunkName: 'startupSetting' */ '@/views/welcome/Welcome.vue')
       }
     ]
   },

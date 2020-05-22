@@ -21,7 +21,8 @@ const userModules = {
      *
      * @param state
      */
-    login(context) {
+    login(store, context) {
+      // const { commit, dispatch, state, rootState, rootGetters } = store;
       http.login({
         walletAddr: context.state.accounts[0]
       });
