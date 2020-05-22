@@ -96,6 +96,10 @@ export default {
 .single-pic-uploader {
   .ant-upload-select-picture-card {
     border-style: solid;
+    width: 100%;
+    height: 100%;
+    min-width: 104px;
+    min-height: 104px;
   }
   .thumbnail-wrapper {
     position: relative;

@@ -12,7 +12,7 @@
         >
       </div>
       <!-- 未连接metamask, 暂时不能创建start up -->
-      <a-button class="ml-auto mr-24" type="primary" :disabled="!isMetaMaskConnected">
+      <a-button class="ml-auto mr-24" type="green" size="large" :disabled="!isMetaMaskConnected">
         <router-link :to="{ name: 'newStartup' }"> +&nbsp;New Startup </router-link>
       </a-button>
       <MegaMenu />
@@ -69,12 +69,13 @@ export default {
 <style lang="less">
 @import '~@/assets/styles/ant.custom.less';
 .app-header {
-  height: 80px;
+  height: 64px;
   background: #fff;
+  box-shadow: 0px 0px 8px 0px rgba(6, 0, 1, 0.07);
   .navs {
     .nav {
-      width: 112px;
-      height: 36px;
+      width: 92px;
+      height: 32px;
       font-weight: bold;
       font-size: 16px;
       color: #999;
