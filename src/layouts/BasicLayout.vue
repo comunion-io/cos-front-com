@@ -2,8 +2,10 @@
 <template>
   <div class="app-container">
     <AppHeader />
-    <div class="main-container mt-32">
-      <router-view />
+    <div class="main-container">
+      <div style="padding-top:32px">
+        <router-view />
+      </div>
     </div>
   </div>
 </template>

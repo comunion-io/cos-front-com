@@ -1,5 +1,6 @@
 <template>
   <a-form-model
+    class="vertical-form"
     ref="form"
     :labelCol="{ span: 24 }"
     :wrapperCol="{ span: 24 }"
