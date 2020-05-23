@@ -1,19 +1,19 @@
 // comunion wait setting 页面
 <template>
-  <div>
-    <a-row v-if="!completed" :gutter="38">
-      <a-col :span="7">
+  <div class="p-startup-setting">
+    <a-row v-if="!completed" :gutter="20">
+      <a-col :span="8">
         <HelpCenter />
       </a-col>
-      <a-col :span="17">
-        <a-card>
+      <a-col :span="16">
+        <a-card class="tab-card">
           <a-steps :current="step" labelPlacement="vertical">
             <a-step title="Finance" />
             <a-step title="Governance" />
             <a-step title="Fundraise" />
           </a-steps>
         </a-card>
-        <a-card style="margin-top:20px">
+        <a-card>
           <finance
             v-if="step === 0"
             :default-data="form.finance"
@@ -133,4 +133,96 @@ export default {
 };
 </script>
 
-<style lang="less"></style>
+<style lang="less">
+@import '~@/assets/styles/ant.custom.less';
+.p-startup-setting {
+  padding: 0 108px;
+  .tab-card {
+    margin-bottom: 20px;
+    .ant-card-body {
+      padding: 38px 38px 28px;
+      height: 150px;
+    }
+  }
+  // 步进条自定义
+  .ant-steps-item:last-child {
+    flex: 1;
+    .ant-steps-item-tail {
+      display: block;
+    }
+  }
+  .ant-steps-item-container {
+    height: 86px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .ant-steps-item-tail {
+    top: 20px;
+    margin: 0;
+    padding: 0;
+    height: 5px;
+    background: #eeeeee;
+    &::after {
+      height: 5px;
+    }
+  }
+  .ant-steps-item-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    width: 46px;
+    height: 46px;
+    border-width: 4px;
+    border-color: #eee;
+    z-index: 10;
+    .ant-steps-icon {
+      font-size: 24px;
+      color: #999;
+    }
+  }
+  .ant-steps-item-content {
+    margin-top: auto;
+    .ant-steps-item-title {
+      line-height: 1;
+      font-weight: bold;
+    }
+  }
+  // 选中的tab
+  .ant-steps-item-active {
+    .ant-steps-item-icon {
+      border: none;
+      transform: scale(1.48);
+      .ant-steps-icon {
+        font-size: 18px;
+        color: #fff;
+      }
+    }
+    .ant-steps-item-content .ant-steps-item-title {
+      margin-top: 16px;
+      font-size: 15px;
+      color: @primary-color;
+    }
+  }
+  // 已完成步骤
+  .ant-steps-item-finish {
+    .ant-steps-item-icon {
+      border-color: @primary-color;
+    }
+    .anticon-check {
+      color: @primary-color;
+    }
+  }
+  // 进行中
+  .ant-steps-item-process {
+    .ant-steps-item-tail {
+      &:after {
+        width: calc(50% - 34px);
+        background-color: @primary-color;
+      }
+    }
+  }
+}
+</style>

@@ -1,13 +1,13 @@
-// comunion setting 列表页面
+<!-- comunion setting 列表页面 -->
 <template>
   <div class="setting-startup">
     <div class="title">Setting Startup</div>
     <div class="content">
-      <a-row :gutter="38">
-        <a-col :span="7">
+      <a-row :gutter="20">
+        <a-col :span="8">
           <HelpCenter />
         </a-col>
-        <a-col :span="17">
+        <a-col :span="16">
           <div class="actions">
             <a-tabs default-active-key="1" @change="changedTab($event)">
               <a-tab-pane key="1" tab="My Startup">
@@ -16,17 +16,16 @@
                   <Card>
                     <img slot="image" src="@/assets/images/plus_icon@2x.png" alt="" />
                     <span slot="text">Comunion1</span>
-                    <span slot="state"></span>
                     <span slot="description">Initial your dream,lunch your startup</span>
                   </Card>
                 </section>
 
                 <!-- creating comunion -->
                 <section>
-                  <Card>
+                  <Card state="creating">
                     <img slot="image" src="@/assets/images/file@2x.png" alt="" />
                     <span slot="text">Comunion1</span>
-                    <span slot="state">creating</span>
+                    <span slot="state">Creating</span>
                     <span slot="description"
                       >Company profilel Company profilel Company profilel</span
                     >
@@ -35,7 +34,19 @@
 
                 <!-- comunion -->
                 <section @click="handleComunion">
-                  <Card>
+                  <Card state="waiting">
+                    <img slot="image" src="@/assets/images/file@2x.png" alt="" />
+                    <span slot="text">Comunion1</span>
+                    <span slot="state">Wait Setting</span>
+                    <span slot="description"
+                      >Company profilel Company profilel Company profilel</span
+                    >
+                  </Card>
+                </section>
+
+                <!-- comunion -->
+                <section @click="handleComunion">
+                  <Card state="done">
                     <img slot="image" src="@/assets/images/file@2x.png" alt="" />
                     <span slot="text">Comunion1</span>
                     <span slot="state">Wait Setting</span>
@@ -45,7 +56,7 @@
                   </Card>
                 </section>
               </a-tab-pane>
-              <a-tab-pane key="2" tab="Follow StartUp" disabled force-render>
+              <a-tab-pane key="2" tab="Follow Startup" disabled force-render>
                 working
               </a-tab-pane>
             </a-tabs>
@@ -93,9 +104,7 @@ export default {
 
 <style lang="less">
 .setting-startup {
-  display: flex;
-  flex-direction: column;
-  background: rgba(242, 243, 244, 1);
+  padding: 0 108px;
   .title {
     font-size: 24px;
     font-family: Microsoft YaHei;
@@ -118,15 +127,39 @@ export default {
       box-shadow: 0px 2px 4px 0px rgba(6, 0, 1, 0.04);
       border-radius: 2px;
 
-      .ant-tabs-nav.ant-tabs-nav-animated {
+      .ant-tabs-nav {
+        padding: 0 36px;
         width: 100%;
       }
     }
   }
-
-  /deep/ .ant-tabs-tab {
-    width: 50%;
+  // tab样式自定义
+  .ant-tabs-bar {
+    margin-bottom: 38px;
+  }
+  .ant-tabs-tab {
+    margin: 0;
+    padding: 0;
+    width: calc(50% - 36px);
+    height: 70px;
+    line-height: 70px;
+    font-size: 18px;
+    font-weight: bold;
     text-align: center;
+    &:not(.ant-tabs-tab-disabled) {
+      color: #000000;
+    }
+    &:nth-child(1) {
+      margin-right: 36px;
+    }
+    &:nth-child(2) {
+      margin-left: 36px;
+    }
+  }
+  // tab下面的线 自定义
+  .ant-tabs-ink-bar {
+    bottom: 0;
+    height: 4px;
   }
 }
 </style>

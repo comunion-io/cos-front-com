@@ -1,5 +1,6 @@
 <template>
   <a-form-model
+    class="vertical-form"
     ref="form"
     :labelCol="{ span: 24 }"
     :wrapperCol="{ span: 24 }"
@@ -25,17 +26,7 @@
           placeholder="Ethereum Address"
         />
       </a-form-model-item>
-      <a-form-model-item label="Description on bbs" prop="descUrl" class="mb-00">
-        <a-input
-          size="large"
-          :disabled="!form.enabled"
-          v-model="form.descUrl"
-          placeholder="https://"
-        />
-        <div class="flex jc-end">
-          No bbs description,<a href="https://bbs.comunion.io/">Go to Post</a>
-        </div>
-      </a-form-model-item>
+      <bbs-input v-model="form.descriptionAddr" />
       <a-form-model-item label="Fundraising Time" prop="fundraisingTime">
         <a-date-picker :disabled="!form.enabled" v-model="form.fundraisingTime" class="w-100p" />
       </a-form-model-item>
@@ -144,10 +135,14 @@
 </template>
 
 <script>
+import BbsInput from '../components/BbsInput';
 import mixins from './mixins';
 
 export default {
   name: 'fundraise',
+  components: {
+    BbsInput
+  },
   mixins: [mixins],
   data() {
     return {
@@ -155,7 +150,7 @@ export default {
         ...{
           enabled: false,
           fundraisingAddress: '',
-          descUrl: '',
+          descriptionAddr: '',
           fundraisingTime: '',
           fundraising: {
             eth: null,

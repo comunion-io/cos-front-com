@@ -4,32 +4,43 @@
     <section class="content">
       <div class="form" v-if="createState === 'beforeCreate'">
         <a-form-model
+          class="vertical-form"
           ref="ruleForm"
           :model="form"
           :rules="rules"
           :layout="'horizontal'"
           @submit.prevent="onSubmit"
         >
-          <!-- name -->
-          <a-form-model-item label="Startup Name" prop="name">
-            <a-input size="large" v-model="form.name" placeholder="Startup Name" />
-          </a-form-model-item>
-          <!--  type -->
-          <a-form-model-item label="Type" prop="categoryId">
-            <a-select size="large" v-model="form.categoryId" placeholder="Please select the type">
-              <a-select-option value="shanghai">
-                Zone one
-              </a-select-option>
-              <a-select-option value="beijing">
-                Zone two
-              </a-select-option>
-            </a-select>
-          </a-form-model-item>
-          <!--  logo-->
-          <a-form-model-item label="logo" prop="logo">
-            <single-pic-upload v-model="form.logo" />
-          </a-form-model-item>
-          <!--  mission-->
+          <a-row :gutter="20">
+            <a-col :span="16">
+              <!-- name -->
+              <a-form-model-item label="Startup Name" prop="name">
+                <a-input size="large" v-model="form.name" placeholder="Startup Name" />
+              </a-form-model-item>
+              <!--  type -->
+              <a-form-model-item label="Type" prop="categoryId">
+                <a-select
+                  size="large"
+                  v-model="form.categoryId"
+                  placeholder="Please select the type"
+                >
+                  <a-select-option value="shanghai">
+                    Zone one
+                  </a-select-option>
+                  <a-select-option value="beijing">
+                    Zone two
+                  </a-select-option>
+                </a-select>
+              </a-form-model-item>
+            </a-col>
+            <a-col :span="6" :offset="2">
+              <!--  logo-->
+              <a-form-model-item label="Logo" prop="logo">
+                <single-pic-upload v-model="form.logo" style="height: 129px;width:129px;" />
+              </a-form-model-item>
+              <!--  mission-->
+            </a-col>
+          </a-row>
           <a-form-model-item label="Mission" prop="mission">
             <a-input
               size="large"
@@ -39,12 +50,13 @@
             />
           </a-form-model-item>
           <!--  description on bbs-->
-          <a-form-model-item label="Description on bbs" prop="descriptionAddr">
+          <bbs-input v-model="form.descriptionAddr" />
+          <!-- <a-form-model-item label="Description on bbs" prop="descriptionAddr">
             <a-input size="large" v-model="form.descriptionAddr" placeholder="https://" />
             <div class="flex jc-end">
               No bbs description,<a href="https://bbs.comunion.io/">Go to Post</a>
             </div>
-          </a-form-model-item>
+          </a-form-model-item> -->
           <!--  submit-->
           <a-form-model-item>
             <a-button type="primary" size="large" block html-type="submit">
@@ -78,9 +90,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BbsInput from './components/BbsInput';
 
 export default {
   name: 'NewStartup',
+  components: {
+    BbsInput
+  },
   computed: {
     ...mapGetters(['web3', 'getToAccount'])
   },
@@ -157,8 +173,9 @@ export default {
 
   .content {
     margin: 0 auto;
-    width: 100%;
-    max-width: 760px;
+    width: 60%;
+    max-width: 640px;
+    min-width: 240px;
   }
 }
 </style>
