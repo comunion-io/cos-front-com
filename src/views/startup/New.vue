@@ -98,7 +98,7 @@ export default {
     BbsInput
   },
   computed: {
-    ...mapGetters(['web3Info', 'getToAccount'])
+    ...mapGetters(['web3', 'getToAccount'])
   },
   data() {
     return {
@@ -135,7 +135,7 @@ export default {
      * @param commit
      */
     async getTxid(formData) {
-      let txid = this.web3Info.web3Instance().utils.sha3(JSON.stringify(formData));
+      let txid = this.web3.utils.sha3(JSON.stringify(formData));
       const startup = await this.$store.dispatch('createStartup', { ...formData, txid });
       if (startup) {
         // 发起交易

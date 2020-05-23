@@ -9,7 +9,9 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'HeaderConnect',
-
+  computed: {
+    ...mapGetters(['web3', 'isMetaMaskConnected'])
+  },
   data() {
     return {
       // metamask 实例
@@ -21,10 +23,6 @@ export default {
 
   mounted() {
     this.ethereum = window.ethereum;
-  },
-
-  computed: {
-    ...mapGetters(['isMetaMaskConnected'])
   },
 
   methods: {
@@ -56,11 +54,16 @@ export default {
       try {
         const accounts = await this.ethereum.enable();
         this.$store.commit('updateAccount', accounts);
-        this.$store.dispatch('login');
+
+        this.registerEvents();
         if (this.isMetaMaskConnected) {
-          this.registerEvents();
           // 登录注册web3
-          this.$store.dispatch('registerWeb3');
+          this.$store.commit('initWeb3');
+          // TODO
+          const msg = '';
+          const signature = await this.web3.eth.sign(this.web3.utils.sha3(msg), accounts[0]);
+          console.log(signature);
+          // await this.$store.dispatch('login');
         }
         console.log('accounts:::', accounts);
       } catch (e) {

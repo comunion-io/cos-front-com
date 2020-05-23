@@ -8,28 +8,45 @@
     <!-- search -->
     <div class="search">
       <div class="select-box">
-        <!-- <b-container fluid="false">
-          <b-row :no-gutters="true">
-            <b-col sm="3">
-              <b-form-select v-model="selected" :options="options"></b-form-select>
-            </b-col>
-            <b-col sm="9">
-              <b-form-input v-model="inputTxt" :type="'search'"></b-form-input>
-            </b-col>
-          </b-row>
-        </b-container> -->
+        <a-input-group>
+          <a-row>
+            <a-col :span="4">
+              <a-select default-value="Sign Up" style="width: 100%;" size="large">
+                <a-select-option value="Sign Up">
+                  Sign Up
+                </a-select-option>
+                <a-select-option value="Sign In">
+                  Sign In
+                </a-select-option>
+              </a-select>
+            </a-col>
+            <a-col :span="20">
+              <a-input-search
+                size="large"
+                style="width: 100%;"
+                placeholder="Input search comunion"
+                @search="onSearch"
+              />
+            </a-col>
+          </a-row>
+        </a-input-group>
       </div>
     </div>
 
     <!-- 显示 comunion-->
-    <div class="comunion-item"></div>
+    <div class="comunion-item">
+      <card></card>
+    </div>
   </div>
 </template>
 
 <script>
+import Card from './card/Card';
 export default {
   name: 'Home',
-
+  components: {
+    Card
+  },
   data() {
     return {
       inputTxt: '',
@@ -42,6 +59,15 @@ export default {
         { value: '3', text: 'Education' }
       ]
     };
+  },
+  methods: {
+    onSearch(searchTxt) {
+      console.log(
+        '%c 🍰 searchTxt: ',
+        'font-size:20px;background-color: #E41A6A;color:#fff;',
+        searchTxt
+      );
+    }
   }
 };
 </script>

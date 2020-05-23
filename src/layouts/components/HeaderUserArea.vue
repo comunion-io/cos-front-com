@@ -43,13 +43,6 @@ export default {
      */
     transformHunter() {
       console.log('发布hunter');
-    },
-
-    /**
-     * @description 连接钱包
-     */
-    connectWallet() {
-      this.$store.commit('connectWallet');
     }
   }
 };
