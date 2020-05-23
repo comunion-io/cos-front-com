@@ -54,10 +54,15 @@ export default {
       try {
         const accounts = await this.ethereum.enable();
         this.$store.commit('updateAccount', accounts);
+
+        this.registerEvents();
         if (this.isMetaMaskConnected) {
           // 登录注册web3
           this.$store.commit('initWeb3');
-          this.registerEvents();
+          // TODO
+          const msg = '';
+          const signature = await this.web3.eth.sign(this.web3.utils.sha3(msg), accounts[0]);
+          console.log(signature);
           // await this.$store.dispatch('login');
         }
         console.log('accounts:::', accounts);
