@@ -13,30 +13,28 @@
             <a-step title="Fundraise" />
           </a-steps>
         </a-card>
-        <a-card>
-          <finance
-            v-if="step === 0"
-            :default-data="form.finance"
-            ref="form_0"
-            @cancel="onCancel"
-            @next="onNext"
-          />
-          <governance
-            v-else-if="step === 1"
-            ref="form_1"
-            :default-data="form.governance"
-            @cancel="onCancel"
-            @back="onBack"
-            @next="onNext"
-          />
-          <fundraise
-            v-else-if="step === 2"
-            ref="form_2"
-            :default-data="form.fundraise"
-            @cancel="onCancel"
-            @ok="onOk"
-          />
-        </a-card>
+        <finance
+          v-if="step === 0"
+          :default-data="form.finance"
+          ref="form_0"
+          @cancel="onCancel"
+          @next="onNext"
+        />
+        <governance
+          v-else-if="step === 1"
+          ref="form_1"
+          :default-data="form.governance"
+          @cancel="onCancel"
+          @back="onBack"
+          @next="onNext"
+        />
+        <fundraise
+          v-else-if="step === 2"
+          ref="form_2"
+          :default-data="form.fundraise"
+          @cancel="onCancel"
+          @ok="onOk"
+        />
       </a-col>
     </a-row>
     <div v-else class="flex-column ai-center">
@@ -134,7 +132,7 @@ export default {
 </script>
 
 <style lang="less">
-@import '~@/assets/styles/ant.custom.less';
+@import '~@/assets/styles/variables.less';
 .p-startup-setting {
   padding: 0 108px;
   .tab-card {

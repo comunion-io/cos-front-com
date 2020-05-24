@@ -1,6 +1,6 @@
 <template>
   <a-form-model-item label="Description on bbs" :prop="prop" class="form-item">
-    <a-input size="large" v-model="data" placeholder="https://" />
+    <a-input size="large" v-model="data" placeholder="https://" :disabled="disabled" />
     <div class="tip flex jc-end">
       No bbs description,<a href="https://bbs.comunion.io/">Go to Post</a>
     </div>
@@ -14,7 +14,8 @@ export default {
       type: String,
       default: 'descriptionAddr'
     },
-    value: String
+    value: String,
+    disabled: Boolean
   },
   computed: {
     data: {

@@ -73,7 +73,7 @@ export default {
 </script>
 
 <style lang="less">
-@import '~@/assets/styles/ant.custom.less';
+@import '~@/assets/styles/variables.less';
 .app-header {
   height: 64px;
   background: #fff;

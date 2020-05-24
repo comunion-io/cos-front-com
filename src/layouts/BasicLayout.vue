@@ -3,7 +3,7 @@
   <div class="app-container">
     <AppHeader />
     <div class="main-container">
-      <div style="padding-top:32px">
+      <div class="my-32">
         <router-view />
       </div>
     </div>
