@@ -1,9 +1,8 @@
-import * as http from '../../services/user.services';
-
 const userModules = {
   state: {
     /**  登录后的账户信息 */
-    accounts: []
+    accounts: [],
+    categories: []
   },
   mutations: {
     /**
@@ -13,22 +12,22 @@ const userModules = {
      */
     updateAccount(state, account) {
       state.accounts = account;
+    },
+
+    categories(state, data) {
+      state.categories = data;
     }
   },
-  actions: {
-    /**
-     * @description 登录
-     *
-     * @param state
-     */
-    login(store, context) {
-      // const { commit, dispatch, state, rootState, rootGetters } = store;
-      http.login({
-        walletAddr: context.state.accounts[0]
-      });
-    }
-  },
+  actions: {},
   getters: {
+    /**
+     * @description 获取我的钱包地址
+     * @param state
+     * @returns
+     */
+    from(state) {
+      return state.account[0];
+    },
     /**
      * @description 是否连接了metamask
      * @param state

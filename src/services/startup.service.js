@@ -5,7 +5,7 @@ import { request } from './request';
  */
 export async function createStartup(params) {
   try {
-    const data = await request('post', '/startups', params);
+    const data = await request('post', '/cores/startups/', params);
     return data;
   } catch (error) {
     console.error(error);
@@ -22,7 +22,7 @@ export async function createStartup(params) {
  */
 export async function getMyStartup(params) {
   try {
-    const data = await request('get', '/startups/me', params);
+    const data = await request('get', '/cores/startups/me', params);
     return data;
   } catch (error) {
     console.error(error);
@@ -38,7 +38,7 @@ export async function getMyStartup(params) {
  */
 export async function getStartupDetail(startupId) {
   try {
-    const data = await request('get', `/startups/${startupId}`);
+    const data = await request('get', `/cores/startups/${startupId}`);
     return data;
   } catch (error) {
     console.error(error);

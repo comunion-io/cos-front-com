@@ -15,3 +15,32 @@ export async function login(params) {
     return e;
   }
 }
+
+/**
+ * @description 获取nonce
+ * @export
+ * @param publicKey 钱包地址
+ * @returns nonce
+ */
+export async function getNonce(publicKey) {
+  try {
+    const data = await request('post', '/account/nonce/', { publicKey: publicKey });
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+/**
+ * @description 获取 comunion 的类型
+ * @export
+ * @returns
+ */
+export async function getCategories() {
+  try {
+    const data = await request('get', '/cores/categories/');
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
