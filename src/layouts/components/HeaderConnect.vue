@@ -6,6 +6,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import * as UserService from '../../services/user.services';
 
 export default {
   name: 'HeaderConnect',
@@ -17,7 +18,8 @@ export default {
       // metamask 实例
       ethereum: undefined,
       /** 账户信息 */
-      accounts: []
+      accounts: [],
+      userService: UserService
     };
   },
 
@@ -57,15 +59,19 @@ export default {
 
         this.registerEvents();
         if (this.isMetaMaskConnected) {
+          const from = accounts[0];
           // 登录注册web3
-          this.$store.commit('initWeb3');
-          // TODO
-          const msg = '';
-          const signature = await this.web3.eth.sign(this.web3.utils.sha3(msg), accounts[0]);
-          console.log(signature);
-          // await this.$store.dispatch('login');
+          await this.$store.dispatch('initWeb3');
+          // 获取nonce
+          const nonce = await this.userService.getNonce(from);
+          // 对nonce签名
+          this.web3.eth.sign(from, nonce, function(err, result) {
+            if (err) return console.error(err);
+            const signature = result;
+            // 登录
+            this.userService.login(from, signature);
+          });
         }
-        console.log('accounts:::', accounts);
       } catch (e) {
         console.error(e);
       }

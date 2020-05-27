@@ -55,7 +55,8 @@ const routes = [
         path: '/startup/new',
         name: 'newStartup',
         meta: {
-          title: 'New Startup'
+          title: 'New Startup',
+          skipAuth: false
         },
         component: () => import(/* webpackChunkName: 'newStartup' */ '@/views/startup/New.vue')
       },

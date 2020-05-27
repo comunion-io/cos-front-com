@@ -91,6 +91,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import BbsInput from './components/BbsInput';
+import * as StartupService from '../../services/index';
 
 export default {
   name: 'NewStartup',
@@ -116,7 +117,8 @@ export default {
         mission: [{ required: true, message: 'Please input mission', trigger: 'blur' }],
         descriptionAddr: [{ required: true, message: 'Please input description', trigger: 'blur' }]
       },
-      createState: 'beforeCreate'
+      createState: 'beforeCreate',
+      startupService: StartupService
     };
   },
   methods: {
@@ -135,26 +137,37 @@ export default {
      * @param commit
      */
     async getTxid(formData) {
-      let txid = this.web3.utils.sha3(JSON.stringify(formData));
-      const startup = await this.$store.dispatch('createStartup', { ...formData, txid });
-      if (startup) {
-        // 发起交易
-        const options = {
-          from: this.web3Info.coinbase,
-          value: 20,
-          to: this.getToAccount,
-          data: JSON.stringify({ ...formData, txid }),
-          nonce: 1,
-          gas: 4465030,
-          gasPrice: 5000000000
-        };
-        const transaction = this.$store.dispatch('sendTransaction', options);
-        console.log(
-          '%c 🥑 transaction: ',
-          'font-size:20px;background-color: #42b983;color:#fff;',
-          transaction
-        );
+      delete formData.logo;
+      let txid = this.web3.sha3(JSON.stringify(formData));
+      try {
+        // 后端创建startup
+        const startup = await this.startupService.createStartup({ ...formData, txid });
+        if (startup) {
+          // 发起交易
+          this.sendTransaction(formData, txid);
+        }
+      } catch (error) {
+        console.error(error);
       }
+    },
+    sendTransaction(formData, txid) {
+      const params = {
+        from: this.accounts[0],
+        value: 20,
+        to: this.getToAccount,
+        data: JSON.stringify({ ...formData, txid }),
+        nonce: 1
+      };
+      window.ethereum.sendAsync(
+        {
+          method: 'eth_sendTransaction',
+          params: [params]
+        },
+        (err, result) => {
+          if (err) console.error(err);
+          else console.log(result);
+        }
+      );
     }
   }
 };
