@@ -2,7 +2,7 @@
 FROM node:lts-alpine as build-stage
 WORKDIR /app
 COPY ./package*.json ./
-RUN yarn install
+RUN apk add --no-cache git && yarn install
 COPY . .
 RUN yarn run build
 
