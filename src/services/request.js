@@ -1,9 +1,9 @@
 import axios, { CancelToken } from 'axios';
 
 // 测试环境
-const dev = 'https://dev.comunion.io/api/';
+// const dev = 'https://dev.comunion.io/api/';
 
-export const baseURL = `https://${dev}`;
+export const baseURL = `/api`;
 axios.defaults.withCredentials = true; // 让ajax携带cookie
 const instance = axios.create({
   baseURL,
