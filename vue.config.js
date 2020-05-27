@@ -23,7 +23,8 @@ const webpack = require('webpack');
 
 module.exports = {
   devServer: {
-    disableHostCheck: true
+    disableHostCheck: true,
+    proxy: 'https://dev.comunion.io'
   },
   configureWebpack: {
     // webpack plugins
