@@ -20,9 +20,9 @@
                   </Card>
                 </section>
 
-                <!-- creating comunion -->
-                <section>
-                  <Card state="creating">
+                <!-- comunion -->
+                <section @click="handleComunion">
+                  <Card v-for="item in startups" :key="item.id" :state="transferState(item.state)">
                     <img slot="image" src="@/assets/images/file@2x.png" alt="" />
                     <span slot="text">Comunion1</span>
                     <span slot="state">Creating</span>
@@ -32,29 +32,29 @@
                   </Card>
                 </section>
 
-                <!-- comunion -->
-                <section @click="handleComunion">
-                  <Card state="waiting">
-                    <img slot="image" src="@/assets/images/file@2x.png" alt="" />
-                    <span slot="text">Comunion1</span>
-                    <span slot="state">Wait Setting</span>
-                    <span slot="description"
-                      >Company profilel Company profilel Company profilel</span
-                    >
-                  </Card>
-                </section>
+                <!--&lt;!&ndash; comunion &ndash;&gt;-->
+                <!--<section @click="handleComunion">-->
+                <!--  <Card state="waiting">-->
+                <!--    <img slot="image" src="@/assets/images/file@2x.png" alt="" />-->
+                <!--    <span slot="text">Comunion1</span>-->
+                <!--    <span slot="state">Wait Setting</span>-->
+                <!--    <span slot="description"-->
+                <!--      >Company profilel Company profilel Company profilel</span-->
+                <!--    >-->
+                <!--  </Card>-->
+                <!--</section>-->
 
-                <!-- comunion -->
-                <section @click="handleComunion">
-                  <Card state="done">
-                    <img slot="image" src="@/assets/images/file@2x.png" alt="" />
-                    <span slot="text">Comunion1</span>
-                    <span slot="state">Wait Setting</span>
-                    <span slot="description"
-                      >Company profilel Company profilel Company profilel</span
-                    >
-                  </Card>
-                </section>
+                <!--&lt;!&ndash; comunion &ndash;&gt;-->
+                <!--<section @click="handleComunion">-->
+                <!--  <Card state="done">-->
+                <!--    <img slot="image" src="@/assets/images/file@2x.png" alt="" />-->
+                <!--    <span slot="text">Comunion1</span>-->
+                <!--    <span slot="state">Wait Setting</span>-->
+                <!--    <span slot="description"-->
+                <!--      >Company profilel Company profilel Company profilel</span-->
+                <!--    >-->
+                <!--  </Card>-->
+                <!--</section>-->
               </a-tab-pane>
               <a-tab-pane key="2" tab="Follow Startup" disabled force-render>
                 working
@@ -70,15 +70,26 @@
 <script>
 import Card from './card/Card';
 import HelpCenter from '../../components/help/HelpCenter';
+import * as StartupService from '../../services/index';
+
 export default {
   components: {
     Card,
     HelpCenter
   },
   data() {
-    return {};
+    return {
+      startups: [],
+      startupService: StartupService
+    };
   },
-  computed: {},
+  async mounted() {
+    const params = {
+      limit: 3,
+      offset: 0
+    };
+    this.getStartupList(params);
+  },
   methods: {
     /**
      * @description tab切换
@@ -92,11 +103,50 @@ export default {
     createStartUp() {
       this.$router.push('/startup/new');
     },
+
+    /**
+     * @description 状态转换
+     * @param i
+     * @returns {string}
+     */
+    transferState(i) {
+      switch (i) {
+        // 创建中
+        case 0:
+          return 'creating';
+        //  已创建
+        case 1:
+          return 'created';
+        case 2:
+          // 未确认到tx产生
+          return 'waiting';
+        case 3:
+          // 上链失败
+          return 'block failed';
+        //  已设置
+        case 4:
+          return 'set';
+        default:
+          return '';
+      }
+    },
+
     /**
      *@description 操作comunion( waiting setting )
      */
     handleComunion() {
       this.$router.push({ name: 'startupSettingDetail', params: { id: '12' } });
+    },
+    /**
+     * @description 获取 startup 列表
+     * @param params
+     */
+    async getStartupList(params) {
+      try {
+        this.startups = await this.startupService.getMyStartup(params);
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 };

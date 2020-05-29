@@ -5,8 +5,8 @@ import { request } from './request';
  */
 export async function createStartup(params) {
   try {
-    const data = await request('post', '/cores/startups/', params);
-    return data;
+    const { error, data } = await request('post', '/cores/startups/', params);
+    return error ? [] : data;
   } catch (error) {
     console.error(error);
     return error;
@@ -22,8 +22,8 @@ export async function createStartup(params) {
  */
 export async function getMyStartup(params) {
   try {
-    const data = await request('get', '/cores/startups/me', params);
-    return data;
+    const { error, data } = await request('get', '/cores/startups/me', params);
+    return error ? [] : data.result;
   } catch (error) {
     console.error(error);
     return error;

@@ -44,7 +44,7 @@ export default {
     MegaMenu
   },
   computed: {
-    ...mapGetters(['isMetaMaskConnected'])
+    ...mapGetters(['isMetaMaskConnected', 'categories'])
   },
   async mounted() {
     const categories = await this.userService.getCategories();

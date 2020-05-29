@@ -8,27 +8,19 @@
     <!-- search -->
     <div class="search">
       <div class="select-box">
-        <a-input-group>
-          <a-row>
-            <a-col :span="4">
-              <a-select default-value="Sign Up" style="width: 100%;" size="large">
-                <a-select-option value="Sign Up">
-                  Sign Up
-                </a-select-option>
-                <a-select-option value="Sign In">
-                  Sign In
-                </a-select-option>
-              </a-select>
-            </a-col>
-            <a-col :span="20">
-              <a-input-search
-                size="large"
-                style="width: 100%;"
-                placeholder="Input search comunion"
-                @search="onSearch"
-              />
-            </a-col>
-          </a-row>
+        <a-input-group :compact="true">
+          <a-select v-model="selectedCategory" style="width: 30%" size="large">
+            <a-select-option v-for="item in categories" :key="item.id">
+              {{ item.name }}
+            </a-select-option>
+          </a-select>
+
+          <a-input-search
+            size="large"
+            style="width: 70%"
+            placeholder="Input search comunion"
+            @search="onSearch"
+          />
         </a-input-group>
       </div>
     </div>
@@ -42,22 +34,22 @@
 
 <script>
 import Card from './card/Card';
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Home',
   components: {
     Card
+  },
+  computed: {
+    ...mapGetters(['categories'])
   },
   data() {
     return {
       inputTxt: '',
       selected: -1,
       total: 434,
-      options: [
-        { value: '-1', text: 'all' },
-        { value: '1', text: 'Non-profit Organization' },
-        { value: '2', text: 'Business' },
-        { value: '3', text: 'Education' }
-      ]
+      selectedCategory: ''
     };
   },
   methods: {

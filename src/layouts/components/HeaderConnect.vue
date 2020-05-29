@@ -63,20 +63,18 @@ export default {
           // 登录注册web3
           await this.$store.dispatch('initWeb3');
           // 获取nonce
-          debugger;
-          const nonce = await this.userService.getNonce(from);
-          console.log(
-            '%c 🥤 nonce: ',
-            'font-size:20px;background-color: #42b983;color:#fff;',
-            nonce
-          );
+          const res = await this.userService.getNonce(from);
+          const nonce = res.nonce.split(':')[res.nonce.split(':').length - 1];
+          let signature = '';
           // 对nonce签名
-          // this.web3.eth.sign(from, nonce, function(err, result) {
-          //   if (err) return console.error(err);
-          //   const signature = result;
-          //   // 登录
-          //   this.userService.login(from, signature);
-          // });
+          this.web3.eth.sign(from, nonce, function(err, result) {
+            if (err) return console.error(err);
+            signature = result;
+            // 登录
+            this.userService.login(from, signature);
+          });
+          // 登录
+          this.userService.login({ publicKey: from, signature });
         }
       } catch (e) {
         console.error(e);

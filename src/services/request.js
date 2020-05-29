@@ -113,14 +113,12 @@ export async function request(method, url, paramsOrData, ext = {}) {
       params: bodyParams,
       responseType: ext.responseType || 'json'
     });
-    console.log('%c 🍢 ret: ', 'font-size:20px;background-color: #465975;color:#fff;', ret);
   } else {
     ret = await instance[method](url, {
       cancelToken: source.token,
       params: paramsOrData,
       responseType: ext.responseType || 'json'
     });
-    console.log('%c 🍡 ret: ', 'font-size:20px;background-color: #FCA650;color:#fff;', ret);
   }
   removeCancelSource(source);
   return ret;
