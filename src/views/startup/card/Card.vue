@@ -21,7 +21,7 @@
 <script>
 export default {
   props: {
-    state: String
+    state: Number
   }
 };
 </script>

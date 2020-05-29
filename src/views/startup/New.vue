@@ -24,11 +24,8 @@
                   v-model="form.categoryId"
                   placeholder="Please select the type"
                 >
-                  <a-select-option value="shanghai">
-                    Zone one
-                  </a-select-option>
-                  <a-select-option value="beijing">
-                    Zone two
+                  <a-select-option v-for="item in categories" :key="item.id">
+                    {{ item.name }}
                   </a-select-option>
                 </a-select>
               </a-form-model-item>
@@ -99,7 +96,7 @@ export default {
     BbsInput
   },
   computed: {
-    ...mapGetters(['web3', 'getToAccount'])
+    ...mapGetters(['web3', 'getToAccount', 'categories'])
   },
   data() {
     return {
@@ -134,15 +131,16 @@ export default {
     },
     /**
      * @description 构建hex, 生成txid
-     * @param commit
+     * @param formData
      */
     async getTxid(formData) {
-      delete formData.logo;
       let txid = this.web3.sha3(JSON.stringify(formData));
       try {
         // 后端创建startup
         const startup = await this.startupService.createStartup({ ...formData, txid });
         if (startup) {
+          /** logo不上链 */
+          delete formData.logo;
           // 发起交易
           this.sendTransaction(formData, txid);
         }

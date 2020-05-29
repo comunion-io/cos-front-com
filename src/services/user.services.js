@@ -24,8 +24,8 @@ export async function login(params) {
  */
 export async function getNonce(publicKey) {
   try {
-    const data = await request('post', '/account/nonce/', { publicKey: publicKey });
-    return data;
+    const { error, data } = await request('post', '/account/nonce/', { publicKey: publicKey });
+    return error ? [] : data;
   } catch (error) {
     console.error(error);
   }

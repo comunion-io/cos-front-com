@@ -39,6 +39,15 @@ const userModules = {
      */
     isMetaMaskConnected(state) {
       return state.accounts && state.accounts.length > 0;
+    },
+
+    /**
+     * @description 获取categories
+     * @param state
+     * @returns
+     */
+    categories(state) {
+      return state.categories;
     }
   }
 };
