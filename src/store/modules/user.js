@@ -18,7 +18,11 @@ const userModules = {
       state.categories = data;
     }
   },
-  actions: {},
+  actions: {
+    logout() {
+      //
+    }
+  },
   getters: {
     /**
      * @description 获取我的钱包地址

@@ -1,4 +1,7 @@
 import axios, { CancelToken } from 'axios';
+import { message as antMessage } from 'ant-design-vue';
+import store from '@/store';
+import router from '@/router';
 
 // 测试环境
 // const dev = 'https://dev.comunion.io/api/';
@@ -29,32 +32,37 @@ instance.interceptors.request.use(config => {
 });
 
 // 相应拦截器
-instance.interceptors.response.use(async res => {
-  // 统一返回结果
-  // if (res.status < 300 && res.status >= 200) {
-  //   const { code, message, content } = res.data
-  //   if (code === 0) {
-  //     return {
-  //       error: false,
-  //       data: content,
-  //       detail: { code }
-  //     }
-  //   }
-  //   if (message) {
-  //     console.error(message)
-  //   }
-  //   return {
-  //     error: message || '系统错误',
-  //     data: content,
-  //     detail: { status: res.status, code }
-  //   }
-  // }
-  // return {
-  //   error: res.statusText,
-  //   data: res.data,
-  //   detail: { status: res.status }
-  // }
-});
+instance.interceptors.response.use(
+  async res => {
+    // 下载类型
+    if (res.data instanceof Blob) {
+      return {
+        error: false,
+        data: res.data,
+        detail: res.request.response
+      };
+    }
+    return {
+      error: false,
+      data: res.data
+    };
+  },
+  res => {
+    if (res.response.status === 401) {
+      store.dispatch('logout');
+      router.replace({ name: 'login', query: { from: router.currentRoute.fullPath } });
+    }
+    const message = res.response.data?.message;
+    if (message) {
+      antMessage.error(message);
+    }
+    return {
+      error: true,
+      data: message || res.response.statusText,
+      detail: res.response
+    };
+  }
+);
 
 // 取消请求列表
 const cancelSourceList = [];

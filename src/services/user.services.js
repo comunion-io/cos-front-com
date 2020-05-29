@@ -38,8 +38,8 @@ export async function getNonce(publicKey) {
  */
 export async function getCategories() {
   try {
-    const data = await request('get', '/cores/categories/');
-    return data;
+    const { error, data } = await request('get', '/cores/categories', { limit: -1 });
+    return error ? [] : data.result;
   } catch (error) {
     console.log(error);
   }
