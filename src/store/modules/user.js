@@ -30,7 +30,7 @@ const userModules = {
      * @returns
      */
     from(state) {
-      return state.account[0];
+      return state.accounts[0];
     },
     /**
      * @description 是否连接了metamask

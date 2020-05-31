@@ -76,6 +76,7 @@ Vue.use(Pagination);
 Vue.use(List);
 Vue.use(Popconfirm);
 Vue.use(Popover);
+Vue.use(Avatar);
 // Vue.use(Cascader);de
 // Vue.use(Progress);
 // Vue.use(Empty);

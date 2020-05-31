@@ -65,32 +65,14 @@ export default {
           // 获取nonce
           const res = await this.userService.getNonce(from);
           const nonce = res.nonce.split(':')[res.nonce.split(':').length - 1];
-          let signature = '';
           // 对nonce签名
-          this.web3.eth.sign(from, nonce, function(err, result) {
-            if (err) return console.error(err);
-            signature = result;
-            // 登录
-            this.userService.login(from, signature);
-          });
+          debugger;
+          let signature = await this.web3.eth.personal.sign(nonce, from);
           // 登录
           this.userService.login({ publicKey: from, signature });
         }
       } catch (e) {
         console.error(e);
-      }
-    },
-
-    /**
-     *@description 注册metamask事件
-     */
-    registerEvents() {
-      if (this.isMetaMaskInstalled()) {
-        /** network更改， 自动刷新 */
-        this.ethereum.autoRefreshOnNetworkChange = true;
-        this.ethereum.on('chainIdChanged', this.handleNewChain);
-        this.ethereum.on('networkChanged', this.handleNewNetwork);
-        this.ethereum.on('accountsChanged', this.handleNewAccounts);
       }
     },
 
@@ -105,7 +87,25 @@ export default {
      * @description network更换了
      */
     handleNewNetwork(networkId) {
-      console.log(networkId);
+      switch (networkId) {
+        case '1':
+          console.log('This is mainnet');
+          break;
+        case '2':
+          console.log('This is the deprecated Morden test network.');
+          break;
+        case '3':
+          console.log('This is the ropsten test network.');
+          break;
+        case '4':
+          console.log('This is the Rinkeby test network.');
+          break;
+        case '42':
+          console.log('This is the Kovan test network.');
+          break;
+        default:
+          console.log('This is an unknown network.');
+      }
     },
 
     /**
@@ -114,6 +114,19 @@ export default {
      */
     handleNewAccounts(newAccounts) {
       this.$store.commit('updateAccount', newAccounts);
+    },
+
+    /**
+     *@description 注册metamask事件
+     */
+    registerEvents() {
+      if (this.isMetaMaskInstalled()) {
+        /** network更改， 自动刷新 */
+        this.ethereum.autoRefreshOnNetworkChange = true;
+        this.ethereum.on('chainIdChanged', this.handleNewChain.bind(this));
+        this.ethereum.on('networkChanged', this.handleNewNetwork.bind(this));
+        this.ethereum.on('accountsChanged', this.handleNewAccounts.bind(this));
+      }
     }
   }
 };
