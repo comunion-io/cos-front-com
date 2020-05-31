@@ -111,13 +111,19 @@ export async function request(method, url, paramsOrData, ext = {}) {
     ret = await instance[method](url, paramsOrData, {
       cancelToken: source.token,
       params: bodyParams,
-      responseType: ext.responseType || 'json'
+      responseType: ext.responseType || 'json',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
   } else {
     ret = await instance[method](url, {
       cancelToken: source.token,
       params: paramsOrData,
-      responseType: ext.responseType || 'json'
+      responseType: ext.responseType || 'json',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
   }
   removeCancelSource(source);
