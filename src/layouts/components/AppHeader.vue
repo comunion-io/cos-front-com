@@ -1,13 +1,16 @@
 <template>
   <div class="app-header">
     <div class="main-container flex ai-center h-100p">
-      <img src="@/assets/images/logo@2x.png" alt="" width="128" />
+      <router-link to="/">
+        <img src="@/assets/images/logo@2x.png" alt="" width="128" />
+      </router-link>
       <div class="navs flex ai-center ml-32">
         <router-link
           v-for="nav in navs"
           :key="nav.name"
           class="nav flex-inline ai-center jc-center"
           :to="{ name: nav.name }"
+          exact
           >{{ nav.title }}</router-link
         >
       </div>
@@ -80,7 +83,8 @@ export default {
   box-shadow: 0px 0px 8px 0px rgba(6, 0, 1, 0.07);
   .navs {
     .nav {
-      width: 92px;
+      padding: 0 20px;
+      // width: 92px;
       height: 32px;
       font-weight: bold;
       font-size: 16px;

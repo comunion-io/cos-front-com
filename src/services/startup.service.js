@@ -1,4 +1,13 @@
 import { request } from './request';
+import { commonList } from './utils';
+
+/**
+ * 获取startup列表
+ * @param {Object} params query
+ */
+export async function getStartups(query) {
+  return commonList('/cores/startups', query);
+}
 
 /**
  * @description 创建startup

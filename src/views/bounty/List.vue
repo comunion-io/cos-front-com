@@ -1,6 +1,6 @@
 <template>
   <div id="bounty">
-    这是bounty
+    这是Bounty
   </div>
 </template>
 

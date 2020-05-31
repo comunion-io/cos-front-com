@@ -7,7 +7,8 @@ import router from '@/router';
 // const dev = 'https://dev.comunion.io/api/';
 
 export const baseURL = `/api`;
-axios.defaults.withCredentials = true; // 让ajax携带cookie
+// 让ajax携带cookie
+axios.defaults.withCredentials = true;
 const instance = axios.create({
   baseURL,
   timeout: 30000,

@@ -7,6 +7,7 @@ import {
   Layout,
   Avatar,
   Button,
+  Empty,
   message,
   notification,
   // Menu,
@@ -48,6 +49,7 @@ Vue.use(LocaleProvider);
 Vue.use(Layout);
 Vue.use(Avatar);
 Vue.use(Button);
+Vue.use(Empty);
 // Vue.use(Menu);
 Vue.use(Modal);
 Vue.use(DatePicker);

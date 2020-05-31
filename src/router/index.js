@@ -11,8 +11,6 @@ require('nprogress/nprogress.css');
 const routes = [
   {
     path: '/',
-    name: 'index',
-    redirect: '/dashboard/square',
     component: () => import(/* webpackChunkName: 'basic-layout' */ '@/layouts/BasicLayout.vue'),
     children: [
       {
