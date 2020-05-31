@@ -66,7 +66,6 @@ export default {
           const res = await this.userService.getNonce(from);
           const nonce = res.nonce.split(':')[res.nonce.split(':').length - 1];
           // 对nonce签名
-          debugger;
           let signature = await this.web3.eth.personal.sign(nonce, from);
           // 登录
           this.userService.login({ publicKey: from, signature });
