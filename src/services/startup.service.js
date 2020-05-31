@@ -2,6 +2,20 @@ import { request } from './request';
 import { commonList } from './utils';
 
 /**
+ * @description 获取 comunion 的类型
+ * @export
+ * @returns
+ */
+export async function getCategories() {
+  try {
+    const { error, data } = await request('get', '/cores/categories', { limit: -1 });
+    return error ? [] : data.result;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+/**
  * 获取startup列表
  * @param {Object} params query
  */

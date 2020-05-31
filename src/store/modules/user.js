@@ -1,8 +1,7 @@
 const userModules = {
   state: {
     /**  登录后的账户信息 */
-    accounts: [],
-    categories: []
+    accounts: []
   },
   mutations: {
     /**
@@ -12,10 +11,6 @@ const userModules = {
      */
     updateAccount(state, account) {
       state.accounts = account;
-    },
-
-    categories(state, data) {
-      state.categories = data;
     }
   },
   actions: {
@@ -39,15 +34,6 @@ const userModules = {
      */
     isMetaMaskConnected(state) {
       return state.accounts && state.accounts.length > 0;
-    },
-
-    /**
-     * @description 获取categories
-     * @param state
-     * @returns
-     */
-    categories(state) {
-      return state.categories;
     }
   }
 };

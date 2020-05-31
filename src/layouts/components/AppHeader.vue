@@ -41,17 +41,12 @@
 <script>
 import MegaMenu from './MegaMenu';
 import { mapGetters } from 'vuex';
-import * as UserService from '../../services/user.services';
 export default {
   components: {
     MegaMenu
   },
   computed: {
     ...mapGetters(['isMetaMaskConnected', 'categories'])
-  },
-  async mounted() {
-    const categories = await this.userService.getCategories();
-    this.$store.commit('categories', categories);
   },
   data() {
     return {
@@ -60,8 +55,7 @@ export default {
         { name: 'bounty', title: 'Bounty' },
         { name: 'exchange', title: 'Exchange' },
         { name: 'governace', title: 'Governace' }
-      ],
-      userService: UserService
+      ]
     };
   },
   methods: {
