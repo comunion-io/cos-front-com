@@ -59,12 +59,12 @@ export default {
 
         this.registerEvents();
         if (this.isMetaMaskConnected) {
-          const from = accounts[0];
+          const from = accounts[0].toLowerCase();
           // 登录注册web3
           await this.$store.dispatch('initWeb3');
           // 获取nonce
           const res = await this.userService.getNonce(from);
-          const nonce = res.nonce.split(':')[res.nonce.split(':').length - 1];
+          const nonce = res.nonce;
           // 对nonce签名
           let signature = await this.web3.eth.personal.sign(nonce, from);
           // 登录
