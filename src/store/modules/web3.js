@@ -11,7 +11,8 @@ const transactionModule = {
     /**
      * @description 注册web3
      *
-     * @param { commit }
+     * @param state
+     * @param web3
      */
     setWeb3(state, web3) {
       state.web3 = web3;
