@@ -4,6 +4,7 @@ import './ant';
 const components = {
   HelpCenter: () => import('./help/HelpCenter'),
   SinglePicUpload: () => import('./upload/SinglePicUploader.vue'),
+  ComPagination: () => import('./list/Pagination'),
   Creating: () => import('./setup/Creating'),
   Success: () => import('./setup/Success.vue')
 };

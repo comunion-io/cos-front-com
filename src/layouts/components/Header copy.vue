@@ -18,7 +18,7 @@
         </div>
         <!-- 用户信息 -->
         <div class="user-info">
-          <HeaderConnect v-if="!isMetaMaskConnected" />
+          <HeaderConnect v-if="!isLoggedIn" />
           <div v-else>
             <UserArea />
             <!-- 设置 -->
@@ -54,7 +54,7 @@ export default {
     HeaderConnect
   },
   computed: {
-    ...mapGetters(['isMetaMaskConnected'])
+    ...mapGetters(['isLoggedIn'])
   },
 
   data() {

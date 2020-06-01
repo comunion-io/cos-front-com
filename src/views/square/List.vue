@@ -35,7 +35,12 @@
         <card v-for="startup in startups" :key="startup.id" :startup="startup" />
         <a-empty v-if="!loading && !startups.length" />
         <div class="flex jc-center mt-20">
-          <a-pagination v-model="search.page" show-quick-jumper :total="400" @change="doSearch" />
+          <com-pagination
+            :limit.sync="search.limit"
+            :offset.sync="search.offset"
+            :total="300"
+            @change="doSearch"
+          />
         </div>
       </div>
     </a-spin>
@@ -56,7 +61,8 @@ export default {
     return {
       // 搜索条件
       search: {
-        page: 1,
+        offset: 0,
+        limit: 10,
         categoryId: '',
         keyword: '',
         isIRO: ''
@@ -74,9 +80,7 @@ export default {
   methods: {
     async doSearch() {
       this.loading = true;
-      const query = { ...this.search, limit: 10, offset: 10 * (this.search.page - 1) };
-      delete query.page;
-      const [data, total] = await getStartups(query);
+      const [data, total] = await getStartups(this.search);
       this.loading = false;
       this.startups = data;
       this.total = total;
@@ -119,33 +123,5 @@ export default {
 .startups {
   margin-top: 30px;
   min-height: 240px;
-  /deep/ .ant-pagination-prev,
-  /deep/ .ant-pagination-next,
-  /deep/ .ant-pagination-jump-prev,
-  /deep/ .ant-pagination-item {
-    width: 30px;
-    height: 30px;
-    background: #fff;
-    border: none;
-    border-radius: 3px;
-    color: #999;
-    font-size: 15px;
-    box-shadow: 0px 2px 6px 0px rgba(5, 0, 0, 0.08);
-  }
-  /deep/ .ant-pagination-next .ant-pagination-item-link {
-    border: none;
-  }
-  /deep/ .ant-pagination-disabled a {
-    border: none;
-  }
-  /deep/ .ant-pagination-item-active {
-    background: @primary-color;
-    a {
-      color: #fff;
-    }
-  }
-  /deep/ .ant-pagination-options-quick-jumper {
-    color: #999;
-  }
 }
 </style>

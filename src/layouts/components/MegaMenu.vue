@@ -1,6 +1,6 @@
 <template>
   <div class="header-megamenu">
-    <div v-if="isMetaMaskConnected">
+    <div v-if="isLoggedIn">
       <HeaderUserArea />
     </div>
 
@@ -22,7 +22,7 @@ export default {
   },
   name: 'MegaMenu',
   computed: {
-    ...mapGetters(['isMetaMaskConnected'])
+    ...mapGetters(['isLoggedIn'])
   }
 };
 </script>

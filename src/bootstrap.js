@@ -3,5 +3,5 @@ import lazyStore from './store/lazy';
 
 export default () => {
   lazyStore(store);
-  // store.dispatch('initUser')
+  store.dispatch('initUser');
 };

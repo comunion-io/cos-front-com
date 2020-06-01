@@ -11,5 +11,9 @@ module.exports = {
   },
   parserOptions: {
     parser: 'babel-eslint'
+  },
+  globals: {
+    ethereum: true,
+    web3: true
   }
 };

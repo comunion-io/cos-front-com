@@ -6,6 +6,5 @@ module.exports = {
   semi: true,
   bracketSpacing: true,
   // parser: 'babel',
-  arrowParens: 'avoid',
-  endOfLine: 'lf'
+  arrowParens: 'avoid'
 };
