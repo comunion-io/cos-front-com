@@ -86,17 +86,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { COMUNION_RECEIVER_ACCOUNT } from '@/libs/web3';
 import BbsInput from './components/BbsInput';
-import * as StartupService from '../../services/index';
+import { createStartup } from '../../services/index';
 
 export default {
   name: 'NewStartup',
   components: {
     BbsInput
-  },
-  computed: {
-    ...mapGetters(['web3', 'getToAccount', 'categories'])
   },
   data() {
     return {
@@ -114,8 +111,7 @@ export default {
         mission: [{ required: true, message: 'Please input mission', trigger: 'blur' }],
         descriptionAddr: [{ required: true, message: 'Please input description', trigger: 'blur' }]
       },
-      createState: 'beforeCreate',
-      startupService: StartupService
+      createState: 'beforeCreate'
     };
   },
   methods: {
@@ -137,7 +133,7 @@ export default {
       let txid = this.web3.sha3(JSON.stringify(formData));
       try {
         // 后端创建startup
-        const startup = await this.startupService.createStartup({ ...formData, txid });
+        const startup = await createStartup({ ...formData, txid });
         if (startup) {
           /** logo不上链 */
           delete formData.logo;
@@ -152,11 +148,11 @@ export default {
       const params = {
         from: this.accounts[0],
         value: 20,
-        to: this.getToAccount,
+        to: COMUNION_RECEIVER_ACCOUNT,
         data: JSON.stringify({ ...formData, txid }),
         nonce: 1
       };
-      window.ethereum.sendAsync(
+      ethereum.sendAsync(
         {
           method: 'eth_sendTransaction',
           params: [params]

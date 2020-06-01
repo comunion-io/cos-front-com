@@ -15,12 +15,12 @@
         >
       </div>
       <!-- 未连接metamask, 暂时不能创建start up -->
-      <a-button class="ml-auto mr-24" type="green" size="large" :disabled="!isMetaMaskConnected">
+      <a-button class="ml-auto mr-24" type="green" size="large" :disabled="!isLoggedIn">
         <router-link :to="{ name: 'newStartup' }"> +&nbsp;New Startup </router-link>
       </a-button>
       <MegaMenu />
       <img
-        v-if="isMetaMaskConnected"
+        v-if="isLoggedIn"
         class="ml-16 setting"
         src="@/assets/images/setting@2x.png"
         alt=""
@@ -28,7 +28,7 @@
         @click="toSetting"
       />
       <img
-        v-if="isMetaMaskConnected"
+        v-if="isLoggedIn"
         class="ml-16 notification"
         src="@/assets/images/notification@2x.png"
         alt=""
@@ -46,7 +46,7 @@ export default {
     MegaMenu
   },
   computed: {
-    ...mapGetters(['isMetaMaskConnected', 'categories'])
+    ...mapGetters(['isLoggedIn', 'categories'])
   },
   data() {
     return {

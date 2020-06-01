@@ -8,12 +8,8 @@ import { request } from './request';
  * @returns
  */
 export async function login(params) {
-  try {
-    const data = await request('post', '/account/login/', params);
-    return data;
-  } catch (e) {
-    return e;
-  }
+  const { error } = await request('post', '/account/login/', params);
+  return !error;
 }
 
 /**
@@ -23,10 +19,6 @@ export async function login(params) {
  * @returns nonce
  */
 export async function getNonce(publicKey) {
-  try {
-    const { error, data } = await request('post', '/account/nonce/', { publicKey: publicKey });
-    return error ? [] : data;
-  } catch (error) {
-    console.error(error);
-  }
+  const { error, data } = await request('post', '/account/nonce/', { publicKey: publicKey });
+  return error ? false : data.nonce;
 }
