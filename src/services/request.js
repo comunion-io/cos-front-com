@@ -15,7 +15,7 @@ const instance = axios.create({
   responseType: 'json',
   withCredentials: true, // 是否允许带cookie这些
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+    'Content-Type': 'application/json;charset=utf-8'
   }
 });
 
@@ -112,19 +112,13 @@ export async function request(method, url, paramsOrData, ext = {}) {
     ret = await instance[method](url, paramsOrData, {
       cancelToken: source.token,
       params: bodyParams,
-      responseType: ext.responseType || 'json',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      responseType: ext.responseType || 'json'
     });
   } else {
     ret = await instance[method](url, {
       cancelToken: source.token,
       params: paramsOrData,
-      responseType: ext.responseType || 'json',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      responseType: ext.responseType || 'json'
     });
   }
   removeCancelSource(source);

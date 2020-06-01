@@ -14,7 +14,7 @@
           <a-divider></a-divider>
           <div class="show-user-info">
             <a-avatar shape="square" :src="avatar" />
-            <span class="account">{{ from }}</span>
+            <span class="account">{{ account }}</span>
             <div class="description">
               <span>Hunt bounty with your skill,change the life.</span>
             </div>
@@ -79,7 +79,7 @@ export default {
       align-items: flex-start;
       & > span {
         &:first-child {
-          width: 200px;
+          max-width: 140px;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;

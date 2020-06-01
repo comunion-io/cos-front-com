@@ -15,20 +15,22 @@
                 <section @click="createStartUp">
                   <Card>
                     <img slot="image" src="@/assets/images/plus_icon@2x.png" alt="" />
-                    <span slot="text">Comunion1</span>
-                    <span slot="description">Initial your dream,lunch your startup</span>
+                    <span slot="text">New Startup</span>
+                    <span slot="description">Initial your dream, lunch your startup</span>
                   </Card>
                 </section>
 
                 <!-- comunion -->
                 <section @click="handleComunion">
-                  <Card v-for="item in startups" :key="item.id" :state="transferState(item.state)">
+                  <Card
+                    v-for="startup in startups"
+                    :key="startup.id"
+                    :state="startup.state | startupStateFilter"
+                  >
                     <img slot="image" src="@/assets/images/file@2x.png" alt="" />
-                    <span slot="text">Comunion1</span>
-                    <span slot="state">Creating</span>
-                    <span slot="description"
-                      >Company profilel Company profilel Company profilel</span
-                    >
+                    <span slot="text">{{ startup.name }}</span>
+                    <span slot="state">{{ startup.state | startupStateFilter }}</span>
+                    <span slot="description">{{ startup.mission }}</span>
                   </Card>
                 </section>
 
@@ -69,8 +71,9 @@
 
 <script>
 import Card from './card/Card';
-import HelpCenter from '../../components/help/HelpCenter';
-import * as StartupService from '../../services/index';
+import HelpCenter from '@/components/help/HelpCenter';
+import { getMyStartup } from '@/services';
+import { startupStateFilter } from '@/filters';
 
 export default {
   components: {
@@ -79,31 +82,19 @@ export default {
   },
   data() {
     return {
-      startups: [],
-      startupService: StartupService
+      startups: []
     };
   },
-  async mounted() {
-    const params = {
-      limit: 3,
-      offset: 0
-    };
-    this.getStartupList(params);
+  filters: {
+    startupStateFilter
   },
   methods: {
-    /**
-     * @description tab切换
-     */
-    changedTab(key) {
-      console.log(key);
-    },
     /**
      *@description 创建startup
      */
     createStartUp() {
       this.$router.push('/startup/new');
     },
-
     /**
      * @description 状态转换
      * @param i
@@ -143,11 +134,18 @@ export default {
      */
     async getStartupList(params) {
       try {
-        this.startups = await this.startupService.getMyStartup(params);
+        this.startups = await getMyStartup(params);
       } catch (e) {
         console.log(e);
       }
     }
+  },
+  async mounted() {
+    const params = {
+      limit: 3,
+      offset: 0
+    };
+    this.getStartupList(params);
   }
 };
 </script>

@@ -21,7 +21,7 @@
 <script>
 export default {
   props: {
-    state: Number
+    state: String
   }
 };
 </script>
@@ -83,6 +83,7 @@ export default {
     .description {
       margin-top: 18px;
       color: #999999;
+      line-height: 1;
     }
   }
 }

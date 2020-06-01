@@ -82,7 +82,8 @@ const actions = {
         message.error(error?.message || 'Error occured.');
       }
     } else {
-      // TODO: 跳到metamask介绍页面
+      // 打开metamask官网
+      window.open('https://metamask.io/');
       message.warning('You have not installed metamask.');
     }
   },
