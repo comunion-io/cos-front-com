@@ -20,11 +20,11 @@
         <a-form-model-item label="The Fundraising Contact Address"
           >Auto generate after creation</a-form-model-item
         >
-        <a-form-model-item label="Startup Fundraising Address" prop="fundraisingAddress">
+        <a-form-model-item label="Startup Fundraising Address" prop="addr">
           <a-input
             size="large"
             :disabled="!form.enabled"
-            v-model="form.fundraisingAddress"
+            v-model="form.addr"
             placeholder="Ethereum Address"
           />
         </a-form-model-item>
@@ -34,14 +34,14 @@
             <a-icon slot="suffixIcon" type="calendar" />
           </a-range-picker>
         </a-form-model-item>
-        <a-form-model-item label="Fundraising ETH" prop="fundraising" class="mb-00">
+        <a-form-model-item label="Fundraising ETH" class="mb-00">
           <a-row :gutter="24">
             <a-col :span="9">
-              <a-form-model-item prop="fundraising.eth">
+              <a-form-model-item prop="targetEth">
                 <a-input-number
                   size="large"
                   :disabled="!form.enabled"
-                  v-model="form.fundraising.eth"
+                  v-model="form.targetEth"
                   :min="0"
                   style="width:72%"
                 />
@@ -50,11 +50,11 @@
             </a-col>
             <a-col :span="2" class="t-center">=</a-col>
             <a-col :span="9">
-              <a-form-model-item prop="fundraising.symbol">
+              <a-form-model-item prop="targetToken">
                 <a-input-number
                   size="large"
                   :disabled="!form.enabled"
-                  v-model="form.fundraising.symbol"
+                  v-model="form.targetToken"
                   :min="0"
                   style="width:72%"
                 />
@@ -71,18 +71,14 @@
             placeholder="Token Contrace Address"
           />
         </a-form-model-item>
-        <a-form-model-item
-          label="Exchange Initial Liquidity"
-          prop="exchangeInitialLiquidity"
-          class="mb-00"
-        >
+        <a-form-model-item label="Exchange Initial Liquidity" class="mb-00">
           <a-row :gutter="24">
             <a-col :span="9">
-              <a-form-model-item prop="exchangeInitialLiquidity.eth">
+              <a-form-model-item prop="exchangeEth">
                 <a-input-number
                   size="large"
                   :disabled="!form.enabled"
-                  v-model="form.exchangeInitialLiquidity.eth"
+                  v-model="form.exchangeEth"
                   :min="0"
                   style="width:72%"
                 />
@@ -91,11 +87,11 @@
             </a-col>
             <a-col :span="2" class="t-center">=</a-col>
             <a-col :span="9">
-              <a-form-model-item prop="exchangeInitialLiquidity.symbol">
+              <a-form-model-item prop="exchangeToken">
                 <a-input-number
                   size="large"
                   :disabled="!form.enabled"
-                  v-model="form.exchangeInitialLiquidity.symbol"
+                  v-model="form.exchangeTOken"
                   :min="0"
                   style="width:72%"
                 />
@@ -104,14 +100,14 @@
             </a-col>
           </a-row>
         </a-form-model-item>
-        <a-form-model-item prop="unlockToken">
+        <a-form-model-item prop="totalToken">
           <label class="ant-form-item-required t-bold"
             >Unlock Token <span class="t-primary">(IRO Token + Liquitidy Token)</span></label
           >
           <a-input
             size="large"
             :disabled="!form.enabled"
-            v-model="form.unlockToken"
+            v-model="form.totalToken"
             placeholder="Token Contrace Address"
           >
             <div slot="suffix" class="flex ai-center">
@@ -157,41 +153,27 @@ export default {
       form: {
         ...{
           enabled: false,
-          fundraisingAddress: '',
+          addr: '',
           descriptionAddr: '',
           fundraisingTime: [],
-          fundraising: {
-            eth: null,
-            symbol: null
-          },
+          targetEth: null,
+          targetToken: null,
           exchangeAddress: '',
-          exchangeInitialLiquidity: {
-            eth: null,
-            symbol: null
-          },
-          unlockToken: ''
+          exchangeEth: null,
+          exchangeToken: null,
+          totalToken: ''
         },
         ...this.defaultData
       },
       rules: {
-        fundraisingAddress: { required: true },
+        addr: { required: true },
         fundraisingTime: { required: true },
-        fundraising: {
-          type: 'object',
-          fields: {
-            eth: { required: true, type: 'number', min: 0 },
-            symbol: { required: true, type: 'number', min: 0 }
-          }
-        },
+        targetEth: { required: true, type: 'number', min: 0 },
+        targetToken: { required: true, type: 'number', min: 0 },
         exchangeAddress: { required: true },
-        exchangeInitialLiquidity: {
-          type: 'object',
-          fields: {
-            eth: { required: true, type: 'number', min: 0 },
-            symbol: { required: true, type: 'number', min: 0 }
-          }
-        },
-        unlockToken: { required: true }
+        exchangeEth: { required: true, type: 'number', min: 0 },
+        exchangeToken: { required: true, type: 'number', min: 0 },
+        totalToken: { required: true }
       }
     };
   },

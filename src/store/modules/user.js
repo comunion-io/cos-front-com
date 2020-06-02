@@ -46,7 +46,20 @@ const mutations = {
 
 const actions = {
   // 初始化用户
-  initUser() {},
+  initUser({ getters, commit }) {
+    // 已登录
+    if (getters.isLoggedIn) {
+      initWeb3();
+      if (ethereum && ethereum.isMetaMask) {
+        ethereum.autoRefreshOnNetworkChange = true;
+        ethereum.on('chainIdChanged', arg => commit('HANDLE_NEW_CHAIN', arg));
+        ethereum.on('networkChanged', arg => commit('HANDLE_NEW_NETWORK', arg));
+        ethereum.on('accountsChanged', accounts => commit('UPDATE_ACCOUNT', accounts[0]));
+      } else {
+        message.warning('You have not installed metamask.');
+      }
+    }
+  },
   // 用户登录
   async login({ commit }) {
     // 检查用户是否安装了metamask

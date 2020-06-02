@@ -21,11 +21,12 @@
                 </section>
 
                 <!-- comunion -->
-                <section @click="handleComunion">
+                <section>
                   <Card
                     v-for="startup in startups"
                     :key="startup.id"
                     :state="startup.state | startupStateFilter"
+                    @click.native="toSetting(startup.id)"
                   >
                     <img slot="image" src="@/assets/images/file@2x.png" alt="" />
                     <span slot="text">{{ startup.name }}</span>
@@ -125,8 +126,8 @@ export default {
     /**
      *@description 操作comunion( waiting setting )
      */
-    handleComunion() {
-      this.$router.push({ name: 'startupSettingDetail', params: { id: '12' } });
+    toSetting(id) {
+      this.$router.push({ name: 'startupSettingDetail', params: { id } });
     },
     /**
      * @description 获取 startup 列表

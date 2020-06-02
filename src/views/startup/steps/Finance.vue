@@ -11,43 +11,43 @@
     >
       <a-row :gutter="20">
         <a-col :span="14">
-          <a-form-model-item label="Token Name" prop="name">
-            <a-input size="large" v-model="form.name" placeholder="My Organization Token" />
+          <a-form-model-item label="Token Name" prop="tokenName">
+            <a-input size="large" v-model="form.tokenName" placeholder="My Organization Token" />
           </a-form-model-item>
         </a-col>
         <a-col :span="10">
-          <a-form-model-item label="Token Symbol" prop="symbol">
-            <a-input size="large" v-model="form.symbol" placeholder="Token Symbol" />
+          <a-form-model-item label="Token Symbol" prop="tokenSymbol">
+            <a-input size="large" v-model="form.tokenSymbol" placeholder="Token Symbol" />
           </a-form-model-item>
         </a-col>
       </a-row>
-      <a-form-model-item label="Token Contract" prop="contract">
-        <a-input size="large" v-model="form.contract" placeholder="Contract Name" />
+      <a-form-model-item label="Token Contract" prop="tokenAddr">
+        <a-input size="large" v-model="form.tokenAddr" placeholder="Contract Name" />
       </a-form-model-item>
       <a-form-model-item
-        v-for="(wallet, index) in form.wallets"
+        v-for="(wallet, index) in form.walletAddrs"
         :key="index"
         :label="index === 0 ? 'Wallet' : ''"
-        prop="wallets"
+        prop="walletAddrs"
         :autoLink="false"
         class="mb-00"
       >
         <a-card size="small">
           <a-row :gutter="20">
             <a-col :span="12">
-              <a-form-model-item :prop="`wallets.${index}.name`" required>
+              <a-form-model-item :prop="`walletAddrs.${index}.name`" required>
                 <a-input
                   size="large"
-                  v-model="form.wallets[index].name"
+                  v-model="form.walletAddrs[index].name"
                   placeholder="Wallet Name"
                 />
               </a-form-model-item>
             </a-col>
             <a-col :span="12">
-              <a-form-model-item :prop="`wallets.${index}.ballance`">
+              <a-form-model-item :prop="`walletAddrs.${index}.ballance`">
                 <a-input
                   size="large"
-                  v-model="form.wallets[index].ballance"
+                  v-model="form.walletAddrs[index].ballance"
                   placeholder="Ballance"
                 />
               </a-form-model-item>
@@ -55,15 +55,15 @@
           </a-row>
           <a-row :gutter="20">
             <a-col :span="16">
-              <a-form-model-item :prop="`wallets.${index}.address`" class="mb-00">
+              <a-form-model-item :prop="`walletAddrs.${index}.address`" class="mb-00">
                 <a-input
                   size="large"
-                  v-model="form.wallets[index].address"
+                  v-model="form.walletAddrs[index].address"
                   placeholder="Ethereum Address"
                 />
               </a-form-model-item>
             </a-col>
-            <a-col v-if="form.wallets.length > 1" :span="4">
+            <a-col v-if="form.walletAddrs.length > 1" :span="4">
               <a-button size="large" style="line-height:40px" @click="removeAddress(index)">
                 <a-icon type="delete" />Remove
               </a-button>
@@ -102,18 +102,18 @@ export default {
     return {
       form: {
         ...{
-          name: '',
-          symbol: '',
-          contract: '',
-          wallets: [{ name: '', ballance: '', address: '' }]
+          tokenName: '',
+          tokenSymbol: '',
+          tokenAddr: '',
+          walletAddrs: [{ name: '', ballance: '', address: '' }]
         },
         ...this.defaultData
       },
       rules: {
-        name: { required: true, message: 'Please input your organization name.' },
-        symbol: { required: true, message: 'Please input token symbol.' },
-        contract: { required: true, message: 'Please input your contract address.' },
-        wallets: [
+        tokenName: { required: true, message: 'Please input your token name.' },
+        tokenSymbol: { required: true, message: 'Please input token symbol.' },
+        tokenAddr: { required: true, message: 'Please input your contract address.' },
+        walletAddrs: [
           {
             type: 'array',
             required: true,
@@ -139,9 +139,9 @@ export default {
   methods: {
     // 添加地址
     addAddress() {
-      this.$refs.form.validateField('wallets', errMsg => {
+      this.$refs.form.validateField('walletAddrs', errMsg => {
         if (!errMsg) {
-          this.form.wallets.push({
+          this.form.walletAddrs.push({
             name: '',
             ballance: '',
             address: ''
@@ -151,7 +151,7 @@ export default {
     },
     // 删除地址
     removeAddress(index) {
-      this.form.wallets.splice(index, 1);
+      this.form.walletAddrs.splice(index, 1);
     }
   }
 };

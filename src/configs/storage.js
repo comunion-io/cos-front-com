@@ -2,4 +2,4 @@
 export const USER_ACCOUNT_ADDRESS = 'user.account.address';
 
 // startup setting页面临时存储数据
-export const STARTUP_SETTING_STORE_KEY = 'startup.setting.tmp';
+export const STARTUP_SETTING_STORE_KEY = 'startup.setting.tmp.';

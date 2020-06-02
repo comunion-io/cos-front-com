@@ -10,7 +10,7 @@
       @submit.prevent="handleSubmit"
     >
       <a-form-model-item label="Governance" prop="governance">
-        <a-select size="large" v-model="form.governance">
+        <a-select size="large" v-model="form.category_id">
           <a-select-option value="FounderAssign">Founder Assign</a-select-option>
           <a-select-option value="pos">POS</a-select-option>
           <a-select-option value="all">ALL</a-select-option>
@@ -18,22 +18,22 @@
       </a-form-model-item>
       <template v-if="form.governance === 'FounderAssign'">
         <a-form-model-item
-          v-for="(address, index) in form.assignAddresses"
+          v-for="(address, index) in form.assignAddrs"
           :key="index"
           :label="index ? '' : 'Assign Address'"
-          :prop="`assignAddresses.${index}`"
+          :prop="`assignAddrs.${index}`"
         >
-          <!-- <a-input v-model="form.assignAddresses[index]" placeholder="Ethereum Address">
+          <!-- <a-input v-model="form.assignAddrs[index]" placeholder="Ethereum Address">
           <a-button type="primary"> <a-icon type="plus" />Add </a-button>
         </a-input> -->
           <a-input
             size="large"
-            v-model="form.assignAddresses[index]"
+            v-model="form.assignAddrs[index]"
             placeholder="Ethereum Address"
             style="width: 80%"
           />
           <a-button
-            v-if="index === form.assignAddresses.length - 1"
+            v-if="index === form.assignAddrs.length - 1"
             size="large"
             type="primary"
             class="ml-16"
@@ -53,8 +53,8 @@
           </a-button>
         </a-form-model-item>
       </template>
-      <a-form-model-item v-if="form.governance === 'pos'" label="TokenBalance" prop="tokenBalance">
-        <a-input size="large" v-model="form.tokenBalance" placeholder="Token Balance" />
+      <a-form-model-item v-if="form.governance === 'pos'" label="TokenBalance" prop="tokenLimit">
+        <a-input size="large" v-model="form.tokenLimit" placeholder="Token Balance" />
       </a-form-model-item>
       <a-form-model-item label="Vote Setting">
         <a-card>
@@ -70,10 +70,10 @@
             <span class="ml-4">%</span>
           </a-form-model-item>
           <a-form-model-item label="MINIMUM APPROVAL %" class="mb-00">
-            <a-slider v-model="form.minimumApproval" class="slider-item" />
+            <a-slider v-model="form.minimumApprovalPercent" class="slider-item" />
             <a-input-number
               size="large"
-              v-model="form.minimumApproval"
+              v-model="form.minimumApprovalPercent"
               style="width:12%"
               :min="0"
               :max="100"
@@ -86,10 +86,10 @@
             <a-row :gutter="24">
               <a-col :span="5">MinDuration</a-col>
               <a-col :span="8">
-                <a-form-model-item prop="voteMinDuration.days">
+                <a-form-model-item prop="minDuration.days">
                   <a-input-number
                     size="large"
-                    v-model="form.voteMinDuration.days"
+                    v-model="form.minDuration.days"
                     :min="0"
                     :max="100"
                   />
@@ -97,10 +97,10 @@
                 </a-form-model-item>
               </a-col>
               <a-col :span="8">
-                <a-form-model-item prop="voteMinDuration.hours">
+                <a-form-model-item prop="minDuration.hours">
                   <a-input-number
                     size="large"
-                    v-model="form.voteMinDuration.hours"
+                    v-model="form.minDuration.hours"
                     :min="0"
                     :max="100"
                   />
@@ -111,10 +111,10 @@
             <a-row :gutter="24">
               <a-col :span="5">MaxDuration</a-col>
               <a-col :span="8">
-                <a-form-model-item prop="voteMaxDuration.days" class="mb-0">
+                <a-form-model-item prop="maxDuration.days" class="mb-0">
                   <a-input-number
                     size="large"
-                    v-model="form.voteMaxDuration.days"
+                    v-model="form.maxDuration.days"
                     :min="0"
                     :max="100"
                   />
@@ -122,10 +122,10 @@
                 </a-form-model-item>
               </a-col>
               <a-col :span="8">
-                <a-form-model-item prop="voteMaxDuration.hours" class="mb-0">
+                <a-form-model-item prop="maxDuration.hours" class="mb-0">
                   <a-input-number
                     size="large"
-                    v-model="form.voteMaxDuration.hours"
+                    v-model="form.maxDuration.hours"
                     :min="0"
                     :max="100"
                   />
@@ -175,16 +175,16 @@ export default {
     return {
       form: {
         ...{
-          governance: 'FounderAssign',
-          assignAddresses: [''],
-          tokenBalance: '',
+          category_id: 'FounderAssign',
+          assignAddrs: [''],
+          tokenLimit: '',
           supportPercent: 100,
-          minimumApproval: 100,
-          voteMinDuration: {
+          minimumApprovalPercent: 100,
+          minDuration: {
             days: 0,
             hours: 0
           },
-          voteMaxDuration: {
+          maxDuration: {
             days: 0,
             hours: 0
           }
@@ -192,13 +192,13 @@ export default {
         ...this.defaultData
       },
       rules: {
-        assignAddresses: {
+        assignAddrs: {
           type: 'array',
           validator: (rule, value, callback) => {
             callback();
           }
         },
-        tokenBalance: {
+        tokenLimit: {
           type: 'string',
           validator: (rule, value, callback) => {
             callback();
@@ -210,10 +210,10 @@ export default {
   methods: {
     // add assign address
     addAddress() {
-      this.form.assignAddresses.push('');
+      this.form.assignAddrs.push('');
     },
     removeAddress(index) {
-      this.form.assignAddresses.splice(index, 1);
+      this.form.assignAddrs.splice(index, 1);
     }
   }
 };

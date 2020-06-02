@@ -1,4 +1,3 @@
-// comunion wait setting 页面
 <template>
   <div class="p-startup-setting">
     <a-row v-if="!completed" :gutter="20">
@@ -49,6 +48,7 @@
 <script>
 import { Steps } from 'ant-design-vue';
 import { STARTUP_SETTING_STORE_KEY } from '@/configs/storage';
+import { createStartupSetting } from '@/services';
 import Finance from './steps/Finance';
 import Governance from './steps/Governance';
 import Fundraise from './steps/Fundraise';
@@ -57,7 +57,8 @@ const steps = ['finance', 'governance', 'fundraise'];
 
 export default {
   data() {
-    const stored = sessionStorage.getItem(STARTUP_SETTING_STORE_KEY);
+    const storeKey = STARTUP_SETTING_STORE_KEY + this.$route.params.id;
+    const stored = sessionStorage.getItem(storeKey);
     const form = {
       finance: {},
       governance: {},
@@ -69,8 +70,9 @@ export default {
       } catch (error) {}
     }
     return {
+      storeKey,
       step: 0,
-      form: form,
+      form,
       // 是否已完成
       completed: false
     };
@@ -105,10 +107,18 @@ export default {
       this.form[name] = form;
       this.step--;
     },
-    onOk() {
+    async onOk() {
       // save data
-      sessionStorage.removeItem(STARTUP_SETTING_STORE_KEY);
-      this.completed = true;
+      const body = {
+        finance_setting: this.form.finance,
+        governance_setting: this.form.governance,
+        fundrase_setting: this.form.fundraise,
+        isIro: this.form.fundraise.enabled
+      };
+      if (await createStartupSetting(this.$route.params.id, body)) {
+        sessionStorage.removeItem(this.storeKey);
+        this.completed = true;
+      }
     },
     onUnload(e) {
       this.form[steps[this.step]] = this.$refs[`form_${this.step}`].form;
@@ -119,7 +129,7 @@ export default {
     },
     // 保存临时数据
     saveData() {
-      sessionStorage.setItem(STARTUP_SETTING_STORE_KEY, JSON.stringify(this.form));
+      sessionStorage.setItem(this.storeKey, JSON.stringify(this.form));
     }
   },
   mounted() {

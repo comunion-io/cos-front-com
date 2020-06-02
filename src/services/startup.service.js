@@ -7,12 +7,8 @@ import { commonList } from './utils';
  * @returns
  */
 export async function getCategories() {
-  try {
-    const { error, data } = await request('get', '/cores/categories', { limit: -1 });
-    return error ? [] : data.result;
-  } catch (error) {
-    console.log(error);
-  }
+  const { error, data } = await request('get', '/cores/categories', { limit: -1 });
+  return error ? [] : data.result;
 }
 
 /**
@@ -27,13 +23,8 @@ export async function getStartups(query) {
  * @description 创建startup
  */
 export async function createStartup(params) {
-  try {
-    const { error, data } = await request('post', '/cores/startups/', params);
-    return error ? [] : data;
-  } catch (error) {
-    console.error(error);
-    return error;
-  }
+  const { error, data } = await request('post', '/cores/startups/', params);
+  return error ? [] : data;
 }
 
 /**
@@ -44,13 +35,8 @@ export async function createStartup(params) {
  * @returns
  */
 export async function getMyStartup(params) {
-  try {
-    const { error, data } = await request('get', '/cores/startups/me', params);
-    return error ? [] : data.result;
-  } catch (error) {
-    console.error(error);
-    return error;
-  }
+  const { error, data } = await request('get', '/cores/startups/me', params);
+  return error ? [] : data.result;
 }
 
 /**
@@ -60,11 +46,14 @@ export async function getMyStartup(params) {
  * @param startupId
  */
 export async function getStartupDetail(startupId) {
-  try {
-    const data = await request('get', `/cores/startups/${startupId}`);
-    return data;
-  } catch (error) {
-    console.error(error);
-    return error;
-  }
+  const data = await request('get', `/cores/startups/${startupId}`);
+  return data;
+}
+
+/**
+ * 初次设置startup setting
+ */
+export async function createStartupSetting(startupId, body) {
+  const { error } = await request('post', `/startups/${startupId}/settings`, body);
+  return !error;
 }
