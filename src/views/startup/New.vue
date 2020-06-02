@@ -86,14 +86,18 @@
 </template>
 
 <script>
-import { COMUNION_RECEIVER_ACCOUNT } from '@/libs/web3';
 import BbsInput from './components/BbsInput';
-import { createStartup } from '../../services/index';
+import { mapGetters } from 'vuex';
+import { web3, initWeb3, COMUNION_RECEIVER_ACCOUNT } from '@/libs/web3';
+import { createStartup } from '@/services';
 
 export default {
   name: 'NewStartup',
   components: {
     BbsInput
+  },
+  computed: {
+    ...mapGetters(['categories', 'account'])
   },
   data() {
     return {
@@ -130,7 +134,10 @@ export default {
      * @param formData
      */
     async getTxid(formData) {
-      let txid = this.web3.sha3(JSON.stringify(formData));
+      if (web3) {
+        initWeb3();
+      }
+      let txid = this.web3.utils.sha3(JSON.stringify(formData));
       try {
         // 后端创建startup
         const startup = await createStartup({ ...formData, txid });
@@ -144,24 +151,17 @@ export default {
         console.error(error);
       }
     },
-    sendTransaction(formData, txid) {
+    async sendTransaction(formData, txid) {
       const params = {
-        from: this.accounts[0],
-        value: 20,
+        from: this.account,
+        value: Math.pow(10, 16).toString(),
         to: COMUNION_RECEIVER_ACCOUNT,
         data: JSON.stringify({ ...formData, txid }),
         nonce: 1
       };
-      ethereum.sendAsync(
-        {
-          method: 'eth_sendTransaction',
-          params: [params]
-        },
-        (err, result) => {
-          if (err) console.error(err);
-          else console.log(result);
-        }
-      );
+      console.log(params);
+      const transaction = await web3.eth.sendTransaction(params);
+      console.log('transcation:::', transaction);
     }
   }
 };
