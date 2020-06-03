@@ -23,8 +23,8 @@ export async function getStartups(query) {
  * @description 创建startup
  */
 export async function createStartup(params) {
-  const { error, data } = await request('post', '/cores/startups/', params);
-  return error ? [] : data;
+  const { error } = await request('post', '/cores/startups/', params);
+  return !error;
 }
 
 /**

@@ -86,9 +86,11 @@
 </template>
 
 <script>
-import { COMUNION_RECEIVER_ACCOUNT } from '@/libs/web3';
+import { mapGetters } from 'vuex';
+import { COMUNION_RECEIVER_ACCOUNT, web3 } from '@/libs/web3';
+import { createStartup } from '@/services';
+import { urlValidator } from '@/utils/validators';
 import BbsInput from './components/BbsInput';
-import { createStartup } from '../../services/index';
 
 export default {
   name: 'NewStartup',
@@ -107,12 +109,21 @@ export default {
       rules: {
         name: [{ required: true, message: 'Please input startup name', trigger: 'blur' }],
         categoryId: [{ required: true, message: 'Please select type', trigger: 'change' }],
-        logo: [{ required: false, message: 'Please upload logo' }],
         mission: [{ required: true, message: 'Please input mission', trigger: 'blur' }],
-        descriptionAddr: [{ required: true, message: 'Please input description', trigger: 'blur' }]
+        descriptionAddr: [
+          {
+            required: true,
+            validator: urlValidator,
+            message: 'Please input correct bbs description url',
+            trigger: 'blur'
+          }
+        ]
       },
       createState: 'beforeCreate'
     };
+  },
+  computed: {
+    ...mapGetters(['categories', 'account'])
   },
   methods: {
     /**
@@ -121,7 +132,7 @@ export default {
     onSubmit() {
       this.$refs.ruleForm.validate(async valid => {
         if (valid) {
-          this.getTxid(this.form);
+          this.getTxid({ ...this.form });
         }
       });
     },
@@ -130,23 +141,19 @@ export default {
      * @param formData
      */
     async getTxid(formData) {
-      let txid = this.web3.sha3(JSON.stringify(formData));
-      try {
-        // 后端创建startup
-        const startup = await createStartup({ ...formData, txid });
-        if (startup) {
-          /** logo不上链 */
-          delete formData.logo;
-          // 发起交易
-          this.sendTransaction(formData, txid);
-        }
-      } catch (error) {
-        console.error(error);
+      let txid = web3.utils.sha3(JSON.stringify(formData));
+      // 后端创建startup
+      const success = await createStartup({ ...formData, txid });
+      if (success) {
+        /** logo不上链 */
+        delete formData.logo;
+        // 发起交易
+        this.sendTransaction(formData, txid);
       }
     },
     sendTransaction(formData, txid) {
       const params = {
-        from: this.accounts[0],
+        from: this.account,
         value: 20,
         to: COMUNION_RECEIVER_ACCOUNT,
         data: JSON.stringify({ ...formData, txid }),
@@ -171,6 +178,7 @@ export default {
 #new-start-up {
   .title {
     margin-top: 32px;
+    margin-bottom: 40px;
     text-align: center;
     font-size: 24px;
     font-family: Microsoft YaHei;

@@ -26,6 +26,7 @@ export default {
     },
     customRequest(obj) {
       const { file, onError, onProgress, onSuccess } = obj;
+      this.loading = true;
       uploadFile(file, {}, percent => {
         onProgress({ percent }, file);
       })
@@ -69,18 +70,20 @@ export default {
         beforeUpload={this.beforeUpload}
         // onChange={this.onFileChange}
       >
-        {this.value ? (
+        {this.loading ? (
+          <a-icon type="loading" style={{ fontSize: '48px' }} />
+        ) : this.value ? (
           <div class="thumbnail-wrapper flex ai-center jc-center">
             {this.disabled ? (
               <img src={this.value} class="thumbnail" vPreview />
             ) : (
-              <img src={this.value} class="thumbnail" />
-            )}
-            {this.disabled ? null : (
-              <div class="thumbnail-mask flex ai-center jc-center">
-                <a-icon type="eye-o" src={this.value} onClick={this.preview} />
-                <a-icon class="ml-12" type="delete" onClick={this.remove} />
-              </div>
+              [
+                <img src={this.value} class="thumbnail" />,
+                <div class="thumbnail-mask flex ai-center jc-center">
+                  <a-icon type="eye-o" src={this.value} onClick={this.preview} />
+                  <a-icon class="ml-12" type="delete" onClick={this.remove} />
+                </div>
+              ]
             )}
           </div>
         ) : (
