@@ -156,8 +156,7 @@ export default {
         from: this.account,
         value: Math.pow(10, 16).toString(),
         to: COMUNION_RECEIVER_ACCOUNT,
-        data: JSON.stringify({ ...formData, txid }),
-        nonce: 1
+        data: JSON.stringify({ ...formData, txid })
       };
       console.log(params);
       const transaction = await web3.eth.sendTransaction(params);
