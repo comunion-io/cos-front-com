@@ -137,7 +137,7 @@ export default {
       if (web3) {
         initWeb3();
       }
-      let txid = this.web3.utils.sha3(JSON.stringify(formData));
+      let txid = web3.utils.sha3(JSON.stringify(formData));
       try {
         // 后端创建startup
         const startup = await createStartup({ ...formData, txid });
@@ -156,8 +156,7 @@ export default {
         from: this.account,
         value: Math.pow(10, 16).toString(),
         to: COMUNION_RECEIVER_ACCOUNT,
-        data: JSON.stringify({ ...formData, txid }),
-        nonce: 1
+        data: JSON.stringify({ ...formData, txid })
       };
       console.log(params);
       const transaction = await web3.eth.sendTransaction(params);
