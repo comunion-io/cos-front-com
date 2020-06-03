@@ -12,6 +12,11 @@ export async function login(params) {
   return !error;
 }
 
+export async function logout() {
+  const { error } = await request('get', 'account/logout');
+  return !error;
+}
+
 /**
  * @description 获取nonce
  * @export
