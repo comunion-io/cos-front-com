@@ -151,24 +151,17 @@ export default {
         this.sendTransaction(formData, txid);
       }
     },
-    sendTransaction(formData, txid) {
+    async sendTransaction(formData, txid) {
       const params = {
         from: this.account,
-        value: 20,
+        value: Math.pow(10, 16).toString(),
         to: COMUNION_RECEIVER_ACCOUNT,
         data: JSON.stringify({ ...formData, txid }),
         nonce: 1
       };
-      ethereum.sendAsync(
-        {
-          method: 'eth_sendTransaction',
-          params: [params]
-        },
-        (err, result) => {
-          if (err) console.error(err);
-          else console.log(result);
-        }
-      );
+      console.log(params);
+      const transaction = await web3.eth.sendTransaction(params);
+      console.log('transcation:::', transaction);
     }
   }
 };

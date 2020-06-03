@@ -54,6 +54,7 @@ export default {
      */
     disConnectWallet() {
       this.$store.dispatch('logout');
+      this.$router.push('/');
     },
     /**
      * @description 发布hunter

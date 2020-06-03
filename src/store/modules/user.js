@@ -1,7 +1,7 @@
 import { message } from 'ant-design-vue';
 import { USER_ACCOUNT_ADDRESS } from '@/configs/storage';
 import { web3, initWeb3 } from '@/libs/web3';
-import { getNonce, login } from '@/services';
+import { getNonce, login, logout } from '@/services';
 
 const ls = window.localStorage;
 
@@ -63,7 +63,7 @@ const actions = {
   // 用户登录
   async login({ commit }) {
     // 检查用户是否安装了metamask
-    if (ethereum && ethereum.isMetaMask) {
+    if (!!window.ethereum && window.ethereum.isMetaMask) {
       try {
         // 调用metamask登录
         const accounts = await ethereum.enable();
@@ -100,9 +100,14 @@ const actions = {
       message.warning('You have not installed metamask.');
     }
   },
-  // 用户登出
-  logout({ commit }) {
-    //
+
+  /**
+   * @description 用户登出
+   * @param commit
+   * @returns {Promise<void>}
+   */
+  async logout({ commit }) {
+    await logout();
     commit('UPDATE_ACCOUNT', '');
   }
 };
