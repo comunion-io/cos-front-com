@@ -38,7 +38,7 @@
           <com-pagination
             :limit.sync="search.limit"
             :offset.sync="search.offset"
-            :total="300"
+            :total="total"
             @change="doSearch"
           />
         </div>

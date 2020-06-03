@@ -86,18 +86,16 @@
 </template>
 
 <script>
-import BbsInput from './components/BbsInput';
 import { mapGetters } from 'vuex';
-import { web3, initWeb3, COMUNION_RECEIVER_ACCOUNT } from '@/libs/web3';
+import { COMUNION_RECEIVER_ACCOUNT, web3 } from '@/libs/web3';
 import { createStartup } from '@/services';
+import { urlValidator } from '@/utils/validators';
+import BbsInput from './components/BbsInput';
 
 export default {
   name: 'NewStartup',
   components: {
     BbsInput
-  },
-  computed: {
-    ...mapGetters(['categories', 'account'])
   },
   data() {
     return {
@@ -111,12 +109,21 @@ export default {
       rules: {
         name: [{ required: true, message: 'Please input startup name', trigger: 'blur' }],
         categoryId: [{ required: true, message: 'Please select type', trigger: 'change' }],
-        logo: [{ required: false, message: 'Please upload logo' }],
         mission: [{ required: true, message: 'Please input mission', trigger: 'blur' }],
-        descriptionAddr: [{ required: true, message: 'Please input description', trigger: 'blur' }]
+        descriptionAddr: [
+          {
+            required: true,
+            validator: urlValidator,
+            message: 'Please input correct bbs description url',
+            trigger: 'blur'
+          }
+        ]
       },
       createState: 'beforeCreate'
     };
+  },
+  computed: {
+    ...mapGetters(['categories', 'account'])
   },
   methods: {
     /**
@@ -125,7 +132,7 @@ export default {
     onSubmit() {
       this.$refs.ruleForm.validate(async valid => {
         if (valid) {
-          this.getTxid(this.form);
+          this.getTxid({ ...this.form });
         }
       });
     },
@@ -134,21 +141,14 @@ export default {
      * @param formData
      */
     async getTxid(formData) {
-      if (web3) {
-        initWeb3();
-      }
       let txid = web3.utils.sha3(JSON.stringify(formData));
-      try {
-        // 后端创建startup
-        const startup = await createStartup({ ...formData, txid });
-        if (startup) {
-          /** logo不上链 */
-          delete formData.logo;
-          // 发起交易
-          this.sendTransaction(formData, txid);
-        }
-      } catch (error) {
-        console.error(error);
+      // 后端创建startup
+      const success = await createStartup({ ...formData, txid });
+      if (success) {
+        /** logo不上链 */
+        delete formData.logo;
+        // 发起交易
+        this.sendTransaction(formData, txid);
       }
     },
     async sendTransaction(formData, txid) {
@@ -170,6 +170,7 @@ export default {
 #new-start-up {
   .title {
     margin-top: 32px;
+    margin-bottom: 40px;
     text-align: center;
     font-size: 24px;
     font-family: Microsoft YaHei;
