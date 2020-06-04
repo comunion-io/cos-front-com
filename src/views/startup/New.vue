@@ -59,7 +59,9 @@
             <a-button type="primary" size="large" block html-type="submit">
               Submit
             </a-button>
-            <div>Balance:&nbsp;<span class="t-bold">0.01ETH</span></div>
+            <div>
+              Balance:&nbsp;<span class="t-bold">{{ this.balance }}ETH</span>
+            </div>
           </a-form-model-item>
           <p class="mt-32 t-grey">
             When you have completed all the information,
@@ -119,7 +121,8 @@ export default {
           }
         ]
       },
-      createState: 'beforeCreate'
+      createState: 'beforeCreate',
+      balance: 0
     };
   },
   computed: {
@@ -154,14 +157,17 @@ export default {
     async sendTransaction(formData, txid) {
       const params = {
         from: this.account,
-        value: Math.pow(10, 16).toString(),
+        value: Math.pow(10, 17).toString(),
         to: COMUNION_RECEIVER_ACCOUNT,
-        data: JSON.stringify({ ...formData, txid })
+        data: web3.utils.toHex({ ...formData, txid })
       };
-      console.log(params);
-      const transaction = await web3.eth.sendTransaction(params);
-      console.log('transcation:::', transaction);
+      await web3.eth.sendTransaction(params);
     }
+  },
+  async mounted() {
+    // @description 获取用户钱包账户余额
+    const balance = await web3.eth.getBalance(this.account);
+    this.balance = balance / Math.pow(10, 18);
   }
 };
 </script>
