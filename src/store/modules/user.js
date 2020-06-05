@@ -61,7 +61,7 @@ const actions = {
     }
   },
   // 用户登录
-  async login({ commit }) {
+  async login({ dispatch, commit }) {
     // 检查用户是否安装了metamask
     if (!!window.ethereum && window.ethereum.isMetaMask) {
       try {
@@ -91,6 +91,9 @@ const actions = {
           throw new Error('Error when get nonce, please try again.');
         }
         commit('UPDATE_ACCOUNT', account);
+        setTimeout(() => {
+          dispatch('logout');
+        }, 2 * 60 * 60 * 1000);
       } catch (error) {
         message.error(error?.message || 'Error occured.');
       }
