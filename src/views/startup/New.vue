@@ -56,11 +56,17 @@
           </a-form-model-item> -->
           <!--  submit-->
           <a-form-model-item>
-            <a-button type="primary" size="large" block html-type="submit">
-              Submit
-            </a-button>
+            <a-tooltip
+              placement="top"
+              :visible="canNotTransaction()"
+              title="Your credit is running low"
+            >
+              <a-button type="primary" size="large" block html-type="submit">
+                Submit
+              </a-button>
+            </a-tooltip>
             <div>
-              Balance:&nbsp;<span class="t-bold">{{ this.balance }}ETH</span>
+              Balance:&nbsp;<span class="t-bold">{{ this.balance }} &nbsp;ETH</span>
             </div>
           </a-form-model-item>
           <p class="mt-32 t-grey">
@@ -122,7 +128,7 @@ export default {
         ]
       },
       createState: 'beforeCreate',
-      balance: 0
+      balance: 0.1
     };
   },
   computed: {
@@ -133,11 +139,32 @@ export default {
      *@description 提交表单
      */
     onSubmit() {
+      if (this.canNotTransaction()) {
+        return;
+      }
       this.$refs.ruleForm.validate(async valid => {
         if (valid) {
           this.getTxid({ ...this.form });
         }
       });
+    },
+
+    /**
+     * @description 获取钱包余额
+     * @returns {Promise<void>}
+     */
+    async getBalance() {
+      const balance = await web3.eth.getBalance(this.account);
+      this.balance = +(balance / Math.pow(10, 18)).toFixed(4);
+    },
+
+    /**
+     * @description 余额是否足够发起交易
+     * @returns {boolean}
+     */
+    canNotTransaction() {
+      console.log('this.balance :::', this.balance);
+      return this.balance < 0.1;
     },
     /**
      * @description 构建hex, 生成txid
@@ -161,13 +188,15 @@ export default {
         to: COMUNION_RECEIVER_ACCOUNT,
         data: web3.utils.toHex({ ...formData, txid })
       };
-      await web3.eth.sendTransaction(params);
+      try {
+        await web3.eth.sendTransaction(params);
+      } catch (e) {
+        console.log(e);
+      }
     }
   },
   async mounted() {
-    // @description 获取用户钱包账户余额
-    const balance = await web3.eth.getBalance(this.account);
-    this.balance = balance / Math.pow(10, 18);
+    this.getBalance();
   }
 };
 </script>
