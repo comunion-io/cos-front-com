@@ -39,7 +39,7 @@
             :limit.sync="search.limit"
             :offset.sync="search.offset"
             :total="total"
-            @change="doSearch"
+            @change="getStartups"
           />
         </div>
       </div>
@@ -78,7 +78,7 @@ export default {
     ...mapGetters(['categories'])
   },
   methods: {
-    async doSearch() {
+    async getStartups() {
       this.loading = true;
       const [data, total] = await getStartups(this.search);
       this.loading = false;
@@ -87,7 +87,7 @@ export default {
     }
   },
   mounted() {
-    this.doSearch();
+    this.getStartups();
   }
 };
 </script>

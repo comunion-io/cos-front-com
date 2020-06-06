@@ -34,9 +34,8 @@ export async function createStartup(params) {
  * @param params
  * @returns
  */
-export async function getMyStartup(params) {
-  const { error, data } = await request('get', '/cores/startups/me', params);
-  return error ? [] : data.result;
+export async function getMyStartups(query) {
+  return commonList('/cores/startups/me', query);
 }
 
 /**
@@ -46,8 +45,8 @@ export async function getMyStartup(params) {
  * @param startupId
  */
 export async function getStartupDetail(startupId) {
-  const data = await request('get', `/cores/startups/${startupId}`);
-  return data;
+  const { error, detail } = await request('get', `/cores/startups/${startupId}`);
+  return error ? {} : detail;
 }
 
 /**

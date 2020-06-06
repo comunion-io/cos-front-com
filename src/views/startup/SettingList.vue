@@ -11,53 +11,24 @@
           <div class="actions">
             <a-tabs default-active-key="1" @change="changedTab($event)">
               <a-tab-pane key="1" tab="My Startup">
-                <!-- plus -->
-                <section @click="createStartUp">
-                  <Card>
-                    <img slot="image" src="@/assets/images/plus_icon@2x.png" alt="" />
-                    <span slot="text">New Startup</span>
-                    <span slot="description">Initial your dream, lunch your startup</span>
-                  </Card>
-                </section>
-
-                <!-- comunion -->
-                <section>
-                  <Card
-                    v-for="startup in startups"
-                    :key="startup.id"
-                    :state="startup.state | startupStateFilter"
-                    @click.native="toSetting(startup.id)"
-                  >
-                    <img slot="image" src="@/assets/images/file@2x.png" alt="" />
-                    <span slot="text">{{ startup.name }}</span>
-                    <span slot="state">{{ startup.state | startupStateFilter }}</span>
-                    <span slot="description">{{ startup.mission }}</span>
-                  </Card>
-                </section>
-
-                <!--&lt;!&ndash; comunion &ndash;&gt;-->
-                <!--<section @click="handleComunion">-->
-                <!--  <Card state="waiting">-->
-                <!--    <img slot="image" src="@/assets/images/file@2x.png" alt="" />-->
-                <!--    <span slot="text">Comunion1</span>-->
-                <!--    <span slot="state">Wait Setting</span>-->
-                <!--    <span slot="description"-->
-                <!--      >Company profilel Company profilel Company profilel</span-->
-                <!--    >-->
-                <!--  </Card>-->
-                <!--</section>-->
-
-                <!--&lt;!&ndash; comunion &ndash;&gt;-->
-                <!--<section @click="handleComunion">-->
-                <!--  <Card state="done">-->
-                <!--    <img slot="image" src="@/assets/images/file@2x.png" alt="" />-->
-                <!--    <span slot="text">Comunion1</span>-->
-                <!--    <span slot="state">Wait Setting</span>-->
-                <!--    <span slot="description"-->
-                <!--      >Company profilel Company profilel Company profilel</span-->
-                <!--    >-->
-                <!--  </Card>-->
-                <!--</section>-->
+                <div class="flex-column ai-center" style="padding: 0 30px 30px">
+                  <startup-item :startup="newStartupItem" @click.native="createStartUp" />
+                  <a-spin class="w-100p" size="large" :spinning="loading">
+                    <startup-item
+                      v-for="startup in startups"
+                      :key="startup.id"
+                      :startup="startup"
+                      @click.native="toSetting(startup.id)"
+                    />
+                    <com-pagination
+                      class="mt-20"
+                      :limit.sync="search.limit"
+                      :offset.sync="search.offset"
+                      :total="total"
+                      @change="getMyStartups"
+                    />
+                  </a-spin>
+                </div>
               </a-tab-pane>
               <a-tab-pane key="2" tab="Follow Startup" disabled force-render>
                 working
@@ -71,19 +42,34 @@
 </template>
 
 <script>
-import Card from './card/Card';
-import HelpCenter from '@/components/help/HelpCenter';
-import { getMyStartup } from '@/services';
+import { getMyStartups } from '@/services';
 import { startupStateFilter } from '@/filters';
+import HelpCenter from '@/components/help/HelpCenter';
+import StartupItem from './components/StartupItem';
 
 export default {
   components: {
-    Card,
+    StartupItem,
     HelpCenter
   },
   data() {
     return {
-      startups: []
+      // 列表
+      startups: [],
+      // 新建
+      newStartupItem: {
+        logo: require('@/assets/images/plus_icon@2x.png'),
+        name: 'New Startup',
+        mission: 'Initial your dream, lunch your startup'
+      },
+      // 搜索条件
+      search: {
+        offset: 0,
+        limit: 10
+      },
+      total: 0,
+      // 加载中
+      loading: false
     };
   },
   filters: {
@@ -97,33 +83,6 @@ export default {
       this.$router.push('/startup/new');
     },
     /**
-     * @description 状态转换
-     * @param i
-     * @returns {string}
-     */
-    transferState(i) {
-      switch (i) {
-        // 创建中
-        case 0:
-          return 'creating';
-        //  已创建
-        case 1:
-          return 'created';
-        case 2:
-          // 未确认到tx产生
-          return 'waiting';
-        case 3:
-          // 上链失败
-          return 'block failed';
-        //  已设置
-        case 4:
-          return 'set';
-        default:
-          return '';
-      }
-    },
-
-    /**
      *@description 操作comunion( waiting setting )
      */
     toSetting(id) {
@@ -133,20 +92,16 @@ export default {
      * @description 获取 startup 列表
      * @param params
      */
-    async getStartupList(params) {
-      try {
-        this.startups = await getMyStartup(params);
-      } catch (e) {
-        console.log(e);
-      }
+    async getMyStartups() {
+      this.loading = true;
+      const [data, total] = await getMyStartups(this.search);
+      this.loading = false;
+      this.startups = data;
+      this.total = total;
     }
   },
   async mounted() {
-    const params = {
-      limit: 3,
-      offset: 0
-    };
-    this.getStartupList(params);
+    this.getMyStartups();
   }
 };
 </script>

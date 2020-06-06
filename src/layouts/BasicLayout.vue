@@ -3,7 +3,7 @@
   <div class="app-container">
     <AppHeader />
     <div class="main-container">
-      <div class="my-32">
+      <div class="py-32">
         <router-view />
       </div>
     </div>
