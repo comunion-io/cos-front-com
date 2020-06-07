@@ -7,7 +7,12 @@ import { commonList } from './utils';
  * @returns
  */
 export async function getCategories() {
-  const { error, data } = await request('get', '/cores/categories', { limit: -1 });
+  const { error, data } = await request(
+    'get',
+    '/cores/categories',
+    { limit: -1 },
+    { keepWhenNavigate: true }
+  );
   return error ? [] : data.result;
 }
 
@@ -23,8 +28,8 @@ export async function getStartups(query) {
  * @description 创建startup
  */
 export async function createStartup(params) {
-  const { error } = await request('post', '/cores/startups/', params);
-  return !error;
+  const { error, data } = await request('post', '/cores/startups/', params);
+  return error ? {} : data;
 }
 
 /**

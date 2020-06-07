@@ -13,7 +13,7 @@ export async function login(params) {
 }
 
 export async function logout() {
-  const { error } = await request('get', 'account/logout');
+  const { error } = await request('get', 'account/logout', {}, { keepWhenNavigate: true });
   return !error;
 }
 
