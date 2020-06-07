@@ -1,18 +1,29 @@
 <template>
   <div class="header-connect">
-    <a-button class="ml-auto mr-24" size="large" @click="connectAccount">Connect account</a-button>
+    <a-button class="ml-auto mr-24" size="large" :loading="loading" @click="connectAccount"
+      >Connect account</a-button
+    >
   </div>
 </template>
 
 <script>
 export default {
   name: 'HeaderConnect',
+  data() {
+    return {
+      loading: false
+    };
+  },
   methods: {
     /**
      * @description 点击连接按钮
      */
-    connectAccount() {
-      this.$store.dispatch('login');
+    async connectAccount() {
+      this.loading = true;
+      try {
+        await this.$store.dispatch('login');
+      } catch (error) {}
+      this.loading = false;
     }
   }
 };

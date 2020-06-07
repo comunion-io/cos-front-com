@@ -3,7 +3,7 @@
     <img :src="startup.logo || defaultLogo" alt="Startup logo" class="logo" />
     <div class="flex-1">
       <div class="flex ai-center">
-        <div class="f-15 t-dark">{{ startup.name }}</div>
+        <div class="t-dark">{{ startup.name }}</div>
         <div v-if="tagMap[startup.state]" class="state" :class="[`state-${tagMap[startup.state]}`]">
           {{ startup.state | state }}
         </div>
@@ -45,7 +45,7 @@ export default {
   padding: 0 30px;
   width: 100%;
   height: 124px;
-  font-size: 20px;
+  font-size: 15px;
   background: #fff;
   border-radius: 3px;
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.08);
