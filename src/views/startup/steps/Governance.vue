@@ -10,59 +10,60 @@
       @submit.prevent="handleSubmit"
     >
       <a-form-model-item label="Governance" prop="governance">
-        <a-select size="large" v-model="form.category_id">
+        <a-select size="large" v-model="form.voteType">
           <a-select-option value="FounderAssign">Founder Assign</a-select-option>
           <a-select-option value="pos">POS</a-select-option>
           <a-select-option value="all">ALL</a-select-option>
         </a-select>
       </a-form-model-item>
-      <template v-if="form.governance === 'FounderAssign'">
+      <template v-if="form.voteType === 'FounderAssign'">
         <a-form-model-item
-          v-for="(address, index) in form.assignAddrs"
+          v-for="(address, index) in form.voteAssignAddrs"
           :key="index"
           :label="index ? '' : 'Assign Address'"
-          :prop="`assignAddrs.${index}`"
+          :prop="`voteAssignAddrs.${index}`"
+          :rules="{ required: true, message: 'Please input assign address' }"
         >
-          <!-- <a-input v-model="form.assignAddrs[index]" placeholder="Ethereum Address">
+          <!-- <a-input v-model="form.voteAssignAddrs[index]" placeholder="Ethereum Address">
           <a-button type="primary"> <a-icon type="plus" />Add </a-button>
         </a-input> -->
           <a-input
             size="large"
-            v-model="form.assignAddrs[index]"
+            v-model="form.voteAssignAddrs[index]"
             placeholder="Ethereum Address"
-            style="width: 80%"
+            style="width: 60%"
           />
           <a-button
-            v-if="index === form.assignAddrs.length - 1"
+            v-if="form.voteAssignAddrs.length"
+            size="large"
+            class="ml-16"
+            style="width:10%"
+            @click="removeAddress(index)"
+          >
+            <a-icon type="delete" />
+          </a-button>
+          <a-button
+            v-if="index === form.voteAssignAddrs.length - 1"
             size="large"
             type="primary"
             class="ml-16"
             @click="addAddress"
-            style="width:16%"
+            style="width:20%"
           >
             <a-icon type="plus" />Add
           </a-button>
-          <a-button
-            v-else
-            size="large"
-            class="ml-16"
-            style="width:16%"
-            @click="removeAddress(index)"
-          >
-            <a-icon type="delete" />Remove
-          </a-button>
         </a-form-model-item>
       </template>
-      <a-form-model-item v-if="form.governance === 'pos'" label="TokenBalance" prop="tokenLimit">
-        <a-input size="large" v-model="form.tokenLimit" placeholder="Token Balance" />
+      <a-form-model-item v-if="form.voteType === 'pos'" label="TokenBalance" prop="voteTokenLimit">
+        <a-input size="large" v-model="form.voteTokenLimit" placeholder="Token Balance" />
       </a-form-model-item>
       <a-form-model-item label="Vote Setting">
         <a-card>
           <a-form-model-item label="SUPPORT %">
-            <a-slider v-model="form.supportPercent" class="slider-item" />
+            <a-slider v-model="form.voteSupportPercent" class="slider-item" />
             <a-input-number
               size="large"
-              v-model="form.supportPercent"
+              v-model="form.voteSupportPercent"
               style="width:12%"
               :min="0"
               :max="100"
@@ -70,10 +71,10 @@
             <span class="ml-4">%</span>
           </a-form-model-item>
           <a-form-model-item label="MINIMUM APPROVAL %" class="mb-00">
-            <a-slider v-model="form.minimumApprovalPercent" class="slider-item" />
+            <a-slider v-model="form.voteMinApprovalPercent" class="slider-item" />
             <a-input-number
               size="large"
-              v-model="form.minimumApprovalPercent"
+              v-model="form.voteMinApprovalPercent"
               style="width:12%"
               :min="0"
               :max="100"
@@ -175,30 +176,32 @@ export default {
     return {
       form: {
         ...{
-          category_id: 'FounderAssign',
-          assignAddrs: [''],
-          tokenLimit: '',
-          supportPercent: 100,
-          minimumApprovalPercent: 100,
+          voteType: 'FounderAssign',
+          voteAssignAddrs: [''],
+          voteTokenLimit: '',
+          voteSupportPercent: 100,
+          voteMinApprovalPercent: 100,
+          // voteMinDurationHours: 0,
+          // voteMaxDurationHours: 0
           minDuration: {
-            days: 0,
-            hours: 0
+            hours: 0,
+            days: 0
           },
           maxDuration: {
-            days: 0,
-            hours: 0
+            hours: 0,
+            days: 0
           }
         },
         ...this.defaultData
       },
       rules: {
-        assignAddrs: {
+        voteAssignAddrs: {
           type: 'array',
           validator: (rule, value, callback) => {
             callback();
           }
         },
-        tokenLimit: {
+        voteTokenLimit: {
           type: 'string',
           validator: (rule, value, callback) => {
             callback();
@@ -210,10 +213,10 @@ export default {
   methods: {
     // add assign address
     addAddress() {
-      this.form.assignAddrs.push('');
+      this.form.voteAssignAddrs.push('');
     },
     removeAddress(index) {
-      this.form.assignAddrs.splice(index, 1);
+      this.form.voteAssignAddrs.splice(index, 1);
     }
   }
 };

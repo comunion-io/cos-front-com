@@ -24,18 +24,14 @@
       <a-form-model-item label="Token Contract" prop="tokenAddr">
         <a-input size="large" v-model="form.tokenAddr" placeholder="Contract Name" />
       </a-form-model-item>
-      <a-form-model-item
-        v-for="(wallet, index) in form.walletAddrs"
-        :key="index"
-        :label="index === 0 ? 'Wallet' : ''"
-        prop="walletAddrs"
-        :autoLink="false"
-        class="mb-00"
-      >
+      <a-form-model-item label="Wallet" prop="walletAddrs" required :autoLink="false" class="mb-00">
         <a-card size="small">
-          <a-row :gutter="20">
-            <a-col :span="12">
-              <a-form-model-item :prop="`walletAddrs.${index}.name`" required>
+          <a-row v-for="(wallet, index) in form.walletAddrs" :key="index" :gutter="20">
+            <a-col :span="9">
+              <a-form-model-item
+                :prop="`walletAddrs.${index}.name`"
+                :rules="{ required: true, message: 'Please input wallet name.' }"
+              >
                 <a-input
                   size="large"
                   v-model="form.walletAddrs[index].name"
@@ -43,29 +39,21 @@
                 />
               </a-form-model-item>
             </a-col>
-            <a-col :span="12">
-              <a-form-model-item :prop="`walletAddrs.${index}.ballance`">
+            <a-col :span="11">
+              <a-form-model-item
+                :prop="`walletAddrs.${index}.addr`"
+                :rules="{ required: true, message: 'Please input wallet address.' }"
+              >
                 <a-input
                   size="large"
-                  v-model="form.walletAddrs[index].ballance"
-                  placeholder="Ballance"
-                />
-              </a-form-model-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="20">
-            <a-col :span="16">
-              <a-form-model-item :prop="`walletAddrs.${index}.address`" class="mb-00">
-                <a-input
-                  size="large"
-                  v-model="form.walletAddrs[index].address"
+                  v-model="form.walletAddrs[index].addr"
                   placeholder="Ethereum Address"
                 />
               </a-form-model-item>
             </a-col>
-            <a-col v-if="form.walletAddrs.length > 1" :span="4">
+            <a-col v-if="form.walletAddrs.length" :span="2">
               <a-button size="large" style="line-height:40px" @click="removeAddress(index)">
-                <a-icon type="delete" />Remove
+                <a-icon type="delete" />
               </a-button>
             </a-col>
           </a-row>
@@ -105,48 +93,23 @@ export default {
           tokenName: '',
           tokenSymbol: '',
           tokenAddr: '',
-          walletAddrs: [{ name: '', ballance: '', address: '' }]
+          walletAddrs: [{ name: '', addr: '' }]
         },
         ...this.defaultData
       },
       rules: {
         tokenName: { required: true, message: 'Please input your token name.' },
         tokenSymbol: { required: true, message: 'Please input token symbol.' },
-        tokenAddr: { required: true, message: 'Please input your contract address.' },
-        walletAddrs: [
-          {
-            type: 'array',
-            required: true,
-            message: 'Please input at least one wallet.',
-            defaultField: {
-              type: 'object',
-              required: true,
-              fields: {
-                name: { type: 'string', required: true, message: 'Please input wallet name.' },
-                ballance: {
-                  type: 'string',
-                  required: true,
-                  message: 'Please input wallet ballance.'
-                },
-                address: { type: 'string', required: true, message: 'Please input wallet address.' }
-              }
-            }
-          }
-        ]
+        tokenAddr: { required: true, message: 'Please input your contract address.' }
       }
     };
   },
   methods: {
     // 添加地址
     addAddress() {
-      this.$refs.form.validateField('walletAddrs', errMsg => {
-        if (!errMsg) {
-          this.form.walletAddrs.push({
-            name: '',
-            ballance: '',
-            address: ''
-          });
-        }
+      this.form.walletAddrs.push({
+        name: '',
+        addr: ''
       });
     },
     // 删除地址

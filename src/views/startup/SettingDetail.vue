@@ -1,10 +1,10 @@
 <template>
   <div class="p-startup-setting">
     <a-row v-if="!completed" :gutter="20">
-      <a-col :span="8">
+      <a-col :span="step === 2 ? 0 : 8">
         <HelpCenter />
       </a-col>
-      <a-col :span="16">
+      <a-col :span="step === 2 ? 24 : 16">
         <a-card class="tab-card">
           <a-steps :current="step" labelPlacement="vertical">
             <a-step title="Finance" />
@@ -27,12 +27,12 @@
           @back="onBack"
           @next="onNext"
         />
-        <fundraise
+        <launch
           v-else-if="step === 2"
-          ref="form_2"
-          :default-data="form.fundraise"
+          ref="launch"
           @cancel="onCancel"
-          @ok="onOk"
+          @back="onBack"
+          @submit="onOk"
         />
       </a-col>
     </a-row>
@@ -51,9 +51,9 @@ import { STARTUP_SETTING_STORE_KEY } from '@/configs/storage';
 import { createStartupSetting } from '@/services';
 import Finance from './steps/Finance';
 import Governance from './steps/Governance';
-import Fundraise from './steps/Fundraise';
+import Launch from './steps/Launch';
 
-const steps = ['finance', 'governance', 'fundraise'];
+const steps = ['finance', 'governance'];
 
 export default {
   data() {
@@ -61,8 +61,8 @@ export default {
     const stored = sessionStorage.getItem(storeKey);
     const form = {
       finance: {},
-      governance: {},
-      fundraise: {}
+      governance: {}
+      // fundraise: {}
     };
     if (stored) {
       try {
@@ -82,7 +82,8 @@ export default {
     [Steps.Step.name]: Steps.Step,
     Finance,
     Governance,
-    Fundraise
+    // Fundraise
+    Launch
   },
   methods: {
     onCancel([name, form]) {
@@ -110,18 +111,25 @@ export default {
     async onOk() {
       // save data
       const body = {
-        finance_setting: this.form.finance,
-        governance_setting: this.form.governance,
-        fundrase_setting: this.form.fundraise,
-        isIro: this.form.fundraise.enabled
+        ...this.form.finance,
+        ...{ ...this.form.governance }
       };
+      // 时间转小时
+      body.voteMinDurationHours = body.minDuration.days * 24 + body.minDuration.hours;
+      body.voteMaxDurationHours = body.maxDuration.days * 24 + body.maxDuration.hours;
+      delete body.maxDuration;
+      delete body.minDuration;
       if (await createStartupSetting(this.$route.params.id, body)) {
         sessionStorage.removeItem(this.storeKey);
         this.completed = true;
       }
+      // 关闭loading
+      this.$refs.launch.loading = false;
     },
     onUnload(e) {
-      this.form[steps[this.step]] = this.$refs[`form_${this.step}`].form;
+      if (this.step < 2) {
+        this.form[steps[this.step]] = this.$refs[`form_${this.step}`].form;
+      }
       this.saveData();
       const text = '确定要重新加载该网站么？系统可能不会保存您所做的修改。';
       if (e) e.returnValue = text;

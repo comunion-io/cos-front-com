@@ -54,9 +54,7 @@ instance.interceptors.response.use(
       router.replace({ name: 'login', query: { from: router.currentRoute.fullPath } });
     }
     const message = res.response.data?.message;
-    if (message) {
-      antMessage.error(message);
-    }
+    antMessage.error(message || 'Error occured.');
     return {
       error: true,
       data: message || res.response.statusText,
