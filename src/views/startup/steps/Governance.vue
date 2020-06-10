@@ -32,6 +32,7 @@
             v-model="form.voteAssignAddrs[index]"
             placeholder="Ethereum Address"
             style="width: 60%"
+            :max-length="42"
           />
           <a-button
             v-if="form.voteAssignAddrs.length"
@@ -55,7 +56,12 @@
         </a-form-model-item>
       </template>
       <a-form-model-item v-if="form.voteType === 'pos'" label="TokenBalance" prop="voteTokenLimit">
-        <a-input size="large" v-model="form.voteTokenLimit" placeholder="Token Balance" />
+        <a-input-number
+          size="large"
+          v-model="form.voteTokenLimit"
+          placeholder="Token Balance"
+          :min="0"
+        />
       </a-form-model-item>
       <a-form-model-item label="Vote Setting">
         <a-card>
@@ -93,6 +99,7 @@
                     v-model="form.minDuration.days"
                     :min="0"
                     :max="100"
+                    :parser="positiveInteger"
                   />
                   <span class="ml-4">Days</span>
                 </a-form-model-item>
@@ -104,6 +111,7 @@
                     v-model="form.minDuration.hours"
                     :min="0"
                     :max="100"
+                    :parser="positiveInteger"
                   />
                   <span class="ml-4">Hours</span>
                 </a-form-model-item>
@@ -118,6 +126,7 @@
                     v-model="form.maxDuration.days"
                     :min="0"
                     :max="100"
+                    :parser="positiveInteger"
                   />
                   <span class="ml-4">Days</span>
                 </a-form-model-item>
@@ -129,6 +138,7 @@
                     v-model="form.maxDuration.hours"
                     :min="0"
                     :max="100"
+                    :parser="positiveInteger"
                   />
                   <span class="ml-4">Hours</span>
                 </a-form-model-item>
@@ -164,6 +174,7 @@
 
 <script>
 import { Slider } from 'ant-design-vue';
+import { positiveInteger } from '@/utils/validators';
 import mixins from './mixins';
 
 export default {
@@ -211,6 +222,7 @@ export default {
     };
   },
   methods: {
+    positiveInteger,
     // add assign address
     addAddress() {
       this.form.voteAssignAddrs.push('');

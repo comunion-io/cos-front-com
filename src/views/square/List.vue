@@ -12,7 +12,7 @@
         style="width: 132px"
         size="large"
         placeholder="All"
-        @change="doSearch"
+        @change="getStartups"
       >
         <a-select-option value="">All</a-select-option>
         <a-select-option v-for="item in categories" :key="item.id" :value="item.id">
@@ -25,7 +25,7 @@
         size="large"
         class="flex-1"
         placeholder="Input search comunion"
-        @search="doSearch"
+        @search="getStartups"
       />
     </a-input-group>
 

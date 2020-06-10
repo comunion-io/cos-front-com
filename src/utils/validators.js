@@ -2,6 +2,9 @@
  * 验证器
  */
 
+// a-input-number正整数规则
+export const positiveInteger = v => (/^\d+/.test(v) ? v : 1);
+
 // url地址
 export function urlValidator(rule, value, callback) {
   return new RegExp(

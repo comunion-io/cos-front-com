@@ -3,8 +3,13 @@
     <img :src="startup.logo || defaultLogo" alt="Startup logo" class="logo" />
     <div class="flex-1">
       <div class="flex ai-center">
-        <div class="t-dark">{{ startup.name }}</div>
-        <div v-if="tagMap[startup.state]" class="state" :class="[`state-${tagMap[startup.state]}`]">
+        <div class="t-dark t-trunc" :title="startup.name">{{ startup.name }}</div>
+        <div
+          v-if="tagMap[startup.state]"
+          class="state t-trunc-2"
+          :class="[`state-${tagMap[startup.state]}`]"
+          :title="startup.state | state"
+        >
           {{ startup.state | state }}
         </div>
       </div>

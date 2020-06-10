@@ -7,5 +7,8 @@
  * 4 已设置
  */
 export function startupStateFilter(state) {
-  return ['creating', 'created', 'waiting', 'block failed', 'set'][state] || '';
+  return (
+    ['creating', 'waiting for setting', 'waiting for blockchain', 'block failed', 'done'][state] ||
+    ''
+  );
 }

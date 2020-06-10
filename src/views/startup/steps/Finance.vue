@@ -12,17 +12,32 @@
       <a-row :gutter="20">
         <a-col :span="14">
           <a-form-model-item label="Token Name" prop="tokenName">
-            <a-input size="large" v-model="form.tokenName" placeholder="My Organization Token" />
+            <a-input
+              size="large"
+              v-model="form.tokenName"
+              placeholder="My Organization Token"
+              :max-length="20"
+            />
           </a-form-model-item>
         </a-col>
         <a-col :span="10">
           <a-form-model-item label="Token Symbol" prop="tokenSymbol">
-            <a-input size="large" v-model="form.tokenSymbol" placeholder="Token Symbol" />
+            <a-input
+              size="large"
+              v-model="form.tokenSymbol"
+              placeholder="Token Symbol"
+              :max-length="10"
+            />
           </a-form-model-item>
         </a-col>
       </a-row>
       <a-form-model-item label="Token Contract" prop="tokenAddr">
-        <a-input size="large" v-model="form.tokenAddr" placeholder="Contract Name" />
+        <a-input
+          size="large"
+          v-model="form.tokenAddr"
+          placeholder="Contract Name"
+          :max-length="42"
+        />
       </a-form-model-item>
       <a-form-model-item label="Wallet" prop="walletAddrs" required :autoLink="false" class="mb-00">
         <a-card size="small">
@@ -36,6 +51,7 @@
                   size="large"
                   v-model="form.walletAddrs[index].name"
                   placeholder="Wallet Name"
+                  :max-length="20"
                 />
               </a-form-model-item>
             </a-col>
@@ -48,6 +64,7 @@
                   size="large"
                   v-model="form.walletAddrs[index].addr"
                   placeholder="Ethereum Address"
+                  :max-length="42"
                 />
               </a-form-model-item>
             </a-col>

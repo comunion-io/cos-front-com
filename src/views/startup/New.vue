@@ -15,7 +15,12 @@
             <a-col :span="16">
               <!-- name -->
               <a-form-model-item label="Startup Name" prop="name">
-                <a-input size="large" v-model="form.name" placeholder="Startup Name" />
+                <a-input
+                  size="large"
+                  v-model="form.name"
+                  placeholder="Startup Name"
+                  :max-length="50"
+                />
               </a-form-model-item>
               <!--  type -->
               <a-form-model-item label="Type" prop="categoryId">
@@ -39,11 +44,12 @@
             </a-col>
           </a-row>
           <a-form-model-item label="Mission" prop="mission">
-            <a-input
+            <a-textarea
               size="large"
               v-model="form.mission"
-              type="textarea"
               :auto-size="{ minRows: 3, maxRows: 6 }"
+              :max-length="200"
+              placeholder="Startup mission"
             />
           </a-form-model-item>
           <!--  description on bbs-->

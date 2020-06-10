@@ -18,7 +18,7 @@
                       v-for="startup in startups"
                       :key="startup.id"
                       :startup="startup"
-                      @click.native="toSetting(startup.id)"
+                      @click.native="onClickStartup(startup)"
                     />
                     <com-pagination
                       class="mt-20"
@@ -83,10 +83,18 @@ export default {
       this.$router.push('/startup/new');
     },
     /**
-     *@description 操作comunion( waiting setting )
+     *@description 点击startup时
      */
-    toSetting(id) {
-      this.$router.push({ name: 'startupSettingDetail', params: { id } });
+    onClickStartup(startup) {
+      // creating 不做任何操作
+      if (startup.state === 0 || startup.state === 2) {
+        this.$message.info(startupStateFilter(startup.state));
+      } else if (startup.state === 1 || startup.state === 3) {
+        // waiting for setting或block failed
+        this.$router.push({ name: 'startupSettingDetail', params: { id: startup.id } });
+      } else if (startup.state === 4) {
+        // TODO: 设置完成，前往startup主页
+      }
     },
     /**
      * @description 获取 startup 列表
