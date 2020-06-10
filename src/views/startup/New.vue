@@ -99,6 +99,7 @@ import { COMUNION_RECEIVER_ACCOUNT, web3 } from '@/libs/web3';
 import { createStartup } from '@/services';
 import { urlValidator } from '@/utils/validators';
 import BbsInput from './components/BbsInput';
+import { startupAbi } from '@/libs/abis/startup';
 
 export default {
   name: 'NewStartup',
@@ -181,39 +182,32 @@ export default {
         this.sendTransaction(formData, startup.id);
       }
     },
+
+    /**
+     * @description 发起交易
+     * @param formData
+     * @param id
+     * @returns {Promise<void>}
+     */
     async sendTransaction(formData, id) {
-      const transactionData = {
-        id: id,
-        name: formData.name,
-        category: formData.categoryId,
-        mission: formData.mission,
-        desc: formData.descriptionAddr
-      };
-      // const data = web3.eth.abi.encodeParameter(
-      //   {
-      //     type: 'bytes32'
-      //   },
-      //   Buffer.from(JSON.stringify(transactionData))
-      // );
-      // TODO hard code
-      const data =
-        '0xde5f884c00000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000e0000000000000000000000000000000000000000000000000000000000000012000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000240000000000000000000000000000000000000000000000000000000000000000131000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000013e6b58be8af95e6b58be8af9532333334343535000000000000000000000000000000000000000000000000000000000000000000000000000000000000000013323730303735393139373730373933313634390000000000000000000000000000000000000000000000000000000000000000000000000000000000000000abe6b58be8af95e6b58be8af9532333334343535e6b58be8af95e6b58be8af9532333334343535e6b58be8af95e6b58be8af9532333334343535e6b58be8af95e6b58be8af9532333334343535e6b58be8af95e6b58be8af9532333334343535e6b58be8af95e6b58be8af9532333334343535e6b58be8af95e6b58be8af9532333334343535e6b58be8af95e6b58be8af9532333334343535e6b58be8af95e6b58be8af95323333343435350000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010687474703a2f2f62616964752e636f6d00000000000000000000000000000000';
-      console.log('transactionData :::', transactionData);
-      console.log('web3.version :::', web3.version);
-      const params = {
+      const contract = new web3.eth.Contract(startupAbi, COMUNION_RECEIVER_ACCOUNT);
+      const contractStatpUp = await contract.methods.newStartup(
+        id,
+        formData.name,
+        formData.categoryId,
+        formData.mission,
+        formData.descriptionAddr
+      );
+      // 上链
+      await contractStatpUp.send({
         from: this.account,
         value: Math.pow(10, 17).toString(),
-        to: COMUNION_RECEIVER_ACCOUNT,
-        data: data
-      };
-      try {
-        await web3.eth.sendTransaction(params);
-      } catch (e) {
-        console.log(e);
-      }
+        to: COMUNION_RECEIVER_ACCOUNT
+      });
     }
   },
-  async mounted() {
+
+  mounted() {
     this.getBalance();
   }
 };
