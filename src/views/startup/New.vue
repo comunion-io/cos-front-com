@@ -102,7 +102,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { COMUNION_RECEIVER_ACCOUNT, web3 } from '@/libs/web3';
-import { createStartup } from '@/services';
+import { createStartup, restoreStartUp } from '@/services';
 import { urlValidator } from '@/utils/validators';
 import BbsInput from './components/BbsInput';
 import { startupAbi } from '@/libs/abis/startup';
@@ -192,7 +192,7 @@ export default {
     /**
      * @description 发起交易
      * @param formData
-     * @param id
+     * @param id: startup id
      * @returns {Promise<void>}
      */
     async sendTransaction(formData, id) {
@@ -205,11 +205,16 @@ export default {
         formData.descriptionAddr
       );
       // 上链
-      await contractStatpUp.send({
-        from: this.account,
-        value: Math.pow(10, 17).toString(),
-        to: COMUNION_RECEIVER_ACCOUNT
-      });
+      try {
+        await contractStatpUp.send({
+          from: this.account,
+          value: Math.pow(10, 17).toString(),
+          to: COMUNION_RECEIVER_ACCOUNT
+        });
+      } catch (e) {
+        // 上链失败， 需要回退
+        await restoreStartUp(id);
+      }
     }
   },
 
