@@ -1,8 +1,10 @@
 import Web3 from 'web3';
 import { Modal } from 'ant-design-vue';
 
-// comunion接收方钱包地址
+// comunion new start up接收方钱包地址
 export const COMUNION_RECEIVER_ACCOUNT = '0xfC938765401224e62AfA26535ed07fb334d3e11c';
+// comunion setting 接收方钱包地址
+export const COMMUNION_SETTING_RECEIVE_ACCOUNT = '0xFdE6dC94cE94a9b873977DdE385d33FcA99d8eA5';
 
 // web3示例
 export let web3;

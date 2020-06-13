@@ -58,6 +58,6 @@ export async function getStartupDetail(startupId) {
  * 初次设置startup setting
  */
 export async function createStartupSetting(startupId, body) {
-  const { error } = await request('put', `/startups/${startupId}/settings`, body);
+  const { error } = await request('put', `/cores/startups/${startupId}/settings`, body);
   return !error;
 }

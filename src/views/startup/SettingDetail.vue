@@ -52,6 +52,9 @@ import { createStartupSetting } from '@/services';
 import Finance from './steps/Finance';
 import Governance from './steps/Governance';
 import Launch from './steps/Launch';
+import { settingAbi } from '@/libs/abis/setting';
+import { COMMUNION_SETTING_RECEIVE_ACCOUNT, web3 } from '@/libs/web3';
+import { mapGetters } from 'vuex';
 
 const steps = ['finance', 'governance'];
 
@@ -84,6 +87,9 @@ export default {
     Governance,
     // Fundraise
     Launch
+  },
+  computed: {
+    ...mapGetters(['account'])
   },
   methods: {
     onCancel([name, form]) {
@@ -119,12 +125,50 @@ export default {
       body.voteMaxDurationHours = body.maxDuration.days * 24 + body.maxDuration.hours;
       delete body.maxDuration;
       delete body.minDuration;
-      if (await createStartupSetting(this.$route.params.id, body)) {
+
+      body.voteTokenLimit = body.voteTokenLimit ? body.voteTokenLimit : -1;
+      // 生产txid
+      let txid = web3.utils.sha3(JSON.stringify(body));
+      if (await createStartupSetting(this.$route.params.id, { ...body, txid })) {
         sessionStorage.removeItem(this.storeKey);
         this.completed = true;
+        // 发起交易上链
+        this.sendTransaction({ ...body, ...{ id: this.$route.params.id } });
       }
       // 关闭loading
       this.$refs.launch.loading = false;
+    },
+    /**
+     * @description 发起上链
+     * @param formData: 表单数据
+     */
+    async sendTransaction(formData) {
+      const data = JSON.parse(JSON.stringify(formData));
+      const contract = new web3.eth.Contract(settingAbi, COMMUNION_SETTING_RECEIVE_ACCOUNT);
+      data.walletAddrs = data.walletAddrs.map(item => item.addr);
+
+      /** 发起合约 */
+      const contractStatpUp = await contract.methods.newSetting(
+        data.id,
+        data.tokenName,
+        data.tokenSymbol,
+        data.tokenAddr,
+        data.walletAddrs,
+        data.voteType,
+        data.voteTokenLimit.toString(),
+        data.voteAssignAddrs,
+        data.voteSupportPercent.toString(),
+        data.voteMinApprovalPercent.toString(),
+        data.voteMinDurationHours.toString(),
+        data.voteMaxDurationHours.toString()
+      );
+
+      // 上链
+      await contractStatpUp.send({
+        from: this.account,
+        value: 0,
+        to: COMMUNION_SETTING_RECEIVE_ACCOUNT
+      });
     },
     onUnload(e) {
       if (this.step < 2) {
