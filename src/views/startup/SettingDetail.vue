@@ -48,7 +48,7 @@
 <script>
 import { Steps } from 'ant-design-vue';
 import { STARTUP_SETTING_STORE_KEY } from '@/configs/storage';
-import { createStartupSetting } from '@/services';
+import { createStartupSetting, restoreStartupSetting } from '@/services';
 import Finance from './steps/Finance';
 import Governance from './steps/Governance';
 import Launch from './steps/Launch';
@@ -163,12 +163,17 @@ export default {
         data.voteMaxDurationHours.toString()
       );
 
-      // 上链
-      await contractStatpUp.send({
-        from: this.account,
-        value: 0,
-        to: COMMUNION_SETTING_RECEIVE_ACCOUNT
-      });
+      try {
+        // 上链
+        await contractStatpUp.send({
+          from: this.account,
+          value: 0,
+          to: COMMUNION_SETTING_RECEIVE_ACCOUNT
+        });
+      } catch (e) {
+        // 上链失败， 需要回退
+        await restoreStartupSetting(data.id);
+      }
     },
     onUnload(e) {
       if (this.step < 2) {
