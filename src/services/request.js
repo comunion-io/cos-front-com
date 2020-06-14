@@ -130,7 +130,7 @@ export async function uploadFile(file, ext = {}, onProgress = () => {}) {
   for (const key in ext) {
     form.append(key, ext[key]);
   }
-  const { error, data } = await instance.post('/image', form, {
+  const { error, data } = await instance.post('/cores/files', form, {
     onUploadProgress: progressEvent => {
       const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
       onProgress(percentCompleted);

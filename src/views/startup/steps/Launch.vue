@@ -27,7 +27,9 @@
         <a-button block size="large" type="primary" :loading="loading" @click="launch">
           Launch Startup
         </a-button>
-        <div class="mt-8 t-grey">Balance: <span class="t-bold">1.4ETH</span></div>
+        <div class="mt-8 t-grey">
+          Balance: <span class="t-bold">{{ this.balance }} &nbsp;ETH</span>
+        </div>
       </a-col>
     </a-row>
   </div>
@@ -35,6 +37,8 @@
 
 <script>
 import mixin from './mixins';
+import { web3 } from '@/libs/web3';
+import { mapGetters } from 'vuex';
 export default {
   mixins: [mixin],
   data() {
@@ -62,14 +66,32 @@ export default {
           color: '#6170FF',
           desc: 'List team members,improve transparency and public trust'
         }
-      ]
+      ],
+      balance: 0.1
     };
   },
+  computed: {
+    ...mapGetters(['account'])
+  },
   methods: {
+    /**
+     * @description setting提交创建，上链
+     */
     launch() {
       this.loading = true;
       this.$emit('submit');
+    },
+    /**
+     * @description 获取钱包余额
+     * @returns {Promise<void>}
+     */
+    async getBalance() {
+      const balance = await web3.eth.getBalance(this.account);
+      this.balance = +(balance / Math.pow(10, 18)).toFixed(4);
     }
+  },
+  mounted() {
+    this.getBalance();
   }
 };
 </script>
