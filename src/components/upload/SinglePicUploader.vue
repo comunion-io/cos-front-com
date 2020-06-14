@@ -32,7 +32,8 @@ export default {
       })
         .then(data => {
           onSuccess(data, file);
-          this.setImage(data.url);
+          data.downloadUrl = `https://file.comunion.io${data.downloadUrl}`;
+          this.setImage(data.downloadUrl);
           this.loading = false;
         })
         .catch(onError);
