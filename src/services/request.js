@@ -5,6 +5,7 @@ import router from '@/router';
 
 // 测试环境
 // const dev = 'https://dev.comunion.io/api/';
+import { FILE_URL_PREFIX } from '@/configs/app';
 
 export const baseURL = `/api`;
 // 让ajax携带cookie
@@ -136,5 +137,5 @@ export async function uploadFile(file, ext = {}, onProgress = () => {}) {
       onProgress(percentCompleted);
     }
   });
-  return error ? {} : data;
+  return error ? { error } : { data: FILE_URL_PREFIX + data.downloadUrl };
 }

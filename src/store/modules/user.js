@@ -12,7 +12,7 @@ const state = {
 
 const mutations = {
   // 更新账户信息
-  UPDATE_ACCOUNT(state, account) {
+  UPDATE_ACCOUNT(state, account = '') {
     state.account = account;
     ls.setItem(USER_ACCOUNT_ADDRESS, account);
   },

@@ -29,14 +29,15 @@ export default {
       this.loading = true;
       uploadFile(file, {}, percent => {
         onProgress({ percent }, file);
-      })
-        .then(data => {
+      }).then(({ error, data }) => {
+        if (error) {
+          onError(error);
+        } else {
           onSuccess(data, file);
-          data.downloadUrl = `https://file.comunion.io${data.downloadUrl}`;
-          this.setImage(data.downloadUrl);
+          this.setImage(data);
           this.loading = false;
-        })
-        .catch(onError);
+        }
+      });
       return {
         abort() {
           // console.log('upload progress is aborted.')
