@@ -52,7 +52,7 @@ instance.interceptors.response.use(
   res => {
     if (res.response.status === 401) {
       store.dispatch('logout');
-      router.replace({ name: 'login', query: { from: router.currentRoute.fullPath } });
+      router.replace({ name: 'square', query: { from: router.currentRoute.fullPath } });
     }
     const message = res.response.data?.message;
     antMessage.error(message || 'Error occured.');

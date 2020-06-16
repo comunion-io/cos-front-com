@@ -1,15 +1,33 @@
 <template>
   <a-card title="Help Center" :headStyle="{ fontSize: '18px' }">
     <ol>
-      <li v-for="n in 5" :key="n">
-        <a href="/">What is the Comunion?What is the Comunion?What is the Comunion?</a>
+      <li v-for="link in links" :key="link.title">
+        <a :href="link.url" target="_blank">{{ link.title }}</a>
       </li>
     </ol>
   </a-card>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    // 帮助中心的类型 default|setting
+    category: {
+      type: String,
+      default: 'default',
+      validator: v => ['default', 'setting'].includes(v)
+    }
+  },
+  data() {
+    return {
+      links: []
+    };
+  },
+  async created() {
+    const links = await import(`./${this.category}.js`);
+    this.links = links.default;
+  }
+};
 </script>
 
 <style lang="less" scoped>

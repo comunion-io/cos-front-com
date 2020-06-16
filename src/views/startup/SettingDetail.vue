@@ -2,7 +2,7 @@
   <div class="p-startup-setting">
     <a-row v-if="!completed" :gutter="20">
       <a-col :span="step === 2 ? 0 : 8">
-        <HelpCenter />
+        <HelpCenter category="setting" />
       </a-col>
       <a-col :span="step === 2 ? 24 : 16">
         <a-card class="tab-card">
