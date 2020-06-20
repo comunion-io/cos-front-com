@@ -6,7 +6,9 @@
       <p>You already have your startup</p>
     </div>
     <a-button type="primary" class="btn">
-      Go to Set Startup
+      <router-link :to="{ name: 'startupSetting' }">
+        Go to Set Startup
+      </router-link>
     </a-button>
     <p>come back to home</p>
   </div>
@@ -18,6 +20,7 @@ export default {};
 
 <style scoped lang="less">
 .success {
+  text-align: center;
   margin-top: 55px;
   img {
     height: 96px;
