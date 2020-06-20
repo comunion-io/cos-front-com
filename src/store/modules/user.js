@@ -1,5 +1,5 @@
 import { message } from 'ant-design-vue';
-import { TEST_NET_WORK_NAME, USER_ACCOUNT_ADDRESS } from '@/configs/storage';
+import { LOGIN_TIME, TEST_NET_WORK_NAME, USER_ACCOUNT_ADDRESS } from '@/configs/storage';
 import { web3, initWeb3 } from '@/libs/web3';
 import { getNonce, login, logout } from '@/services';
 
@@ -9,7 +9,9 @@ const state = {
   /** 登录后的账号，目前只是钱包地址 */
   account: ls.getItem(USER_ACCOUNT_ADDRESS) || '',
   /** metamask 网络名称 */
-  netWorkName: ls.getItem(TEST_NET_WORK_NAME) || ''
+  netWorkName: ls.getItem(TEST_NET_WORK_NAME) || '',
+  /** 登录时间 */
+  logInTime: ls.getItem(LOGIN_TIME)
 };
 
 const mutations = {
@@ -22,6 +24,17 @@ const mutations = {
   HANDLE_NEW_CHAIN(state, chainId) {
     console.log(chainId);
   },
+
+  /**
+   * @description 登陆时间
+   * @param state
+   * @param loginTime
+   * @constructor
+   */
+  UPDATE_LOGIN_TIME(state, loginTime) {
+    ls.setItem(LOGIN_TIME, loginTime);
+  },
+
   // network更换了
   HANDLE_NEW_NETWORK(state, networkId) {
     switch (networkId) {
@@ -119,9 +132,13 @@ const actions = {
           throw new Error('Error when get nonce, please try again.');
         }
         commit('UPDATE_ACCOUNT', account);
+
+        commit('UPDATE_LOGIN_TIME', new Date().getTime());
+
+        /** 不刷新网页的情况下， 6个小时自动登出 */
         setTimeout(() => {
           dispatch('logout');
-        }, 2 * 60 * 60 * 1000);
+        }, 6 * 60 * 60 * 1000);
       } catch (error) {
         message.error(error?.message || 'Error occured.');
       }
@@ -149,7 +166,9 @@ const getters = {
   // 是否连接了metamask
   isLoggedIn: state => !!state.account,
   /** 链接的主网络名称 */
-  netWorkName: state => state.netWorkName
+  netWorkName: state => state.netWorkName,
+  /** 登录时间 */
+  logInTime: state => state.logInTime
 };
 
 export default {
