@@ -6,7 +6,11 @@
           <img src="@/assets/images/metamask@2x.png" alt="" />
           <div class="description">
             <img src="@/assets/images/check@2x.png" alt="" />
-            <span>CONNECTED TO ETHEREUM MAINNET NETWORK</span>
+            <span>
+              CONNECTED TO ETHEREUM
+              <span style="color: rgba(58, 196, 125, 1);">{{ netWorkName.toUpperCase() }}</span>
+              NETWORK
+            </span>
           </div>
           <div class="connect-btn" @click="disConnectWallet">
             <a-button>Disconnect Wallet</a-button>
@@ -16,7 +20,7 @@
             <a-avatar shape="square" :src="avatar" />
             <span class="account">{{ account }}</span>
             <div class="description">
-              <span>Hunt bounty with your skill,change the life.</span>
+              <span>Hunt bounty with skill，change the life .</span>
             </div>
             <a-button class="transform-btn" type="primary" @click="transformHunter">
               Transform Hunter
@@ -27,8 +31,8 @@
       <div class="user-info">
         <a-avatar shape="square" :src="avatar" />
         <div>
-          <span>{{ account }}</span>
-          <span>Connected to Mainnet</span>
+          <span>{{ handledAccount() }}</span>
+          <span class="network">Connected to {{ netWorkName }}</span>
         </div>
       </div>
     </a-popover>
@@ -46,7 +50,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['isLoggedIn', 'account'])
+    ...mapGetters(['isLoggedIn', 'account', 'netWorkName'])
   },
   methods: {
     /**
@@ -62,6 +66,18 @@ export default {
     transformHunter() {
       alert('working');
       console.log('发布hunter');
+    },
+
+    /**
+     * @description 把账户名处理成只保留前后四位，中间省略号
+     * @returns {string}
+     */
+    handledAccount() {
+      let account = this.account;
+      if (account && account.length > 0) {
+        account = `${account.substr(0, 4)}...${account.substr(-4)}`;
+      }
+      return account;
     }
   }
 };
@@ -89,7 +105,7 @@ export default {
         }
         &:last-child {
           font-weight: 400;
-          color: rgba(187, 188, 200, 1);
+          color: rgba(58, 196, 125, 1);
         }
       }
     }
@@ -152,7 +168,7 @@ export default {
       color: rgba(153, 153, 153, 1);
       font-size: 7px;
       margin-left: 28px;
-      margin-top: 5px;
+      margin-top: -2px;
     }
     .transform-btn {
       margin-top: 4px;

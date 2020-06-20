@@ -35,7 +35,7 @@
             :max-length="42"
           />
           <a-button
-            v-if="form.voteAssignAddrs.length"
+            v-if="form.voteAssignAddrs.length !== 1"
             size="large"
             class="ml-16"
             style="width:10%"
@@ -55,8 +55,14 @@
           </a-button>
         </a-form-model-item>
       </template>
-      <a-form-model-item v-if="form.voteType === 'pos'" label="TokenBalance" prop="voteTokenLimit">
+      <a-form-model-item
+        v-if="form.voteType === 'pos'"
+        label="TokenBalance"
+        extra="设置最小持币量，满足的地址可以参与投票"
+        prop="voteTokenLimit"
+      >
         <a-input-number
+          class="w-100p"
           size="large"
           v-model="form.voteTokenLimit"
           placeholder="Token Balance"
@@ -64,7 +70,7 @@
         />
       </a-form-model-item>
       <a-form-model-item label="Vote Setting">
-        <a-card>
+        <a-card style="background:rgba(247,248,255,1); border:1px dashed rgba(191,191,191,1);">
           <a-form-model-item label="SUPPORT %">
             <a-slider v-model="form.voteSupportPercent" class="slider-item" />
             <a-input-number
@@ -88,7 +94,9 @@
             <span class="ml-4">%</span>
           </a-form-model-item>
         </a-card>
-        <a-card style="margin-top:24px">
+        <a-card
+          style="margin-top:24px; background:rgba(247,248,255,1); border:1px dashed rgba(191,191,191,1); "
+        >
           <a-form-model-item label="VOTE DURATION" class="mb-00">
             <a-row :gutter="24">
               <a-col :span="5">MinDuration</a-col>

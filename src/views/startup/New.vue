@@ -54,7 +54,7 @@
           </a-form-model-item>
           <!--  description on bbs-->
           <bbs-input v-model="form.descriptionAddr" />
-          <!-- <a-form-model-item label="Description on bbs" prop="descriptionAddr">
+          <!-- <a-form-model-item label="Description on bbs"prop="descriptionAddr">
             <a-input size="large" v-model="form.descriptionAddr" placeholder="https://" />
             <div class="flex jc-end">
               No bbs description,<a href="https://bbs.comunion.io/">Go to Post</a>
@@ -76,16 +76,11 @@
             </div>
           </a-form-model-item>
           <p class="mt-32 t-grey">
-            When you have completed all the information,
-            <span class="t-bold">you will have a company on the blockchain</span>
-          </p>
-          <p class="t-grey">
-            the whole process is similar to how you register a company with the Trade and Industry
-            Bureau
-          </p>
-          <p class="t-grey">
-            All the information what u had inputed, all that wil be
-            <span class="t-bold">submited to the Ethereum Mainnet Blockchain</span>
+            <!--When you have completed all the information,-->
+            <!--<span class="t-bold">you will have a company on the blockchain</span>-->
+            All the information what u had inputed that will be submited to the Ethereum Mainnet
+            Blockchain. The whole process is similar to how you register a company with the Trade
+            and Industry Bureau
           </p>
         </a-form-model>
       </div>
@@ -102,7 +97,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { COMUNION_RECEIVER_ACCOUNT, web3 } from '@/libs/web3';
-import { createStartup, restoreStartUp } from '@/services';
+import { createStartup } from '@/services';
 import { urlValidator } from '@/utils/validators';
 import BbsInput from './components/BbsInput';
 import { startupAbi } from '@/libs/abis/startup';
@@ -129,7 +124,7 @@ export default {
           {
             required: true,
             validator: urlValidator,
-            message: 'Please input correct bbs description url',
+            message: 'Please input correct description url',
             trigger: 'blur'
           }
         ]
@@ -212,8 +207,7 @@ export default {
           to: COMUNION_RECEIVER_ACCOUNT
         });
       } catch (e) {
-        // 上链失败， 需要回退
-        await restoreStartUp(id);
+        console.log('%c\n  e :::----------->', 'font-size:30px;background: purple;', e);
       }
     }
   },

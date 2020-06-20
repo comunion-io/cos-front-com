@@ -1,13 +1,15 @@
 import { message } from 'ant-design-vue';
-import { USER_ACCOUNT_ADDRESS } from '@/configs/storage';
+import { TEST_NET_WORK_NAME, USER_ACCOUNT_ADDRESS } from '@/configs/storage';
 import { web3, initWeb3 } from '@/libs/web3';
 import { getNonce, login, logout } from '@/services';
 
 const ls = window.localStorage;
 
 const state = {
-  //  登录后的账号，目前只是钱包地址
-  account: ls.getItem(USER_ACCOUNT_ADDRESS) || ''
+  /** 登录后的账号，目前只是钱包地址 */
+  account: ls.getItem(USER_ACCOUNT_ADDRESS) || '',
+  /** metamask 网络名称 */
+  netWorkName: ls.getItem(TEST_NET_WORK_NAME) || ''
 };
 
 const mutations = {
@@ -25,21 +27,43 @@ const mutations = {
     switch (networkId) {
       case '1':
         console.log('This is mainnet');
+        state.netWorkName = 'mainnet';
+        ls.setItem(TEST_NET_WORK_NAME, 'mainnet');
         break;
       case '2':
         console.log('This is the deprecated Morden test network.');
+        state.netWorkName = 'Morden';
+        ls.setItem(TEST_NET_WORK_NAME, 'Morden');
+
         break;
       case '3':
         console.log('This is the ropsten test network.');
+        state.netWorkName = 'ropsten';
+        ls.setItem(TEST_NET_WORK_NAME, 'ropsten');
+
         break;
       case '4':
         console.log('This is the Rinkeby test network.');
+        state.netWorkName = 'Rinkeby';
+        ls.setItem(TEST_NET_WORK_NAME, 'Rinkeby');
+
+        break;
+      case '5':
+        console.log('this is the Goerli test network');
+        state.netWorkName = 'Goerli';
+        ls.setItem(TEST_NET_WORK_NAME, 'Goerli');
+
         break;
       case '42':
         console.log('This is the Kovan test network.');
+        state.netWorkName = 'Kovan';
+        ls.setItem(TEST_NET_WORK_NAME, 'Kovan');
+
         break;
       default:
         console.log('This is an unknown network.');
+        state.netWorkName = 'unknown';
+        ls.setItem(TEST_NET_WORK_NAME, 'unknown');
     }
   }
 };
@@ -73,6 +97,10 @@ const actions = {
         initWeb3();
         // 获取nonce
         const nonce = await getNonce(account);
+        // 获取当前连接网络的ID
+        const netWorkId = await web3.eth.net.getId();
+        commit('HANDLE_NEW_NETWORK', netWorkId + '');
+
         if (nonce) {
           // 对nonce签名
           let signature = await web3.eth.personal.sign(nonce, account);
@@ -119,7 +147,9 @@ const getters = {
   // 获取我的钱包地址
   account: state => state.account,
   // 是否连接了metamask
-  isLoggedIn: state => !!state.account
+  isLoggedIn: state => !!state.account,
+  /** 链接的主网络名称 */
+  netWorkName: state => state.netWorkName
 };
 
 export default {
