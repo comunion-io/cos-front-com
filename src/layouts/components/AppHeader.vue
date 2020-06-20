@@ -36,12 +36,14 @@
 <script>
 import MegaMenu from './MegaMenu';
 import { mapGetters } from 'vuex';
+import { web3 } from '@/libs/web3';
+
 export default {
   components: {
     MegaMenu
   },
   computed: {
-    ...mapGetters(['isLoggedIn', 'categories'])
+    ...mapGetters(['isLoggedIn', 'categories', 'logInTime'])
   },
   data() {
     return {
@@ -52,6 +54,25 @@ export default {
         { name: 'governace', title: 'Governace' }
       ]
     };
+  },
+  async mounted() {
+    /** 关闭也页面， 在登出metamask, 在根据网址打开网页， comunion 任然显示登录状态 */
+    if (web3 && web3.eth) {
+      const accounts = await web3.eth.getAccounts();
+      if (accounts.length === 0) {
+        this.$store.dispatch('logout');
+        this.$router.push('/');
+      }
+    }
+
+    /** 每次加载， 需要检查登录时长， 超过6小时， 自动登出 */
+    const outTime = 6 * 60 * 60 * 1000; // 设置超时时间： 6h
+    const loginTime = this.logInTime;
+    const now = new Date().getTime();
+    if (now - loginTime > outTime) {
+      this.$store.dispatch('logout');
+      this.$router.push('/');
+    }
   }
 };
 </script>
