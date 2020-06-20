@@ -45,7 +45,7 @@
             <a-col :span="9">
               <a-form-model-item
                 :prop="`walletAddrs.${index}.name`"
-                :rules="{ required: true, message: 'Please input wallet name.' }"
+                :rules="{ required: true, validator: validateTokenName }"
               >
                 <a-input
                   size="large"
@@ -58,7 +58,7 @@
             <a-col :span="11">
               <a-form-model-item
                 :prop="`walletAddrs.${index}.addr`"
-                :rules="{ required: true, message: 'Please input wallet address.' }"
+                :rules="{ required: true, validator: validateEthAddress }"
               >
                 <a-input
                   size="large"
@@ -99,12 +99,19 @@
 
 <script>
 import mixins from './mixins';
+import { validateName, validateAddress } from '@/utils/validators';
 
 export default {
   name: 'finance',
   mixins: [mixins],
   data() {
+    let validateTokenName = validateName;
+    let validateEthAddress = validateAddress;
+
     return {
+      validateTokenName: validateTokenName,
+      validateEthAddress: validateEthAddress,
+
       form: {
         ...{
           tokenName: '',
@@ -115,9 +122,9 @@ export default {
         ...this.defaultData
       },
       rules: {
-        tokenName: { required: true, message: 'Please input your token name.' },
-        tokenSymbol: { required: true, message: 'Please input token symbol.' },
-        tokenAddr: { required: true, message: 'Please input your contract address.' }
+        tokenName: { required: true, validator: validateTokenName },
+        tokenSymbol: { required: true, validator: validateTokenName },
+        tokenAddr: { required: true, validator: validateEthAddress }
       }
     };
   },

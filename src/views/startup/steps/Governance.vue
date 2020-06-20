@@ -22,7 +22,7 @@
           :key="index"
           :label="index ? '' : 'Assign Address'"
           :prop="`voteAssignAddrs.${index}`"
-          :rules="{ required: true, message: 'Please input assign address' }"
+          :rules="{ required: true, validator: validateEthAddress }"
         >
           <!-- <a-input v-model="form.voteAssignAddrs[index]" placeholder="Ethereum Address">
           <a-button type="primary"> <a-icon type="plus" />Add </a-button>
@@ -182,7 +182,7 @@
 
 <script>
 import { Slider } from 'ant-design-vue';
-import { positiveInteger } from '@/utils/validators';
+import { positiveInteger, validateAddress } from '@/utils/validators';
 import mixins from './mixins';
 
 export default {
@@ -193,6 +193,8 @@ export default {
   },
   data() {
     return {
+      validateEthAddress: validateAddress,
+
       form: {
         ...{
           voteType: 'FounderAssign',
