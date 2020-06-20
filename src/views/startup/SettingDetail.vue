@@ -9,7 +9,7 @@
           <a-steps :current="step" labelPlacement="vertical">
             <a-step title="Finance" />
             <a-step title="Governance" />
-            <a-step title="Fundraise" />
+            <a-step title="Launch" />
           </a-steps>
         </a-card>
         <finance
@@ -48,7 +48,7 @@
 <script>
 import { Steps } from 'ant-design-vue';
 import { STARTUP_SETTING_STORE_KEY } from '@/configs/storage';
-import { createStartupSetting, restoreStartupSetting } from '@/services';
+import { createStartupSetting } from '@/services';
 import Finance from './steps/Finance';
 import Governance from './steps/Governance';
 import Launch from './steps/Launch';
@@ -171,8 +171,7 @@ export default {
           to: COMMUNION_SETTING_RECEIVE_ACCOUNT
         });
       } catch (e) {
-        // 上链失败， 需要回退
-        await restoreStartupSetting(data.id);
+        console.log('%c\n  e :::----------->', 'font-size:30px;background: purple;', e);
       }
     },
     onUnload(e) {

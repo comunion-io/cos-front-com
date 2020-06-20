@@ -1,8 +1,8 @@
 <template>
-  <a-form-model-item label="Description on bbs" :prop="prop" class="form-item">
+  <a-form-model-item label="Description" :prop="prop" class="form-item">
     <a-input size="large" v-model="data" placeholder="https://" :disabled="disabled" />
     <div class="tip flex jc-end">
-      No bbs description,<a href="https://bbs.comunion.io/">Go to Post</a>
+      No description,<a href="https://bbs.comunion.io/" target="_blank">Go to Post</a>
     </div>
   </a-form-model-item>
 </template>
