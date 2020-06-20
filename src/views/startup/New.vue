@@ -146,6 +146,7 @@ export default {
       }
       this.$refs.ruleForm.validate(async valid => {
         if (valid) {
+          this.createState = 'creating';
           this.getTxid({ ...this.form });
         }
       });
@@ -206,6 +207,7 @@ export default {
           value: Math.pow(10, 17).toString(),
           to: COMUNION_RECEIVER_ACCOUNT
         });
+        this.createState = 'successed';
       } catch (e) {
         console.log('%c\n  e :::----------->', 'font-size:30px;background: purple;', e);
       }

@@ -13,7 +13,7 @@
           {{ startup.state | state }}
         </div>
       </div>
-      <p class="mt-12 mb-0 t-grey">{{ startup.mission }}</p>
+      <p class="mt-12 mb-0 t-grey t-trunc-2">{{ startup.mission }}</p>
     </div>
   </div>
 </template>
