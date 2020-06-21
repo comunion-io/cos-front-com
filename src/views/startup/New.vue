@@ -97,10 +97,12 @@
 <script>
 import { mapGetters } from 'vuex';
 import { COMUNION_RECEIVER_ACCOUNT, web3 } from '@/libs/web3';
-import { createStartup } from '@/services';
+import { createStartup, getPrepareStartupId } from '@/services';
 import { urlValidator } from '@/utils/validators';
 import BbsInput from './components/BbsInput';
 import { startupAbi } from '@/libs/abis/startup';
+import { Transaction } from 'ethereumjs-tx';
+// import { EthereumTx } from 'ethereumjs-tx/dist/fake';
 
 export default {
   name: 'NewStartup',
@@ -134,7 +136,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['categories', 'account'])
+    ...mapGetters(['categories', 'account', 'netWorkName'])
   },
   methods: {
     /**
@@ -169,19 +171,54 @@ export default {
       console.log('this.balance :::', this.balance);
       return this.balance < 0.1;
     },
+
+    async getHashBeforeTransaction(formData, startupId) {
+      let hash = '';
+      const contractStatpUp = await this.getContractInstance(formData, startupId);
+      const codeData = await contractStatpUp.encodeABI();
+
+      const txParams = {
+        // value: '0x00', // Math.pow(10, 17).toString(),
+        to: COMUNION_RECEIVER_ACCOUNT,
+        data: codeData
+      };
+
+      const tx = new Transaction(txParams, { chain: this.netWorkName.toLowerCase() });
+
+      const serializedTx = tx.serialize();
+      console.log(
+        '%c\n  serializedTx :::----->',
+        'font-size:30px;background: purple;',
+        serializedTx
+      );
+      // hash = new EthereumTx(serializedTx).hash();
+      // todo
+      return hash;
+    },
+
     /**
      * @description 构建hex, 生成txid
      * @param formData
      */
     async getTxid(formData) {
-      let txid = web3.utils.sha3(JSON.stringify(formData));
-      // 后端创建startup
-      const startup = await createStartup({ ...formData, txid });
-      if (startup.id) {
-        /** logo不上链 */
-        delete formData.logo;
-        // 发起交易
-        this.sendTransaction(formData, startup.id);
+      try {
+        // 获取startup id
+        const startupId = await getPrepareStartupId();
+        console.log('%c\n  startupId :::----->', 'font-size:30px;background: purple;', startupId);
+
+        // 交易前获取交易hash
+        const txHash = await this.getHashBeforeTransaction(formData, startupId.id);
+        console.log('%c\n  hash :::----->', 'font-size:30px;background: purple;', txHash);
+
+        // 后端创建startup
+        const startup = await createStartup({ ...formData, txid: txHash, id: startupId.id });
+
+        if (startup) {
+          // 发起交易
+          this.sendTransaction(formData, startupId.id);
+        }
+      } catch (e) {
+        console.log('%c\n  e :::----->', 'font-size:30px;background: purple;', e);
       }
     },
 
@@ -192,6 +229,25 @@ export default {
      * @returns {Promise<void>}
      */
     async sendTransaction(formData, id) {
+      const contractStatpUp = await this.getContractInstance(formData, id);
+      // 上链
+      try {
+        const block = await contractStatpUp.send({
+          from: this.account,
+          value: Math.pow(10, 17).toString(),
+          to: COMUNION_RECEIVER_ACCOUNT
+        });
+        console.log('%c\n  block :::----->', 'font-size:30px;background: purple;', block);
+        this.createState = 'successed';
+      } catch (e) {
+        console.log('%c\n  e :::----------->', 'font-size:30px;background: purple;', e);
+      }
+    },
+    /**
+     * @description 获取合约实例
+     * @returns {Promise<*>}
+     */
+    async getContractInstance(formData, id) {
       const contract = new web3.eth.Contract(startupAbi, COMUNION_RECEIVER_ACCOUNT);
       const contractStatpUp = await contract.methods.newStartup(
         id,
@@ -200,17 +256,7 @@ export default {
         formData.mission,
         formData.descriptionAddr
       );
-      // 上链
-      try {
-        await contractStatpUp.send({
-          from: this.account,
-          value: Math.pow(10, 17).toString(),
-          to: COMUNION_RECEIVER_ACCOUNT
-        });
-        this.createState = 'successed';
-      } catch (e) {
-        console.log('%c\n  e :::----------->', 'font-size:30px;background: purple;', e);
-      }
+      return contractStatpUp;
     }
   },
 
