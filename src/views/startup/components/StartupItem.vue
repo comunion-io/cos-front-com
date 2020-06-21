@@ -5,12 +5,12 @@
       <div class="flex ai-center">
         <div class="t-dark t-trunc" :title="startup.name">{{ startup.name }}</div>
         <div
-          v-if="tagMap[startup.state]"
+          v-if="state.label"
           class="state t-trunc-2"
-          :class="[`state-${tagMap[startup.state]}`]"
-          :title="startup.state | state"
+          :class="[`state-${state.state}`]"
+          :title="state.label"
         >
-          {{ startup.state | state }}
+          {{ state.label }}
         </div>
       </div>
       <p class="mt-12 mb-0 t-grey t-trunc-2">{{ startup.mission }}</p>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { startupStateFilter } from '@/filters/startup';
+import { startupState } from '@/filters/startup';
 export default {
   props: {
     startup: {
@@ -29,17 +29,13 @@ export default {
   },
   data() {
     return {
-      defaultLogo: require('@/assets/images/file@2x.png'),
-      // 状态对应的tag的颜色
-      tagMap: {
-        0: startupStateFilter(0),
-        2: startupStateFilter(2),
-        3: 'failed'
-      }
+      defaultLogo: require('@/assets/images/file@2x.png')
     };
   },
-  filters: {
-    state: startupStateFilter
+  computed: {
+    state() {
+      return startupState(this.startup);
+    }
   }
 };
 </script>
@@ -70,12 +66,16 @@ export default {
   font-size: 13px;
   border-radius: 12px;
   &.state-creating {
-    background: #ffeaea;
-    color: #d80000;
-  }
-  &.state-waiting {
     background: #e2fff0;
     color: #3ac47d;
+  }
+  &.state-waiting {
+    background: #ffead2;
+    color: #ffad4d;
+  }
+  &.state-failed {
+    color: #d80000;
+    background: #ffeaea;
   }
 }
 </style>

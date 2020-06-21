@@ -43,7 +43,7 @@
 
 <script>
 import { getMyStartups } from '@/services';
-import { startupStateFilter } from '@/filters';
+import { startupState } from '@/filters';
 import HelpCenter from '@/components/help/HelpCenter';
 import StartupItem from './components/StartupItem';
 
@@ -72,9 +72,6 @@ export default {
       loading: false
     };
   },
-  filters: {
-    startupStateFilter
-  },
   methods: {
     /**
      *@description 创建startup
@@ -86,14 +83,18 @@ export default {
      *@description 点击startup时
      */
     onClickStartup(startup) {
+      const { state, settingState } = startup;
+      const { label } = startupState(startup);
       // creating 不做任何操作
-      if (startup.state === 0 || startup.state === 2) {
-        this.$message.info(startupStateFilter(startup.state));
-      } else if (startup.state === 1 || startup.state === 3) {
-        // waiting for setting或block failed
-        this.$router.push({ name: 'startupSettingDetail', params: { id: startup.id } });
-      } else if (startup.state === 4) {
-        // TODO: 设置完成，前往startup主页
+      if (state <= 1 || state === 3) {
+        this.$message.info(label);
+      } else {
+        if (settingState !== 2) {
+          // waiting for setting或block failed
+          this.$router.push({ name: 'startupSettingDetail', params: { id: startup.id } });
+        } else if (startup.state === 4) {
+          // TODO: 设置完成，前往startup主页
+        }
       }
     },
     /**
