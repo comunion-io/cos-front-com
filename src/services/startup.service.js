@@ -25,6 +25,15 @@ export async function getStartups(query) {
 }
 
 /**
+ * @description 创建startup 之前， 先获取一个id
+ * @returns {Promise<*>}
+ */
+export async function getPrepareStartupId() {
+  const { error, data } = await request('get', '/cores/startups/prepareId');
+  return error ? {} : data;
+}
+
+/**
  * @description 创建startup
  */
 export async function createStartup(params) {
