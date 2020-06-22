@@ -68,8 +68,16 @@ export async function getMyStartups(query) {
  * @param startupId
  */
 export async function getStartupDetail(startupId) {
-  const { error, detail } = await request('get', `/cores/startups/${startupId}`);
-  return error ? {} : detail;
+  const { error, data } = await request('get', `/cores/startups/${startupId}`);
+  return error ? {} : data;
+}
+
+/**
+ * 更新startup
+ */
+export async function updateStartup(id, newStartup) {
+  const { error } = await request('put', `/cores/startups/${id}`, newStartup);
+  return !error;
 }
 
 /**

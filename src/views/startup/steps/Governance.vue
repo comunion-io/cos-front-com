@@ -55,12 +55,12 @@
           </a-button>
         </a-form-model-item>
       </template>
-      <a-form-model-item
-        v-if="form.voteType === 'pos'"
-        label="TokenBalance"
-        extra="设置最小持币量，满足的地址可以参与投票"
-        prop="voteTokenLimit"
-      >
+      <a-form-model-item v-if="form.voteType === 'pos'" prop="voteTokenLimit">
+        <label slot="label"
+          >TokenBalance<span class="ml-16 t-grey"
+            >设置最小持币量，满足的地址可以参与投票</span
+          ></label
+        >
         <a-input-number
           class="w-100p"
           size="large"
@@ -118,7 +118,7 @@
                     size="large"
                     v-model="form.minDuration.hours"
                     :min="0"
-                    :max="100"
+                    :max="24"
                     :parser="positiveInteger"
                   />
                   <span class="ml-4">Hours</span>
@@ -145,7 +145,7 @@
                     size="large"
                     v-model="form.maxDuration.hours"
                     :min="0"
-                    :max="100"
+                    :max="24"
                     :parser="positiveInteger"
                   />
                   <span class="ml-4">Hours</span>
@@ -216,16 +216,31 @@ export default {
         ...this.defaultData
       },
       rules: {
-        voteAssignAddrs: {
-          type: 'array',
-          validator: (rule, value, callback) => {
-            callback();
-          }
-        },
+        // voteAssignAddrs: {
+        //   type: 'array',
+        //   range: [1]
+        //   // validator: (rule, value, callback) => {
+        //   //   callback();
+        //   // }
+        // },
         voteTokenLimit: {
-          type: 'string',
+          type: 'number',
+          required: true,
+          message: 'Please input the vote token limit.'
+          // validator: (rule, value, callback) => {
+          //   callback();
+          // }
+        },
+        'maxDuration.days': {
+          type: 'number',
+          trigger: 'change',
           validator: (rule, value, callback) => {
-            callback();
+            if (value < this.form.minDuration.days) {
+              // eslint-disable-next-line standard/no-callback-literal
+              callback("Must greater than 'MinDuration' days.");
+            } else {
+              callback();
+            }
           }
         }
       }

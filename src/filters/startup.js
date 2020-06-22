@@ -11,25 +11,25 @@ export function startupState(startup) {
   if (state <= 1) {
     return {
       state: 'creating',
-      label: 'Wait for creating'
+      label: 'Creating'
     };
   } else if (state === 3) {
     // 创建失败
     return {
       state: 'failed',
-      label: 'Creating failed'
+      label: 'Fail to blockchain'
     };
   } else if (settingState <= 1) {
     // 创建成功等待setting
     return {
       state: 'waiting',
-      label: 'Wait for setting'
+      label: 'Wait setting'
     };
   } else if (settingState === 3) {
     // 设置失败
     return {
       state: 'failed',
-      label: 'Setting failed'
+      label: 'Fail to setting'
     };
   }
   // 成功

@@ -20,6 +20,7 @@
                   v-model="form.name"
                   placeholder="Startup Name"
                   :max-length="50"
+                  :disabled="isEdit"
                 />
               </a-form-model-item>
               <!--  type -->
@@ -28,6 +29,7 @@
                   size="large"
                   v-model="form.categoryId"
                   placeholder="Please select the type"
+                  :disabled="isEdit"
                 >
                   <a-select-option v-for="item in categories" :key="item.id">
                     {{ item.name }}
@@ -38,7 +40,11 @@
             <a-col :span="6" :offset="2">
               <!--  logo-->
               <a-form-model-item label="Logo" prop="logo">
-                <single-pic-upload v-model="form.logo" style="height: 129px;width:129px;" />
+                <single-pic-upload
+                  v-model="form.logo"
+                  :disabled="isEdit"
+                  style="height: 129px;width:129px;"
+                />
               </a-form-model-item>
               <!--  mission-->
             </a-col>
@@ -50,6 +56,7 @@
               :auto-size="{ minRows: 3, maxRows: 6 }"
               :max-length="200"
               placeholder="Startup mission"
+              :disabled="isEdit"
             />
           </a-form-model-item>
           <!--  description on bbs-->
@@ -96,13 +103,14 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { COMUNION_RECEIVER_ACCOUNT, web3 } from '@/libs/web3';
-import { createStartup, getPrepareStartupId } from '@/services';
-import { urlValidator } from '@/utils/validators';
-import BbsInput from './components/BbsInput';
-import { startupAbi } from '@/libs/abis/startup';
 import { Transaction } from 'ethereumjs-tx';
 // import { EthereumTx } from 'ethereumjs-tx/dist/fake';
+import { COMUNION_RECEIVER_ACCOUNT, web3 } from '@/libs/web3';
+import { urlValidator } from '@/utils/validators';
+import { startupAbi } from '@/libs/abis/startup';
+import { createStartup, getPrepareStartupId, getStartupDetail } from '@/services';
+import { merge } from '@/utils';
+import BbsInput from './components/BbsInput';
 
 export default {
   name: 'NewStartup',
@@ -136,7 +144,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['categories', 'account', 'netWorkName'])
+    ...mapGetters(['categories', 'account', 'netWorkName']),
+    // 是否是编辑模式
+    isEdit() {
+      return !!this.$route.query.id;
+    }
   },
   methods: {
     /**
@@ -259,9 +271,13 @@ export default {
       return contractStatpUp;
     }
   },
-
-  mounted() {
+  async mounted() {
     this.getBalance();
+    if (this.isEdit) {
+      const startup = await getStartupDetail(this.$route.query.id);
+      merge(this.form, startup);
+      this.form.categoryId = startup.category.id;
+    }
   }
 };
 </script>

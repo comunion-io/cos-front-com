@@ -43,7 +43,7 @@
 
 <script>
 import { getMyStartups } from '@/services';
-import { startupState } from '@/filters';
+// import { startupState } from '@/filters';
 import HelpCenter from '@/components/help/HelpCenter';
 import StartupItem from './components/StartupItem';
 
@@ -84,10 +84,10 @@ export default {
      */
     onClickStartup(startup) {
       const { state, settingState } = startup;
-      const { label } = startupState(startup);
+      // const { label } = startupState(startup);
       // creating 不做任何操作
       if (state <= 1 || state === 3) {
-        this.$message.info(label);
+        this.$router.push({ name: 'newStartup', query: { id: startup.id } });
       } else {
         if (settingState !== 2) {
           // waiting for setting或block failed
@@ -129,8 +129,6 @@ export default {
   }
   .content {
     min-height: 700px;
-    display: flex;
-    flex-direction: row;
     .help-center {
       margin-left: 53px;
       width: 33%;

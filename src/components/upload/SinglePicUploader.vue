@@ -68,6 +68,7 @@ export default {
         accept="image/*"
         listType="picture-card"
         customRequest={this.customRequest}
+        disabled={this.disabled}
         {...{ props: this.$attrs }}
         beforeUpload={this.beforeUpload}
         // onChange={this.onFileChange}
