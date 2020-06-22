@@ -79,8 +79,10 @@
       <a-button class="mt-16" block size="large" @click="addAddress">+&nbsp;Add More</a-button>
       <div class="my-32">
         If you have not created token, you can use
-        <a href="https://vittominacori.github.io/erc20-generator/">Erc20-Generator</a> to create
-        your token.
+        <a href="https://vittominacori.github.io/erc20-generator/" target="_black"
+          >Erc20-Generator</a
+        >
+        to create your token.
       </div>
       <a-row :gutter="20">
         <a-col :span="12">
