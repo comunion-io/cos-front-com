@@ -62,13 +62,10 @@ export async function getMyStartups(query) {
 }
 
 /**
- * @description 获取startup detail
- *
- * @export
- * @param startupId
+ * @description 获取我的startup detail
  */
-export async function getStartupDetail(startupId) {
-  const { error, data } = await request('get', `/cores/startups/${startupId}`);
+export async function getMyStartupDetail(startupId) {
+  const { error, data } = await request('get', `/cores/startups/me/${startupId}`);
   return error ? {} : data;
 }
 
@@ -78,21 +75,4 @@ export async function getStartupDetail(startupId) {
 export async function updateStartup(id, newStartup) {
   const { error } = await request('put', `/cores/startups/${id}`, newStartup);
   return !error;
-}
-
-/**
- * 初次设置startup setting
- */
-export async function createStartupSetting(startupId, body) {
-  const { error } = await request('put', `/cores/startups/${startupId}/settings`, body);
-  return !error;
-}
-
-/**
- * @description setting 上链失败后的， 需要回退
- * @param startupId
- * @returns {Promise<void>}
- */
-export async function restoreStartupSetting(startupId) {
-  await request('post', `/cores/startups/${startupId}/settings:restore`);
 }

@@ -1,6 +1,6 @@
 <template>
   <a-card id="new-start-up" :bordered="false" style="margin-bottom: 24px;">
-    <h1 class="title">New Startup</h1>
+    <h1 class="title">{{ isEdit ? 'Edit' : 'New' }} Startup</h1>
     <section class="content">
       <div class="form" v-if="createState === 'beforeCreate'">
         <a-form-model
@@ -60,7 +60,7 @@
             />
           </a-form-model-item>
           <!--  description on bbs-->
-          <bbs-input v-model="form.descriptionAddr" />
+          <bbs-input v-model="form.descriptionAddr" :disabled="isEdit" />
           <!-- <a-form-model-item label="Description on bbs"prop="descriptionAddr">
             <a-input size="large" v-model="form.descriptionAddr" placeholder="https://" />
             <div class="flex jc-end">
@@ -108,7 +108,7 @@ import { Transaction } from 'ethereumjs-tx';
 import { COMUNION_RECEIVER_ACCOUNT, web3 } from '@/libs/web3';
 import { urlValidator } from '@/utils/validators';
 import { startupAbi } from '@/libs/abis/startup';
-import { createStartup, getPrepareStartupId, getStartupDetail } from '@/services';
+import { createStartup, updateStartup, getPrepareStartupId, getMyStartupDetail } from '@/services';
 import { merge } from '@/utils';
 import BbsInput from './components/BbsInput';
 
@@ -223,12 +223,20 @@ export default {
 
         // 交易前获取交易hash
         const txid = await this.getHashBeforeTransaction(formData, startupId.id);
-        // 后端创建startup
-        const startup = await createStartup({ ...formData, txid, id: startupId.id });
 
-        if (startup) {
-          // 发起交易
-          this.sendTransaction(formData, startupId.id);
+        if (this.isEdit) {
+          // 更新
+          if (await updateStartup(this.$router.query.id, { ...formData, txid })) {
+            // 发起交易
+            this.sendTransaction(formData, this.$router.query.id);
+          }
+        } else {
+          // 后端创建startup
+          const startup = await createStartup({ ...formData, txid, id: startupId.id });
+          if (startup) {
+            // 发起交易
+            this.sendTransaction(formData, startupId.id);
+          }
         }
       } catch (e) {
         console.log('%c\n  e :::----->', 'font-size:30px;background: purple;', e);
@@ -274,7 +282,7 @@ export default {
   async mounted() {
     this.getBalance();
     if (this.isEdit) {
-      const startup = await getStartupDetail(this.$route.query.id);
+      const startup = await getMyStartupDetail(this.$route.query.id);
       merge(this.form, startup);
       this.form.categoryId = startup.category.id;
     }

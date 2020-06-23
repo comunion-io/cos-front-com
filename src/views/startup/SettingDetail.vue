@@ -46,15 +46,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { Steps } from 'ant-design-vue';
+import { settingAbi } from '@/libs/abis/setting';
+import { COMMUNION_SETTING_RECEIVE_ACCOUNT, web3 } from '@/libs/web3';
 import { STARTUP_SETTING_STORE_KEY } from '@/configs/storage';
-import { createStartupSetting } from '@/services';
+import { getMyStartupDetail, updateStartupSetting } from '@/services';
+import { merge } from '@/utils';
 import Finance from './steps/Finance';
 import Governance from './steps/Governance';
 import Launch from './steps/Launch';
-import { settingAbi } from '@/libs/abis/setting';
-import { COMMUNION_SETTING_RECEIVE_ACCOUNT, web3 } from '@/libs/web3';
-import { mapGetters } from 'vuex';
 
 const steps = ['finance', 'governance'];
 
@@ -129,7 +130,7 @@ export default {
       body.voteTokenLimit = body.voteTokenLimit ? body.voteTokenLimit : -1;
       // 生产txid
       let txid = web3.utils.sha3(JSON.stringify(body));
-      if (await createStartupSetting(this.$route.params.id, { ...body, txid })) {
+      if (await updateStartupSetting(this.$route.params.id, { ...body, txid })) {
         sessionStorage.removeItem(this.storeKey);
         this.completed = true;
         // 发起交易上链
@@ -188,8 +189,38 @@ export default {
       sessionStorage.setItem(this.storeKey, JSON.stringify(this.form));
     }
   },
-  mounted() {
+  async mounted() {
     window.addEventListener('beforeunload', this.onUnload, false);
+    // 读取之前的setting设置
+    const { setting } = await getMyStartupDetail(this.$route.params.id);
+    if (setting) {
+      // 后端返回数据转化为前端格式
+      const voteMinDurationDays = Math.floor(setting.voteMinDurationHours / 24);
+      const voteMaxDurationDays = Math.floor(setting.voteMaxDurationHours / 24);
+      merge(this.form, {
+        finance: {
+          tokenName: setting.tokenName,
+          tokenSymbol: setting.tokenSymbol,
+          tokenAddr: setting.tokenAddr,
+          walletAddrs: setting.walletAddrs
+        },
+        governance: {
+          voteType: setting.type,
+          voteAssignAddrs: setting.voteAssignAddrs,
+          voteTokenLimit: setting.voteTokenLimit,
+          voteSupportPercent: setting.voteSupportPercent,
+          voteMinApprovalPercent: setting.voteMinApprovalPercent,
+          minDuration: {
+            hours: setting.voteMinDurationHours - voteMinDurationDays * 24,
+            days: voteMinDurationDays
+          },
+          maxDuration: {
+            hours: setting.voteMaxDurationHours - voteMaxDurationDays * 24,
+            days: voteMaxDurationDays
+          }
+        }
+      });
+    }
   },
   beforeDestroy() {
     window.removeEventListener('beforeunload', this.onUnload, false);
