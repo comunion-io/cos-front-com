@@ -65,7 +65,7 @@
             <a-tooltip
               placement="top"
               :visible="canNotTransaction()"
-              title="Your credit is running low"
+              title="wallet balance isn't enough."
             >
               <a-button type="primary" size="large" block html-type="submit">
                 Submit
@@ -168,32 +168,35 @@ export default {
      * @returns {boolean}
      */
     canNotTransaction() {
-      console.log('this.balance :::', this.balance);
       return this.balance < 0.1;
     },
 
     async getHashBeforeTransaction(formData, startupId) {
-      let hash = '';
       const contractStatpUp = await this.getContractInstance(formData, startupId);
       const codeData = await contractStatpUp.encodeABI();
 
-      const txParams = {
-        // value: '0x00', // Math.pow(10, 17).toString(),
+      const tx = {
+        from: this.account,
         to: COMUNION_RECEIVER_ACCOUNT,
-        data: codeData
+        data: codeData,
+        nonce: web3.utils.numberToHex(38),
+        value: web3.utils.numberToHex(Math.pow(10, 17)),
+        gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
+        gasLimit: web3.utils.numberToHex(183943)
       };
+      let signTx = new Transaction(tx, {
+        chain: this.netWorkName.toLowerCase(),
+        hardfork: 'petersburg'
+      });
 
-      const tx = new Transaction(txParams, { chain: this.netWorkName.toLowerCase() });
+      // TODO
+      const privateKey1 = '6D42DB831B192658A424EF5D5948693729C0EA7FD189B8C685037D0A969ADB6B';
+      const privateKey = Buffer.from(privateKey1.toLowerCase(), 'hex');
+      signTx.sign(privateKey);
 
-      const serializedTx = tx.serialize();
-      console.log(
-        '%c\n  serializedTx :::----->',
-        'font-size:30px;background: purple;',
-        serializedTx
-      );
-      // hash = new EthereumTx(serializedTx).hash();
-      // todo
-      return hash;
+      let serializedTx = signTx.serialize();
+      let txData = '0x' + serializedTx.toString('hex');
+      return web3.utils.sha3(txData);
     },
 
     /**
@@ -207,11 +210,9 @@ export default {
         console.log('%c\n  startupId :::----->', 'font-size:30px;background: purple;', startupId);
 
         // 交易前获取交易hash
-        const txHash = await this.getHashBeforeTransaction(formData, startupId.id);
-        console.log('%c\n  hash :::----->', 'font-size:30px;background: purple;', txHash);
-
+        const txid = await this.getHashBeforeTransaction(formData, startupId.id);
         // 后端创建startup
-        const startup = await createStartup({ ...formData, txid: txHash, id: startupId.id });
+        const startup = await createStartup({ ...formData, txid, id: startupId.id });
 
         if (startup) {
           // 发起交易
@@ -232,12 +233,11 @@ export default {
       const contractStatpUp = await this.getContractInstance(formData, id);
       // 上链
       try {
-        const block = await contractStatpUp.send({
+        await contractStatpUp.send({
           from: this.account,
           value: Math.pow(10, 17).toString(),
           to: COMUNION_RECEIVER_ACCOUNT
         });
-        console.log('%c\n  block :::----->', 'font-size:30px;background: purple;', block);
         this.createState = 'successed';
       } catch (e) {
         console.log('%c\n  e :::----------->', 'font-size:30px;background: purple;', e);
