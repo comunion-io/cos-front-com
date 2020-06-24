@@ -1,3 +1,4 @@
 export * from './request.js';
 export * from './user.services';
-export * from './startup.service';
+export * from './startup.services';
+export * from './setting.services';
