@@ -47,7 +47,8 @@ export async function createStartup(params) {
  * @returns {Promise<void>}
  */
 export async function restoreStartUp(id) {
-  await request('post', `/cores/startups/${id}/settings:restore`);
+  const { error } = await request('post', `/cores/startups/${id}:restore`);
+  return !error;
 }
 
 /**
