@@ -186,13 +186,14 @@ export default {
     async getHashBeforeTransaction(formData, startupId) {
       const contractStatpUp = await this.getContractInstance(formData, startupId);
       const codeData = await contractStatpUp.encodeABI();
+      let countAll = await web3.eth.getTransactionCount(this.account, 'pending');
 
       const tx = {
         from: this.account,
         to: COMUNION_RECEIVER_ACCOUNT,
         data: codeData,
-        nonce: web3.utils.numberToHex(38),
         value: web3.utils.numberToHex(Math.pow(10, 17)),
+        nonce: web3.utils.numberToHex(countAll),
         gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
         gasLimit: web3.utils.numberToHex(183943)
       };
@@ -201,13 +202,29 @@ export default {
         hardfork: 'petersburg'
       });
 
+      // console.log(
+      //   '%c\n  signTx.serialize(); :::----->',
+      //   'font-size:30px;background: purple;',
+      //   signTx.serialize().toString('hex')
+      // );
+
+      const sign = await web3.eth.sign(web3.utils.utf8ToHex(signTx.serialize()), this.account);
+      console.log('%c\n  sign :::----->', 'font-size:30px;background: purple;', sign);
+
       // TODO
-      const privateKey1 = '6D42DB831B192658A424EF5D5948693729C0EA7FD189B8C685037D0A969ADB6B';
-      const privateKey = Buffer.from(privateKey1.toLowerCase(), 'hex');
-      signTx.sign(privateKey);
+      // const privateKey1 = '6D42DB831B192658A424EF5D5948693729C0EA7FD189B8C685037D0A969ADB6B';
+      // const privateKey = Buffer.from(privateKey1, 'hex');
+      // signTx.sign(privateKey);
 
       let serializedTx = signTx.serialize();
       let txData = '0x' + serializedTx.toString('hex');
+      // console.log('%c\n  txData :::----->', 'font-size:30px;background: purple;', txData);
+
+      // console.log(
+      //   '%c\n  web3.utils.sha3(txData) :::----->',
+      //   'font-size:30px;background: purple;',
+      //   web3.utils.sha3(txData)
+      // );
       return web3.utils.sha3(txData);
     },
 
@@ -219,10 +236,9 @@ export default {
       try {
         // 获取startup id
         const startupId = await getPrepareStartupId();
-        console.log('%c\n  startupId :::----->', 'font-size:30px;background: purple;', startupId);
-
         // 交易前获取交易hash
         const txid = await this.getHashBeforeTransaction(formData, startupId.id);
+        // console.log('%c\n  txid :::----->', 'font-size:30px;background: purple;', txid);
         // 后端创建startup
         const startup = await createStartup({ ...formData, txid, id: startupId.id });
 
@@ -242,14 +258,21 @@ export default {
      * @returns {Promise<void>}
      */
     async sendTransaction(formData, id) {
+      let countAll = await web3.eth.getTransactionCount(this.account, 'pending');
       const contractStatpUp = await this.getContractInstance(formData, id);
+      const codeData = await contractStatpUp.encodeABI();
       // 上链
       try {
-        await contractStatpUp.send({
+        const block = await contractStatpUp.send({
           from: this.account,
+          to: COMUNION_RECEIVER_ACCOUNT,
+          data: codeData,
           value: Math.pow(10, 17).toString(),
-          to: COMUNION_RECEIVER_ACCOUNT
+          nonce: web3.utils.numberToHex(countAll),
+          gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
+          gasLimit: web3.utils.numberToHex(183943)
         });
+        console.log('%c\n  block :::----->', 'font-size:30px;background: purple;', block);
         this.createState = 'successed';
       } catch (e) {
         console.log('%c\n  e :::----------->', 'font-size:30px;background: purple;', e);
