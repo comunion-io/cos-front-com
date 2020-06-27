@@ -134,29 +134,56 @@ export default {
       delete body.minDuration;
 
       body.voteTokenLimit = body.voteTokenLimit ? body.voteTokenLimit : -1;
-      // 生产txid
-      let txid = web3.utils.sha3(JSON.stringify(body));
-      if (await updateStartupSetting(this.$route.params.id, { ...body, txid })) {
-        sessionStorage.removeItem(this.storeKey);
-        this.completed = true;
-        // 发起交易上链
-        this.sendTransaction({ ...body, ...{ id: this.$route.params.id } });
-      }
+
+      const id = this.$route.params.id;
+      this.ethSendTransaction(body, id);
       // 关闭loading
       this.$refs.launch.loading = false;
     },
+    async ethSendTransaction(formData, id) {
+      const contractStatpUp = await this.getContractInstance(formData, id);
+      const codeData = await contractStatpUp.encodeABI();
+      const countAll = await web3.eth.getTransactionCount(this.account, 'pending');
+      const chainId = await web3.eth.getChainId();
+
+      const tx = {
+        from: this.account,
+        to: COMMUNION_SETTING_RECEIVE_ACCOUNT,
+        data: codeData,
+        value: 0,
+        nonce: web3.utils.numberToHex(countAll),
+        gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
+        gasLimit: web3.utils.numberToHex(183943),
+        chainId: chainId
+      };
+      window.ethereum.sendAsync(
+        {
+          method: 'eth_sendTransaction',
+          params: [tx],
+          from: window.ethereum.selectedAddress
+        },
+        (err, result) => {
+          if (err) {
+            return console.error(err);
+          }
+          const txid = result.result;
+          this.createSetting(formData, txid);
+        }
+      );
+    },
+
     /**
-     * @description 发起上链
-     * @param formData: 表单数据
+     * @description 获取合约实例
+     * @returns {Promise<*>}
      */
-    async sendTransaction(formData) {
+    async getContractInstance(formData, id) {
       const data = JSON.parse(JSON.stringify(formData));
       const contract = new web3.eth.Contract(settingAbi, COMMUNION_SETTING_RECEIVE_ACCOUNT);
       data.walletAddrs = data.walletAddrs.map(item => item.addr);
 
       /** 发起合约 */
-      const contractStatpUp = await contract.methods.newSetting(
-        data.id,
+      const contractSetting = await contract.methods.newSetting(
+        id,
         data.tokenName,
         data.tokenSymbol,
         data.tokenAddr,
@@ -169,18 +196,21 @@ export default {
         data.voteMinDurationHours.toString(),
         data.voteMaxDurationHours.toString()
       );
+      return contractSetting;
+    },
 
-      try {
-        // 上链
-        await contractStatpUp.send({
-          from: this.account,
-          value: 0,
-          to: COMMUNION_SETTING_RECEIVE_ACCOUNT
-        });
-      } catch (e) {
-        console.log('%c\n  e :::----------->', 'font-size:30px;background: purple;', e);
+    async createSetting(formData, txid) {
+      if (await updateStartupSetting(this.$route.params.id, { ...formData, txid })) {
+        sessionStorage.removeItem(this.storeKey);
+        this.completed = true;
       }
     },
+
+    /**
+     * @description 刷新网页
+     * @param e
+     * @returns {string}
+     */
     onUnload(e) {
       if (this.step < 2) {
         this.form[steps[this.step]] = this.$refs[`form_${this.step}`].form;
@@ -242,38 +272,47 @@ export default {
 
 <style lang="less">
 @import '~@/assets/styles/variables.less';
+
 .p-startup-setting {
   padding: 0 108px;
+
   .tab-card {
     margin-bottom: 20px;
+
     .ant-card-body {
       padding: 38px 38px 28px;
       height: 150px;
     }
   }
+
   // 步进条自定义
   .ant-steps-item:last-child {
     flex: 1;
+
     .ant-steps-item-tail {
       display: block;
     }
   }
+
   .ant-steps-item-container {
     height: 86px;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+
   .ant-steps-item-tail {
     top: 20px;
     margin: 0;
     padding: 0;
     height: 5px;
     background: #eeeeee;
+
     &::after {
       height: 5px;
     }
   }
+
   .ant-steps-item-icon {
     position: relative;
     display: inline-flex;
@@ -285,43 +324,52 @@ export default {
     border-width: 4px;
     border-color: #eee;
     z-index: 10;
+
     .ant-steps-icon {
       font-size: 24px;
       color: #999;
     }
   }
+
   .ant-steps-item-content {
     margin-top: auto;
+
     .ant-steps-item-title {
       line-height: 1;
       font-weight: bold;
     }
   }
+
   // 选中的tab
   .ant-steps-item-active {
     .ant-steps-item-icon {
       border: none;
       transform: scale(1.48);
+
       .ant-steps-icon {
         font-size: 18px;
         color: #fff;
       }
     }
+
     .ant-steps-item-content .ant-steps-item-title {
       margin-top: 16px;
       font-size: 15px;
       color: @primary-color;
     }
   }
+
   // 已完成步骤
   .ant-steps-item-finish {
     .ant-steps-item-icon {
       border-color: @primary-color;
     }
+
     .anticon-check {
       color: @primary-color;
     }
   }
+
   // 进行中
   .ant-steps-item-process {
     .ant-steps-item-tail {

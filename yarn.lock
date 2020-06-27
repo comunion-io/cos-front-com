@@ -843,6 +843,18 @@
     "@ethersproject/rlp" ">=5.0.0-beta.132"
     bn.js "^4.4.0"
 
+"@ethersproject/address@^5.0.0":
+  version "5.0.1"
+  resolved "https://registry.npm.taobao.org/@ethersproject/address/download/@ethersproject/address-5.0.1.tgz#882424fbbec1111abc1aa3482e647a72683c5377"
+  integrity sha1-iCQk+77BERq8GqNILmR6cmg8U3c=
+  dependencies:
+    "@ethersproject/bignumber" "^5.0.0"
+    "@ethersproject/bytes" "^5.0.0"
+    "@ethersproject/keccak256" "^5.0.0"
+    "@ethersproject/logger" "^5.0.0"
+    "@ethersproject/rlp" "^5.0.0"
+    bn.js "^4.4.0"
+
 "@ethersproject/bignumber@>=5.0.0-beta.130", "@ethersproject/bignumber@>=5.0.0-beta.138":
   version "5.0.0-beta.139"
   resolved "https://r.cnpmjs.org/@ethersproject/bignumber/download/@ethersproject/bignumber-5.0.0-beta.139.tgz#12a4fa5a76ee90f77932326311caf04e1de1cae0"
@@ -853,6 +865,16 @@
     "@ethersproject/properties" ">=5.0.0-beta.140"
     bn.js "^4.4.0"
 
+"@ethersproject/bignumber@^5.0.0":
+  version "5.0.1"
+  resolved "https://registry.npm.taobao.org/@ethersproject/bignumber/download/@ethersproject/bignumber-5.0.1.tgz#85edb1026310633ef566cc379e3e0026697f6e6e"
+  integrity sha1-he2xAmMQYz71Zsw3nj4AJml/bm4=
+  dependencies:
+    "@ethersproject/bytes" "^5.0.0"
+    "@ethersproject/logger" "^5.0.0"
+    "@ethersproject/properties" "^5.0.0"
+    bn.js "^4.4.0"
+
 "@ethersproject/bytes@>=5.0.0-beta.129", "@ethersproject/bytes@>=5.0.0-beta.137":
   version "5.0.0-beta.138"
   resolved "https://r.cnpmjs.org/@ethersproject/bytes/download/@ethersproject/bytes-5.0.0-beta.138.tgz#86e1f6c4016443f2b5236627fa656e7c56077a56"
@@ -860,12 +882,26 @@
   dependencies:
     "@ethersproject/logger" ">=5.0.0-beta.137"
 
+"@ethersproject/bytes@^5.0.0":
+  version "5.0.1"
+  resolved "https://registry.npm.taobao.org/@ethersproject/bytes/download/@ethersproject/bytes-5.0.1.tgz#da8cd9b3e3b2800be9b46fda7036fc441b334680"
+  integrity sha1-2ozZs+OygAvptG/acDb8RBszRoA=
+  dependencies:
+    "@ethersproject/logger" "^5.0.0"
+
 "@ethersproject/constants@>=5.0.0-beta.128", "@ethersproject/constants@>=5.0.0-beta.133":
   version "5.0.0-beta.134"
   resolved "https://r.cnpmjs.org/@ethersproject/constants/download/@ethersproject/constants-5.0.0-beta.134.tgz#b81c42373a00cb21604a94aa8642454fb35bb764"
   integrity sha1-uBxCNzoAyyFgSpSqhkJFT7Nbt2Q=
   dependencies:
     "@ethersproject/bignumber" ">=5.0.0-beta.138"
+
+"@ethersproject/constants@^5.0.0":
+  version "5.0.1"
+  resolved "https://registry.npm.taobao.org/@ethersproject/constants/download/@ethersproject/constants-5.0.1.tgz#51426b1d673661e905418ddeefca1f634866860d"
+  integrity sha1-UUJrHWc2YekFQY3e78ofY0hmhg0=
+  dependencies:
+    "@ethersproject/bignumber" "^5.0.0"
 
 "@ethersproject/hash@>=5.0.0-beta.128":
   version "5.0.0-beta.134"
@@ -885,10 +921,23 @@
     "@ethersproject/bytes" ">=5.0.0-beta.137"
     js-sha3 "0.5.7"
 
+"@ethersproject/keccak256@^5.0.0":
+  version "5.0.1"
+  resolved "https://registry.npm.taobao.org/@ethersproject/keccak256/download/@ethersproject/keccak256-5.0.1.tgz#be91c11a8bdf4e94c8b900502d2a46b223fbdeb3"
+  integrity sha1-vpHBGovfTpTIuQBQLSpGsiP73rM=
+  dependencies:
+    "@ethersproject/bytes" "^5.0.0"
+    js-sha3 "0.5.7"
+
 "@ethersproject/logger@>=5.0.0-beta.129", "@ethersproject/logger@>=5.0.0-beta.137":
   version "5.0.0-beta.137"
   resolved "https://r.cnpmjs.org/@ethersproject/logger/download/@ethersproject/logger-5.0.0-beta.137.tgz#781582b8b04d0ced01e9c1608c9887d31d95b8ee"
   integrity sha1-eBWCuLBNDO0B6cFgjJiH0x2VuO4=
+
+"@ethersproject/logger@^5.0.0":
+  version "5.0.2"
+  resolved "https://registry.npm.taobao.org/@ethersproject/logger/download/@ethersproject/logger-5.0.2.tgz#f24aa14a738a428d711c1828b44d50114a461b8b"
+  integrity sha1-8kqhSnOKQo1xHBgotE1QEUpGG4s=
 
 "@ethersproject/properties@>=5.0.0-beta.131", "@ethersproject/properties@>=5.0.0-beta.140":
   version "5.0.0-beta.142"
@@ -896,6 +945,13 @@
   integrity sha1-G9UlJTIsJ3RH2yRJ/CWIvJ4rWbU=
   dependencies:
     "@ethersproject/logger" ">=5.0.0-beta.137"
+
+"@ethersproject/properties@^5.0.0":
+  version "5.0.1"
+  resolved "https://registry.npm.taobao.org/@ethersproject/properties/download/@ethersproject/properties-5.0.1.tgz#e1fecbfcb24f23bf3b64a2ac74f2751113d116e0"
+  integrity sha1-4f7L/LJPI787ZKKsdPJ1ERPRFuA=
+  dependencies:
+    "@ethersproject/logger" "^5.0.0"
 
 "@ethersproject/rlp@>=5.0.0-beta.132":
   version "5.0.0-beta.133"
@@ -905,6 +961,24 @@
     "@ethersproject/bytes" ">=5.0.0-beta.137"
     "@ethersproject/logger" ">=5.0.0-beta.137"
 
+"@ethersproject/rlp@^5.0.0":
+  version "5.0.1"
+  resolved "https://registry.npm.taobao.org/@ethersproject/rlp/download/@ethersproject/rlp-5.0.1.tgz#3407b0cb78f82a1a219aecff57578c0558ae26c8"
+  integrity sha1-NAewy3j4Khohmuz/V1eMBViuJsg=
+  dependencies:
+    "@ethersproject/bytes" "^5.0.0"
+    "@ethersproject/logger" "^5.0.0"
+
+"@ethersproject/signing-key@^5.0.0":
+  version "5.0.1"
+  resolved "https://registry.npm.taobao.org/@ethersproject/signing-key/download/@ethersproject/signing-key-5.0.1.tgz#90957e42c69e857dc741c8fbeeff0f36bcee9cf7"
+  integrity sha1-kJV+QsaehX3HQcj77v8PNrzunPc=
+  dependencies:
+    "@ethersproject/bytes" "^5.0.0"
+    "@ethersproject/logger" "^5.0.0"
+    "@ethersproject/properties" "^5.0.0"
+    elliptic "6.5.2"
+
 "@ethersproject/strings@>=5.0.0-beta.130", "@ethersproject/strings@>=5.0.0-beta.136":
   version "5.0.0-beta.137"
   resolved "https://r.cnpmjs.org/@ethersproject/strings/download/@ethersproject/strings-5.0.0-beta.137.tgz#1e9730a701e7a44c3f1b4e1c7e134665cdd51d7b"
@@ -913,6 +987,21 @@
     "@ethersproject/bytes" ">=5.0.0-beta.137"
     "@ethersproject/constants" ">=5.0.0-beta.133"
     "@ethersproject/logger" ">=5.0.0-beta.137"
+
+"@ethersproject/transactions@^5.0.0-beta.135":
+  version "5.0.1"
+  resolved "https://registry.npm.taobao.org/@ethersproject/transactions/download/@ethersproject/transactions-5.0.1.tgz#61480dc600f4a49eb99627778e3b46b381f8bdd9"
+  integrity sha1-YUgNxgD0pJ65lid3jjtGs4H4vdk=
+  dependencies:
+    "@ethersproject/address" "^5.0.0"
+    "@ethersproject/bignumber" "^5.0.0"
+    "@ethersproject/bytes" "^5.0.0"
+    "@ethersproject/constants" "^5.0.0"
+    "@ethersproject/keccak256" "^5.0.0"
+    "@ethersproject/logger" "^5.0.0"
+    "@ethersproject/properties" "^5.0.0"
+    "@ethersproject/rlp" "^5.0.0"
+    "@ethersproject/signing-key" "^5.0.0"
 
 "@fortawesome/fontawesome-common-types@^0.2.28":
   version "0.2.28"
@@ -1355,25 +1444,6 @@
   version "1.2.0"
   resolved "https://registry.npm.taobao.org/@vue/web-component-wrapper/download/@vue/web-component-wrapper-1.2.0.tgz#bb0e46f1585a7e289b4ee6067dcc5a6ae62f1dd1"
   integrity sha1-uw5G8VhafiibTuYGfcxaauYvHdE=
-
-"@web3-js/scrypt-shim@^0.1.0":
-  version "0.1.0"
-  resolved "https://r.cnpmjs.org/@web3-js/scrypt-shim/download/@web3-js/scrypt-shim-0.1.0.tgz#0bf7529ab6788311d3e07586f7d89107c3bea2cc"
-  integrity sha1-C/dSmrZ4gxHT4HWG99iRB8O+osw=
-  dependencies:
-    scryptsy "^2.1.0"
-    semver "^6.3.0"
-
-"@web3-js/websocket@^1.0.29":
-  version "1.0.30"
-  resolved "https://r.cnpmjs.org/@web3-js/websocket/download/@web3-js/websocket-1.0.30.tgz#9ea15b7b582cf3bf3e8bc1f4d3d54c0731a87f87"
-  integrity sha1-nqFbe1gs878+i8H009VMBzGof4c=
-  dependencies:
-    debug "^2.2.0"
-    es5-ext "^0.10.50"
-    nan "^2.14.0"
-    typedarray-to-buffer "^3.1.5"
-    yaeti "^0.0.6"
 
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
@@ -3628,7 +3698,7 @@ elegant-spinner@^1.0.1:
   resolved "https://registry.npm.taobao.org/elegant-spinner/download/elegant-spinner-1.0.1.tgz#db043521c95d7e303fd8f345bedc3349cfb0729e"
   integrity sha1-2wQ1IcldfjA/2PNFvtwzSc+wcp4=
 
-elliptic@^6.0.0, elliptic@^6.4.0, elliptic@^6.5.2:
+elliptic@6.5.2, elliptic@^6.0.0, elliptic@^6.4.0, elliptic@^6.5.2:
   version "6.5.2"
   resolved "https://registry.npm.taobao.org/elliptic/download/elliptic-6.5.2.tgz#05c5678d7173c049d8ca433552224a495d0e3762"
   integrity sha1-BcVnjXFzwEnYykM1UiJKSV0ON2I=
@@ -8427,10 +8497,10 @@ schema-utils@^2.0.0, schema-utils@^2.5.0, schema-utils@^2.6.5, schema-utils@^2.6
     ajv "^6.12.0"
     ajv-keywords "^3.4.1"
 
-scryptsy@^2.1.0:
-  version "2.1.0"
-  resolved "https://r.cnpmjs.org/scryptsy/download/scryptsy-2.1.0.tgz#8d1e8d0c025b58fdd25b6fa9a0dc905ee8faa790"
-  integrity sha1-jR6NDAJbWP3SW2+poNyQXuj6p5A=
+scrypt-js@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.npm.taobao.org/scrypt-js/download/scrypt-js-3.0.1.tgz#d314a57c2aef69d1ad98a138a21fe9eafa9ee312"
+  integrity sha1-0xSlfCrvadGtmKE4oh/p6vqe4xI=
 
 secp256k1@^3.0.1:
   version "3.8.0"
@@ -9868,221 +9938,222 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-web3-bzz@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-bzz/download/web3-bzz-1.2.8.tgz#7ff2c2de362f82ae3825e48c70ec63b3aca2b8ef"
-  integrity sha1-f/LC3jYvgq44JeSMcOxjs6yiuO8=
+web3-bzz@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-bzz/download/web3-bzz-1.2.9.tgz?cache=0&sync_timestamp=1591729947328&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-bzz%2Fdownload%2Fweb3-bzz-1.2.9.tgz#25f8a373bc2dd019f47bf80523546f98b93c8790"
+  integrity sha1-Jfijc7wt0Bn0e/gFI1RvmLk8h5A=
   dependencies:
     "@types/node" "^10.12.18"
     got "9.6.0"
     swarm-js "^0.1.40"
     underscore "1.9.1"
 
-web3-core-helpers@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-core-helpers/download/web3-core-helpers-1.2.8.tgz#86776d8f658b63bb630c84a314686661e599aa68"
-  integrity sha1-hndtj2WLY7tjDISjFGhmYeWZqmg=
+web3-core-helpers@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-core-helpers/download/web3-core-helpers-1.2.9.tgz#6381077c3e01c127018cb9e9e3d1422697123315"
+  integrity sha1-Y4EHfD4BwScBjLnp49FCJpcSMxU=
   dependencies:
     underscore "1.9.1"
-    web3-eth-iban "1.2.8"
-    web3-utils "1.2.8"
+    web3-eth-iban "1.2.9"
+    web3-utils "1.2.9"
 
-web3-core-method@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-core-method/download/web3-core-method-1.2.8.tgz#f28a79935432aebfa019e4a50f9b6ae6c9ef4297"
-  integrity sha1-8op5k1Qyrr+gGeSlD5tq5snvQpc=
+web3-core-method@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-core-method/download/web3-core-method-1.2.9.tgz?cache=0&sync_timestamp=1591729962345&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-core-method%2Fdownload%2Fweb3-core-method-1.2.9.tgz#3fb538751029bea570e4f86731e2fa5e4945e462"
+  integrity sha1-P7U4dRApvqVw5PhnMeL6XklF5GI=
   dependencies:
+    "@ethersproject/transactions" "^5.0.0-beta.135"
     underscore "1.9.1"
-    web3-core-helpers "1.2.8"
-    web3-core-promievent "1.2.8"
-    web3-core-subscriptions "1.2.8"
-    web3-utils "1.2.8"
+    web3-core-helpers "1.2.9"
+    web3-core-promievent "1.2.9"
+    web3-core-subscriptions "1.2.9"
+    web3-utils "1.2.9"
 
-web3-core-promievent@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-core-promievent/download/web3-core-promievent-1.2.8.tgz#a93ca2a19cae8b60883412619e04e69e11804eb5"
-  integrity sha1-qTyioZyui2CINBJhngTmnhGATrU=
+web3-core-promievent@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-core-promievent/download/web3-core-promievent-1.2.9.tgz?cache=0&sync_timestamp=1591729942295&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-core-promievent%2Fdownload%2Fweb3-core-promievent-1.2.9.tgz#bb1c56aa6fac2f4b3c598510f06554d25c11c553"
+  integrity sha1-uxxWqm+sL0s8WYUQ8GVU0lwRxVM=
   dependencies:
     eventemitter3 "3.1.2"
 
-web3-core-requestmanager@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-core-requestmanager/download/web3-core-requestmanager-1.2.8.tgz#da7259e72a433858d04c59b999c5116bfb797c09"
-  integrity sha1-2nJZ5ypDOFjQTFm5mcURa/t5fAk=
+web3-core-requestmanager@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-core-requestmanager/download/web3-core-requestmanager-1.2.9.tgz?cache=0&sync_timestamp=1591729957172&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-core-requestmanager%2Fdownload%2Fweb3-core-requestmanager-1.2.9.tgz#dd6d855256c4dd681434fe0867f8cd742fe10503"
+  integrity sha1-3W2FUlbE3WgUNP4IZ/jNdC/hBQM=
   dependencies:
     underscore "1.9.1"
-    web3-core-helpers "1.2.8"
-    web3-providers-http "1.2.8"
-    web3-providers-ipc "1.2.8"
-    web3-providers-ws "1.2.8"
+    web3-core-helpers "1.2.9"
+    web3-providers-http "1.2.9"
+    web3-providers-ipc "1.2.9"
+    web3-providers-ws "1.2.9"
 
-web3-core-subscriptions@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-core-subscriptions/download/web3-core-subscriptions-1.2.8.tgz#50945498fb0bd655f842cbcc13873d96956aa93e"
-  integrity sha1-UJRUmPsL1lX4QsvME4c9lpVqqT4=
+web3-core-subscriptions@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-core-subscriptions/download/web3-core-subscriptions-1.2.9.tgz?cache=0&sync_timestamp=1591729952158&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-core-subscriptions%2Fdownload%2Fweb3-core-subscriptions-1.2.9.tgz#335fd7d15dfce5d78b4b7bef05ce4b3d7237b0e4"
+  integrity sha1-M1/X0V385deLS3vvBc5LPXI3sOQ=
   dependencies:
     eventemitter3 "3.1.2"
     underscore "1.9.1"
-    web3-core-helpers "1.2.8"
+    web3-core-helpers "1.2.9"
 
-web3-core@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-core/download/web3-core-1.2.8.tgz#2a488bb11519b71e7738265329bddc00fc200dd3"
-  integrity sha1-KkiLsRUZtx53OCZTKb3cAPwgDdM=
+web3-core@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-core/download/web3-core-1.2.9.tgz?cache=0&sync_timestamp=1591729967172&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-core%2Fdownload%2Fweb3-core-1.2.9.tgz#2cba57aa259b6409db532d21bdf57db8d504fd3e"
+  integrity sha1-LLpXqiWbZAnbUy0hvfV9uNUE/T4=
   dependencies:
     "@types/bn.js" "^4.11.4"
     "@types/node" "^12.6.1"
     bignumber.js "^9.0.0"
-    web3-core-helpers "1.2.8"
-    web3-core-method "1.2.8"
-    web3-core-requestmanager "1.2.8"
-    web3-utils "1.2.8"
+    web3-core-helpers "1.2.9"
+    web3-core-method "1.2.9"
+    web3-core-requestmanager "1.2.9"
+    web3-utils "1.2.9"
 
-web3-eth-abi@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-eth-abi/download/web3-eth-abi-1.2.8.tgz#7537138f3e5cd1ccf98233fa07f388aa8dc1fff1"
-  integrity sha1-dTcTjz5c0cz5gjP6B/OIqo3B//E=
+web3-eth-abi@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-eth-abi/download/web3-eth-abi-1.2.9.tgz?cache=0&sync_timestamp=1591729947132&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-eth-abi%2Fdownload%2Fweb3-eth-abi-1.2.9.tgz#14bedd7e4be04fcca35b2ac84af1400574cd8280"
+  integrity sha1-FL7dfkvgT8yjWyrISvFABXTNgoA=
   dependencies:
     "@ethersproject/abi" "5.0.0-beta.153"
     underscore "1.9.1"
-    web3-utils "1.2.8"
+    web3-utils "1.2.9"
 
-web3-eth-accounts@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-eth-accounts/download/web3-eth-accounts-1.2.8.tgz#e63afc6d4902f2beb0cf60e6b755c86fa5b5ccd7"
-  integrity sha1-5jr8bUkC8r6wz2Dmt1XIb6W1zNc=
+web3-eth-accounts@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-eth-accounts/download/web3-eth-accounts-1.2.9.tgz?cache=0&sync_timestamp=1591729972157&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-eth-accounts%2Fdownload%2Fweb3-eth-accounts-1.2.9.tgz#7ec422df90fecb5243603ea49dc28726db7bdab6"
+  integrity sha1-fsQi35D+y1JDYD6kncKHJtt72rY=
   dependencies:
-    "@web3-js/scrypt-shim" "^0.1.0"
     crypto-browserify "3.12.0"
     eth-lib "^0.2.8"
     ethereumjs-common "^1.3.2"
     ethereumjs-tx "^2.1.1"
+    scrypt-js "^3.0.1"
     underscore "1.9.1"
     uuid "3.3.2"
-    web3-core "1.2.8"
-    web3-core-helpers "1.2.8"
-    web3-core-method "1.2.8"
-    web3-utils "1.2.8"
+    web3-core "1.2.9"
+    web3-core-helpers "1.2.9"
+    web3-core-method "1.2.9"
+    web3-utils "1.2.9"
 
-web3-eth-contract@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-eth-contract/download/web3-eth-contract-1.2.8.tgz#ff75920ac698a70781edcebbf75287a6d0f14499"
-  integrity sha1-/3WSCsaYpweB7c6791KHptDxRJk=
+web3-eth-contract@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-eth-contract/download/web3-eth-contract-1.2.9.tgz?cache=0&sync_timestamp=1591729972338&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-eth-contract%2Fdownload%2Fweb3-eth-contract-1.2.9.tgz#713d9c6d502d8c8f22b696b7ffd8e254444e6bfd"
+  integrity sha1-cT2cbVAtjI8itpa3/9jiVEROa/0=
   dependencies:
     "@types/bn.js" "^4.11.4"
     underscore "1.9.1"
-    web3-core "1.2.8"
-    web3-core-helpers "1.2.8"
-    web3-core-method "1.2.8"
-    web3-core-promievent "1.2.8"
-    web3-core-subscriptions "1.2.8"
-    web3-eth-abi "1.2.8"
-    web3-utils "1.2.8"
+    web3-core "1.2.9"
+    web3-core-helpers "1.2.9"
+    web3-core-method "1.2.9"
+    web3-core-promievent "1.2.9"
+    web3-core-subscriptions "1.2.9"
+    web3-eth-abi "1.2.9"
+    web3-utils "1.2.9"
 
-web3-eth-ens@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-eth-ens/download/web3-eth-ens-1.2.8.tgz#247daddfdbf7533adb0f45cd2f75c75e52f7e678"
-  integrity sha1-JH2t39v3UzrbD0XNL3XHXlL35ng=
+web3-eth-ens@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-eth-ens/download/web3-eth-ens-1.2.9.tgz?cache=0&sync_timestamp=1591729977131&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-eth-ens%2Fdownload%2Fweb3-eth-ens-1.2.9.tgz#577b9358c036337833fb2bdc59c11be7f6f731b6"
+  integrity sha1-V3uTWMA2M3gz+yvcWcEb5/b3MbY=
   dependencies:
     content-hash "^2.5.2"
     eth-ens-namehash "2.0.8"
     underscore "1.9.1"
-    web3-core "1.2.8"
-    web3-core-helpers "1.2.8"
-    web3-core-promievent "1.2.8"
-    web3-eth-abi "1.2.8"
-    web3-eth-contract "1.2.8"
-    web3-utils "1.2.8"
+    web3-core "1.2.9"
+    web3-core-helpers "1.2.9"
+    web3-core-promievent "1.2.9"
+    web3-eth-abi "1.2.9"
+    web3-eth-contract "1.2.9"
+    web3-utils "1.2.9"
 
-web3-eth-iban@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-eth-iban/download/web3-eth-iban-1.2.8.tgz#414e80a7fb2d1ea16490bc2c8fc29a996aec5612"
-  integrity sha1-QU6Ap/stHqFkkLwsj8KamWrsVhI=
+web3-eth-iban@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-eth-iban/download/web3-eth-iban-1.2.9.tgz?cache=0&sync_timestamp=1591729942177&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-eth-iban%2Fdownload%2Fweb3-eth-iban-1.2.9.tgz#4ebf3d8783f34d04c4740dc18938556466399f7a"
+  integrity sha1-Tr89h4PzTQTEdA3BiThVZGY5n3o=
   dependencies:
     bn.js "4.11.8"
-    web3-utils "1.2.8"
+    web3-utils "1.2.9"
 
-web3-eth-personal@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-eth-personal/download/web3-eth-personal-1.2.8.tgz#8ebb27210b4c9c9555a30c5bb2ce8db12f84cd24"
-  integrity sha1-jrsnIQtMnJVVowxbss6NsS+EzSQ=
+web3-eth-personal@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-eth-personal/download/web3-eth-personal-1.2.9.tgz?cache=0&sync_timestamp=1591729972204&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-eth-personal%2Fdownload%2Fweb3-eth-personal-1.2.9.tgz#9b95eb159b950b83cd8ae15873e1d57711b7a368"
+  integrity sha1-m5XrFZuVC4PNiuFYc+HVdxG3o2g=
   dependencies:
     "@types/node" "^12.6.1"
-    web3-core "1.2.8"
-    web3-core-helpers "1.2.8"
-    web3-core-method "1.2.8"
-    web3-net "1.2.8"
-    web3-utils "1.2.8"
+    web3-core "1.2.9"
+    web3-core-helpers "1.2.9"
+    web3-core-method "1.2.9"
+    web3-net "1.2.9"
+    web3-utils "1.2.9"
 
-web3-eth@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-eth/download/web3-eth-1.2.8.tgz#cf6a16fae4d7c12b90cfb6ef570cb1a2acc34c1b"
-  integrity sha1-z2oW+uTXwSuQz7bvVwyxoqzDTBs=
+web3-eth@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-eth/download/web3-eth-1.2.9.tgz?cache=0&sync_timestamp=1591729977170&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-eth%2Fdownload%2Fweb3-eth-1.2.9.tgz#e40e7b88baffc9b487193211c8b424dc944977b3"
+  integrity sha1-5A57iLr/ybSHGTIRyLQk3JRJd7M=
   dependencies:
     underscore "1.9.1"
-    web3-core "1.2.8"
-    web3-core-helpers "1.2.8"
-    web3-core-method "1.2.8"
-    web3-core-subscriptions "1.2.8"
-    web3-eth-abi "1.2.8"
-    web3-eth-accounts "1.2.8"
-    web3-eth-contract "1.2.8"
-    web3-eth-ens "1.2.8"
-    web3-eth-iban "1.2.8"
-    web3-eth-personal "1.2.8"
-    web3-net "1.2.8"
-    web3-utils "1.2.8"
+    web3-core "1.2.9"
+    web3-core-helpers "1.2.9"
+    web3-core-method "1.2.9"
+    web3-core-subscriptions "1.2.9"
+    web3-eth-abi "1.2.9"
+    web3-eth-accounts "1.2.9"
+    web3-eth-contract "1.2.9"
+    web3-eth-ens "1.2.9"
+    web3-eth-iban "1.2.9"
+    web3-eth-personal "1.2.9"
+    web3-net "1.2.9"
+    web3-utils "1.2.9"
 
-web3-net@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-net/download/web3-net-1.2.8.tgz#582fc2d4ba32c2e5c7761624e4be7c5434142d66"
-  integrity sha1-WC/C1LoywuXHdhYk5L58VDQULWY=
+web3-net@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-net/download/web3-net-1.2.9.tgz?cache=0&sync_timestamp=1591729967261&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-net%2Fdownload%2Fweb3-net-1.2.9.tgz#51d248ed1bc5c37713c4ac40c0073d9beacd87d3"
+  integrity sha1-UdJI7RvFw3cTxKxAwAc9m+rNh9M=
   dependencies:
-    web3-core "1.2.8"
-    web3-core-method "1.2.8"
-    web3-utils "1.2.8"
+    web3-core "1.2.9"
+    web3-core-method "1.2.9"
+    web3-utils "1.2.9"
 
-web3-providers-http@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-providers-http/download/web3-providers-http-1.2.8.tgz#cd7fc4d49df6980b5dd0fb1b5a808bc4b6a0069d"
-  integrity sha1-zX/E1J32mAtd0PsbWoCLxLagBp0=
+web3-providers-http@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-providers-http/download/web3-providers-http-1.2.9.tgz?cache=0&sync_timestamp=1591729952130&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-providers-http%2Fdownload%2Fweb3-providers-http-1.2.9.tgz#e698aa5377e2019c24c5a1e6efa0f51018728934"
+  integrity sha1-5piqU3fiAZwkxaHm76D1EBhyiTQ=
   dependencies:
-    web3-core-helpers "1.2.8"
+    web3-core-helpers "1.2.9"
     xhr2-cookies "1.1.0"
 
-web3-providers-ipc@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-providers-ipc/download/web3-providers-ipc-1.2.8.tgz#47be918ddd077999aa14703169b76c807f45d894"
-  integrity sha1-R76Rjd0HeZmqFHAxabdsgH9F2JQ=
+web3-providers-ipc@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-providers-ipc/download/web3-providers-ipc-1.2.9.tgz?cache=0&sync_timestamp=1591729952150&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-providers-ipc%2Fdownload%2Fweb3-providers-ipc-1.2.9.tgz#6159eacfcd7ac31edc470d93ef10814fe874763b"
+  integrity sha1-YVnqz816wx7cRw2T7xCBT+h0djs=
   dependencies:
     oboe "2.1.4"
     underscore "1.9.1"
-    web3-core-helpers "1.2.8"
+    web3-core-helpers "1.2.9"
 
-web3-providers-ws@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-providers-ws/download/web3-providers-ws-1.2.8.tgz#9e6454edc82d753d398c8d1e044632c234434a46"
-  integrity sha1-nmRU7cgtdT05jI0eBEYywjRDSkY=
+web3-providers-ws@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-providers-ws/download/web3-providers-ws-1.2.9.tgz?cache=0&sync_timestamp=1591729952287&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-providers-ws%2Fdownload%2Fweb3-providers-ws-1.2.9.tgz#22c2006655ec44b4ad2b41acae62741a6ae7a88c"
+  integrity sha1-IsIAZlXsRLStK0GsrmJ0GmrnqIw=
   dependencies:
-    "@web3-js/websocket" "^1.0.29"
     eventemitter3 "^4.0.0"
     underscore "1.9.1"
-    web3-core-helpers "1.2.8"
+    web3-core-helpers "1.2.9"
+    websocket "^1.0.31"
 
-web3-shh@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-shh/download/web3-shh-1.2.8.tgz#5162d9d13bc6838d390df1cd39e5f87235c1c2ae"
-  integrity sha1-UWLZ0TvGg405DfHNOeX4cjXBwq4=
+web3-shh@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-shh/download/web3-shh-1.2.9.tgz?cache=0&sync_timestamp=1591729972806&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-shh%2Fdownload%2Fweb3-shh-1.2.9.tgz#c4ba70d6142cfd61341a50752d8cace9a0370911"
+  integrity sha1-xLpw1hQs/WE0GlB1LYys6aA3CRE=
   dependencies:
-    web3-core "1.2.8"
-    web3-core-method "1.2.8"
-    web3-core-subscriptions "1.2.8"
-    web3-net "1.2.8"
+    web3-core "1.2.9"
+    web3-core-method "1.2.9"
+    web3-core-subscriptions "1.2.9"
+    web3-net "1.2.9"
 
-web3-utils@1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3-utils/download/web3-utils-1.2.8.tgz#5321d91715cd4c0869005705a33c4c042a532b18"
-  integrity sha1-UyHZFxXNTAhpAFcFozxMBCpTKxg=
+web3-utils@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3-utils/download/web3-utils-1.2.9.tgz?cache=0&sync_timestamp=1591729942263&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fweb3-utils%2Fdownload%2Fweb3-utils-1.2.9.tgz#abe11735221627da943971ef1a630868fb9c61f3"
+  integrity sha1-q+EXNSIWJ9qUOXHvGmMIaPucYfM=
   dependencies:
     bn.js "4.11.8"
     eth-lib "0.2.7"
@@ -10093,18 +10164,18 @@ web3-utils@1.2.8:
     underscore "1.9.1"
     utf8 "3.0.0"
 
-web3@^1.2.8:
-  version "1.2.8"
-  resolved "https://r.cnpmjs.org/web3/download/web3-1.2.8.tgz#20b24baa769e0224a708ef5bf196a5b83d19540b"
-  integrity sha1-ILJLqnaeAiSnCO9b8ZaluD0ZVAs=
+web3@^1.2.9:
+  version "1.2.9"
+  resolved "https://registry.npm.taobao.org/web3/download/web3-1.2.9.tgz#cbcf1c0fba5e213a6dfb1f2c1f4b37062e4ce337"
+  integrity sha1-y88cD7peITpt+x8sH0s3Bi5M4zc=
   dependencies:
-    web3-bzz "1.2.8"
-    web3-core "1.2.8"
-    web3-eth "1.2.8"
-    web3-eth-personal "1.2.8"
-    web3-net "1.2.8"
-    web3-shh "1.2.8"
-    web3-utils "1.2.8"
+    web3-bzz "1.2.9"
+    web3-core "1.2.9"
+    web3-eth "1.2.9"
+    web3-eth-personal "1.2.9"
+    web3-net "1.2.9"
+    web3-shh "1.2.9"
+    web3-utils "1.2.9"
 
 webpack-bundle-analyzer@^3.6.1:
   version "3.7.0"
@@ -10255,6 +10326,17 @@ websocket-extensions@>=0.1.1:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.4.tgz#7f8473bc839dfd87608adb95d7eb075211578a42"
   integrity sha512-OqedPIGOfsDlo31UNwYbCFMSaO9m9G/0faIHj5/dZFDMFqPTcx6UwqyOy3COEaEOg/9VsGIpdqn62W5KhoKSpg==
+
+websocket@^1.0.31:
+  version "1.0.31"
+  resolved "https://registry.npm.taobao.org/websocket/download/websocket-1.0.31.tgz#e5d0f16c3340ed87670e489ecae6144c79358730"
+  integrity sha1-5dDxbDNA7YdnDkieyuYUTHk1hzA=
+  dependencies:
+    debug "^2.2.0"
+    es5-ext "^0.10.50"
+    nan "^2.14.0"
+    typedarray-to-buffer "^3.1.5"
+    yaeti "^0.0.6"
 
 which-module@^2.0.0:
   version "2.0.0"
