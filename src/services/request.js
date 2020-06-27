@@ -50,12 +50,12 @@ instance.interceptors.response.use(
     };
   },
   res => {
-    if (res.response.status === 401) {
+    if (res.response?.status === 401) {
       store.dispatch('logout');
       router.replace({ name: 'square', query: { from: router.currentRoute.fullPath } });
     }
-    const message = res.response.data?.message;
-    antMessage.error(message || 'Error occured.');
+    const message = res.response?.data?.message;
+    antMessage.error(message || 'Network error.');
     return {
       error: true,
       data: message || res.response.statusText,

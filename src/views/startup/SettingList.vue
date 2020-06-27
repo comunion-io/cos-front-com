@@ -69,7 +69,9 @@ export default {
       },
       total: 0,
       // 加载中
-      loading: false
+      loading: false,
+      // 轮询请求
+      loopTimeout: null
     };
   },
   methods: {
@@ -91,11 +93,31 @@ export default {
       } else {
         if (settingState !== 2) {
           // waiting for setting或block failed
-          this.$router.push({ name: 'startupSettingDetail', params: { id: startup.id } });
+          this.$router.push({
+            name: 'startupSettingDetail',
+            params: { id: startup.id },
+            query: { state: startup.settingState }
+          });
         } else if (startup.state === 4) {
           // TODO: 设置完成，前往startup主页
         }
       }
+    },
+    // 取消轮询timeout
+    clearTimeout() {
+      if (this.loopTimeout) {
+        clearTimeout(this.loopTimeout);
+        this.loopTimeout = null;
+      }
+    },
+    // 刷新startup列表
+    async refreshStartups() {
+      this.clearTimeout();
+      const [data, total] = await getMyStartups(this.search);
+      this.startups = data;
+      this.total = total;
+      // 15秒刷新一次数据
+      this.loopTimeout = setTimeout(this.refreshStartups, 15000);
     },
     /**
      * @description 获取 startup 列表
@@ -103,14 +125,15 @@ export default {
      */
     async getMyStartups() {
       this.loading = true;
-      const [data, total] = await getMyStartups(this.search);
+      await this.refreshStartups();
       this.loading = false;
-      this.startups = data;
-      this.total = total;
     }
   },
-  async mounted() {
+  mounted() {
     this.getMyStartups();
+  },
+  beforeDestroy() {
+    this.clearTimeout();
   }
 };
 </script>

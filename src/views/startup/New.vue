@@ -69,15 +69,21 @@
           </a-form-model-item> -->
           <!--  submit-->
           <a-form-model-item>
-            <a-tooltip
-              placement="top"
-              :visible="canNotTransaction()"
-              title="wallet balance isn't enough."
-            >
-              <a-button type="primary" size="large" block html-type="submit">
-                Submit
-              </a-button>
-            </a-tooltip>
+            <div class="flex">
+              <a-button v-if="isEdit" class="flex-1 mr-20" size="large" @click="cancelStartup"
+                >Cancel</a-button
+              >
+              <a-tooltip
+                class="flex-2"
+                placement="top"
+                :visible="canNotTransaction"
+                title="wallet balance isn't enough."
+              >
+                <a-button type="primary" size="large" block html-type="submit">
+                  Submit
+                </a-button>
+              </a-tooltip>
+            </div>
             <div>
               Balance:&nbsp;<span class="t-bold">{{ this.balance }} &nbsp;ETH</span>
             </div>
@@ -108,7 +114,13 @@ import { mapGetters } from 'vuex';
 import { COMUNION_RECEIVER_ACCOUNT, web3 } from '@/libs/web3';
 import { urlValidator } from '@/utils/validators';
 import { startupAbi } from '@/libs/abis/startup';
-import { createStartup, updateStartup, getPrepareStartupId, getMyStartupDetail } from '@/services';
+import {
+  createStartup,
+  updateStartup,
+  restoreStartUp,
+  getPrepareStartupId,
+  getMyStartupDetail
+} from '@/services';
 import { merge } from '@/utils';
 import BbsInput from './components/BbsInput';
 
@@ -148,14 +160,35 @@ export default {
     // 是否是编辑模式
     isEdit() {
       return !!this.$route.query.id;
+    },
+    // 余额过少，不能发起交易
+    canNotTransaction() {
+      return this.balance < 0.1;
     }
   },
   methods: {
+    // 取消startup
+    cancelStartup() {
+      this.$confirm({
+        title: 'Quit confirm',
+        content: 'Do you want to keep the current content?',
+        cancelText: 'Remove and quit',
+        okText: 'Keep',
+        onCancel: async () => {
+          if (await restoreStartUp(this.$route.query.id)) {
+            this.$router.go(-1);
+          }
+        },
+        onOk: () => {
+          this.$router.go(-1);
+        }
+      });
+    },
     /**
      *@description 提交表单
      */
     onSubmit() {
-      if (this.canNotTransaction()) {
+      if (this.canNotTransaction) {
         return;
       }
       this.$refs.ruleForm.validate(async valid => {
@@ -181,14 +214,6 @@ export default {
     async getBalance() {
       const balance = await web3.eth.getBalance(this.account);
       this.balance = +(balance / Math.pow(10, 18)).toFixed(4);
-    },
-
-    /**
-     * @description 余额是否足够发起交易
-     * @returns {boolean}
-     */
-    canNotTransaction() {
-      return this.balance < 0.1;
     },
 
     async ethSendTransaction(formData, startupId) {

@@ -12,28 +12,32 @@
             <a-step title="Launch" />
           </a-steps>
         </a-card>
-        <finance
-          v-if="step === 0"
-          :default-data="form.finance"
-          ref="form_0"
-          @cancel="onCancel"
-          @next="onNext"
-        />
-        <governance
-          v-else-if="step === 1"
-          ref="form_1"
-          :default-data="form.governance"
-          @cancel="onCancel"
-          @back="onBack"
-          @next="onNext"
-        />
-        <launch
-          v-else-if="step === 2"
-          ref="launch"
-          @cancel="onCancel"
-          @back="onBack"
-          @submit="onOk"
-        />
+        <a-spin class="flex ai-center jc-center mt-24" size="large" :spinning="!ready">
+          <template v-if="ready">
+            <finance
+              v-if="step === 0"
+              :default-data="form.finance"
+              ref="form_0"
+              @cancel="onCancel"
+              @next="onNext"
+            />
+            <governance
+              v-else-if="step === 1"
+              ref="form_1"
+              :default-data="form.governance"
+              @cancel="onCancel"
+              @back="onBack"
+              @next="onNext"
+            />
+            <launch
+              v-else-if="step === 2"
+              ref="launch"
+              @cancel="onCancel"
+              @back="onBack"
+              @submit="onOk"
+            />
+          </template>
+        </a-spin>
       </a-col>
     </a-row>
     <div v-else class="flex-column ai-center">
@@ -78,7 +82,9 @@ export default {
       step: 0,
       form,
       // 是否已完成
-      completed: false
+      completed: false,
+      // 数据初始化是否完成
+      ready: false
     };
   },
   components: {
@@ -221,35 +227,41 @@ export default {
   },
   async mounted() {
     window.addEventListener('beforeunload', this.onUnload, false);
-    // 读取之前的setting设置
-    const { setting } = await getMyStartupDetail(this.$route.params.id);
-    if (setting) {
-      // 后端返回数据转化为前端格式
-      const voteMinDurationDays = Math.floor(setting.voteMinDurationHours / 24);
-      const voteMaxDurationDays = Math.floor(setting.voteMaxDurationHours / 24);
-      merge(this.form, {
-        finance: {
-          tokenName: setting.tokenName,
-          tokenSymbol: setting.tokenSymbol,
-          tokenAddr: setting.tokenAddr,
-          walletAddrs: setting.walletAddrs
-        },
-        governance: {
-          voteType: setting.type,
-          voteAssignAddrs: setting.voteAssignAddrs,
-          voteTokenLimit: setting.voteTokenLimit,
-          voteSupportPercent: setting.voteSupportPercent,
-          voteMinApprovalPercent: setting.voteMinApprovalPercent,
-          minDuration: {
-            hours: setting.voteMinDurationHours - voteMinDurationDays * 24,
-            days: voteMinDurationDays
+    // 如果是setting失败，则读取之前的setting设置，如果小于等于1，则认为是第一次设置
+    const settingState = this.$route.query.state;
+    if (settingState != null && settingState <= 1) {
+      this.ready = true;
+    } else {
+      const { settings } = await getMyStartupDetail(this.$route.params.id);
+      this.ready = true;
+      if (settings) {
+        // 后端返回数据转化为前端格式
+        const voteMinDurationDays = Math.floor(settings.voteMinDurationHours / 24);
+        const voteMaxDurationDays = Math.floor(settings.voteMaxDurationHours / 24);
+        merge(this.form, {
+          finance: {
+            tokenName: settings.tokenName,
+            tokenSymbol: settings.tokenSymbol,
+            tokenAddr: settings.tokenAddr,
+            walletAddrs: settings.walletAddrs
           },
-          maxDuration: {
-            hours: setting.voteMaxDurationHours - voteMaxDurationDays * 24,
-            days: voteMaxDurationDays
+          governance: {
+            voteType: settings.type,
+            voteAssignAddrs: settings.voteAssignAddrs,
+            voteTokenLimit: settings.voteTokenLimit,
+            voteSupportPercent: settings.voteSupportPercent,
+            voteMinApprovalPercent: settings.voteMinApprovalPercent,
+            minDuration: {
+              hours: settings.voteMinDurationHours - voteMinDurationDays * 24,
+              days: voteMinDurationDays
+            },
+            maxDuration: {
+              hours: settings.voteMaxDurationHours - voteMaxDurationDays * 24,
+              days: voteMaxDurationDays
+            }
           }
-        }
-      });
+        });
+      }
     }
   },
   beforeDestroy() {
