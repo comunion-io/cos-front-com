@@ -103,7 +103,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { Transaction } from 'ethereumjs-tx';
+// import { Transaction } from 'ethereumjs-tx';
 // import { EthereumTx } from 'ethereumjs-tx/dist/fake';
 import { COMUNION_RECEIVER_ACCOUNT, web3 } from '@/libs/web3';
 import { urlValidator } from '@/utils/validators';
@@ -160,8 +160,16 @@ export default {
       }
       this.$refs.ruleForm.validate(async valid => {
         if (valid) {
-          this.createState = 'creating';
-          this.getTxid({ ...this.form });
+          try {
+            this.createState = 'creating';
+            const startupId = await getPrepareStartupId();
+            if (startupId) {
+              const id = startupId.id;
+              this.ethSendTransaction(this.form, id);
+            }
+          } catch (e) {
+            console.error(e);
+          }
         }
       });
     },
@@ -183,10 +191,11 @@ export default {
       return this.balance < 0.1;
     },
 
-    async getHashBeforeTransaction(formData, startupId) {
+    async ethSendTransaction(formData, startupId) {
       const contractStatpUp = await this.getContractInstance(formData, startupId);
       const codeData = await contractStatpUp.encodeABI();
-      let countAll = await web3.eth.getTransactionCount(this.account, 'pending');
+      const countAll = await web3.eth.getTransactionCount(this.account, 'pending');
+      const chainId = await web3.eth.getChainId();
 
       const tx = {
         from: this.account,
@@ -195,64 +204,44 @@ export default {
         value: web3.utils.numberToHex(Math.pow(10, 17)),
         nonce: web3.utils.numberToHex(countAll),
         gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
-        gasLimit: web3.utils.numberToHex(183943)
+        gasLimit: web3.utils.numberToHex(183943),
+        chainId: chainId
       };
-      let signTx = new Transaction(tx, {
-        chain: this.netWorkName.toLowerCase(),
-        hardfork: 'petersburg'
-      });
-
-      // console.log(
-      //   '%c\n  signTx.serialize(); :::----->',
-      //   'font-size:30px;background: purple;',
-      //   signTx.serialize().toString('hex')
-      // );
-
-      const sign = await web3.eth.sign(web3.utils.utf8ToHex(signTx.serialize()), this.account);
-      console.log('%c\n  sign :::----->', 'font-size:30px;background: purple;', sign);
-
-      // TODO
-      // const privateKey1 = '6D42DB831B192658A424EF5D5948693729C0EA7FD189B8C685037D0A969ADB6B';
-      // const privateKey = Buffer.from(privateKey1, 'hex');
-      // signTx.sign(privateKey);
-
-      let serializedTx = signTx.serialize();
-      let txData = '0x' + serializedTx.toString('hex');
-      // console.log('%c\n  txData :::----->', 'font-size:30px;background: purple;', txData);
-
-      // console.log(
-      //   '%c\n  web3.utils.sha3(txData) :::----->',
-      //   'font-size:30px;background: purple;',
-      //   web3.utils.sha3(txData)
-      // );
-      return web3.utils.sha3(txData);
+      window.ethereum.sendAsync(
+        {
+          method: 'eth_sendTransaction',
+          params: [tx],
+          from: window.ethereum.selectedAddress
+        },
+        (err, result) => {
+          if (err) {
+            return console.error(err);
+          }
+          const txid = result.result;
+          this.createStartUp(formData, startupId, txid);
+        }
+      );
     },
 
     /**
      * @description 构建hex, 生成txid
      * @param formData
+     * @param startupId
+     * @param txid
      */
-    async getTxid(formData) {
+    async createStartUp(formData, startupId, txid) {
       try {
-        // 获取startup id
-        const startupId = await getPrepareStartupId();
-        console.log('%c\n  startupId :::----->', 'font-size:30px;background: purple;', startupId);
-
-        // 交易前获取交易hash
-        const txid = await this.getHashBeforeTransaction(formData, startupId.id);
-
         if (this.isEdit) {
           // 更新
-          if (await updateStartup(this.$router.query.id, { ...formData, txid })) {
-            // 发起交易
-            this.sendTransaction(formData, this.$router.query.id);
+          const startUp = await updateStartup(this.$router.query.id, { ...formData, txid });
+          if (startUp) {
+            this.createState = 'successed';
           }
         } else {
           // 后端创建startup
-          const startup = await createStartup({ ...formData, txid, id: startupId.id });
-          if (startup) {
-            // 发起交易
-            this.sendTransaction(formData, startupId.id);
+          const startUp = await createStartup({ ...formData, txid, id: startupId });
+          if (startUp) {
+            this.createState = 'successed';
           }
         }
       } catch (e) {
@@ -260,33 +249,6 @@ export default {
       }
     },
 
-    /**
-     * @description 发起交易
-     * @param formData
-     * @param id: startup id
-     * @returns {Promise<void>}
-     */
-    async sendTransaction(formData, id) {
-      let countAll = await web3.eth.getTransactionCount(this.account, 'pending');
-      const contractStatpUp = await this.getContractInstance(formData, id);
-      const codeData = await contractStatpUp.encodeABI();
-      // 上链
-      try {
-        const block = await contractStatpUp.send({
-          from: this.account,
-          to: COMUNION_RECEIVER_ACCOUNT,
-          data: codeData,
-          value: Math.pow(10, 17).toString(),
-          nonce: web3.utils.numberToHex(countAll),
-          gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
-          gasLimit: web3.utils.numberToHex(183943)
-        });
-        console.log('%c\n  block :::----->', 'font-size:30px;background: purple;', block);
-        this.createState = 'successed';
-      } catch (e) {
-        console.log('%c\n  e :::----------->', 'font-size:30px;background: purple;', e);
-      }
-    },
     /**
      * @description 获取合约实例
      * @returns {Promise<*>}
