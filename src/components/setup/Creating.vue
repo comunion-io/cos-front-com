@@ -4,10 +4,11 @@
     <p>Waiting to create</p>
     <div class="text">
       <p>
-        The entire process will take some time to submit all the information to the Ethereum Mainnet
+        This process will take some time to submit all information to the Ethereum Mainnet
         Blockchain
         <br />
-        you can try visit our forum bbs-comunion.io
+        you can try visit our forum
+        <a href="https://bbs.comunion.io/" target="_blank">bbs-comunion.io</a>
       </p>
     </div>
   </div>
