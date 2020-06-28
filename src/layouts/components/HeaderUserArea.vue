@@ -75,7 +75,7 @@ export default {
     handledAccount() {
       let account = this.account;
       if (account && account.length > 0) {
-        account = `${account.substr(0, 12)}...${account.substr(-4)}`;
+        account = `${account.substr(0, 10)}...${account.substr(-4)}`;
       }
       return account;
     }
