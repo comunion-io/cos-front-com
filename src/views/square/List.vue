@@ -1,8 +1,11 @@
 <template>
   <div id="home">
     <div class="total">
-      <img src="@/assets/images/group@2x.png" alt="" width="38" height="38" />
-      There are <span class="num">{{ total }}</span> Startups in comunion.
+      <!-- <img src="@/assets/images/group@2x.png" alt="" width="38" height="38" /> -->
+      <div class="noti-icon flex-inline ai-center jc-center">
+        <a-icon type="notification" />
+      </div>
+      <span class="num">{{ total }}&nbsp;Startups</span>in the Comunion.
     </div>
 
     <!-- search -->
@@ -93,11 +96,23 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import '~@/assets/styles/variables.less';
 #home {
   background: rgba(242, 243, 244, 1);
   min-height: calc(100vh - 70px);
   padding: 28px 220px 0 220px;
-
+  .noti-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #dce0fe;
+    .anticon {
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+      color: @primary-color;
+    }
+  }
   .total {
     display: flex;
     flex-direction: row;
@@ -112,11 +127,11 @@ export default {
     }
 
     .num {
+      margin: 0 0.5em 0 1em;
       font-size: 14px;
       font-family: Microsoft YaHei;
       font-weight: bold;
       color: rgba(0, 0, 0, 1);
-      margin: 0 10px;
     }
   }
 }
