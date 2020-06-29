@@ -66,7 +66,7 @@ export default {
     }
 
     /** 每次加载， 需要检查登录时长， 超过6小时， 自动登出 */
-    const outTime = 6 * 60 * 60 * 1000; // 设置超时时间： 6h
+    const outTime = 2 * 60 * 60 * 1000; // 设置超时时间： 6h
     const loginTime = this.logInTime;
     const now = new Date().getTime();
     if (now - loginTime > outTime) {

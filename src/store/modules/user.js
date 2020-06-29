@@ -138,7 +138,7 @@ const actions = {
         /** 不刷新网页的情况下， 6个小时自动登出 */
         setTimeout(() => {
           dispatch('logout');
-        }, 6 * 60 * 60 * 1000);
+        }, 2 * 60 * 60 * 1000);
       } catch (error) {
         message.error(error?.message || 'Error occured.');
       }
