@@ -61,7 +61,6 @@ export default {
       const accounts = await web3.eth.getAccounts();
       if (accounts.length === 0) {
         this.$store.dispatch('logout');
-        this.$router.push('/');
       }
     }
 
@@ -71,7 +70,6 @@ export default {
     const now = new Date().getTime();
     if (now - loginTime > outTime) {
       this.$store.dispatch('logout');
-      this.$router.push('/');
     }
   }
 };

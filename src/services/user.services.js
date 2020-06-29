@@ -8,8 +8,8 @@ import { request } from './request';
  * @returns
  */
 export async function login(params) {
-  const { error } = await request('post', '/account/login/', params);
-  return !error;
+  const { error, data } = await request('post', '/account/login/', params);
+  return error ? false : data;
 }
 
 export async function logout() {

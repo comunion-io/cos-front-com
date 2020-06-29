@@ -17,7 +17,7 @@
           </div>
           <a-divider></a-divider>
           <div class="show-user-info">
-            <a-avatar shape="square" :src="avatar" />
+            <a-avatar :src="user.avatar" />
             <span class="account">{{ account }}</span>
             <div class="description">
               <span>Hunt bounty with skill，change the life .</span>
@@ -28,10 +28,10 @@
           </div>
         </div>
       </template>
-      <div class="user-info">
-        <a-avatar shape="square" :src="avatar" />
-        <div>
-          <span>{{ handledAccount() }}</span>
+      <div class="user-info flex ai-center">
+        <a-avatar class="mr-12" :src="user.avatar" />
+        <div class="flex-column">
+          <span class="t-trunc">{{ lessAccount }}</span>
           <span class="network">Connected to {{ netWorkName }}</span>
         </div>
       </div>
@@ -44,13 +44,16 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'HeaderUserArea',
-  data() {
-    return {
-      avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
-    };
-  },
   computed: {
-    ...mapGetters(['isLoggedIn', 'account', 'netWorkName'])
+    ...mapGetters(['isLoggedIn', 'user', 'account', 'netWorkName']),
+    // 把账户名处理成只保留前后四位，中间省略号
+    lessAccount() {
+      let account = this.account;
+      if (account && account.length > 0) {
+        account = `${account.substr(0, 10)}...${account.substr(-4)}`;
+      }
+      return account;
+    }
   },
   methods: {
     /**
@@ -58,7 +61,6 @@ export default {
      */
     disConnectWallet() {
       this.$store.dispatch('logout');
-      this.$router.push('/');
     },
     /**
      * @description 发布hunter
@@ -66,18 +68,6 @@ export default {
     transformHunter() {
       alert('working');
       console.log('发布hunter');
-    },
-
-    /**
-     * @description 把账户名处理成只保留前后四位，中间省略号
-     * @returns {string}
-     */
-    handledAccount() {
-      let account = this.account;
-      if (account && account.length > 0) {
-        account = `${account.substr(0, 10)}...${account.substr(-4)}`;
-      }
-      return account;
     }
   }
 };
@@ -85,21 +75,13 @@ export default {
 
 <style scoped lang="less">
 .user-area {
-  margin-left: 10px;
+  margin-left: 20px;
   cursor: pointer;
   .user-info {
-    display: flex;
-    flex-direction: row;
     & > div {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
       & > span {
         &:first-child {
           max-width: 140px;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
           font-weight: 400;
           color: rgba(0, 0, 0, 1);
         }

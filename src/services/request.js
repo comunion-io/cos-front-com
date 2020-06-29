@@ -1,7 +1,6 @@
 import axios, { CancelToken } from 'axios';
 import { message as antMessage } from 'ant-design-vue';
 import store from '@/store';
-import router from '@/router';
 
 // 测试环境
 // const dev = 'https://dev.comunion.io/api/';
@@ -52,13 +51,12 @@ instance.interceptors.response.use(
   res => {
     if (res.response?.status === 401) {
       store.dispatch('logout');
-      router.replace({ name: 'square', query: { from: router.currentRoute.fullPath } });
     }
-    const message = res.response?.data?.message;
-    antMessage.error(message || 'Network error.');
+    const message = res.response?.data?.message || 'Network error.';
+    antMessage.error(message);
     return {
       error: true,
-      data: message || res.response.statusText,
+      data: message,
       detail: res.response
     };
   }

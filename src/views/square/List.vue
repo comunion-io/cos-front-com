@@ -96,7 +96,7 @@ export default {
 #home {
   background: rgba(242, 243, 244, 1);
   min-height: calc(100vh - 70px);
-  padding: 40px 110px 0 110px;
+  padding: 28px 220px 0 220px;
 
   .total {
     display: flex;

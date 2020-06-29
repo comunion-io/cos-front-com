@@ -1,12 +1,7 @@
 <template>
   <div class="header-megamenu">
-    <div v-if="isLoggedIn">
-      <HeaderUserArea />
-    </div>
-
-    <div v-else>
-      <HeaderConnect />
-    </div>
+    <HeaderUserArea v-if="isLoggedIn" />
+    <HeaderConnect v-else />
   </div>
 </template>
 

@@ -1,11 +1,19 @@
 import { message } from 'ant-design-vue';
-import { LOGIN_TIME, TEST_NET_WORK_NAME, USER_ACCOUNT_ADDRESS } from '@/configs/storage';
+import { LOGIN_TIME, TEST_NET_WORK_NAME, USER_INFO, USER_ACCOUNT_ADDRESS } from '@/configs/storage';
 import { web3, initWeb3 } from '@/libs/web3';
 import { getNonce, login, logout } from '@/services';
+import router from '@/router';
 
 const ls = window.localStorage;
 
+let user;
+try {
+  user = JSON.parse(ls.getItem(USER_INFO));
+} catch (error) {}
+
 const state = {
+  // 用户信息
+  user: user || {},
   /** 登录后的账号，目前只是钱包地址 */
   account: ls.getItem(USER_ACCOUNT_ADDRESS) || '',
   /** metamask 网络名称 */
@@ -15,6 +23,14 @@ const state = {
 };
 
 const mutations = {
+  SET_USER(state, user) {
+    state.user = user;
+    if (user.id) {
+      ls.setItem(USER_INFO, JSON.stringify(user));
+    } else {
+      ls.removeItem(USER_INFO);
+    }
+  },
   // 更新账户信息
   UPDATE_ACCOUNT(state, account = '') {
     state.account = account;
@@ -122,6 +138,7 @@ const actions = {
           if (!ret) {
             throw new Error('Error when login, please try agian');
           }
+          commit('SET_USER', ret);
           // 注册metamask事件
           // FIXME: on之前需要先off
           ethereum.autoRefreshOnNetworkChange = true;
@@ -157,10 +174,17 @@ const actions = {
   async logout({ commit }) {
     await logout();
     commit('UPDATE_ACCOUNT', '');
+    commit('SET_USER', {});
+    // 跳到首页
+    if (router.currentRoute.name !== 'square') {
+      router.push({ name: 'square', query: { from: router.currentRoute.fullPath } });
+    }
   }
 };
 
 const getters = {
+  // 用户信息
+  user: state => state.user,
   // 获取我的钱包地址
   account: state => state.account,
   // 是否连接了metamask

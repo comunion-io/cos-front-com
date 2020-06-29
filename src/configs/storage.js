@@ -1,3 +1,6 @@
+// 用户信息
+export const USER_INFO = 'user.info';
+
 // 用户钱包地址，有则认为是已登录
 export const USER_ACCOUNT_ADDRESS = 'user.account.address';
 
