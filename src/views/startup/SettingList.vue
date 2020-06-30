@@ -12,7 +12,7 @@
             <a-tabs default-active-key="1" @change="changedTab($event)">
               <a-tab-pane key="1" tab="My Startup">
                 <div class="flex-column ai-center" style="padding: 0 30px 30px">
-                  <startup-item :startup="newStartupItem" @click.native="createStartUp" />
+                  <!--<startup-item :startup="newStartupItem" @click.native="createStartUp" />-->
                   <a-spin class="w-100p" size="large" :spinning="loading">
                     <startup-item
                       v-for="startup in startups"
