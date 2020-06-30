@@ -88,6 +88,22 @@ const routes = [
       }
     ]
   },
+  // 蓝色背景布局
+  {
+    path: '/b',
+    component: () => import(/* webpackChunkName: 'welcome' */ '@/layouts/BlueLayout.vue'),
+    children: [
+      {
+        path: 'introduction',
+        name: 'introduction',
+        meta: {
+          title: 'Introduction',
+          skipAuth: true
+        },
+        component: () => import(/* webpackChunkName: 'introduction' */ '@/views/intro/Intro.vue')
+      }
+    ]
+  },
   {
     path: '*',
     component: {

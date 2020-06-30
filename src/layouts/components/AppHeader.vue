@@ -15,8 +15,8 @@
         >
       </div>
       <!-- 未连接metamask, 暂时不能创建start up -->
-      <a-button class="ml-auto mr-24" type="green" size="large" :disabled="!isLoggedIn">
-        <router-link :to="{ name: 'newStartup' }"> +&nbsp;New Startup </router-link>
+      <a-button class="ml-auto mr-24" type="green" size="large" @click="createStartup">
+        +&nbsp;New Startup
       </a-button>
       <MegaMenu />
       <router-link v-if="isLoggedIn" :to="{ name: 'startupSetting' }">
@@ -54,6 +54,11 @@ export default {
         { name: 'governace', title: 'Governace' }
       ]
     };
+  },
+  methods: {
+    createStartup() {
+      this.$router.push({ name: this.isLoggedIn ? 'newStartup' : 'introduction' });
+    }
   },
   async mounted() {
     /** 关闭也页面， 在登出metamask, 在根据网址打开网页， comunion 任然显示登录状态 */
