@@ -2,7 +2,7 @@
   <div class="app-header">
     <div class="main-container flex ai-center h-100p">
       <router-link to="/">
-        <img src="@/assets/images/logo@2x.png" alt="" width="128" />
+        <img src="@/assets/images/logo@4x.png" alt="" width="128" />
       </router-link>
       <div class="navs flex ai-center ml-32">
         <router-link
