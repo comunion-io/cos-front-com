@@ -140,6 +140,13 @@ export default {
       // 关闭loading
       this.$refs.launch.loading = false;
     },
+
+    /**
+     * @description 发起交易
+     * @param formData
+     * @param id
+     * @returns {Promise<void>}
+     */
     async ethSendTransaction(formData, id) {
       const contractStatpUp = await this.getContractInstance(formData, id);
       const codeData = await contractStatpUp.encodeABI();
@@ -179,18 +186,23 @@ export default {
     async getContractInstance(formData, id) {
       const data = JSON.parse(JSON.stringify(formData));
       const contract = new web3.eth.Contract(settingAbi, COMMUNION_SETTING_RECEIVE_ACCOUNT);
-      data.walletAddrs = data.walletAddrs.map(item => item.addr);
-
+      const walletAddrs = data.walletAddrs.map(item => item.addr);
+      let voteAssignAddrs = [];
+      data.voteAssignAddrs.forEach(item => {
+        voteAssignAddrs.push(item || '0x0000000000000000000000000000000000000000');
+      });
       /** 发起合约 */
       const contractSetting = await contract.methods.newSetting(
         id,
         data.tokenName,
         data.tokenSymbol,
         data.tokenAddr,
-        data.walletAddrs,
+        walletAddrs,
         data.voteType,
+        // POS
         data.voteTokenLimit.toString(),
-        data.voteAssignAddrs,
+        // Founder assign
+        voteAssignAddrs,
         data.voteSupportPercent.toString(),
         data.voteMinApprovalPercent.toString(),
         data.voteMinDurationHours.toString(),
