@@ -1,7 +1,7 @@
 <template>
   <div class="app-header">
     <div class="main-container flex ai-center h-100p">
-      <router-link to="/">
+      <router-link to="/" exact>
         <img src="@/assets/images/logo@4x.png" alt="" width="128" />
       </router-link>
       <div class="navs flex ai-center ml-32">
@@ -34,9 +34,10 @@
 </template>
 
 <script>
-import MegaMenu from './MegaMenu';
 import { mapGetters } from 'vuex';
 import { web3 } from '@/libs/web3';
+import MegaMenu from './MegaMenu';
+import navs from './navs';
 
 export default {
   components: {
@@ -47,17 +48,12 @@ export default {
   },
   data() {
     return {
-      navs: [
-        { name: 'square', title: 'Home' },
-        { name: 'bounty', title: 'Bounty' },
-        { name: 'exchange', title: 'Exchange' },
-        { name: 'governace', title: 'Governace' }
-      ]
+      navs
     };
   },
   methods: {
     createStartup() {
-      this.$router.push({ name: this.isLoggedIn ? 'newStartup' : 'introduction' });
+      this.$router.push({ name: this.isLoggedIn ? 'newStartup' : 'guide' });
     }
   },
   async mounted() {

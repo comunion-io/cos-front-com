@@ -19,4 +19,9 @@ export default {
   }
 };
 </script>
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.app-header + .main-container {
+  background: #f2f3f4;
+  min-height: calc(100vh - 128px);
+}
+</style>

@@ -94,13 +94,13 @@ const routes = [
     component: () => import(/* webpackChunkName: 'welcome' */ '@/layouts/BlueLayout.vue'),
     children: [
       {
-        path: 'introduction',
-        name: 'introduction',
+        path: 'guide',
+        name: 'guide',
         meta: {
-          title: 'Introduction',
+          title: 'Guide',
           skipAuth: true
         },
-        component: () => import(/* webpackChunkName: 'introduction' */ '@/views/intro/Intro.vue')
+        component: () => import(/* webpackChunkName: 'guide' */ '@/views/guide/Guide.vue')
       }
     ]
   },
