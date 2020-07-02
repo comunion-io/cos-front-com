@@ -18,7 +18,9 @@
         resources, funds, and Marketing and other resources to help Startup and laborers realize
         free value transactions.
       </p>
-      <a-button class="more-btn">MORE</a-button>
+      <a-button class="more-btn">
+        <a href="https://wiki.comunion.io/" target="_blank">MORE</a>
+      </a-button>
     </article>
     <article class="right">
       <div class="px-16">
@@ -49,7 +51,7 @@
         <a-card class="connect-card">
           <div class="flex ai-center">
             <img src="@/assets/images/guide/connect.png" alt="" width="24" height="28" />
-            <div class="ml-20 t-grey">Connect account by metamask</div>
+            <div class="ml-20 t-grey" @click="connectMetaMask">Connect account by metamask</div>
           </div>
         </a-card>
         <div class="features flex flex-wrap">
@@ -93,6 +95,17 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    async connectMetaMask() {
+      if (!!window.ethereum && window.ethereum.isMetaMask) {
+        await this.$store.dispatch('login');
+        this.$router.push({ name: 'square' });
+      } else {
+        const url = 'https://metamask.io/';
+        window.open(url);
+      }
+    }
   }
 };
 </script>
