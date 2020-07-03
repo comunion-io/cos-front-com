@@ -114,7 +114,13 @@ const actions = {
       }
     }
   },
-  // 用户登录
+
+  /**
+   * descriptions 用户登录
+   * @param dispatch
+   * @param commit
+   * @returns {Promise<boolean>}
+   */
   async login({ dispatch, commit }) {
     // 检查用户是否安装了metamask
     if (!!window.ethereum && window.ethereum.isMetaMask) {
