@@ -99,8 +99,10 @@ export default {
   methods: {
     async connectMetaMask() {
       if (!!window.ethereum && window.ethereum.isMetaMask) {
-        await this.$store.dispatch('login');
-        this.$router.push({ name: 'square' });
+        const login = await this.$store.dispatch('login');
+        if (login) {
+          this.$router.push({ name: 'square' });
+        }
       } else {
         const url = 'https://metamask.io/';
         window.open(url);

@@ -48,6 +48,7 @@ const mutations = {
    * @constructor
    */
   UPDATE_LOGIN_TIME(state, loginTime) {
+    state.logInTime = loginTime;
     ls.setItem(LOGIN_TIME, loginTime);
   },
 
@@ -159,6 +160,7 @@ const actions = {
       } catch (error) {
         message.error(error?.message || 'Error occured.');
       }
+      return true;
     } else {
       // 打开metamask官网
       window.open('https://metamask.io/');
