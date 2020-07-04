@@ -15,7 +15,12 @@
         >
       </div>
       <!-- 未连接metamask, 暂时不能创建start up -->
-      <a-button class="ml-auto mr-24" type="green" size="large" @click="createStartup">
+      <a-button
+        class="ml-auto mr-24"
+        :type="isLoggedIn ? 'green' : 'default'"
+        size="large"
+        @click="createStartup"
+      >
         +&nbsp;New Startup
       </a-button>
       <MegaMenu />
