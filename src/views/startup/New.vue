@@ -216,6 +216,12 @@ export default {
       this.balance = +(balance / Math.pow(10, 18)).toFixed(4);
     },
 
+    /**
+     * @description 发起交易
+     * @param formData: startup表单数据
+     * @param startupId： startup id
+     * @returns {Promise<void>}
+     */
     async ethSendTransaction(formData, startupId) {
       const contractStatpUp = await this.getContractInstance(formData, startupId);
       const codeData = await contractStatpUp.encodeABI();
