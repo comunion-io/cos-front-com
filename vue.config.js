@@ -24,7 +24,8 @@ const webpack = require('webpack');
 module.exports = {
   devServer: {
     disableHostCheck: true,
-    proxy: 'https://dev.comunion.io'
+    // proxy: 'https://dev.comunion.io'
+    proxy: 'http://dao.comunion.io'
   },
   configureWebpack: {
     // webpack plugins
