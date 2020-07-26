@@ -66,8 +66,8 @@ export default {
      * @description 发布hunter
      */
     transformHunter() {
-      alert('working');
-      console.log('发布hunter');
+      // TODO hunter 成功以后，点击后执行
+      this.$router.push({ name: 'hunterManage' });
     }
   }
 };
