@@ -85,6 +85,16 @@ const routes = [
         },
         component: () =>
           import(/* webpackChunkName: 'startupSetting' */ '@/views/welcome/Welcome.vue')
+      },
+      //  hunter manage
+      {
+        path: '/hunter/manage',
+        name: 'hunterManage',
+        meta: {
+          title: 'hunterManage'
+        },
+        component: () =>
+          import(/* webpackChunkName: 'newStartup' */ '@/views/hunter-manage/HunterManage')
       }
     ]
   },
