@@ -56,7 +56,7 @@ form label {
           <a-input v-model="form.email" placeholder="" size="large" :max-length="50" />
         </a-form-model-item>
         <a-form-model-item>
-          <a-button type="primary" block>
+          <a-button type="primary" @click="onSubmit" block>
             Submit
           </a-button>
         </a-form-model-item>
@@ -69,9 +69,32 @@ form label {
         @ok="clickOkInSkillsModal"
         @cancel="clickCancelInSkillsModal"
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <p>
+          <template v-for="(tag, index) in tags">
+            <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
+              <a-tag :key="tag" :closable="index !== 0" @close="() => handleClose(tag)">
+                {{ `${tag.slice(0, 20)}...` }}
+              </a-tag>
+            </a-tooltip>
+            <a-tag v-else :key="tag" :closable="index !== 0" @close="() => handleClose(tag)">
+              {{ tag }}
+            </a-tag>
+          </template>
+          <a-input
+            v-if="inputVisible"
+            ref="input"
+            type="text"
+            size="small"
+            :style="{ width: '78px' }"
+            :value="inputValue"
+            @change="handleInputChange"
+            @blur="handleInputConfirm"
+            @keyup.enter="handleInputConfirm"
+          />
+          <a-tag v-else style="background: #fff; borderStyle: dashed;" @click="showInput">
+            <a-icon type="plus" /> New Tag
+          </a-tag>
+        </p>
       </a-modal>
     </div>
   </div>
@@ -86,14 +109,16 @@ export default {
     return {
       form: {
         name: '',
-        skills: '',
+        skills: [],
         about: '',
         descriptionAddr: '',
         email: ''
       },
       rules: {
         name: [{ required: true, message: 'Please input startup name', trigger: 'blur' }],
-        skills: [{ required: true, message: 'Please select skills', trigger: 'blur' }],
+        skills: [
+          { type: 'array', required: true, message: 'Please select skills', trigger: 'change' }
+        ],
         about: [{ required: true, message: 'Please input about', trigger: 'blur' }],
         descriptionAddr: [
           {
@@ -128,13 +153,33 @@ export default {
       console.log(e);
       this.visible = false;
     },
-    handleSubmit(e) {
-      e.preventDefault();
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values);
-          this.$store.commit('update', values);
+    onSubmit() {
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          alert('submit!');
+        } else {
+          console.log('error submit!!');
+          return false;
         }
+      });
+    },
+    // resetForm() {
+    //   this.$refs.ruleForm.resetFields();
+    // },
+    handleInputChange(e) {
+      this.inputValue = e.target.value;
+    },
+    handleInputConfirm() {
+      const inputValue = this.inputValue;
+      let tags = this.tags;
+      if (inputValue && tags.indexOf(inputValue) === -1) {
+        tags = [...tags, inputValue];
+      }
+      console.log(tags);
+      Object.assign(this, {
+        tags,
+        inputVisible: false,
+        inputValue: ''
       });
     }
   }
