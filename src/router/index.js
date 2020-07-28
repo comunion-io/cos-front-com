@@ -95,6 +95,17 @@ const routes = [
         },
         component: () =>
           import(/* webpackChunkName: 'newStartup' */ '@/views/hunter-manage/HunterManage')
+      },
+      // Transform Hunter
+      {
+        path: '/hunter/TransformHunter',
+        name: 'transformHunter',
+        meta: {
+          title: 'TransformHunter',
+          skipAuth: false
+        },
+        component: () =>
+          import(/* webpackChunkName: 'hunter' */ '@/views/hunter/TransformHunter.vue')
       }
     ]
   },
