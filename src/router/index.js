@@ -31,6 +31,17 @@ const routes = [
         },
         component: () => import(/* webpackChunkName: 'bounty' */ '@/views/bounty/List.vue')
       },
+      // startupmanagement
+      {
+        path: '/bounty/startup-manage',
+        name: 'startupManage',
+        meta: {
+          title: 'StartupManage',
+          skipAuth: false
+        },
+        component: () =>
+          import(/* webpackChunkName: 'bounty' */ '@/views/startup-manage/StartupManage.vue')
+      },
       {
         path: '/exchange',
         name: 'exchange',
