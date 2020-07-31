@@ -99,7 +99,7 @@ export default {
             query: { state: startup.settingState }
           });
         } else if (startup.state === 2 && startup.settingState === 2) {
-          this.$router.push({ name: 'startupManage', query: { id: startup.id } });
+          this.$router.push({ name: 'startupManage' });
         }
       }
     },
