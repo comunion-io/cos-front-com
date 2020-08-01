@@ -1,34 +1,15 @@
-<!-- bounty -->
+<!-- bounty card -->
 <template>
-  <div class="startup-bounty">
-    <!-- new bounty -->
-    <a-row type="flex" justify="end">
-      <a-col :span="5">
-        <a-button type="primary" block @click="newBounty">+ New Bounty</a-button>
-      </a-col>
-    </a-row>
-    <section class="bounty-list">
-      <bounty-list :startupId="startupId"></bounty-list>
-    </section>
-  </div>
+  <div class="bounty-card"></div>
 </template>
 
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import BountyList from './BountyList';
 
 export default {
   // import引入的组件需要注入到对象中才能使用
-  components: {
-    BountyList
-  },
-  props: {
-    startupId: {
-      type: String,
-      required: true
-    }
-  },
+  components: {},
   data() {
     // 这里存放数据
     return {};
@@ -38,11 +19,7 @@ export default {
   // 监控data中的数据变化
   watch: {},
   // 方法集合
-  methods: {
-    newBounty() {
-      this.$router.push({ name: 'newBounty' });
-    }
-  },
+  methods: {},
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   // 生命周期 - 挂载完成（可以访问DOM元素）
@@ -65,9 +42,4 @@ export default {
 </script>
 <style lang="less" scoped>
 //@import url(); 引入公共css类
-.startup-bounty {
-  .bounty-list {
-    margin-top: 20px;
-  }
-}
 </style>

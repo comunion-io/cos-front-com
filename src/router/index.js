@@ -42,6 +42,17 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: 'bounty' */ '@/views/startup-manage/StartupManage.vue')
       },
+      // new bounty
+      {
+        path: '/bounty/new',
+        name: 'newBounty',
+        meta: {
+          title: 'newBOunty',
+          skipAuth: false
+        },
+        component: () =>
+          import(/* webpackChunkName: 'bounty' */ '@/views/startup-manage/components/NewBounty.vue')
+      },
       {
         path: '/exchange',
         name: 'exchange',
