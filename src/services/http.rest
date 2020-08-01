@@ -1,9 +1,0 @@
-@hostname = http://dev.comunion.io/api/
-@contentType = application/json
-### @auth = Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
-
-### 获取nonce
-POST {{hostname}}/nonce
-# contentType: {{contentType}}
-
-{"publicKey": "0xf98a7f9e86dce7298f3be4778acd692d649c5228"}

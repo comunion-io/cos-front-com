@@ -98,8 +98,12 @@ export default {
             params: { id: startup.id },
             query: { state: startup.settingState }
           });
-        } else if (startup.state === 4) {
-          // TODO: 设置完成，前往startup主页
+        } else if (startup.state === 2 && startup.settingState === 2) {
+          // 前往bountymanager 页面
+          this.$router.push({
+            name: 'startupManage',
+            query: { startupId: startup.id }
+          });
         }
       }
     },

@@ -31,6 +31,28 @@ const routes = [
         },
         component: () => import(/* webpackChunkName: 'bounty' */ '@/views/bounty/List.vue')
       },
+      // startupmanagement
+      {
+        path: '/bounty/startup-manage',
+        name: 'startupManage',
+        meta: {
+          title: 'StartupManage',
+          skipAuth: false
+        },
+        component: () =>
+          import(/* webpackChunkName: 'bounty' */ '@/views/startup-manage/StartupManage.vue')
+      },
+      // new bounty
+      {
+        path: '/bounty/new',
+        name: 'newBounty',
+        meta: {
+          title: 'newBOunty',
+          skipAuth: false
+        },
+        component: () =>
+          import(/* webpackChunkName: 'bounty' */ '@/views/startup-manage/components/NewBounty.vue')
+      },
       {
         path: '/exchange',
         name: 'exchange',
@@ -95,6 +117,17 @@ const routes = [
         },
         component: () =>
           import(/* webpackChunkName: 'newStartup' */ '@/views/hunter-manage/HunterManage')
+      },
+      // Transform Hunter
+      {
+        path: '/hunter/TransformHunter',
+        name: 'transformHunter',
+        meta: {
+          title: 'TransformHunter',
+          skipAuth: false
+        },
+        component: () =>
+          import(/* webpackChunkName: 'hunter' */ '@/views/hunter/TransformHunter.vue')
       }
     ]
   },
