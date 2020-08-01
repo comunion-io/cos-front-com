@@ -3,7 +3,7 @@
     <a-card id="start-manage" :bordered="false" style="margin-bottom: 24px;">
       <h1 class="title">Startup Manage</h1>
       <section class="content">
-        <a-tabs>
+        <a-tabs v-model="activeTab">
           <a-tab-pane key="1" tab="Perference">
             <StartupManagePerference></StartupManagePerference>
           </a-tab-pane>
@@ -11,7 +11,7 @@
             <StartupSetting></StartupSetting>
           </a-tab-pane>
           <a-tab-pane key="3" tab="Bounty">
-            <StartupBounty></StartupBounty>
+            <StartupBounty :startupId="startupId"></StartupBounty>
           </a-tab-pane>
           <a-tab-pane key="4" tab="Team" disabled> </a-tab-pane>
           <a-tab-pane key="5" tab="Operation" disabled> </a-tab-pane>
@@ -29,11 +29,19 @@ import StartupBounty from './components/StartupBounty';
 export default {
   components: { StartupManagePerference, StartupSetting, StartupBounty },
   data() {
-    return {};
+    return {
+      activeTab: '1',
+      startupId: this.$route.query.startupId
+    };
   },
 
   methods: {},
-  mounted() {}
+  mounted() {
+    const tab = this.$route.query.tab;
+    if (tab === 'bounty') {
+      this.activeTab = '3';
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
