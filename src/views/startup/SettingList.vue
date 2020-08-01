@@ -9,7 +9,7 @@
         </a-col>
         <a-col :span="16">
           <div class="actions">
-            <a-tabs default-active-key="1" @change="changedTab($event)">
+            <a-tabs default-active-key="1">
               <a-tab-pane key="1" tab="My Startup">
                 <div class="flex-column ai-center" style="padding: 0 30px 30px">
                   <!--<startup-item :startup="newStartupItem" @click.native="createStartUp" />-->
