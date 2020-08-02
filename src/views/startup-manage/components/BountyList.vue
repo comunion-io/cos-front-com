@@ -30,7 +30,7 @@ export default {
   },
   props: {
     startupId: {
-      required: true,
+      required: false,
       type: String
     }
   },
