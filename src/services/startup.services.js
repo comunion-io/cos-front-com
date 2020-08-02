@@ -77,3 +77,10 @@ export async function updateStartup(id, newStartup) {
   const { error } = await request('put', `/cores/startups/${id}`, newStartup);
   return !error;
 }
+
+/**
+ * @description 获取follow startup列表
+ */
+export async function getFollowStartups(query) {
+  return commonList('/cores/startups/follow', query);
+}

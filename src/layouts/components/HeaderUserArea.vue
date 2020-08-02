@@ -67,7 +67,8 @@ export default {
      */
     transformHunter() {
       // TODO hunter 成功以后，点击后执行
-      this.$router.push({ name: 'hunterManage' });
+      // this.$router.push({ name: 'hunterManage' });
+      this.$router.push({ name: this.isLoggedIn ? 'transformHunter' : 'guide' });
     }
   }
 };

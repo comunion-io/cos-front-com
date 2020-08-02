@@ -9,7 +9,7 @@
         </a-col>
         <a-col :span="16">
           <div class="actions">
-            <a-tabs default-active-key="1" @change="changedTab($event)">
+            <a-tabs default-active-key="1">
               <a-tab-pane key="1" tab="My Startup">
                 <div class="flex-column ai-center" style="padding: 0 30px 30px">
                   <!--<startup-item :startup="newStartupItem" @click.native="createStartUp" />-->
@@ -30,8 +30,25 @@
                   </a-spin>
                 </div>
               </a-tab-pane>
-              <a-tab-pane key="2" tab="Follow Startup" disabled force-render>
-                working
+              <a-tab-pane key="2" tab="Follow Startup" force-render>
+                <div class="flex-column ai-center" style="padding: 0 30px 30px">
+                  <a-spin class="w-100p" size="large" :spinning="followStartupLoading">
+                    <a-empty v-if="followStartups.length === 0" />
+                    <startup-item
+                      v-for="startup in followStartups"
+                      :key="startup.id"
+                      :startup="startup"
+                      @click.native="onClickFollowStartup(startup)"
+                    />
+                    <com-pagination
+                      class="mt-20"
+                      :limit.sync="followStartupSearch.limit"
+                      :offset.sync="followStartupSearch.offset"
+                      :total="followStartupTotal"
+                      @change="getMyStartups"
+                    />
+                  </a-spin>
+                </div>
               </a-tab-pane>
             </a-tabs>
           </div>
@@ -42,10 +59,12 @@
 </template>
 
 <script>
-import { getMyStartups } from '@/services';
+import { getMyStartups, getFollowStartups } from '@/services';
 // import { startupState } from '@/filters';
 import HelpCenter from '@/components/help/HelpCenter';
 import StartupItem from './components/StartupItem';
+
+const INTERVAL_TIME = 15 * 1000; // 15秒间隔时间
 
 export default {
   components: {
@@ -71,7 +90,24 @@ export default {
       // 加载中
       loading: false,
       // 轮询请求
-      loopTimeout: null
+      loopTimeout: null,
+
+      // follow startup
+      followStartups: [
+        {
+          id: 'id',
+          logo: '',
+          mission: 'Company profilel Company profilel Company profilel',
+          name: 'Comunion 3'
+        }
+      ], // follow startup列表
+      followStartupSearch: {
+        offset: 0,
+        limit: 10
+      },
+      followStartupTotal: 0,
+      followStartupLoading: false,
+      followStartupTimer: null
     };
   },
   methods: {
@@ -121,7 +157,7 @@ export default {
       this.startups = data;
       this.total = total;
       // 15秒刷新一次数据
-      this.loopTimeout = setTimeout(this.refreshStartups, 15000);
+      this.loopTimeout = setTimeout(this.refreshStartups, INTERVAL_TIME);
     },
     /**
      * @description 获取 startup 列表
@@ -131,13 +167,46 @@ export default {
       this.loading = true;
       await this.refreshStartups();
       this.loading = false;
+    },
+    /**
+     * @description 点击follow startup
+     * @param {object} startup 点击的follow startup
+     */
+    onClickFollowStartup(startup) {
+      //
+    },
+    // 获取follow startup列表
+    async getFollowStartups() {
+      this.followStartupLoading = true;
+      await this.refreshFollowStartups();
+      this.followStartupLoading = false;
+    },
+    // 刷新follow startup列表
+    async refreshFollowStartups() {
+      this.clearFollowStartupTimer(); // 清除定时器
+      const [data, total] = await getFollowStartups(this.followStartupSearch);
+      this.followStartups = data;
+      this.followStartupTotal = total;
+      // 15秒刷新一次数据
+      this.followStartupTimer = setTimeout(this.refreshFollowStartups, INTERVAL_TIME);
+    },
+    // 清除刷新follow startup列表的定时器
+    clearFollowStartupTimer() {
+      if (this.followStartupTimer) {
+        clearTimeout(this.followStartupTimer);
+        this.followStartupTimer = null;
+      }
     }
   },
   mounted() {
     this.getMyStartups();
+    // 获取follow startup列表
+    this.getFollowStartups();
   },
   beforeDestroy() {
     this.clearTimeout();
+    // 清除刷新follow startup列表的定时器
+    this.clearFollowStartupTimer();
   }
 };
 </script>
