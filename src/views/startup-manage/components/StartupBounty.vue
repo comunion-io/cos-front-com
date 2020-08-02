@@ -68,6 +68,7 @@ export default {
 .startup-bounty {
   .bounty-list {
     margin-top: 20px;
+    min-height: 500px;
   }
 }
 </style>

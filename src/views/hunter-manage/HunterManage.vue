@@ -7,6 +7,7 @@
           <Hunter />
         </a-tab-pane>
         <a-tab-pane key="2" tab="Bounty">
+          <!-- 我接到的bounty -->
           <Bounty />
         </a-tab-pane>
         <a-tab-pane key="3" tab="Proposal" disabled>

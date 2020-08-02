@@ -41,8 +41,7 @@ export default {
         limit: 10,
         keyword: ''
       },
-      bounties: [],
-      loading: false
+      bounties: []
     };
   },
   methods: {
