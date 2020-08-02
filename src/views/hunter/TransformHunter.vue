@@ -56,7 +56,7 @@ form label {
           <a-input v-model="form.email" placeholder="" size="large" :max-length="50" />
         </a-form-model-item>
         <a-form-model-item>
-          <a-button type="primary" block>
+          <a-button type="primary" @click="onSubmit" block>
             Submit
           </a-button>
         </a-form-model-item>
@@ -64,14 +64,32 @@ form label {
     </a-card>
     <div>
       <a-modal
-        v-model="visible"
+        v-model="modalVisible"
         title="Add Skill Tags"
         @ok="clickOkInSkillsModal"
         @cancel="clickCancelInSkillsModal"
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <p>
+          <template v-for="tag in hunterSkills">
+            <a-checkable-tag :key="tag" @change="handleSkillChange">
+              {{ tag }}
+            </a-checkable-tag>
+          </template>
+          <a-input
+            v-if="inputSkillVisible"
+            ref="input"
+            type="text"
+            size="small"
+            :style="{ width: '78px' }"
+            :value="inputSkillValue"
+            @change="handleInputSkillChange"
+            @blur="handleInputSkillConfirm"
+            @keyup.enter="handleInputSkillConfirm"
+          />
+          <a-tag v-else style="background: #fff;" @click="showSkillInput">
+            <a-icon type="plus" />
+          </a-tag>
+        </p>
       </a-modal>
     </div>
   </div>
@@ -79,6 +97,14 @@ form label {
 
 <script>
 import { urlValidator } from '@/utils/validators';
+import { request } from '@/services/request';
+// import { commonList } from '@/services/utils';
+
+export async function getHunterSkills() {
+  const { error, data } = await request('get', '/cores/tags', { source: 'skills' });
+  return error ? {} : data;
+}
+
 export default {
   name: 'TransformHunter',
   components: {},
@@ -86,14 +112,16 @@ export default {
     return {
       form: {
         name: '',
-        skills: '',
+        skills: [],
         about: '',
         descriptionAddr: '',
         email: ''
       },
       rules: {
         name: [{ required: true, message: 'Please input startup name', trigger: 'blur' }],
-        skills: [{ required: true, message: 'Please select skills', trigger: 'blur' }],
+        skills: [
+          { type: 'array', required: true, message: 'Please select skills', trigger: 'change' }
+        ],
         about: [{ required: true, message: 'Please input about', trigger: 'blur' }],
         descriptionAddr: [
           {
@@ -108,35 +136,76 @@ export default {
       createState: 'beforeCreate',
       balance: 0.1,
       wordsCount: 0,
-      visible: false
+      modalVisible: false,
+      inputSkillVisible: false,
+      inputSkillValue: '',
+      hunterSkills: []
     };
   },
-  computed: {},
+  async mounted() {
+    const skills = await getHunterSkills();
+    this.hunterSkills = skills;
+    console.log(skills);
+  },
   methods: {
     countWords() {
-      var length = this.form.about.length;
+      const length = this.form.about.length;
       this.wordsCount = length;
     },
     showSkillsModal() {
-      this.visible = true;
+      this.modalVisible = true;
     },
     clickOkInSkillsModal(e) {
       console.log(e);
-      this.visible = false;
+      this.modalVisible = false;
     },
     clickCancelInSkillsModal(e) {
       console.log(e);
-      this.visible = false;
+      this.modalVisible = false;
     },
-    handleSubmit(e) {
-      e.preventDefault();
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values);
-          this.$store.commit('update', values);
+    handleClose(removedTag) {
+      const tags = this.hunterSkills.filter(tag => tag !== removedTag);
+      console.log(tags);
+      this.hunterSkills = tags;
+    },
+    handleSkillChange(checked) {
+      console.log(checked);
+    },
+    showSkillInput() {
+      this.inputSkillVisible = true;
+      this.$nextTick(function() {
+        this.$refs.input.focus();
+      });
+    },
+    handleInputSkillChange(e) {
+      this.inputSkillValue = e.target.value;
+    },
+    handleInputSkillConfirm() {
+      const inputSkillValue = this.inputSkillValue;
+      let tags = this.hunterSkills;
+      if (inputSkillValue && tags.indexOf(inputSkillValue) === -1) {
+        tags = [...tags, inputSkillValue];
+      }
+      console.log(tags);
+      Object.assign(this, {
+        tags,
+        inputSkillVisible: false,
+        inputSkillValue: ''
+      });
+    },
+    onSubmit() {
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          alert('submit!');
+        } else {
+          console.log('error submit!!');
+          return false;
         }
       });
     }
+    // resetForm() {
+    //   this.$refs.ruleForm.resetFields();
+    // },
   }
 };
 </script>
