@@ -26,6 +26,7 @@ import {
   Table,
   Upload,
   Tabs,
+  Tag,
   Dropdown,
   Row,
   Col,
@@ -66,6 +67,7 @@ Vue.use(Radio);
 Vue.use(Table);
 Vue.use(Upload);
 Vue.use(Tabs);
+Vue.use(Tag);
 Vue.use(Dropdown);
 Vue.use(Row);
 Vue.use(Col);
