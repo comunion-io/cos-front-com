@@ -6,8 +6,8 @@ import { commonList } from './utils';
  */
 export async function getBounties(query, startupId) {
   if (startupId) {
-    return commonList(`./startups/${startupId}/bounties`, query);
+    return commonList(`cores/startups/${startupId}/bounties`, query);
   } else {
-    return commonList('./bounties', query);
+    return commonList('cores/bounties', query);
   }
 }

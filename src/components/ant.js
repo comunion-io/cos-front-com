@@ -37,7 +37,8 @@ import {
   Pagination,
   List,
   Popconfirm,
-  Popover
+  Popover,
+  Collapse
   // Cascader,
   // Progress,
   // Empty
@@ -79,6 +80,7 @@ Vue.use(List);
 Vue.use(Popconfirm);
 Vue.use(Popover);
 Vue.use(Avatar);
+Vue.use(Collapse);
 // Vue.use(Cascader);de
 // Vue.use(Progress);
 // Vue.use(Empty);
