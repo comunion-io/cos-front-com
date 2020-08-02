@@ -202,6 +202,25 @@ export default {
           return false;
         }
       });
+    },
+    // resetForm() {
+    //   this.$refs.ruleForm.resetFields();
+    // },
+    handleInputChange(e) {
+      this.inputValue = e.target.value;
+    },
+    handleInputConfirm() {
+      const inputValue = this.inputValue;
+      let tags = this.tags;
+      if (inputValue && tags.indexOf(inputValue) === -1) {
+        tags = [...tags, inputValue];
+      }
+      console.log(tags);
+      Object.assign(this, {
+        tags,
+        inputVisible: false,
+        inputValue: ''
+      });
     }
     // resetForm() {
     //   this.$refs.ruleForm.resetFields();
