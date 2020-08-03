@@ -25,7 +25,7 @@
 
 <script>
 import { getBounties } from '@/services';
-import BountyList from '../startup-manage/components/BountyList.vue';
+import BountyList from '@/components/bounty-list/BountyList';
 
 export default {
   name: 'Bounty',
