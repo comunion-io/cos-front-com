@@ -16,24 +16,36 @@ export default {
     };
   },
   render(h) {
+    const TabComponent = 'Tab' + this.selectedTab;
     return (
       <div class="flex">
-        <a-card title="Menu">
+        <a-card title="Menu" class="mr-20 startup-menus">
           <a-tabs vModel={this.selectedTab} tab-position="left">
-            {this.tabs.map(tab => {
-              const Comp = `Tab${tab}`;
-              return (
-                <a-tab-pane key={tab} tab={tab}>
-                  <Comp id={this.$route.params.id} />
-                </a-tab-pane>
-              );
-            })}
+            {this.tabs.map(tab => (
+              <a-tab-pane key={tab} tab={tab}></a-tab-pane>
+            ))}
           </a-tabs>
         </a-card>
+        <TabComponent class="flex-1" id={this.$route.params.id} />
       </div>
     );
   }
 };
 </script>
 
-<style></style>
+<style lang="less" scoped>
+.startup-menus {
+  width: 200px;
+  /deep/ .ant-tabs-left-bar {
+    border-right: none;
+  }
+  /deep/ .ant-tabs-tab {
+    margin-bottom: 14px;
+    padding-left: 6px;
+    text-align: left;
+  }
+  /deep/ .ant-tabs-ink-bar {
+    display: none !important;
+  }
+}
+</style>
