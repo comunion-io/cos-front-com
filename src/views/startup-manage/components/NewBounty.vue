@@ -138,6 +138,11 @@
 // 例如：import 《组件名称》 from '《组件路径》';
 import { urlValidator } from '@/utils/validators';
 import BbsInput from '../../startup/components/BbsInput';
+import { getPrepareBountyId, createBounty } from '@/services/bounty.service';
+import { COMUNION_BOUNTY_RECEIVE_ACCOUNT, web3 } from '@/libs/web3';
+import { bountyAbi } from '@/libs/abis/bounty';
+import { mapGetters } from 'vuex';
+
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: {
@@ -187,6 +192,8 @@ export default {
   },
   // 监听属性 类似于data概念
   computed: {
+    ...mapGetters(['account']),
+
     // 是否是编辑模式
     isEdit() {
       return !!this.$route.query.id;
@@ -210,7 +217,15 @@ export default {
      * @description 取消添加bounty
      */
     cancel() {
-      this.$router.push({ name: 'startupManage', query: { tab: 'bounty' } });
+      this.$confirm({
+        title: 'Quit confirm',
+        content: 'Do you want to keep the current content?',
+        cancelText: 'Remove and quit',
+        okText: 'Keep',
+        onOk: () => {
+          this.$router.push({ name: 'startupManage', query: { tab: 'bounty' } });
+        }
+      });
     },
     /**
      * @description 提交表单， 上链
@@ -218,13 +233,88 @@ export default {
     onsubmit() {
       this.$refs.ruleForm.validate(async valid => {
         if (valid) {
-          console.log(
-            '%c 🥃 valid: ',
-            'font-size:20px;background-color: #93C0A4;color:#fff;',
-            valid
-          );
+          try {
+            const bountyId = await getPrepareBountyId();
+            if (bountyId) {
+              const id = bountyId;
+              this.ethSendTranscation(this.form, id);
+            }
+          } catch (error) {
+            console.error(error);
+          }
         }
       });
+    },
+
+    /**
+     * @description 发起交易上链
+     */
+    async ethSendTranscation(formData, bountyId) {
+      const contractBounty = await this.getContractInstance(formData, bountyId);
+      const codeData = await contractBounty.enCodeABI();
+      const countAll = await web3.eth.getTranscationCount(this.account, 'pending');
+      const chainId = await web3.eth.getChainId();
+
+      const tx = {
+        from: this.account,
+        to: COMUNION_BOUNTY_RECEIVE_ACCOUNT,
+        data: codeData,
+        value: web3.utils.numberToHex(Math.pow(10, 16)),
+        nonce: web3.utils.numberToHex(countAll),
+        gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
+        gasLimit: web3.utils.numberToHex(183943),
+        chainId: chainId
+      };
+      window.ethereum.sendAsync(
+        {
+          method: 'eth_sendTransaction',
+          params: [tx],
+          from: window.ethereum.selectedAddress
+        },
+        (err, result) => {
+          if (err) {
+            return console.error(err);
+          }
+          const txid = result.result;
+          this.createBounty(formData, bountyId, txid);
+        }
+      );
+    },
+
+    /**
+     * @description 创建bounty
+     */
+    async createBounty(formData, bountyId, txid) {
+      try {
+        if (this.isEdit) {
+          // 更新
+          // const bounty = await updateBounty()
+        } else {
+          // 创建 bounty
+          const bounty = await createBounty({ ...formData, txid, id: bountyId });
+          if (bounty) {
+            this.$router.push({ name: 'startupManage', query: { tab: 'bounty' } });
+          }
+        }
+      } catch (err) {
+        console.err(err);
+      }
+    },
+
+    /**
+     * @description 获取bounty上链的合约实例
+     */
+    async getContractInstance(formData, bountyId) {
+      const contract = new web3.eth.Contract(bountyAbi, COMUNION_BOUNTY_RECEIVE_ACCOUNT);
+      const contractBounty = await contract.methods.newBounty(
+        bountyId,
+        formData.startupId,
+        formData.title,
+        formData.intro,
+        formData.intro,
+        formData.payment
+      );
+      return contractBounty;
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）

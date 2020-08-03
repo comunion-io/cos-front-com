@@ -5,6 +5,8 @@ import { Modal } from 'ant-design-vue';
 const DEV_STARTUP_RECEIVER = '0xfC938765401224e62AfA26535ed07fb334d3e11c';
 // 测试环境下， setting 账号收款账号
 const DEV_SETTING_RECEIVER = '0xFdE6dC94cE94a9b873977DdE385d33FcA99d8eA5';
+// 测试环境下， bounty 账号收款地址
+const DEV_BOUNTY_RECEIVER = '0x';
 
 // 生产环境， startup 收款账号
 // const PROD_STARTUP_RECEIVER = '0x50C972636DC3cc2DE457517Ab62279c6eF3050bA';
@@ -12,9 +14,11 @@ const DEV_SETTING_RECEIVER = '0xFdE6dC94cE94a9b873977DdE385d33FcA99d8eA5';
 // const PROD_SETTING_RECEIVER = '0x50C972636DC3cc2DE457517Ab62279c6eF3050bA';
 
 // comunion new start up接收方钱包地址
-export const COMUNION_RECEIVER_ACCOUNT = DEV_STARTUP_RECEIVER;
+export const COMUNION_RECEIVER_STARTUP_ACCOUNT = DEV_STARTUP_RECEIVER;
 // comunion setting 接收方钱包地址
 export const COMMUNION_SETTING_RECEIVE_ACCOUNT = DEV_SETTING_RECEIVER;
+// comunion bounty 接收方钱包地址
+export const COMUNION_BOUNTY_RECEIVE_ACCOUNT = DEV_BOUNTY_RECEIVER;
 
 // web3示例
 export let web3;

@@ -111,7 +111,7 @@
 import { mapGetters } from 'vuex';
 // import { Transaction } from 'ethereumjs-tx';
 // import { EthereumTx } from 'ethereumjs-tx/dist/fake';
-import { COMUNION_RECEIVER_ACCOUNT, web3 } from '@/libs/web3';
+import { COMUNION_RECEIVER_STARTUP_ACCOUNT, web3 } from '@/libs/web3';
 import { urlValidator } from '@/utils/validators';
 import { startupAbi } from '@/libs/abis/startup';
 import {
@@ -230,7 +230,7 @@ export default {
 
       const tx = {
         from: this.account,
-        to: COMUNION_RECEIVER_ACCOUNT,
+        to: COMUNION_RECEIVER_STARTUP_ACCOUNT,
         data: codeData,
         value: web3.utils.numberToHex(Math.pow(10, 17)),
         nonce: web3.utils.numberToHex(countAll),
@@ -285,7 +285,7 @@ export default {
      * @returns {Promise<*>}
      */
     async getContractInstance(formData, id) {
-      const contract = new web3.eth.Contract(startupAbi, COMUNION_RECEIVER_ACCOUNT);
+      const contract = new web3.eth.Contract(startupAbi, COMUNION_RECEIVER_STARTUP_ACCOUNT);
       const contractStatpUp = await contract.methods.newStartup(
         id,
         formData.name,
