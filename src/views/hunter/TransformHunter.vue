@@ -26,6 +26,18 @@ form label {
   border-color: #6170ff;
   color: #6170ff;
 }
+.tagify__tag {
+  --tag-text-color: #6170ffff;
+  --tag-bg: #ffffffff;
+  --tag-remove-bg: #ffffffff;
+  --tag-remove-btn-color: #6170ffff;
+  border-color: #6170ffff;
+  border-style: solid;
+  border-width: 1px;
+}
+.tagify__input {
+  display: none !important;
+}
 </style>
 <template>
   <div>
@@ -189,14 +201,19 @@ export default {
   async mounted() {
     const skills = await getHunterSkills();
     this.hunterSkills = skills;
-    console.log(skills);
-    var skillsInput = document.querySelector('#skills');
-    this.tagify = new Tagify(skillsInput, {
-      whitelist: []
-    });
-    this.tagify.on('focus', function(e) {
-      this.modalVisible = true;
-    });
+    this.tagify = await new Tagify(document.querySelector('#skills'), {
+      whitelist: [],
+      duplicates: true,
+      editTags: false
+    })
+      .on('input', function(e) {
+        console.log('input');
+        return false;
+      })
+      .on('focus', function(e) {
+        console.log('focus');
+        this.modalVisible = true;
+      });
   },
   methods: {
     countWords() {
