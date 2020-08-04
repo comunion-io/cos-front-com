@@ -1,5 +1,6 @@
 <style lang="less">
 @import '~@/assets/styles/variables.less';
+@import '~@yaireo/tagify/dist/tagify.css';
 form label {
   font-size: 15px;
   font-weight: bold;
@@ -46,6 +47,7 @@ form label {
         <a-form-model-item label="Skill Tag" prop="skills">
           <a-input
             ref="skills"
+            id="skills"
             v-model="form.skills"
             type="text"
             placeholder=""
@@ -136,6 +138,7 @@ form label {
 <script>
 import { urlValidator } from '@/utils/validators';
 import { request } from '@/services/request';
+import Tagify from '@yaireo/tagify';
 // import { commonList } from '@/services/utils';
 
 export async function getHunterSkills() {
@@ -178,13 +181,22 @@ export default {
       inputSkillVisible: false,
       inputSkillValue: '',
       hunterSkills: [],
-      checkedHunterSkills: []
+      checkedHunterSkills: [],
+      tagify: null,
+      tagifySettings: {}
     };
   },
   async mounted() {
     const skills = await getHunterSkills();
     this.hunterSkills = skills;
     console.log(skills);
+    var skillsInput = document.querySelector('#skills');
+    this.tagify = new Tagify(skillsInput, {
+      whitelist: []
+    });
+    this.tagify.on('focus', function(e) {
+      this.modalVisible = true;
+    });
   },
   methods: {
     countWords() {
@@ -198,7 +210,7 @@ export default {
     handleSkillsCheckedConfirm(e) {
       const skills = this.checkedHunterSkills.join();
       console.log(skills);
-      this.form.skills = skills;
+      this.tagify.addTags(skills);
       this.modalVisible = false;
     },
     handleSkillsCheckedCancel(e) {
