@@ -1,23 +1,8 @@
 <script>
+import { get } from 'lodash';
 import { getStartupDetail } from '@/services';
 
 export default {
-  components: {
-    CopyableAddress: {
-      functional: true,
-      props: {
-        address: String
-      },
-      render(h, context) {
-        return (
-          <div class="flex-inline ai-center">
-            <a>{context.address}</a>
-            <a-icon type="copy" style="margin-left:50px;font-size:12px" />
-          </div>
-        );
-      }
-    }
-  },
   props: {
     // startup id
     id: String
@@ -37,30 +22,65 @@ export default {
           title: 'Startup',
           fields: [
             { label: 'Name', value: 'name' },
-            { label: 'Type', value: 'name' },
-            { label: 'Mission', value: 'name' },
+            { label: 'Type', value: 'category.name' },
+            { label: 'Mission', value: 'mission' },
             { label: 'Create Time', value: 'name' },
-            { label: 'Description', value: 'name' },
-            { label: 'BlockChain Address', value: 'name', copyable: true }
+            {
+              label: 'Description',
+              value: 'descriptionAddr',
+              customRender: v => (
+                <a href={v} target="_black">
+                  {v}
+                </a>
+              )
+            },
+            { label: 'BlockChain Address', value: 'transaction.blockAddr', copyable: true }
           ]
         },
         {
           icon: require('./images/token.png'),
           title: 'Token',
           fields: [
-            { label: 'Token Name', value: 'name' },
-            { label: 'Token Symbol', value: 'name' },
-            { label: 'Token Contract', value: 'name', copyable: true },
-            { label: 'Wallet Name 1', value: 'name', copyable: true }
+            { label: 'Token Name', value: 'settings.tokenName' },
+            { label: 'Token Symbol', value: 'settings.tokenSymbol' },
+            { label: 'Token Contract', value: 'settings.tokenAddr', copyable: true },
+            ...this.startup.settings?.walletAddrs?.map((addr, index) => ({
+              label: addr.name,
+              value: `settings.walletAddrs[${index}].addr`,
+              copyable: true
+            }))
           ]
         },
         {
           icon: require('./images/governance.png'),
           title: 'Governance',
           fields: [
-            { label: 'Governance', value: 'name' },
-            { label: 'Assign Address', value: 'name', copyable: true },
-            { label: 'Vote', value: 'name' }
+            { label: 'Governance', value: 'settings.type' },
+            // ...this.startup.settings?.voteAssignAddrs?.map(addr => {
+
+            // }),
+            // { label: 'Assign Address', value: 'name', copyable: true },
+            {
+              label: 'Vote',
+              value: 'settings.voteSupportPercent',
+              prefix: 'Support: ',
+              suffix: '%'
+            },
+            {
+              value: 'settings.voteMinApprovalPercent',
+              prefix: 'Minimum Approval: ',
+              suffix: '%'
+            },
+            {
+              value: 'settings.voteMinDurationHours',
+              prefix: 'MinDuration: ',
+              suffix: 'Days'
+            },
+            {
+              value: 'settings.voteMaxDurationHours',
+              prefix: 'MaxDuration: ',
+              suffix: 'Days'
+            }
           ]
         },
         {
@@ -106,14 +126,25 @@ export default {
                 <span class="ml-8 t-bold f-18 lh-1">{title}</span>
               </div>
               <div class="info-table f-15">
-                {fields.map(field => (
-                  <div class="info-tr flex ai-center">
-                    <label class="t-bold">{field.label}</label>
-                    <p class="mb-0 t-grey">
-                      {field.copyable ? <CopyableAddress address={field.value} /> : field.value}
-                    </p>
-                  </div>
-                ))}
+                {fields.map(field => {
+                  const value = get(this.startup, field.value, '');
+                  return (
+                    <div class="info-tr flex ai-center">
+                      <label class="t-bold no-shrink">{field.label ? `${field.label}:` : ''}</label>
+                      <p class="mb-0 t-grey">
+                        {field.prefix}
+                        {field.copyable ? (
+                          <CopyableAddress address={value} />
+                        ) : field.customRender ? (
+                          field.customRender(value, field)
+                        ) : (
+                          value
+                        )}
+                        {field.suffix}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           );
@@ -134,7 +165,7 @@ export default {
   border-radius: 3px;
 }
 .info-tr {
-  height: 44px;
+  padding: 12px 12px 12px 0;
   & + .info-tr {
     border-top: 1px solid @border-color-light;
   }
@@ -142,9 +173,6 @@ export default {
     padding-right: 32px;
     width: 244px;
     text-align: right;
-    &::after {
-      content: ':';
-    }
   }
   > p {
     display: flex;

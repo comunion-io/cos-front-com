@@ -72,7 +72,7 @@ const routes = [
         component: () => import(/* webpackChunkName: 'governace' */ '@/views/governace/List.vue')
       },
       {
-        path: '/startup/:id',
+        path: '/startup/detail/:id',
         name: 'startupDetail',
         meta: {
           title: 'Startup Detail',
