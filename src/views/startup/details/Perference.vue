@@ -16,6 +16,27 @@ export default {
   computed: {
     // 模块
     modules() {
+      // 投票地址过多，展示为可点击
+      let voteAssignAddr;
+      if (this.startup.settings?.voteAssignAddrs?.length) {
+        const addrs = this.startup.settings.voteAssignAddrs;
+        voteAssignAddr = addrs.slice(0, 2).map((addr, index) => {
+          return {
+            label: index === 0 ? 'Assign Address' : '',
+            value: `settings.voteAssignAddrs[${index}]`,
+            copyable: true
+          };
+        });
+        if (addrs.length > 2) {
+          voteAssignAddr.push({
+            customRender: () => (
+              <a class="t-grey" onClick={this.showAllVoteAssignAddrs}>
+                View more (In total {addrs.length})
+              </a>
+            )
+          });
+        }
+      }
       return [
         {
           icon: require('./images/startup.png'),
@@ -44,11 +65,11 @@ export default {
             { label: 'Token Name', value: 'settings.tokenName' },
             { label: 'Token Symbol', value: 'settings.tokenSymbol' },
             { label: 'Token Contract', value: 'settings.tokenAddr', copyable: true },
-            ...this.startup.settings?.walletAddrs?.map((addr, index) => ({
+            ...(this.startup.settings?.walletAddrs?.map((addr, index) => ({
               label: addr.name,
               value: `settings.walletAddrs[${index}].addr`,
               copyable: true
-            }))
+            })) || [])
           ]
         },
         {
@@ -56,10 +77,7 @@ export default {
           title: 'Governance',
           fields: [
             { label: 'Governance', value: 'settings.type' },
-            // ...this.startup.settings?.voteAssignAddrs?.map(addr => {
-
-            // }),
-            // { label: 'Assign Address', value: 'name', copyable: true },
+            ...(voteAssignAddr || []),
             {
               label: 'Vote',
               value: 'settings.voteSupportPercent',
@@ -93,6 +111,40 @@ export default {
           fields: []
         }
       ];
+    }
+  },
+  methods: {
+    // 显示所有的投票地址
+    showAllVoteAssignAddrs() {
+      this.$info({
+        icon: 'none',
+        title: 'AssignAddress',
+        width: 600,
+        maskClosable: true,
+        content: h => {
+          const addrs = this.startup.settings.voteAssignAddrs;
+          return (
+            <div style="margin-left:-38px">
+              <p class="f-15">
+                In total <span class="t-primary">{addrs.length}</span>
+              </p>
+              <a-table
+                showHeader={false}
+                row-key="index"
+                columns={[
+                  {
+                    align: 'center',
+                    dataIndex: 'addr',
+                    customRender: text => <CopyableAddress address={text} />
+                  }
+                ]}
+                dataSource={addrs.map((addr, index) => ({ addr, index }))}
+                pagination={{ position: 'bottom', hideOnSinglePage: true }}
+              />
+            </div>
+          );
+        }
+      });
     }
   },
   render(h) {
@@ -133,6 +185,7 @@ export default {
                       <label class="t-bold no-shrink">{field.label ? `${field.label}:` : ''}</label>
                       <p class="mb-0 t-grey">
                         {field.prefix}
+                        {/** 可复制的 */}
                         {field.copyable ? (
                           <CopyableAddress address={value} />
                         ) : field.customRender ? (
