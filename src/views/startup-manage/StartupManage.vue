@@ -5,7 +5,7 @@
       <section class="content">
         <a-tabs v-model="activeTab">
           <a-tab-pane key="1" tab="Perference">
-            <StartupManagePerference></StartupManagePerference>
+            <StartupManagePerference :startupId="startupId"></StartupManagePerference>
           </a-tab-pane>
           <a-tab-pane key="2" tab="Settings">
             <StartupSetting></StartupSetting>

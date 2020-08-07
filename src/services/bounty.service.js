@@ -27,7 +27,7 @@ export async function createBounty(id, params) {
  * @description 创建bounty 之前， 先获取一个id
  * @returns {Promise<*>}
  */
-export default async function getPrepareBountyId() {
+export async function getPrepareBountyId() {
   const { error, data } = await request('get', '/cores/bounty/prepareId');
   return error ? {} : data;
 }
