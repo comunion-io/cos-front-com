@@ -72,6 +72,16 @@ const routes = [
         component: () => import(/* webpackChunkName: 'governace' */ '@/views/governace/List.vue')
       },
       {
+        path: '/startup/detail/:id',
+        name: 'startupDetail',
+        meta: {
+          title: 'Startup Detail',
+          skipAuth: true
+        },
+        component: () =>
+          import(/* webpackChunkName: 'startupDetail' */ '@/views/startup/Detail.vue')
+      },
+      {
         path: '/startup/new',
         name: 'newStartup',
         meta: {

@@ -71,6 +71,14 @@ export async function getMyStartupDetail(startupId) {
 }
 
 /**
+ * 获取单个startup详情
+ */
+export async function getStartupDetail(startupId) {
+  const { error, data } = await request('get', `/cores/startups/${startupId}`);
+  return error ? {} : data;
+}
+
+/**
  * 更新startup
  */
 export async function updateStartup(id, newStartup) {
