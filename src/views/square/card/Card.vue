@@ -1,5 +1,5 @@
 <template>
-  <div class="home-card">
+  <router-link class="home-card" :to="{ name: 'startupDetail', params: { id: startup.id } }">
     <div class="flex jc-end iro">
       {{ startup.isIRO ? 'IRO' : '' }}
     </div>
@@ -23,7 +23,7 @@
         1,211
       </a-button>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -52,6 +52,7 @@ export default {
   border-radius: 4px;
   padding-bottom: 28px;
   padding-top: 20px;
+  color: inherit;
   .iro {
     color: rgba(58, 196, 125, 1);
     font-weight: 400;

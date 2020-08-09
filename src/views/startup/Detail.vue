@@ -1,38 +1,40 @@
 <script>
-import TabFinance from './setting-details/Finance';
-
+import TabPerference from './details/Perference';
 export default {
   components: {
-    TabFinance,
-    TabGoverance: () => import('./setting-details/Goverance')
+    TabPerference,
+    TabBounty: () => import('./details/Bounty'),
+    TabExchange: () => import('./details/Exchange'),
+    TabIRO: () => import('./details/IRO'),
+    TabVote: () => import('./details/Vote'),
+    TabProposals: () => import('./details/Proposals')
   },
-
   data() {
     return {
-      selectedTab: 'Finance',
-      tabs: ['Finance', 'Goverance']
+      selectedTab: 'Perference',
+      tabs: ['Perference', 'Bounty', 'Exchange', 'IRO', 'Vote', 'Proposals']
     };
   },
-
   render(h) {
     const TabComponent = 'Tab' + this.selectedTab;
     return (
       <div class="flex">
-        <a-card class="mr-20 bounty-menus">
+        <a-card title="Menu" class="mr-20 startup-menus">
           <a-tabs vModel={this.selectedTab} tab-position="left">
             {this.tabs.map(tab => (
               <a-tab-pane key={tab} tab={tab}></a-tab-pane>
             ))}
           </a-tabs>
         </a-card>
-        <TabComponent class="flex-1" id={this.$route.query.startupId}></TabComponent>
+        <TabComponent class="flex-1" id={this.$route.params.id} />
       </div>
     );
   }
 };
 </script>
+
 <style lang="less" scoped>
-.bounty-menus {
+.startup-menus {
   width: 200px;
   /deep/ .ant-tabs-left-bar {
     border-right: none;

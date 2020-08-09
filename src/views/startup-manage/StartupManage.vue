@@ -5,7 +5,7 @@
       <section class="content">
         <a-tabs v-model="activeTab">
           <a-tab-pane key="1" tab="Perference">
-            <StartupManagePerference></StartupManagePerference>
+            <StartupManagePerference :startupId="startupId"></StartupManagePerference>
           </a-tab-pane>
           <a-tab-pane key="2" tab="Settings">
             <StartupSetting></StartupSetting>
@@ -57,8 +57,8 @@ export default {
 
   .content {
     margin: 0 auto;
-    width: 60%;
-    max-width: 640px;
+    width: 80%;
+    max-width: 850px;
     min-width: 240px;
   }
 }
