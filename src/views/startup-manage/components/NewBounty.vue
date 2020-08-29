@@ -60,16 +60,21 @@
             <a-form-model-item label="Duration" prop="duration" class="form-item">
               <a-input size="large" v-model="form.duration" addon-after="Days" />
             </a-form-model-item>
-            <!-- Payment -->
-            <a-form-model-item label="Payments" prop="payments" class="form-item">
+            <!-- Payments -->
+            <a-form-model-item
+              label="Payments"
+              prop="payments"
+              required
+              :autoLink="false"
+              class="form-item"
+            >
               <a-row :gutter="24" v-for="(item, index) in form.payments" :key="index">
                 <a-col :span="20">
-                  <a-form-model-item :props="`payments.${index}.token`">
-                    <a-input
-                      size="large"
-                      v-model="form.payments[index].value"
-                      :rules="{ required: true, validator: '请选择token' }"
-                    >
+                  <a-form-model-item
+                    :prop="`payments.${index}.value`"
+                    :rules="{ required: true, message: '请输入', trigger: 'blur' }"
+                  >
+                    <a-input size="large" v-model="form.payments[index].value">
                       <a-select
                         slot="addonAfter"
                         default-value=""
@@ -154,7 +159,7 @@ export default {
         intro: '',
         descriptionAddr: '',
         duration: '',
-        payments: [{ token: '', value: '' }]
+        payments: [{ token: 'BTC', value: '' }]
       },
 
       // 当前账户创建的startups
@@ -177,8 +182,7 @@ export default {
             trigger: 'blur'
           }
         ],
-        duration: [{ required: true, message: 'Please input duration', trigger: 'blur' }],
-        payments: [{ required: true, message: 'Please input payments', trigger: 'blur' }]
+        duration: [{ required: true, message: 'Please input duration', trigger: 'blur' }]
       },
       balance: 32
     };
@@ -288,15 +292,20 @@ export default {
     async createBounty(formData, bountyId, txid) {
       try {
         // 创建 bounty
-        const data = { ...formData, txid, ...bountyId };
+        const data = { ...formData, txid, ...bountyId, ...{ descriptionFileAddr: '-1' } }; // descriptionFileAddr等后端删除了， 前端也要删除
         data.duration = +data.duration;
         for (const payment of data.payments) {
           payment.value = +payment.value;
         }
-        const bounty = await createBounty(this.$route.query.startupId, data);
 
-        if (bounty) {
-          this.$router.push({ name: 'startupManage', query: { tab: 'bounty' } });
+        const startupId = this.$route.query.startupId;
+        const bounty = await createBounty(startupId, data);
+
+        if (bounty.id) {
+          this.$router.push({
+            name: 'startupManage',
+            query: { tab: 'bounty', startupId: startupId }
+          });
         }
       } catch (err) {
         console.err(err);
@@ -312,7 +321,6 @@ export default {
         bountyId,
         formData.startupId,
         formData.title,
-        formData.intro,
         formData.intro,
         formData.payments
       );
