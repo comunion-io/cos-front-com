@@ -240,7 +240,6 @@ export default {
             if (bountyId) {
               const id = bountyId;
               const txid = '0x12rgfebfgsdnre3425';
-              debugger;
               this.createBounty(this.form, id, txid);
               // this.ethSendTranscation(this.form, id);
             }
