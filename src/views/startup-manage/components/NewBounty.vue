@@ -235,7 +235,6 @@ export default {
         if (valid) {
           try {
             const bountyId = await getPrepareBountyId();
-
             if (bountyId) {
               const id = bountyId;
               const txid = '0x12rgfebfgsdnre3425';

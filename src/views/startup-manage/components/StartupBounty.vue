@@ -8,7 +8,7 @@
       </a-col>
     </a-row>
     <section class="bounty-list">
-      <bounty-list :startupId="startupId"></bounty-list>
+      <bounty-list :startupId="startupId" :type="'startup-bounty-list-me'"></bounty-list>
     </section>
   </div>
 </template>

@@ -3,14 +3,26 @@ import { request } from './request';
 
 /**
  * @description 获取所有的bounty或者startup发布的bounty
- * @param startupId: startup 的id, 如果为空， 则获取所有的bounty
+ * @param startupId: startup 的id,
+ * @param type: 获取哪种类型的bounty-list
  */
-export async function getBounties(query, startupId) {
-  if (startupId) {
-    return commonList(`cores/startups/${startupId}/bounties`, query);
-  } else {
-    return commonList('cores/bounties', query);
+export async function getBounties(query, startupId, type) {
+  let url = '';
+  switch (type) {
+    case 'startup-bounty-list':
+      url = `cores/startups/${startupId}/bounties`;
+      break;
+    case 'startup-bounty-list-me':
+      url = `cores/startups/${startupId}/bounties/me`;
+      break;
+    case 'bounty-list':
+      break;
+    case 'bounty-list-me':
+      break;
+    default:
+      break;
   }
+  return commonList(url, query);
 }
 
 /**

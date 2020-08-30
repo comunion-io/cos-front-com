@@ -32,6 +32,10 @@ export default {
     startupId: {
       required: false,
       type: String
+    },
+    type: {
+      required: false, // TODO 需要改成true
+      type: String
     }
   },
   data() {
@@ -56,8 +60,8 @@ export default {
     async getBounties() {
       this.loading = true;
       try {
-        const [data, total] = await getBounties(this.search, this.startupId);
-        this.getBounties = data;
+        const [data, total] = await getBounties(this.search, this.startupId, this.type);
+        this.bounties = data;
         this.total = total;
       } catch (error) {
         console.log('%c  error: ', 'font-size:20px;background-color: #2EAFB0;color:#fff;', error);
