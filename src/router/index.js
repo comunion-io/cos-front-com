@@ -138,6 +138,17 @@ const routes = [
         },
         component: () =>
           import(/* webpackChunkName: 'hunter' */ '@/views/hunter/TransformHunter.vue')
+      },
+      // hunter的bounty主页
+      {
+        path: '/hunter/bounty-home',
+        name: 'bountyHome',
+        meta: {
+          title: 'BountyHome',
+          skipAuth: false
+        },
+        component: () =>
+          import(/* webpackChunkName: 'bountyHome' */ '@/views/hunter/BountyHome.vue')
       }
     ]
   },
