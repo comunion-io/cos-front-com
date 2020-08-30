@@ -135,12 +135,11 @@
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
 import { urlValidator } from '@/utils/validators';
-import BbsInput from '../../startup/components/BbsInput';
-import { getPrepareBountyId, createBounty } from '@/services/bounty.service';
+import BbsInput from '@/components/form/BbsInput';
+import { getMyStartups, getTags, getPrepareBountyId, createBounty } from '@/services';
 import { COMUNION_BOUNTY_RECEIVE_ACCOUNT, web3 } from '@/libs/web3';
 import { bountyAbi } from '@/libs/abis/bounty';
 import { mapGetters } from 'vuex';
-import { getMyStartups, getSkills } from '@/services';
 
 export default {
   // import引入的组件需要注入到对象中才能使用
@@ -332,7 +331,7 @@ export default {
     },
 
     async getTags() {
-      const skills = await getSkills({ source: 'skills' });
+      const skills = await getTags({ source: 'skills' });
       if (skills.length > 0) {
         this.skills = skills;
       }

@@ -130,7 +130,7 @@ const routes = [
       },
       // Transform Hunter
       {
-        path: '/hunter/TransformHunter',
+        path: '/hunter/transform',
         name: 'transformHunter',
         meta: {
           title: 'TransformHunter',
