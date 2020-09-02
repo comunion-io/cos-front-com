@@ -2,6 +2,13 @@
  * 验证器
  */
 
+// 邮箱验证
+export const emailRegexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+export function emailValidator(rule, value) {
+  return emailRegexp.test(value);
+}
+
 // a-input-number正整数规则
 export const positiveInteger = v => (/^\d+/.test(v) ? v : 1);
 

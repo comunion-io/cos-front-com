@@ -1,4 +1,4 @@
-import { getCategories } from '@/services';
+import { getCategories, getTags } from '@/services';
 
 /**
  * 按需请求数据
@@ -42,4 +42,6 @@ function createLazyState(store, name, initialState, fetchState) {
 export default function(store) {
   // startup类型
   createLazyState(store, 'categories', [], getCategories);
+  // 技能标签
+  createLazyState(store, 'skills', [], () => getTags('skills'));
 }

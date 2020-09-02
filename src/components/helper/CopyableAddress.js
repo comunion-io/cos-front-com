@@ -19,6 +19,7 @@ export default {
   },
   render(h, context) {
     const { address } = context.props;
+    if (!address) return null;
     return (
       <div
         class="flex-inline ai-center"

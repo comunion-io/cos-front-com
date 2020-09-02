@@ -3,3 +3,4 @@ export * from './user.services';
 export * from './startup.services';
 export * from './setting.services';
 export * from './bounty.service';
+export * from './common.service';

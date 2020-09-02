@@ -38,10 +38,10 @@ import {
   List,
   Popconfirm,
   Popover,
-  Collapse
+  Collapse,
+  Tag
   // Cascader,
   // Progress,
-  // Empty
 } from 'ant-design-vue';
 
 moment.locale('zh-cn');
@@ -83,7 +83,7 @@ Vue.use(Avatar);
 Vue.use(Collapse);
 // Vue.use(Cascader);de
 // Vue.use(Progress);
-// Vue.use(Empty);
+Vue.use(Tag);
 
 Vue.prototype.$confirm = Modal.confirm;
 Vue.prototype.$message = message;

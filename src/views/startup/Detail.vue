@@ -18,7 +18,7 @@ export default {
   render(h) {
     const TabComponent = 'Tab' + this.selectedTab;
     return (
-      <div class="flex">
+      <div class="flex" style="padding: 16px 50px">
         <a-card title="Menu" class="mr-20 startup-menus">
           <a-tabs vModel={this.selectedTab} tab-position="left">
             {this.tabs.map(tab => (
@@ -35,6 +35,7 @@ export default {
 
 <style lang="less" scoped>
 .startup-menus {
+  flex-shrink: 0;
   width: 200px;
   /deep/ .ant-tabs-left-bar {
     border-right: none;

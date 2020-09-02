@@ -31,8 +31,3 @@ export async function getPrepareBountyId() {
   const { error, data } = await request('get', '/cores/prepareId');
   return error ? {} : data;
 }
-
-export async function getSkills(params) {
-  const { error, data } = await request('get', '/cores/tags', params);
-  return error ? {} : data;
-}

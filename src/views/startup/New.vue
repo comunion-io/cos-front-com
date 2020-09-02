@@ -122,7 +122,7 @@ import {
   getMyStartupDetail
 } from '@/services';
 import { merge } from '@/utils';
-import BbsInput from './components/BbsInput';
+import BbsInput from '@/components/form/BbsInput';
 
 export default {
   name: 'NewStartup',
