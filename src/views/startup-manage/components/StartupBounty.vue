@@ -40,7 +40,10 @@ export default {
   // 方法集合
   methods: {
     newBounty() {
-      this.$router.push({ name: 'newBounty' });
+      this.$router.push({
+        name: 'newBounty',
+        query: { startupId: this.startupId }
+      });
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）

@@ -139,7 +139,7 @@
 </template>
 
 <script>
-import BbsInput from '../components/BbsInput';
+import BbsInput from '@/components/form/BbsInput';
 import mixins from './mixins';
 
 export default {

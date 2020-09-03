@@ -68,7 +68,7 @@
 
 <script>
 import { urlValidator } from '@/utils/validators';
-import BbsInput from '@/views/startup/components/BbsInput';
+import BbsInput from '@/components/form/BbsInput';
 
 export default {
   name: 'Hunter',

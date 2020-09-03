@@ -83,10 +83,10 @@
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import { getMyStartupDetail } from '@/services/startup.services';
 import { mapGetters } from 'vuex';
-import BbsInput from '../../startup/components/BbsInput.vue';
+import { getMyStartupDetail } from '@/services/startup.services';
 import { merge } from '@/utils';
+import BbsInput from '@/components/form/BbsInput.vue';
 
 export default {
   // import引入的组件需要注入到对象中才能使用
