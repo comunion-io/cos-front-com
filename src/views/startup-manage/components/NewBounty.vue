@@ -234,9 +234,8 @@ export default {
       this.$refs.ruleForm.validate(async valid => {
         if (valid) {
           try {
-            const bountyId = await getPrepareBountyId();
-            if (bountyId) {
-              const id = bountyId;
+            const { id } = await getPrepareBountyId();
+            if (id) {
               const txid = '0x12rgfebfgsdnre3425';
               this.createBounty(this.form, id, txid);
               // this.ethSendTranscation(this.form, id);
@@ -253,7 +252,7 @@ export default {
      */
     async ethSendTranscation(formData, bountyId) {
       const contractBounty = await this.getContractInstance(formData, bountyId);
-      const codeData = await contractBounty.enCodeABI();
+      const codeData = await contractBounty.encodeABI();
       const countAll = await web3.eth.getTranscationCount(this.account, 'pending');
       const chainId = await web3.eth.getChainId();
 
@@ -313,13 +312,16 @@ export default {
      * @description 获取bounty上链的合约实例
      */
     async getContractInstance(formData, bountyId) {
+      const paymentToken = formData.payments.map(item => item.token);
+      const peymantValue = formData.payments.map(item => item.value);
       const contract = new web3.eth.Contract(bountyAbi, COMUNION_BOUNTY_RECEIVE_ACCOUNT);
       const contractBounty = await contract.methods.newBounty(
         bountyId,
         formData.startupId,
         formData.title,
         formData.intro,
-        formData.payments
+        paymentToken,
+        peymantValue
       );
       return contractBounty;
     },
