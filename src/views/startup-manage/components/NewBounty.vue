@@ -81,13 +81,13 @@
                         v-model="form.payments[index].token"
                         style="width: 80px"
                       >
-                        <a-select-option value="USDT">
+                        <a-select-option :value="1">
                           USDT
                         </a-select-option>
-                        <a-select-option value="BTC2">
+                        <a-select-option :value="2">
                           BTC
                         </a-select-option>
-                        <a-select-option value="ETH">
+                        <a-select-option :value="3">
                           ETH
                         </a-select-option>
                       </a-select>
@@ -158,7 +158,7 @@ export default {
         intro: '',
         descriptionAddr: '',
         duration: '',
-        payments: [{ token: 'BTC', value: '' }]
+        payments: [{ token: 1, value: '' }]
       },
 
       // 当前账户创建的startups
@@ -234,13 +234,9 @@ export default {
       this.$refs.ruleForm.validate(async valid => {
         if (valid) {
           try {
-            const bountyId = await getPrepareBountyId();
-
-            if (bountyId) {
-              const id = bountyId;
-              const txid = '0x12rgfebfgsdnre3425';
-              this.createBounty(this.form, id, txid);
-              // this.ethSendTranscation(this.form, id);
+            const { id } = await getPrepareBountyId();
+            if (id) {
+              this.ethSendTranscation(this.form, id);
             }
           } catch (error) {
             console.error(error);
@@ -254,15 +250,15 @@ export default {
      */
     async ethSendTranscation(formData, bountyId) {
       const contractBounty = await this.getContractInstance(formData, bountyId);
-      const codeData = await contractBounty.enCodeABI();
-      const countAll = await web3.eth.getTranscationCount(this.account, 'pending');
+      const codeData = await contractBounty.encodeABI();
+      const countAll = await web3.eth.getTransactionCount(this.account, 'pending');
       const chainId = await web3.eth.getChainId();
 
       const tx = {
         from: this.account,
         to: COMUNION_BOUNTY_RECEIVE_ACCOUNT,
         data: codeData,
-        value: web3.utils.numberToHex(Math.pow(10, 16)),
+        value: web3.utils.numberToHex(Math.pow(10, 17)),
         nonce: web3.utils.numberToHex(countAll),
         gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
         gasLimit: web3.utils.numberToHex(183943),
@@ -290,10 +286,11 @@ export default {
     async createBounty(formData, bountyId, txid) {
       try {
         // 创建 bounty
-        const data = { ...formData, txid, ...bountyId, ...{ descriptionFileAddr: '-1' } }; // descriptionFileAddr等后端删除了， 前端也要删除
+        const data = { ...formData, txid, bountyId, descriptionFileAddr: '-1' }; // descriptionFileAddr等后端删除了， 前端也要删除
         data.duration = +data.duration;
         for (const payment of data.payments) {
           payment.value = +payment.value;
+          payment.token = payment.token.toString();
         }
 
         const startupId = this.$route.query.startupId;
@@ -306,7 +303,7 @@ export default {
           });
         }
       } catch (err) {
-        console.err(err);
+        console.error(err);
       }
     },
 
@@ -314,13 +311,16 @@ export default {
      * @description 获取bounty上链的合约实例
      */
     async getContractInstance(formData, bountyId) {
+      const paymentToken = formData.payments.map(item => item.token);
+      const peymantValue = formData.payments.map(item => item.value);
       const contract = new web3.eth.Contract(bountyAbi, COMUNION_BOUNTY_RECEIVE_ACCOUNT);
       const contractBounty = await contract.methods.newBounty(
         bountyId,
         formData.startupId,
         formData.title,
         formData.intro,
-        formData.payments
+        paymentToken,
+        peymantValue
       );
       return contractBounty;
     },

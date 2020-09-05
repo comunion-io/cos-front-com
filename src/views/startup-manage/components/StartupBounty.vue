@@ -8,7 +8,7 @@
       </a-col>
     </a-row>
     <section class="bounty-list">
-      <bounty-list :startupId="startupId"></bounty-list>
+      <bounty-list :fetchData="fetchData"></bounty-list>
     </section>
   </div>
 </template>
@@ -17,6 +17,7 @@
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
 import BountyList from '@/components/bounty-list/BountyList';
+import { getStartUpBounties } from '@/services';
 
 export default {
   // import引入的组件需要注入到对象中才能使用
@@ -44,6 +45,16 @@ export default {
         name: 'newBounty',
         query: { startupId: this.startupId }
       });
+    },
+
+    /**
+     * @description 获取数据
+     * @param query
+     * @returns {Promise<*>}
+     */
+    async fetchData(query) {
+      const [data, total] = await getStartUpBounties(this.startupId, query);
+      return [data, total];
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
