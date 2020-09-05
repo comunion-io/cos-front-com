@@ -33,9 +33,9 @@ export const bountyAbi = [
         type: 'string'
       },
       {
-        internalType: 'address[]',
+        internalType: 'uint256[]',
         name: 'paymentToken',
-        type: 'address[]'
+        type: 'uint256[]'
       },
       {
         internalType: 'uint256[]',
@@ -69,9 +69,9 @@ export const bountyAbi = [
         type: 'string'
       },
       {
-        internalType: 'address[]',
+        internalType: 'uint256[]',
         name: 'paymentToken',
-        type: 'address[]'
+        type: 'uint256[]'
       },
       {
         internalType: 'uint256[]',

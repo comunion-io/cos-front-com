@@ -1,9 +1,56 @@
 <!-- Bounty list -->
 <template>
   <div id="bounty-list">
+    <!-- search -->
+    <a-input-search
+      v-model="search.keyword"
+      size="large"
+      class="flex-1"
+      placeholder="Search by bounty title"
+      @search="getBounties"
+    />
+
     <a-spin size="large" :spinning="loading">
       <div class="bounty-list flex-column">
-        <bounty-card v-for="bounty in bounties" :key="bounty.id" :bounty="bounty"></bounty-card>
+        <bounty-card v-for="bounty in bounties" :key="bounty.id">
+          <div class="bounty-info" slot="bounty-info">
+            <div class="flex">
+              <div class="title">
+                #1 Design- Create A Vector For the Comunion Log Create A Vector For the Comunion Log
+              </div>
+              <a-button class="ml-auto" gohst size="small">
+                4.00ETH
+              </a-button>
+              <a-button style="margin-left: 10px;" type="default" size="small">
+                0.5ETH
+              </a-button>
+            </div>
+            <div class="flex" style="margin-top: 44px">
+              <a-button-group class="flex">
+                <a-button>
+                  Comunion
+                </a-button>
+              </a-button-group>
+              <ul class="status">
+                <li>Statue: open</li>
+                <li>11 Hours left</li>
+                <li>11 HUnters</li>
+                <li>1 Paied</li>
+              </ul>
+              <div class="ml-auto flex ai-center">Closed Bounty</div>
+            </div>
+          </div>
+
+          <div class="hunter-info" slot="hunter-info">
+            <div>
+              <a-collapse expand-icon-position="right" :bordered="false">
+                <a-collapse-panel key="1" header="Hunter: 5">
+                  <p>hello panel</p>
+                </a-collapse-panel>
+              </a-collapse>
+            </div>
+          </div>
+        </bounty-card>
         <a-empty v-if="!loading && !bounties.length" />
         <div class="flex jc-center mt-20">
           <com-pagination
@@ -22,20 +69,15 @@
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
 import BountyCard from './BountyCard';
-import { getBounties } from '@/services';
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: {
     BountyCard
   },
   props: {
-    startupId: {
-      required: false,
-      type: String
-    },
-    type: {
-      required: false, // TODO 需要改成true
-      type: String
+    fetchData: {
+      type: Function,
+      required: true
     }
   },
   data() {
@@ -45,7 +87,8 @@ export default {
       loading: false,
       search: {
         offset: 0,
-        limit: 10
+        limit: 10,
+        keyword: ''
       },
       total: 0,
       bounties: []
@@ -60,11 +103,12 @@ export default {
     async getBounties() {
       this.loading = true;
       try {
-        const [data, total] = await getBounties(this.search, this.startupId, this.type);
+        const [data, total] = await this.fetchData(this.search); //  await getBounties(this.search, this.startupId, this.type);
         this.bounties = data;
+        console.log('%c\n  this.bounties :::->', 'background: pink;', this.bounties);
         this.total = total;
       } catch (error) {
-        console.log('%c  error: ', 'font-size:20px;background-color: #2EAFB0;color:#fff;', error);
+        console.error(error);
       } finally {
         this.loading = false;
       }

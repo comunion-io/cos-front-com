@@ -1,40 +1,8 @@
 <!-- bounty card -->
 <template>
   <div class="bounty-card">
-    <div class="flex">
-      <div class="title">
-        #1 Design- Create A Vector For the Comunion Log Create A Vector For the Comunion Log
-      </div>
-      <a-button class="ml-auto" gohst size="small">
-        4.00ETH
-      </a-button>
-      <a-button style="margin-left: 10px;" type="default" size="small">
-        0.5ETH
-      </a-button>
-    </div>
-
-    <div class="flex" style="margin-top: 44px">
-      <a-button-group class="flex">
-        <a-button>
-          Comunion
-        </a-button>
-      </a-button-group>
-      <ul class="status">
-        <li>Statue: open</li>
-        <li>11 Hours left</li>
-        <li>11 HUnters</li>
-        <li>1 Paied</li>
-      </ul>
-      <div class="ml-auto flex ai-center">Closed Bounty</div>
-    </div>
-
-    <div>
-      <a-collapse expand-icon-position="right" :bordered="false">
-        <a-collapse-panel key="1" header="Hunter: 5">
-          <p>hello panel</p>
-        </a-collapse-panel>
-      </a-collapse>
-    </div>
+    <slot name="bounty-info"></slot>
+    <slot name="hunter-info"></slot>
   </div>
 </template>
 
@@ -45,12 +13,6 @@
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: {},
-  props: {
-    bounty: {
-      type: Object,
-      required: true
-    }
-  },
   data() {
     // 这里存放数据
     return {};
