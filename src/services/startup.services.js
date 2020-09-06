@@ -90,5 +90,5 @@ export async function updateStartup(id, newStartup) {
  * @description 获取follow startup列表
  */
 export async function getFollowStartups(query) {
-  return commonList('/cores/startups/follow', query);
+  return commonList('/cores/startups/me/followed', query);
 }
