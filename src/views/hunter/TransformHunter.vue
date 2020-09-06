@@ -4,19 +4,14 @@
     :bordered="false"
     :headStyle="{ fontSize: '24px', textAlign: 'center', borderBottom: 'none' }"
   >
-    <a-row>
+    <a-row v-if="!success">
       <a-col :offset="4" :span="16">
-        <a-form-model id="transform-hunter-form" class="vertical-form" :model="form" :rules="rules">
+        <a-form-model class="vertical-form" :model="form" :rules="rules" ref="form">
           <a-form-model-item label="Hunter Name" prop="name">
             <a-input v-model="form.name" placeholder="Hunter Name" size="large" :max-length="50" />
           </a-form-model-item>
           <a-form-model-item label="Skill Tag" prop="skills">
-            <a-input
-              :value="form.skills"
-              placeholder="Please select skills that required for the bounty"
-              readonly
-              @click="showSkillsModal"
-            />
+            <skills v-model="form.skills" />
           </a-form-model-item>
           <a-form-model-item label="About" prop="about">
             <a-textarea
@@ -36,25 +31,38 @@
             />
           </a-form-model-item>
           <a-form-model-item>
-            <a-button type="primary" size="large" @click="onSubmit" block>
+            <a-button type="primary" size="large" :loading="loading" @click="onSubmit" block>
               Submit
             </a-button>
           </a-form-model-item>
         </a-form-model>
       </a-col>
     </a-row>
-    <skill-modal v-if="skillVisible" v-model="skillVisible" @ok="saveSkills" />
+    <a-result
+      v-else
+      status="success"
+      title="Congratulations"
+      sub-title="You already have transformed a hunter"
+    >
+      <template #extra>
+        <a-button key="console" type="link" @click="backtoHome">
+          &lt;&lt;&nbsp;Back to home
+        </a-button>
+      </template>
+    </a-result>
   </a-card>
 </template>
 
 <script>
+import { Result } from 'ant-design-vue';
 import { urlValidator, emailValidator } from '@/utils/validators';
-import SkillModal from '@/components/modal/SkillModal';
+import { transformToHunter } from '@/services';
 import BbsInput from '@/components/form/BbsInput';
+import Skills from '@/components/form/Skills';
 
 export default {
   name: 'TransformHunter',
-  components: { SkillModal, BbsInput },
+  components: { Skills, BbsInput, [Result.name]: Result },
   data() {
     return {
       form: {
@@ -95,26 +103,27 @@ export default {
       },
       createState: 'beforeCreate',
       // balance: 0.1,
-      skillVisible: false
+      loading: false,
+      // 是否成功
+      success: false
     };
   },
   computed: {},
   methods: {
-    showSkillsModal() {
-      this.skillVisible = true;
-    },
-    saveSkills(v) {
-      this.form.skills = v;
-    },
     onSubmit() {
-      this.$refs.ruleForm.validate(valid => {
+      this.$refs.form.validate(async valid => {
         if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
+          this.loading = true;
+          if (await transformToHunter(this.form)) {
+            // 成功后续操作
+            this.success = true;
+          }
+          this.loading = false;
         }
       });
+    },
+    backtoHome() {
+      this.$router.replace({ name: 'square' });
     }
   }
 };

@@ -22,8 +22,8 @@
             <div class="description">
               <span>Hunt bounty with skill，change the life .</span>
             </div>
-            <a-button class="transform-btn" type="primary" @click="transformHunter">
-              Transform Hunter
+            <a-button class="transform-btn" type="primary" @click="toHunter">
+              {{isHunter? `Hunter ${hunterInfo.name}`: 'Transform Hunter'}
             </a-button>
           </div>
         </div>
@@ -45,7 +45,7 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'HeaderUserArea',
   computed: {
-    ...mapGetters(['isLoggedIn', 'user', 'account', 'netWorkName']),
+    ...mapGetters(['isLoggedIn', 'user', 'account', 'netWorkName', 'isHunter', 'hunterInfo']),
     // 把账户名处理成只保留前后四位，中间省略号
     lessAccount() {
       let account = this.account;
@@ -65,10 +65,14 @@ export default {
     /**
      * @description 发布hunter
      */
-    transformHunter() {
-      // TODO hunter 成功以后，点击后执行
-      // this.$router.push({ name: 'hunterManage' });
-      this.$router.push({ name: this.isLoggedIn ? 'transformHunter' : 'guide' });
+    toHunter() {
+      if (this.isHunter) {
+        this.$router.push({ name: 'hunterManage' });
+      } else {
+        // TODO hunter 成功以后，点击后执行
+        // this.$router.push({ name: 'hunterManage' });
+        this.$router.push({ name: this.isLoggedIn ? 'transformHunter' : 'guide' });
+      }
     }
   }
 };
