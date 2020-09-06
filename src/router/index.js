@@ -126,7 +126,7 @@ const routes = [
           title: 'hunterManage'
         },
         component: () =>
-          import(/* webpackChunkName: 'newStartup' */ '@/views/hunter-manage/HunterManage')
+          import(/* webpackChunkName: 'hunterManage' */ '@/views/hunter-manage/HunterManage')
       },
       // Transform Hunter
       {

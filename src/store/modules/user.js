@@ -1,7 +1,7 @@
 import { message } from 'ant-design-vue';
 import { LOGIN_TIME, TEST_NET_WORK_NAME, USER_INFO, USER_ACCOUNT_ADDRESS } from '@/configs/storage';
 import { web3, initWeb3 } from '@/libs/web3';
-import { getNonce, login, logout } from '@/services';
+import { getNonce, login, logout, getMyHunterInfo } from '@/services';
 import router from '@/router';
 
 const ls = window.localStorage;
@@ -19,7 +19,9 @@ const state = {
   /** metamask 网络名称 */
   netWorkName: ls.getItem(TEST_NET_WORK_NAME) || '',
   /** 登录时间 */
-  logInTime: ls.getItem(LOGIN_TIME)
+  logInTime: ls.getItem(LOGIN_TIME),
+  // hunter信息
+  hunterInfo: null
 };
 
 const mutations = {
@@ -95,12 +97,17 @@ const mutations = {
         state.netWorkName = 'unknown';
         ls.setItem(TEST_NET_WORK_NAME, 'unknown');
     }
+  },
+
+  // 设置我的hunter信息
+  SET_HUNTER_INFO(state, hunterInfo) {
+    state.hunterInfo = hunterInfo;
   }
 };
 
 const actions = {
   // 初始化用户
-  initUser({ getters, commit }) {
+  initUser({ getters, commit, dispatch }) {
     // 已登录
     if (getters.isLoggedIn) {
       initWeb3();
@@ -112,9 +119,19 @@ const actions = {
       } else {
         message.warning('You have not installed metamask.');
       }
+      // 获取我的hunter信息
+      dispatch('getMyHunterInfo');
     }
   },
-
+  /**
+   * 获取我的hunter信息
+   */
+  async getMyHunterInfo({ commit }) {
+    const hunterInfo = await getMyHunterInfo();
+    if (hunterInfo) {
+      commit('SET_HUNTER_INFO', hunterInfo);
+    }
+  },
   /**
    * descriptions 用户登录
    * @param dispatch
@@ -200,7 +217,11 @@ const getters = {
   /** 链接的主网络名称 */
   netWorkName: state => state.netWorkName,
   /** 登录时间 */
-  logInTime: state => state.logInTime
+  logInTime: state => state.logInTime,
+  // 是否是hunter
+  isHunter: state => !!state.hunterInfo,
+  // 我的hunter信息
+  hunterInfo: state => state.hunterInfo
 };
 
 export default {

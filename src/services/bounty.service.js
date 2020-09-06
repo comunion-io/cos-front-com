@@ -2,14 +2,32 @@ import { commonList } from './utils';
 import { request } from './request';
 
 /**
- * @description 获取所有的bounty或者startup发布的bounty
- * @param startupId: startup 的id, 如果为空， 则获取所有的bounty
+ * @description 获取startup 下的bounty
+ * @param startupId: startup 的id,
  */
 export async function getBounties(query, startupId) {
   if (startupId) {
     return commonList(`cores/startups/${startupId}/bounties`, query);
   } else {
     return commonList('cores/bounties', query);
+  }
+}
+
+/**
+ * @description 获取主页BOUNTY 下的bounty
+ * @param startupId: startup 的id,
+ */
+export async function getHomeBounties(query) {
+  return commonList(`cores/bounties`, query);
+}
+
+/**
+ * @description 获取startup 下的bounty
+ * @param startupId: startup 的id,
+ */
+export async function getStartUpBounties(startupId, query) {
+  if (startupId) {
+    return commonList(`cores/startups/${startupId}/bounties`, query);
   }
 }
 
