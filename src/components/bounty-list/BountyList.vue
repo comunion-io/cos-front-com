@@ -41,7 +41,7 @@
             </div>
           </div>
 
-          <div class="hunter-info" slot="hunter-info">
+          <!-- <div class="hunter-info" slot="hunter-info">
             <div>
               <a-collapse expand-icon-position="right" :bordered="false">
                 <a-collapse-panel key="1" header="Hunter: 5">
@@ -49,9 +49,12 @@
                 </a-collapse-panel>
               </a-collapse>
             </div>
-          </div>
+          </div> -->
         </bounty-card>
-        <a-empty v-if="!loading && !bounties.length" />
+        <div class="empty">
+          <a-empty v-if="!loading && !bounties.length" />
+        </div>
+
         <div class="flex jc-center mt-20">
           <com-pagination
             :limit.sync="search.limit"
@@ -138,4 +141,10 @@ export default {
 </script>
 <style lang="less" scoped>
 //@import url(); 引入公共css类
+.bounty-list {
+  margin-top: 20px;
+}
+.empty {
+  margin-top: 20px;
+}
 </style>

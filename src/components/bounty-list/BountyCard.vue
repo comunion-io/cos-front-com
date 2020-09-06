@@ -47,12 +47,14 @@ export default {
 //@import url(); 引入公共css类
 .bounty-card {
   margin-bottom: 20px;
-  padding: 20px 28px 28px 32px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 0px 4px 4px rgba(6, 0, 1, 0.04);
   border-radius: 4px;
-  width: calc(100% - 8px);
-  margin-left: 4px;
+  height: 184px;
+  padding-top: 38px;
+  padding-bottom: 26px;
+  padding-left: 32px;
+  padding-right: 30px;
   .status {
     display: flex;
     margin-bottom: 0;
