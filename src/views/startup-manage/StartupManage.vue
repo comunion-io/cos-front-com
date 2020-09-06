@@ -1,24 +1,25 @@
 <template>
   <div id="startup-manage">
-    <a-card id="start-manage" :bordered="false" style="margin-bottom: 24px;">
-      <h1 class="title">Startup Manage</h1>
-      <section class="content">
-        <a-tabs v-model="activeTab">
-          <a-tab-pane key="1" tab="Perference">
-            <StartupManagePerference :startupId="startupId"></StartupManagePerference>
-          </a-tab-pane>
-          <a-tab-pane key="2" tab="Settings">
-            <StartupSetting></StartupSetting>
-          </a-tab-pane>
-          <a-tab-pane key="3" tab="Bounty">
-            <StartupBounty :startupId="startupId"></StartupBounty>
-          </a-tab-pane>
-          <a-tab-pane key="4" tab="Team" disabled> </a-tab-pane>
-          <a-tab-pane key="5" tab="Operation" disabled> </a-tab-pane>
-          <a-tab-pane key="6" tab="Fundrais" disabled> </a-tab-pane>
-        </a-tabs>
-      </section>
-    </a-card>
+    <div class="title">Startup Manage</div>
+    <div class="content mb-24">
+      <div class="tabs flex ai-center">
+        <div
+          class="tab flex ai-center jc-center flex-1 f-18 t-bold"
+          :class="{ active: activeTab === tab.name }"
+          v-for="tab in tabs"
+          :key="tab.name"
+          @click="tabOnChange(tab.name)"
+        >
+          {{ tab.name }}
+        </div>
+      </div>
+      <StartupManagePerference
+        v-if="activeTab === 'Perference'"
+        :startupId="startupId"
+      ></StartupManagePerference>
+      <StartupSetting v-else-if="activeTab === 'Settings'"></StartupSetting>
+      <StartupBounty v-else-if="activeTab === 'Bounty'" :startupId="startupId"></StartupBounty>
+    </div>
   </div>
 </template>
 <script>
@@ -30,22 +31,39 @@ export default {
   components: { StartupManagePerference, StartupSetting, StartupBounty },
   data() {
     return {
-      activeTab: '1',
-      startupId: this.$route.query.startupId
+      activeTab: 'Perference',
+      startupId: this.$route.query.startupId,
+      tabs: [
+        { name: 'Perference' },
+        { name: 'Settings' },
+        { name: 'Bounty' },
+        { name: 'Team' },
+        { name: 'Operation' },
+        { name: 'Fundrais' }
+      ]
     };
   },
 
-  methods: {},
+  methods: {
+    // tab改变
+    tabOnChange(tab) {
+      this.activeTab = tab;
+    }
+  },
   mounted() {
     const tab = this.$route.query.tab;
     if (tab === 'bounty') {
-      this.activeTab = '3';
+      this.activeTab = 'Bounty';
+    } else {
+      this.activeTab = this.tabs[0].name;
     }
   }
 };
 </script>
 <style lang="less" scoped>
 #startup-manage {
+  padding: 0 50px;
+
   .title {
     font-size: 24px;
     font-family: Microsoft YaHei;
@@ -56,10 +74,45 @@ export default {
   }
 
   .content {
-    margin: 0 auto;
-    width: 80%;
-    max-width: 850px;
-    min-width: 240px;
+    background-color: #fff;
+    box-shadow: 0px 2px 4px 0px rgba(6, 0, 1, 0.04);
+    border-radius: 4px;
+
+    .tabs {
+      height: 70px;
+      position: relative;
+      padding: 0 30px;
+
+      &:after {
+        content: '';
+        position: absolute;
+        left: 30px;
+        right: 30px;
+        bottom: 0;
+        border-bottom: 1px solid #bfbfbf;
+      }
+      .tab {
+        color: #000;
+        cursor: pointer;
+        height: 100%;
+        position: relative;
+
+        &:hover,
+        &.active {
+          &:after {
+            content: '';
+            position: absolute;
+            height: 6px;
+            left: 17px;
+            right: 17px;
+            bottom: -3px;
+            border-radius: 3px;
+            background-color: #6170ff;
+            z-index: 1;
+          }
+        }
+      }
+    }
   }
 }
 </style>

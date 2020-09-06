@@ -7,18 +7,9 @@
       <span class="num">{{ total }}&nbsp; Bounties</span>in the Comunion.
     </div>
 
-    <!-- search -->
-    <a-input-search
-      v-model="search.keyword"
-      size="large"
-      class="flex-1"
-      placeholder="Search by bounty title"
-      @search="getBounties"
-    />
-
     <!-- 显示 bounty-->
     <section class="bounties">
-      <bounty-list></bounty-list>
+      <bounty-list :fetchData="fetchData"></bounty-list>
     </section>
   </div>
 </template>
@@ -40,21 +31,15 @@ export default {
         offset: 0,
         limit: 10,
         keyword: ''
-      },
-      bounties: []
+      }
     };
   },
   methods: {
-    async getBounties() {
-      this.loading = true;
+    async fetchData() {
       const [data, total] = await getBounties(this.search);
-      this.loading = false;
-      this.startups = data;
       this.total = total;
+      return [data, total];
     }
-  },
-  mounted() {
-    this.getBounties();
   }
 };
 </script>
