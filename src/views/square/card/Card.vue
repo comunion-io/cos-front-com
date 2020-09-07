@@ -16,11 +16,11 @@
       </a-button>
       <a-button class="ml-auto" type="default" size="small" shape="round">
         <img style="margin-right: 5px;" src="@/assets/images/money_pocket@2x.png" alt="" />
-        1,211
+        {{ startup.bountyCount }}
       </a-button>
       <a-button style="margin-left: 10px;" type="default" size="small" shape="round">
         <img style="margin-right: 5px;" src="@/assets/images/star@2x.png" alt="" />
-        1,211
+        {{ startup.followCount }}
       </a-button>
     </div>
   </router-link>
