@@ -1,4 +1,5 @@
 <template>
+  <!-- bounty 的主页面 -->
   <div id="bounty">
     <div class="total">
       <div class="noti-icon flex-inline ai-center jc-center">
@@ -9,13 +10,13 @@
 
     <!-- 显示 bounty-->
     <section class="bounties">
-      <bounty-list :fetchData="fetchData"></bounty-list>
+      <bounty-list :fetchData="fetchData" @goDetail="goDetail"></bounty-list>
     </section>
   </div>
 </template>
 
 <script>
-import { getBounties } from '@/services';
+import { getHomeBounties } from '@/services';
 import BountyList from '@/components/bounty-list/BountyList';
 
 export default {
@@ -36,9 +37,17 @@ export default {
   },
   methods: {
     async fetchData() {
-      const [data, total] = await getBounties(this.search);
+      const [data, total] = await getHomeBounties(this.search);
       this.total = total;
       return [data, total];
+    },
+
+    /**
+     * @description 点击以后， 前往详情页面
+     */
+    goDetail(bounty) {
+      // TODO 前往bounty 详情页
+      console.log('bounty:::', bounty);
     }
   }
 };
