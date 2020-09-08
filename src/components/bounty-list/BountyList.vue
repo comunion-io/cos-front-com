@@ -12,7 +12,7 @@
 
     <a-spin size="large" :spinning="loading">
       <div class="bounty-list flex-column">
-        <bounty-card v-for="bounty in bounties" :key="bounty.id">
+        <bounty-card v-for="bounty in bounties" :key="bounty.id" @click.native="goToDetail(bounty)">
           <div class="bounty-info" slot="bounty-info">
             <div class="flex">
               <div class="title">
@@ -115,6 +115,10 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+
+    goToDetail(bounty) {
+      this.$emit('goDetail', bounty);
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
@@ -143,6 +147,10 @@ export default {
 //@import url(); 引入公共css类
 .bounty-list {
   margin-top: 20px;
+
+  .bounty-info {
+    cursor: pointer;
+  }
 }
 .empty {
   margin-top: 20px;
