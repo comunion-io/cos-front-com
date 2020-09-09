@@ -1,6 +1,6 @@
 <script>
 import { get } from 'lodash';
-import { getStartupDetail } from '@/services';
+import { getStartupDetail, followStartup } from '@/services';
 
 export default {
   props: {
@@ -145,6 +145,17 @@ export default {
           );
         }
       });
+    },
+    // follow按钮被点击
+    async followBtnOnClick() {
+      let success = await followStartup(this.id);
+      if (success) {
+        this.getStartupDetail();
+      }
+    },
+    // 获取startup详情数据
+    async getStartupDetail() {
+      this.startup = await getStartupDetail(this.id);
     }
   },
   render(h) {
@@ -165,8 +176,13 @@ export default {
             </h3>
             <p class="mt-16 mb-0 t-break t-grey">{startup.mission}</p>
           </div>
-          <a-button type="primary" size="large" class="ml-auto">
-            123+ Follow
+          <a-button
+            type="primary"
+            size="large"
+            class={`${this.startup.followed ? 'followed' : ''} ml-auto`}
+            onClick={this.followBtnOnClick}
+          >
+            {startup.followCount > 0 ? startup.followCount : ''} Follow
           </a-button>
         </div>
         {modules.map(_module => {
@@ -205,8 +221,8 @@ export default {
       </a-card>
     );
   },
-  async created() {
-    this.startup = await getStartupDetail(this.id);
+  created() {
+    this.getStartupDetail();
   }
 };
 </script>
@@ -230,5 +246,9 @@ export default {
   > p {
     display: flex;
   }
+}
+
+.followed {
+  background-color: gray;
 }
 </style>
