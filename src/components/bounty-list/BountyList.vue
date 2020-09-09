@@ -18,10 +18,15 @@
               <div class="title">
                 #1 Design- Create A Vector For the Comunion Log Create A Vector For the Comunion Log
               </div>
-              <a-button class="ml-auto" gohst size="small">
+              <a-button class="ml-auto currency-btn" style="color: #6170ff;" gohst size="small">
                 4.00ETH
               </a-button>
-              <a-button style="margin-left: 10px;" type="default" size="small">
+              <a-button
+                class="currency-btn"
+                style="margin-left: 10px; color: #ffad4d;"
+                type="default"
+                size="small"
+              >
                 0.5ETH
               </a-button>
             </div>
@@ -31,13 +36,13 @@
                   Comunion
                 </a-button>
               </a-button-group>
-              <ul class="status">
-                <li>Statue: open</li>
-                <li>11 Hours left</li>
-                <li>11 HUnters</li>
-                <li>1 Paied</li>
+              <ul class="state-info">
+                <li class="state">State: open</li>
+                <li class="hours">11 Hours left</li>
+                <li class="hunters">11 Hunters</li>
+                <li class="paied">1 Paied</li>
               </ul>
-              <div class="ml-auto flex ai-center">Closed Bounty</div>
+              <!-- <div class="ml-auto flex ai-center">Closed Bounty</div> -->
             </div>
           </div>
 
@@ -150,6 +155,22 @@ export default {
 
   .bounty-info {
     cursor: pointer;
+    .title {
+      width: 594px;
+      line-height: 20px;
+      font-size: 18px;
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+      color: #000000;
+    }
+
+    .currency-btn {
+      border: none;
+      line-height: 12px;
+      font-size: 15px;
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+    }
   }
 }
 .empty {

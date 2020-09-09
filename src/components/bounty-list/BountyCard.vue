@@ -55,16 +55,21 @@ export default {
   padding-bottom: 26px;
   padding-left: 32px;
   padding-right: 30px;
-  .status {
+  .state-info {
     display: flex;
     margin-bottom: 0;
     line-height: 32px;
 
     li {
+      color: #666666;
       min-width: 100px;
       font-size: 13px;
+      font-family: Microsoft YaHei;
       font-weight: 400;
-      color: rgba(102, 102, 102, 1);
+    }
+
+    .state {
+      color: #3fc580;
     }
   }
   /deep/ .ant-collapse-header {
