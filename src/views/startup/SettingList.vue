@@ -169,11 +169,11 @@ export default {
       this.loading = false;
     },
     /**
-     * @description 点击follow startup
+     * @description 点击follow startup跳转到startup详情页面
      * @param {object} startup 点击的follow startup
      */
     onClickFollowStartup(startup) {
-      //
+      this.$router.push({ name: 'startupDetail', params: { id: startup.id } });
     },
     // 获取follow startup列表
     async getFollowStartups() {
