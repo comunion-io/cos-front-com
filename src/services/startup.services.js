@@ -87,6 +87,15 @@ export async function updateStartup(id, newStartup) {
 }
 
 /**
+ * 关注startup
+ * @param {string} startupId startup的id
+ */
+export async function followStartup(startupId) {
+  const { error } = await request('post', `/startups/${startupId}/follows`);
+  return !error;
+}
+
+/**
  * @description 获取follow startup列表
  */
 export async function getFollowStartups(query) {
