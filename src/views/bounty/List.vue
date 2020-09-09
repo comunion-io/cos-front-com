@@ -57,7 +57,7 @@ export default {
 #bounty {
   background: rgba(242, 243, 244, 1);
   min-height: calc(100vh - 70px);
-  padding: 28px 220px 0 220px;
+  padding: 28px 150px 0 150px;
   .noti-icon {
     width: 38px;
     height: 38px;
