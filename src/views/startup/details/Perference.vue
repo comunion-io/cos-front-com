@@ -1,6 +1,6 @@
 <script>
 import { get } from 'lodash';
-import { getStartupDetail, followStartup } from '@/services';
+import { getStartupDetail, followStartup, cancelFollowStartup } from '@/services';
 
 export default {
   props: {
@@ -148,8 +148,14 @@ export default {
     },
     // follow按钮被点击
     async followBtnOnClick() {
-      let success = await followStartup(this.id);
-      if (success) {
+      let requestSuccess;
+      // 判断是否已经followed
+      if (this.startup.followed) {
+        requestSuccess = await cancelFollowStartup(this.id);
+      } else {
+        requestSuccess = await followStartup(this.id);
+      }
+      if (requestSuccess) {
         this.getStartupDetail();
       }
     },

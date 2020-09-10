@@ -95,6 +95,11 @@ export async function followStartup(startupId) {
   return !error;
 }
 
+export async function cancelFollowStartup(startupId) {
+  const { error } = await request('delete', `/startups/${startupId}/follows`);
+  return !error;
+}
+
 /**
  * @description 获取follow startup列表
  */
