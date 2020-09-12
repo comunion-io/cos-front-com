@@ -26,18 +26,12 @@ export default {
   },
   data() {
     return {
-      total: 0,
-      // 搜索条件
-      search: {
-        offset: 0,
-        limit: 10,
-        keyword: ''
-      }
+      total: 0
     };
   },
   methods: {
-    async fetchData() {
-      const [data, total] = await getHomeBounties(this.search);
+    async fetchData(query) {
+      const [data, total] = await getHomeBounties(query);
       this.total = total;
       return [data, total];
     },

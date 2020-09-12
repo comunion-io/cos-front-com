@@ -1,23 +1,14 @@
 <template>
+  <!-- hunter bounty 列表页面 -->
   <div id="hunter-bounty">
-    <!-- 搜索框 -->
-    <div class="search">
-      <a-input-search
-        v-model="search.keyword"
-        size="large"
-        class="flex-1"
-        placeholder="Search..."
-        @search="getBounties"
-      />
-    </div>
     <section class="bounty-list">
-      <bounty-list></bounty-list>
+      <bounty-list :fetchData="fetchData"></bounty-list>
     </section>
   </div>
 </template>
 
 <script>
-import { getBounties } from '@/services';
+import { getBountiesForHunter } from '@/services';
 import BountyList from '@/components/bounty-list/BountyList';
 
 export default {
@@ -27,19 +18,14 @@ export default {
   },
   data() {
     return {
-      // 搜索条件
-      search: {
-        offset: 0,
-        limit: 10,
-        keyword: ''
-      },
-      bounties: []
+      // TODO hunter id 需要路由的方式传递
+      hunterId: 0
     };
   },
   methods: {
-    async getBounties() {
-      // TODO: 接口还没有提供我接收到的bounty
-      this.bounties = await getBounties();
+    async getBounties(query) {
+      const [data, total] = await getBountiesForHunter(this.hunterId, query);
+      return [data, total];
     }
   },
   mounted() {

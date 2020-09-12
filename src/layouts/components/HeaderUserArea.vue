@@ -23,7 +23,7 @@
               <span>Hunt bounty with skill，change the life .</span>
             </div>
             <a-button class="transform-btn" type="primary" @click="toHunter">
-              {{isHunter? `Hunter ${hunterInfo.name}`: 'Transform Hunter'}
+              {{ isHunter ? `Hunter ${hunterInfo.name}` : 'Transform Hunter' }}
             </a-button>
           </div>
         </div>

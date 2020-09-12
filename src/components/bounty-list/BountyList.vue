@@ -16,18 +16,15 @@
           <div class="bounty-info" slot="bounty-info">
             <div class="flex">
               <div class="title">
-                #1 Design- Create A Vector For the Comunion Log Create A Vector For the Comunion Log
+                {{ bounty.title }}
               </div>
-              <a-button class="ml-auto currency-btn" style="color: #6170ff;" gohst size="small">
-                4.00ETH
-              </a-button>
+
               <a-button
                 class="currency-btn"
-                style="margin-left: 10px; color: #ffad4d;"
-                type="default"
-                size="small"
+                v-for="payment of bounty.payments"
+                :key="payment.token"
               >
-                0.5ETH
+                {{ payment.value }} {{ payment.token }}
               </a-button>
             </div>
             <div class="flex" style="margin-top: 44px">
@@ -37,10 +34,10 @@
                 </a-button>
               </a-button-group>
               <ul class="state-info">
-                <li class="state">State: open</li>
-                <li class="hours">11 Hours left</li>
-                <li class="hunters">11 Hunters</li>
-                <li class="paied">1 Paied</li>
+                <li class="state">State: {{ getBountyStatus(bounty.status) }}</li>
+                <!-- <li class="hours">11 Hours left</li> -->
+                <li class="hunters">{{ bounty.hunters.length }} Hunters</li>
+                <!-- <li class="paied">1 Paied</li> -->
               </ul>
               <!-- <div class="ml-auto flex ai-center">Closed Bounty</div> -->
             </div>
@@ -77,6 +74,7 @@
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
 import BountyCard from './BountyCard';
+import { bountyStatus } from '@/filters/bounty';
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: {
@@ -124,6 +122,10 @@ export default {
 
     goToDetail(bounty) {
       this.$emit('goDetail', bounty);
+    },
+
+    getBountyStatus(status) {
+      return bountyStatus(status);
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
@@ -170,6 +172,14 @@ export default {
       font-size: 15px;
       font-family: Microsoft YaHei;
       font-weight: bold;
+      color: #6170ff;
+      &:last-child {
+        color: #ffad4d;
+      }
+      &:first-child {
+        margin-left: auto;
+        color: #6170ff;
+      }
     }
   }
 }
