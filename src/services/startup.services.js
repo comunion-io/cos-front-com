@@ -91,12 +91,16 @@ export async function updateStartup(id, newStartup) {
  * @param {string} startupId startup的id
  */
 export async function followStartup(startupId) {
-  const { error } = await request('post', `/startups/${startupId}/follows`);
+  const { error } = await request('post', `/cores/startups/${startupId}/follows`);
   return !error;
 }
 
+/**
+ * 取消关注startup
+ * @param {string} startupId startup的id
+ */
 export async function cancelFollowStartup(startupId) {
-  const { error } = await request('delete', `/startups/${startupId}/follows`);
+  const { error } = await request('delete', `/cores/startups/${startupId}/follows`);
   return !error;
 }
 
