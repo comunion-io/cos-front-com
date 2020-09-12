@@ -12,17 +12,19 @@
 
     <a-spin size="large" :spinning="loading">
       <div class="bounty-list flex-column">
-        <bounty-card v-for="bounty in bounties" :key="bounty.id">
+        <bounty-card v-for="bounty in bounties" :key="bounty.id" @click.native="goToDetail(bounty)">
           <div class="bounty-info" slot="bounty-info">
             <div class="flex">
               <div class="title">
-                #1 Design- Create A Vector For the Comunion Log Create A Vector For the Comunion Log
+                {{ bounty.title }}
               </div>
-              <a-button class="ml-auto" gohst size="small">
-                4.00ETH
-              </a-button>
-              <a-button style="margin-left: 10px;" type="default" size="small">
-                0.5ETH
+
+              <a-button
+                class="currency-btn"
+                v-for="payment of bounty.payments"
+                :key="payment.token"
+              >
+                {{ payment.value }} {{ payment.token }}
               </a-button>
             </div>
             <div class="flex" style="margin-top: 44px">
@@ -31,17 +33,17 @@
                   Comunion
                 </a-button>
               </a-button-group>
-              <ul class="status">
-                <li>Statue: open</li>
-                <li>11 Hours left</li>
-                <li>11 HUnters</li>
-                <li>1 Paied</li>
+              <ul class="state-info">
+                <li class="state">State: {{ getBountyStatus(bounty.status) }}</li>
+                <!-- <li class="hours">11 Hours left</li> -->
+                <li class="hunters">{{ bounty.hunters.length }} Hunters</li>
+                <!-- <li class="paied">1 Paied</li> -->
               </ul>
-              <div class="ml-auto flex ai-center">Closed Bounty</div>
+              <!-- <div class="ml-auto flex ai-center">Closed Bounty</div> -->
             </div>
           </div>
 
-          <div class="hunter-info" slot="hunter-info">
+          <!-- <div class="hunter-info" slot="hunter-info">
             <div>
               <a-collapse expand-icon-position="right" :bordered="false">
                 <a-collapse-panel key="1" header="Hunter: 5">
@@ -49,9 +51,12 @@
                 </a-collapse-panel>
               </a-collapse>
             </div>
-          </div>
+          </div> -->
         </bounty-card>
-        <a-empty v-if="!loading && !bounties.length" />
+        <div class="empty">
+          <a-empty v-if="!loading && !bounties.length" />
+        </div>
+
         <div class="flex jc-center mt-20">
           <com-pagination
             :limit.sync="search.limit"
@@ -69,6 +74,7 @@
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
 import BountyCard from './BountyCard';
+import { bountyStatus } from '@/filters/bounty';
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: {
@@ -112,6 +118,14 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+
+    goToDetail(bounty) {
+      this.$emit('goDetail', bounty);
+    },
+
+    getBountyStatus(status) {
+      return bountyStatus(status);
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
@@ -138,4 +152,38 @@ export default {
 </script>
 <style lang="less" scoped>
 //@import url(); 引入公共css类
+.bounty-list {
+  margin-top: 20px;
+
+  .bounty-info {
+    cursor: pointer;
+    .title {
+      width: 594px;
+      line-height: 20px;
+      font-size: 18px;
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+      color: #000000;
+    }
+
+    .currency-btn {
+      border: none;
+      line-height: 12px;
+      font-size: 15px;
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+      color: #6170ff;
+      &:last-child {
+        color: #ffad4d;
+      }
+      &:first-child {
+        margin-left: auto;
+        color: #6170ff;
+      }
+    }
+  }
+}
+.empty {
+  margin-top: 20px;
+}
 </style>

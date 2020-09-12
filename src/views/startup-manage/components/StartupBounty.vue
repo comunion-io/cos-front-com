@@ -3,8 +3,10 @@
   <div class="startup-bounty">
     <!-- new bounty -->
     <a-row type="flex" justify="end">
-      <a-col :span="5">
-        <a-button type="primary" block @click="newBounty">+ New Bounty</a-button>
+      <a-col :span="5" style="text-align: right;">
+        <a-button style="width: 145px; height: 42px;" type="primary" block @click="newBounty"
+          >+ New Bounty</a-button
+        >
       </a-col>
     </a-row>
     <section class="bounty-list">
@@ -80,6 +82,9 @@ export default {
 <style lang="less" scoped>
 //@import url(); 引入公共css类
 .startup-bounty {
+  padding-top: 42px;
+  padding-right: 100px;
+  padding-left: 100px;
   .bounty-list {
     margin-top: 20px;
     min-height: 500px;
