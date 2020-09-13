@@ -36,7 +36,7 @@ const routes = [
         path: '/bounty/startup-manage',
         name: 'startupManage',
         meta: {
-          title: 'StartupManage',
+          title: 'Startup Manage',
           skipAuth: false
         },
         component: () =>
@@ -47,11 +47,19 @@ const routes = [
         path: '/bounty/new',
         name: 'newBounty',
         meta: {
-          title: 'newBOunty',
+          title: 'New Bounty',
           skipAuth: false
         },
-        component: () =>
-          import(/* webpackChunkName: 'bounty' */ '@/views/startup-manage/components/NewBounty.vue')
+        component: () => import(/* webpackChunkName: 'bounty' */ '@/views/bounty/NewBounty.vue')
+      },
+      // bounty detail
+      {
+        path: '/bounty/detail/:id',
+        name: 'bountyDetail',
+        meta: {
+          title: 'Bounty Detail'
+        },
+        component: () => import(/* webpackChunkName: 'bounty' */ '@/views/bounty/BountyDetail.vue')
       },
       {
         path: '/exchange',

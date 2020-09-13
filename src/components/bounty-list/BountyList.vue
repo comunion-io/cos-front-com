@@ -121,7 +121,7 @@ export default {
     },
 
     goToDetail(bounty) {
-      this.$emit('goDetail', bounty);
+      this.$router.push({ name: 'bountyDetail', params: { id: bounty.id } });
     },
 
     getBountyStatus(status) {

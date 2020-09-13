@@ -10,7 +10,7 @@
 
     <!-- 显示 bounty-->
     <section class="bounties">
-      <bounty-list :fetchData="fetchData" @goDetail="goDetail"></bounty-list>
+      <bounty-list :fetchData="fetchData"></bounty-list>
     </section>
   </div>
 </template>
@@ -34,14 +34,6 @@ export default {
       const [data, total] = await getHomeBounties(query);
       this.total = total;
       return [data, total];
-    },
-
-    /**
-     * @description 点击以后， 前往详情页面
-     */
-    goDetail(bounty) {
-      // TODO 前往bounty 详情页
-      console.log('bounty:::', bounty);
     }
   }
 };

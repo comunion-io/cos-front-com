@@ -1,7 +1,7 @@
 import { message } from 'ant-design-vue';
 import { LOGIN_TIME, TEST_NET_WORK_NAME, USER_INFO, USER_ACCOUNT_ADDRESS } from '@/configs/storage';
 import { web3, initWeb3 } from '@/libs/web3';
-import { getNonce, login, logout, getMyHunterInfo } from '@/services';
+import { getNonce, login, logout, getMe, transformToHunter } from '@/services';
 import router from '@/router';
 
 const ls = window.localStorage;
@@ -19,9 +19,9 @@ const state = {
   /** metamask 网络名称 */
   netWorkName: ls.getItem(TEST_NET_WORK_NAME) || '',
   /** 登录时间 */
-  logInTime: ls.getItem(LOGIN_TIME),
+  logInTime: ls.getItem(LOGIN_TIME)
   // hunter信息
-  hunterInfo: null
+  // hunterInfo: null
 };
 
 const mutations = {
@@ -97,15 +97,23 @@ const mutations = {
         state.netWorkName = 'unknown';
         ls.setItem(TEST_NET_WORK_NAME, 'unknown');
     }
-  },
+  }
 
   // 设置我的hunter信息
-  SET_HUNTER_INFO(state, hunterInfo) {
-    state.hunterInfo = hunterInfo;
-  }
+  // SET_MY_HUNTER_INFO(state, hunterInfo) {
+  //   state.hunterInfo = hunterInfo;
+  // }
 };
 
 const actions = {
+  // 刷新我的个人信息
+  async refreshMe({ commit }) {
+    // 获取我的信息
+    const myInfo = await getMe();
+    if (myInfo) {
+      commit('SET_USER', myInfo);
+    }
+  },
   // 初始化用户
   initUser({ getters, commit, dispatch }) {
     // 已登录
@@ -119,17 +127,8 @@ const actions = {
       } else {
         message.warning('You have not installed metamask.');
       }
-      // 获取我的hunter信息
-      dispatch('getMyHunterInfo');
-    }
-  },
-  /**
-   * 获取我的hunter信息
-   */
-  async getMyHunterInfo({ commit }) {
-    const hunterInfo = await getMyHunterInfo();
-    if (hunterInfo) {
-      commit('SET_HUNTER_INFO', hunterInfo);
+      // 获取我的信息
+      dispatch('refreshMe');
     }
   },
   /**
@@ -204,6 +203,15 @@ const actions = {
     if (router.currentRoute.name !== 'square') {
       router.push({ name: 'square', query: { from: router.currentRoute.fullPath } });
     }
+  },
+
+  // transform hunter
+  async transformHunter({ dispatch }, data) {
+    if (await transformToHunter(data)) {
+      // 获取我的信息
+      dispatch('refreshMe');
+      return true;
+    }
   }
 };
 
@@ -219,9 +227,9 @@ const getters = {
   /** 登录时间 */
   logInTime: state => state.logInTime,
   // 是否是hunter
-  isHunter: state => !!state.hunterInfo,
+  isHunter: state => !!state.user.hunter,
   // 我的hunter信息
-  hunterInfo: state => state.hunterInfo
+  hunterInfo: state => state.user.hunter ?? {}
 };
 
 export default {

@@ -17,6 +17,12 @@ export async function logout() {
   return !error;
 }
 
+// 获取我的信息
+export async function getMe() {
+  const { error, data } = await request('get', 'account/users/me', {}, { keepWhenNavigate: true });
+  return error ? {} : data;
+}
+
 /**
  * @description 获取nonce
  * @export
