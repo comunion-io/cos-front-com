@@ -1,6 +1,11 @@
 <script>
-import { getStartupDetail, followStartup, cancelFollowStartup } from '@/services';
 import Descriptions from '@/components/display/Descriptions';
+import {
+  getStartupDetail,
+  followStartup,
+  cancelFollowStartup,
+  getStartupIsFollowed
+} from '@/services';
 
 export default {
   props: {
@@ -10,7 +15,11 @@ export default {
   data() {
     return {
       defaultLogo: require('@/assets/images/file@2x.png'),
-      startup: {}
+      loading: false,
+      startup: {},
+      followCount: 0, // follow数量
+      followBtnLoading: false, // follow按钮loading状态
+      isFollowed: false // 是否followed
     };
   },
   computed: {
@@ -113,6 +122,12 @@ export default {
       ];
     }
   },
+  created() {
+    // 获取是startup否被follow
+    this.getStartupIsFollowed();
+    // 获取startup详情
+    this.getStartupDetail();
+  },
   methods: {
     // 显示所有的投票地址
     showAllVoteAssignAddrs() {
@@ -148,26 +163,36 @@ export default {
     },
     // follow按钮被点击
     async followBtnOnClick() {
+      this.followBtnLoading = true;
       let requestSuccess;
       // 判断是否已经followed
-      if (this.startup.followed) {
+      if (this.isFollowed) {
         requestSuccess = await cancelFollowStartup(this.id);
+        requestSuccess && this.followCount--;
+        this.isFollowed = false;
       } else {
         requestSuccess = await followStartup(this.id);
+        requestSuccess && this.followCount++;
+        this.isFollowed = true;
       }
-      if (requestSuccess) {
-        this.getStartupDetail();
-      }
+      this.followBtnLoading = false;
     },
     // 获取startup详情数据
     async getStartupDetail() {
+      this.loading = true;
       this.startup = await getStartupDetail(this.id);
+      this.followCount = this.startup.followCount;
+      this.loading = false;
+    },
+    // 获取startup是否被followed
+    async getStartupIsFollowed() {
+      this.isFollowed = await getStartupIsFollowed(this.id);
     }
   },
   render(h) {
     const { startup, defaultLogo, modules } = this;
     return (
-      <a-card>
+      <a-card loading={this.loading}>
         <div class="flex" style="margin-bottom: 44px;">
           <a-avatar
             src={startup.logo || defaultLogo}
@@ -185,10 +210,11 @@ export default {
           <a-button
             type="primary"
             size="large"
-            class={`${this.startup.followed ? 'followed' : ''} ml-auto`}
+            class={`${this.isFollowed ? 'followed' : ''} ml-auto`}
             onClick={this.followBtnOnClick}
+            loading={this.followBtnLoading}
           >
-            {startup.followCount > 0 ? startup.followCount : ''} Follow
+            {this.followCount > 0 ? this.followCount : ''} Follow
           </a-button>
         </div>
         {modules.map(_module => {
@@ -205,9 +231,6 @@ export default {
         })}
       </a-card>
     );
-  },
-  created() {
-    this.getStartupDetail();
   }
 };
 </script>
