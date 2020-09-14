@@ -1,5 +1,5 @@
 <script>
-import { get } from 'lodash';
+import Descriptions from '@/components/display/Descriptions';
 import {
   getStartupDetail,
   followStartup,
@@ -38,7 +38,7 @@ export default {
         });
         if (addrs.length > 2) {
           voteAssignAddr.push({
-            customRender: () => (
+            render: () => (
               <a class="t-grey" onClick={this.showAllVoteAssignAddrs}>
                 View more (In total {addrs.length})
               </a>
@@ -58,7 +58,7 @@ export default {
             {
               label: 'Description',
               value: 'descriptionAddr',
-              customRender: v => (
+              render: v => (
                 <a href={v} target="_black">
                   {v}
                 </a>
@@ -150,7 +150,7 @@ export default {
                   {
                     align: 'center',
                     dataIndex: 'addr',
-                    customRender: text => <CopyableAddress address={text} />
+                    render: text => <CopyableAddress address={text} />
                   }
                 ]}
                 dataSource={addrs.map((addr, index) => ({ addr, index }))}
@@ -225,28 +225,7 @@ export default {
                 <img src={icon} alt="icon" height="18" />
                 <span class="ml-8 t-bold f-18 lh-1">{title}</span>
               </div>
-              <div class="info-table f-15">
-                {fields.map(field => {
-                  const value = get(this.startup, field.value, '');
-                  return (
-                    <div class="info-tr flex ai-center">
-                      <label class="t-bold no-shrink">{field.label ? `${field.label}:` : ''}</label>
-                      <p class="mb-0 t-grey">
-                        {field.prefix}
-                        {/** 可复制的 */}
-                        {field.copyable ? (
-                          <CopyableAddress address={value} />
-                        ) : field.customRender ? (
-                          field.customRender(value, field)
-                        ) : (
-                          value
-                        )}
-                        {field.suffix}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
+              <Descriptions columns={fields} dataSource={this.startup} />
             </div>
           );
         })}
@@ -257,26 +236,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '~@/assets/styles/variables.less';
-.info-table {
-  border: 1px solid @border-color-light;
-  border-radius: 3px;
-}
-.info-tr {
-  padding: 12px 12px 12px 0;
-  & + .info-tr {
-    border-top: 1px solid @border-color-light;
-  }
-  > label {
-    padding-right: 32px;
-    width: 244px;
-    text-align: right;
-  }
-  > p {
-    display: flex;
-  }
-}
-
 .followed {
   background-color: gray;
 }

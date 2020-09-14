@@ -56,9 +56,9 @@
 <script>
 import { Result } from 'ant-design-vue';
 import { urlValidator, emailValidator } from '@/utils/validators';
-import { transformToHunter } from '@/services';
 import BbsInput from '@/components/form/BbsInput';
 import Skills from '@/components/form/Skills';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'TransformHunter',
@@ -110,11 +110,12 @@ export default {
   },
   computed: {},
   methods: {
+    ...mapActions(['transformHunter']),
     onSubmit() {
       this.$refs.form.validate(async valid => {
         if (valid) {
           this.loading = true;
-          if (await transformToHunter(this.form)) {
+          if (await this.transformHunter(this.form)) {
             // 成功后续操作
             this.success = true;
           }

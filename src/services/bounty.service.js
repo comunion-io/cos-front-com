@@ -57,3 +57,9 @@ export async function getPrepareBountyId() {
   const { error, data } = await request('get', '/cores/prepareId');
   return error ? {} : data;
 }
+
+// 获取bounty详情
+export async function getBountyDetail(id) {
+  const { error, data } = await request('get', `/cores/bounties/${id}`);
+  return error ? {} : data;
+}

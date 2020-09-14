@@ -52,8 +52,11 @@ instance.interceptors.response.use(
     if (res.response?.status === 401) {
       store.dispatch('logout');
     }
-    const message = res.response?.data?.message || 'Network error.';
-    antMessage.error(message);
+    let message;
+    if (!axios.isCancel(res)) {
+      message = res.response?.data?.message || 'Network error.';
+      antMessage.error(message);
+    }
     return {
       error: true,
       data: message,
