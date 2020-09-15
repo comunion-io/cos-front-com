@@ -1,6 +1,6 @@
 <script>
 import { Steps } from 'ant-design-vue';
-import { getBountyDetail } from '@/services';
+import { getBountyDetail, startupWork } from '@/services';
 import Descriptions from '@/components/display/Descriptions';
 import { mapGetters } from 'vuex';
 import { web3, COMUNION_RECEIVE_HUNTER_TRANSFER } from '@/libs/web3';
@@ -167,30 +167,36 @@ export default {
   methods: {
     // hunter 承接bounty, hunter 向bounty 的发布者缴纳10个币的保证金
     async startWork() {
-      const tx = {
-        from: this.account,
-        to: COMUNION_RECEIVE_HUNTER_TRANSFER,
-        gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
-        gasLimit: web3.utils.numberToHex(183943),
-        // 暂时只用0.1个币， 上线的时候， 改成10个币
-        value: web3.utils.numberToHex(Math.pow(10, 17))
-      };
+      if (this.detail && this.detail.id) {
+        const tx = {
+          from: this.account,
+          to: COMUNION_RECEIVE_HUNTER_TRANSFER,
+          gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
+          gasLimit: web3.utils.numberToHex(183943),
+          // 暂时只用0.1个币， 上线的时候， 改成10个币
+          value: web3.utils.numberToHex(Math.pow(10, 17))
+        };
 
-      window.ethereum.sendAsync(
-        {
-          method: 'eth_sendTransaction',
-          params: [tx],
-          from: window.ethereum.selectedAddress
-        },
-        (err, result) => {
-          if (err) {
-            return console.error(err);
+        window.ethereum.sendAsync(
+          {
+            method: 'eth_sendTransaction',
+            params: [tx],
+            from: window.ethereum.selectedAddress
+          },
+          async (err, result) => {
+            if (err) {
+              return console.error(err);
+            }
+            const txid = result.result;
+            try {
+              await startupWork(this.detail.startup.id, this.detail.id, { txid });
+              // TODO 更改step 的状态
+            } catch (error) {
+              console.error(error);
+            }
           }
-          const txid = result.result;
-          // TODO 对接后端txid
-          console.log('%c 🍵 txid: ', 'font-size:20px;background-color: #6EC1C2;color:#fff;', txid);
-        }
-      );
+        );
+      }
     }
   }
 };
