@@ -25,7 +25,7 @@ export default {
                 {column.copyable ? (
                   <CopyableAddress address={value} />
                 ) : column.render ? (
-                  column.render(value, column)
+                  column.render(value, dataSource)
                 ) : (
                   value
                 )}

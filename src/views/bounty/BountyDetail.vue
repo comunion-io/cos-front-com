@@ -40,7 +40,7 @@ export default {
           label: 'Email',
           value: 'contactEmail',
           render: (v, record) => {
-            return <a link={`mailto:${v}`}>{v}</a>;
+            return <a href={`mailto:${v}`}>{v}</a>;
           }
         },
         {
@@ -57,7 +57,7 @@ export default {
           value: 'descriptionFileAddr',
           render: (v, record) => {
             return (
-              <a link={v} target="_blank">
+              <a href={v} target="_blank">
                 {v}
               </a>
             );
@@ -68,7 +68,7 @@ export default {
           value: 'descriptionAddr',
           render: (v, record) => {
             return (
-              <a link={v} target="_blank">
+              <a href={v} target="_blank">
                 {v}
               </a>
             );
@@ -118,7 +118,6 @@ export default {
                 <span class="ml-8 t-primary f-15">{detail.hunters?.length || 0}</span>
               </div>
               <a-table
-                pagination={false}
                 showHeader={false}
                 columns={this.hunterColumns}
                 dataSource={detail.hunters || []}
@@ -135,7 +134,7 @@ export default {
               ))}
             </div>
             <div class="mt-24">
-              <Steps current={0} labelPlacement="vertical">
+              <Steps current={detail.status ?? 0} labelPlacement="vertical">
                 <Step title="Open" sub-title="2020-06-02 12:00" />
                 <Step title="InProgress" />
                 <Step title="Closed" description="90 days left" />

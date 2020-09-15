@@ -18,8 +18,12 @@
         :style="{ width: '78px' }"
         v-model.trim="inputValue"
         @keyup.enter="handleInputConfirm"
+        @keydown.esc.stop="cancelInput"
       />
       <a-tag @click="showInput"><a-icon type="plus"/></a-tag>
+    </div>
+    <div class="mt-36">
+      You can choose up to <span class="t-error">{{ maxLength }}</span> Skill Tags
     </div>
   </a-modal>
 </template>
@@ -34,7 +38,11 @@ export default {
       type: String,
       default: 'Add Skill Tags'
     },
-    skills: Array
+    skills: Array,
+    maxLength: {
+      type: Number,
+      default: 3
+    }
   },
   data() {
     return {
@@ -50,21 +58,35 @@ export default {
     })
   },
   watch: {
-    skills(v) {
-      if (v?.length) {
-        this.selectedSkills = v;
+    skills: {
+      immediate: true,
+      handler(v) {
+        if (v?.length) {
+          this.selectedSkills = [...v];
+          this.currentSkills = Array.from(new Set([...v, ...this.currentSkills]));
+        }
       }
     },
-    systemSkills(v) {
-      this.currentSkills = this.currentSkills.concat(v);
+    systemSkills: {
+      immediate: true,
+      handler(v) {
+        this.currentSkills = Array.from(new Set([...v, ...this.currentSkills]));
+      }
     }
   },
   methods: {
+    cancelInput() {
+      this.inputVisible = false;
+      this.inputValue = '';
+    },
     toggleSelect(skill) {
       const index = this.selectedSkills.indexOf(skill);
       if (index > -1) {
         this.selectedSkills.splice(index, 1);
       } else {
+        if (this.selectedSkills.length >= this.maxLength) {
+          return this.$message.warning(`You can choose up to ${this.maxLength} Skill Tags`);
+        }
         this.selectedSkills.push(skill);
       }
     },
@@ -77,6 +99,9 @@ export default {
     },
     handleInputConfirm() {
       if (!this.inputValue) return;
+      if (this.selectedSkills.length >= this.maxLength) {
+        return this.$message.warning(`You can choose up to ${this.maxLength} Skill Tags`);
+      }
       if (!this.currentSkills.includes(this.inputValue)) {
         this.currentSkills.push(this.inputValue);
       }
