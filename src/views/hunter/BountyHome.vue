@@ -1,7 +1,7 @@
 <template>
   <div class="bounty-home">
     <!-- hunter名称 -->
-    <p class="hunter-name">Utaka</p>
+    <p class="hunter-name">{{ hunterName }}</p>
 
     <!-- hunter信息 -->
     <div class="info-table f-15 mb-32">
@@ -21,60 +21,47 @@
       <img :src="icon" alt="icon" height="18" />
       <span class="ml-8 t-bold f-18 lh-1">Bounty</span>
     </div>
-    <a-spin size="large" :spinning="loading">
-      <div class="flex-colimn">
-        <bounty-card v-for="bounty in bounties" :key="bounty.id" :bounty="bounty"></bounty-card>
-        <a-empty v-if="!bounties.length" />
-        <div class="flex jc-center mt-20">
-          <com-pagination
-            :limit.sync="search.limit"
-            :offset.sync="search.offset"
-            :total="total"
-            @change="getBounties"
-          />
-        </div>
-      </div>
-    </a-spin>
+    <section>
+      <bounty-list :fetchData="fetchData" :searchable="searchable"></bounty-list>
+    </section>
   </div>
 </template>
 
 <script>
-import BountyCard from '@/components/bounty-list/BountyCard';
+import { getUserBounties, getUserInfo } from '@/services';
+import BountyList from '@/components/bounty-list/BountyList';
 
 export default {
   name: 'BountyHome',
   components: {
-    BountyCard
+    BountyList
   },
   data() {
     return {
-      // 搜索条件
-      search: {
-        offset: 0,
-        limit: 10
-      },
+      searchable: false,
+      hunterName: '',
       loading: false,
       icon: require('./images/money_pocket.png'),
       fields: [
         {
           label: 'Wallet Address',
-          value: '0x8BaE00A7dd89B1749E7b7aD54ffCbe20Ea5CB3cB'
+          value: ''
         },
         {
           label: 'Become Time',
-          value: '2020-04-16 18:20'
+          value: ''
         },
         {
           label: 'Skill Tag',
-          value: 'UI Design Copywriting Planning Interactive Design'
+          value: ''
         },
         {
           label: 'About',
-          value: 'The next generation org and startup network'
+          value: ''
         },
         {
           label: 'Description',
-          value: 'https://bbs.comunion.io/id=134',
+          value: '',
           type: 'link'
         }
       ],
@@ -82,10 +69,35 @@ export default {
       bounties: [] // 列表
     };
   },
+  mounted() {
+    this.getUserInfo();
+  },
   methods: {
     // 获取bounty列表
-    getBounties() {
-      //
+    async fetchData(query) {
+      const [data, total] = await getUserBounties(query, this.$route.params.userId);
+      this.total = total;
+      return [data, total];
+    },
+    // 获取用户信息
+    async getUserInfo() {
+      const data = await getUserInfo(this.$route.params.userId);
+      if (data) {
+        this.fields[0].value = data.publicKey;
+        if (data.hunter) {
+          this.hunterName = data.hunter.name;
+          let date = new Date(data.hunter.createdAt);
+          const year = date.getFullYear();
+          const month = date.getMonth() < 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+          const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+          const hour = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
+          const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+          this.fields[1].value = `${year}-${month}-${day} ${hour}:${minutes}`;
+          this.fields[2].value = data.hunter.skills.join(', ');
+          this.fields[3].value = data.hunter.about;
+          this.fields[4].value = data.hunter.descriptionAddr;
+        }
+      }
     }
   }
 };

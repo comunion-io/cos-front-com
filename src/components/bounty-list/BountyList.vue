@@ -3,6 +3,7 @@
   <div id="bounty-list">
     <!-- search -->
     <a-input-search
+      v-if="searchable"
       v-model="search.keyword"
       size="large"
       class="flex-1"
@@ -84,6 +85,11 @@ export default {
     fetchData: {
       type: Function,
       required: true
+    },
+    // 是否显示搜索框
+    searchable: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
