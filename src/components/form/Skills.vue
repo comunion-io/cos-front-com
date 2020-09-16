@@ -7,7 +7,13 @@
       :placeholder="placeholder"
       readonly
     />
-    <skill-modal v-if="modalVisible" v-model="modalVisible" :skills="value" @ok="updateSkills" />
+    <skill-modal
+      v-if="modalVisible"
+      v-model="modalVisible"
+      :maxLength="maxLength"
+      :skills="value"
+      @ok="updateSkills"
+    />
   </div>
 </template>
 
@@ -25,6 +31,10 @@ export default {
     placeholder: {
       type: String,
       default: 'Please select skills that required for the bounty'
+    },
+    maxLength: {
+      type: Number,
+      default: 3
     }
   },
   data() {

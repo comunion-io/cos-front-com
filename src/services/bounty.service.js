@@ -63,3 +63,21 @@ export async function getBountyDetail(id) {
   const { error, data } = await request('get', `/cores/bounties/${id}`);
   return error ? {} : data;
 }
+
+/**
+ * @description startup work
+ *
+ * @export
+ * @param startupId startup 的id
+ * @param bountyId bounty 的id
+ * @param params 转币后的txid
+ * @returns
+ */
+export async function startupWork(startupId, bountyId, params) {
+  const { error, data } = await request(
+    'post',
+    `/cores/startups/${startupId}/bounties/${bountyId}:startWork`,
+    params
+  );
+  return error ? {} : data;
+}
