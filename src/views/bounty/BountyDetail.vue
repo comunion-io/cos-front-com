@@ -80,7 +80,11 @@ export default {
       hunterColumns: [
         {
           dataIndex: 'name',
-          customRender: text => <router-link>{text}</router-link>
+          customRender: (text, record) => (
+            <router-link to={{ name: 'bountyHome', params: { userId: record.userId } }}>
+              {text}
+            </router-link>
+          )
         },
         {
           dataIndex: 'status',

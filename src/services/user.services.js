@@ -33,3 +33,12 @@ export async function getNonce(publicKey) {
   const { error, data } = await request('post', '/account/nonce/', { publicKey: publicKey });
   return error ? false : data.nonce;
 }
+
+/**
+ * 通过userId获取用户信息
+ * @param {string} userId 用户id
+ */
+export async function getUserInfo(userId) {
+  const { error, data } = await request('get', `/account//users/${userId}`);
+  return error ? false : data;
+}

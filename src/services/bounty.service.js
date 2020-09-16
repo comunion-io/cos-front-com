@@ -81,3 +81,12 @@ export async function startupWork(startupId, bountyId, params) {
   );
   return error ? {} : data;
 }
+
+/**
+ * 获取某个用户的bounty列表
+ * @param {object} query 查询条件
+ * @param {string} userId 用户id
+ */
+export async function getUserBounties(query, userId) {
+  return commonList(`cores/bounties/users/${userId}`, query);
+}
