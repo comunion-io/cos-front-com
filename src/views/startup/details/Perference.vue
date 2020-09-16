@@ -209,12 +209,12 @@ export default {
           </div>
           <a-button
             type="primary"
-            size="large"
+            // size="large"
             class={`${this.isFollowed ? 'followed' : ''} ml-auto`}
             onClick={this.followBtnOnClick}
             loading={this.followBtnLoading}
           >
-            {this.followCount > 0 ? this.followCount : ''} Follow
+            {this.followCount > 0 ? this.followCount + ' Followed' : 'Follow'}
           </a-button>
         </div>
         {modules.map(_module => {

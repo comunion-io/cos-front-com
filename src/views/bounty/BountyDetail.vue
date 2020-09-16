@@ -17,7 +17,7 @@ export default {
           value: 'startup.name',
           render: (v, record) => {
             return (
-              <router-link to={{ name: 'startupDetail', params: { id: record.id } }}>
+              <router-link to={{ name: 'startupDetail', params: { id: record.startup.id } }}>
                 {v}
               </router-link>
             );
