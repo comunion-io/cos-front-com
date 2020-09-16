@@ -14,6 +14,7 @@
                 <div class="flex-column ai-center" style="padding: 0 30px 30px">
                   <!--<startup-item :startup="newStartupItem" @click.native="createStartUp" />-->
                   <a-spin class="w-100p" size="large" :spinning="loading">
+                    <a-empty v-if="startups.length === 0" />
                     <startup-item
                       v-for="startup in startups"
                       :key="startup.id"
@@ -92,15 +93,15 @@ export default {
       // 轮询请求
       loopTimeout: null,
 
-      // follow startup
+      // follow startup列表
       followStartups: [
-        {
-          id: 'id',
-          logo: '',
-          mission: 'Company profilel Company profilel Company profilel',
-          name: 'Comunion 3'
-        }
-      ], // follow startup列表
+        // {
+        //   id: 'id',
+        //   logo: '',
+        //   mission: 'Company profilel Company profilel Company profilel',
+        //   name: 'Comunion 3'
+        // }
+      ],
       followStartupSearch: {
         offset: 0,
         limit: 10
