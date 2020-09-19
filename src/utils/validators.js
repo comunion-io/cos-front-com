@@ -41,6 +41,16 @@ export const validateName = (rule, value, callback) => {
   }
 };
 
+export const validateBountyTitle = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('Please input'));
+  } else if (!/^[a-zA-Z0-9_\s]*$/.test(value) && value.length <= 200) {
+    callback(new Error('仅支持字母，数字，空格和下划线, 不超过200个字母'));
+  } else {
+    callback();
+  }
+};
+
 /**
  * @description 验证地址， 只能是OX开头的字母数字长度为40的字符串
  * @param rule
