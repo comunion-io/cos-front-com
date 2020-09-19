@@ -327,7 +327,8 @@ export default {
 
     async getMeStartups() {
       const [data] = await getMyStartups();
-      this.startups = data;
+      this.startups = data.filter(item => item.state === 2);
+      this.form.startupId = this.startups.find(item => item.id === this.$route.query.startupId).id;
     },
 
     async getTags() {
