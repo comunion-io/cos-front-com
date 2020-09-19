@@ -8,7 +8,7 @@
       <a-col :offset="4" :span="16">
         <a-form-model class="vertical-form" :model="form" :rules="rules" ref="form">
           <a-form-model-item label="Hunter Name" prop="name">
-            <a-input v-model="form.name" placeholder="Hunter Name" size="large" :max-length="50" />
+            <a-input v-model="form.name" placeholder="Hunter Name" size="large" :max-length="16" />
           </a-form-model-item>
           <a-form-model-item label="Skill Tag" prop="skills">
             <skills v-model="form.skills" />

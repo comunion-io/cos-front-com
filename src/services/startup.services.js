@@ -105,6 +105,15 @@ export async function cancelFollowStartup(startupId) {
 }
 
 /**
+ * 获取startup是否被followed
+ * @param {string} startupId startup的id
+ */
+export async function getStartupIsFollowed(startupId) {
+  const { error, data } = await request('get', `/cores/startups/${startupId}/hasFollowed`);
+  return !error && data.hasFollowed;
+}
+
+/**
  * @description 获取follow startup列表
  */
 export async function getFollowStartups(query) {

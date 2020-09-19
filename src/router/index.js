@@ -149,7 +149,7 @@ const routes = [
       },
       // hunter的bounty主页
       {
-        path: '/hunter/bounty-home',
+        path: '/hunter/bounty-home/:userId',
         name: 'bountyHome',
         meta: {
           title: 'BountyHome',
