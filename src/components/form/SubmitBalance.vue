@@ -3,11 +3,12 @@
   <div class="banalce-submit">
     <a-row>
       <a-col :span="24">
-        <a-button type="primary" block html-type="submit">Submit</a-button>
+        <a-button type="primary" block html-type="submit" @click="submit($event)">Submit</a-button>
       </a-col>
     </a-row>
     <div>
-      Balance:&nbsp;<span class="t-bold">{{ balance }} &nbsp;ETH</span>
+      Balance:&nbsp;<span class="t-bold">{{ balance }} &nbsp;ETH</span> &nbsp;
+      <span v-if="showTips" class="tip"> 余额不足 </span>
     </div>
   </div>
 </template>
@@ -25,7 +26,9 @@ export default {
   data() {
     // 这里存放数据
     return {
-      balance: 0
+      balance: 0,
+      showTips: false,
+      timer: null
     };
   },
   // 监听属性 类似于data概念
@@ -47,6 +50,18 @@ export default {
     async getBalance() {
       const balance = await web3.eth.getBalance(this.account);
       this.balance = +(balance / Math.pow(10, 18)).toFixed(4);
+    },
+
+    submit(e) {
+      this.showTips = this.canNotTransaction;
+      // 余额不足， 阻止默认提交， 余额充足， 冒泡到父组件表单
+      if (this.showTips) {
+        e.preventDefault();
+        this.timer = setTimeout(() => {
+          this.showTips = false;
+        }, 2000);
+        return false;
+      }
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
@@ -73,4 +88,9 @@ export default {
 </script>
 <style lang="less" scoped>
 //@import url(); 引入公共css类
+.banalce-submit {
+  .tip {
+    color: #f5222d;
+  }
+}
 </style>
