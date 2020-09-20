@@ -112,17 +112,7 @@
                 </a-row>
               </a-form-model-item>
               <a-form-model-item>
-                <a-row>
-                  <!-- <a-col :span="11">
-                  <a-button block @click="cancel">Cancel</a-button>
-                </a-col> -->
-                  <a-col :span="24">
-                    <a-button type="primary" block html-type="submit">Submit</a-button>
-                  </a-col>
-                </a-row>
-                <div>
-                  Balance:&nbsp;<span class="t-bold">{{ balance }} &nbsp;ETH</span>
-                </div>
+                <SubmitBalance />
               </a-form-model-item>
               <p class="mt-32 t-grey">
                 We will store the content to and all the information what u had inputed, all that
@@ -144,6 +134,7 @@
 // 例如：import 《组件名称》 from '《组件路径》';
 import { urlValidator, validateBountyTitle } from '@/utils/validators';
 import BbsInput from '@/components/form/BbsInput';
+import SubmitBalance from '@/components/form/SubmitBalance';
 import { getMyStartups, getTags, getPrepareBountyId, createBounty } from '@/services';
 import { COMUNION_BOUNTY_RECEIVE_ACCOUNT, web3 } from '@/libs/web3';
 import { bountyAbi } from '@/libs/abis/bounty';
@@ -152,7 +143,8 @@ import { mapGetters } from 'vuex';
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: {
-    BbsInput
+    BbsInput,
+    SubmitBalance
   },
   data() {
     return {
@@ -198,18 +190,12 @@ export default {
           }
         ],
         duration: [{ required: true, message: 'Please input duration', trigger: 'blur' }]
-      },
-      balance: 32
+      }
     };
   },
   // 监听属性 类似于data概念
   computed: {
-    ...mapGetters(['account']),
-
-    // 余额过少，不能发起交易
-    canNotTransaction() {
-      return this.balance < 0.1;
-    }
+    ...mapGetters(['account'])
   },
   // 监控data中的数据变化
   watch: {},
@@ -247,9 +233,9 @@ export default {
      * @description 提交表单， 上链
      */
     onsubmit() {
-      this.spinning = true;
       this.$refs.ruleForm.validate(async valid => {
         if (valid) {
+          this.spinning = true;
           try {
             const { id } = await getPrepareBountyId();
             if (id) {
@@ -257,6 +243,7 @@ export default {
             }
           } catch (error) {
             console.error(error);
+            this.spinning = false;
           }
         }
       });
