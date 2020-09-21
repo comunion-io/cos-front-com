@@ -176,6 +176,10 @@ export default {
     },
     // follow按钮被点击
     async followBtnOnClick() {
+      if (!this.isLoggedIn) {
+        this.$router.push({ name: 'guide', params: { from: this.$route.fullPath } });
+        return;
+      }
       this.followBtnLoading = true;
       let requestSuccess;
       // 判断是否已经followed
