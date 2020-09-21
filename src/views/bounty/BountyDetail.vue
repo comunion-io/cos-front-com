@@ -150,7 +150,7 @@ export default {
               </Steps>
             </div>
             <a-button class="my-32" type="primary" block size="large" onClick={this.startWork}>
-              Start Work
+              Start to Work
             </a-button>
             <ul class="pl-16 t-grey ">
               <li>

@@ -1,5 +1,6 @@
 <script>
 import TabPerference from './details/Perference';
+import { getStartupDetail } from '@/services';
 export default {
   components: {
     TabPerference,
@@ -12,8 +13,21 @@ export default {
   data() {
     return {
       selectedTab: 'Perference',
-      tabs: ['Perference', 'Bounty', 'Exchange', 'IRO', 'Vote', 'Proposals']
+      tabs: ['Perference', 'Bounty', 'Exchange', 'IRO', 'Vote', 'Proposals'],
+      loading: false,
+      startup: {}
     };
+  },
+  methods: {
+    // 获取startup详情数据
+    async getStartupDetail() {
+      this.loading = true;
+      this.startup = await getStartupDetail(this.$route.params.id);
+      this.loading = false;
+    }
+  },
+  mounted() {
+    this.getStartupDetail();
   },
   render(h) {
     const TabComponent = 'Tab' + this.selectedTab;
@@ -26,7 +40,7 @@ export default {
             ))}
           </a-tabs>
         </a-card>
-        <TabComponent class="flex-1" id={this.$route.params.id} />
+        <TabComponent class="flex-1" id={this.$route.params.id} startup={this.startup} />
       </div>
     );
   }
