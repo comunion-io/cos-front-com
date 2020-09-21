@@ -1,4 +1,5 @@
 <script>
+import { mapGetters } from 'vuex';
 import Descriptions from '@/components/display/Descriptions';
 import {
   getStartupDetail,
@@ -23,6 +24,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(['isLoggedIn']),
     // 模块
     modules() {
       // 投票地址过多，展示为可点击
@@ -120,11 +122,22 @@ export default {
           fields: []
         }
       ];
+    },
+    // follow按钮文字
+    btnText() {
+      let text = this.isFollowed ? 'Followed' : 'Follow';
+      if (this.followCount > 0) {
+        text = `${this.followCount}+ ${text}`;
+      }
+      return text;
     }
   },
   created() {
-    // 获取是startup否被follow
-    this.getStartupIsFollowed();
+    // 判断是否登录
+    if (this.isLoggedIn) {
+      // 获取startup是否被follow
+      this.getStartupIsFollowed();
+    }
     // 获取startup详情
     this.getStartupDetail();
   },
@@ -163,17 +176,25 @@ export default {
     },
     // follow按钮被点击
     async followBtnOnClick() {
+      if (!this.isLoggedIn) {
+        this.$router.push({ name: 'guide', params: { from: this.$route.fullPath } });
+        return;
+      }
       this.followBtnLoading = true;
       let requestSuccess;
       // 判断是否已经followed
       if (this.isFollowed) {
         requestSuccess = await cancelFollowStartup(this.id);
-        requestSuccess && this.followCount--;
-        this.isFollowed = false;
+        if (requestSuccess) {
+          requestSuccess && this.followCount--;
+          this.isFollowed = false;
+        }
       } else {
         requestSuccess = await followStartup(this.id);
-        requestSuccess && this.followCount++;
-        this.isFollowed = true;
+        if (requestSuccess) {
+          requestSuccess && this.followCount++;
+          this.isFollowed = true;
+        }
       }
       this.followBtnLoading = false;
     },
@@ -214,7 +235,7 @@ export default {
             onClick={this.followBtnOnClick}
             loading={this.followBtnLoading}
           >
-            {this.followCount > 0 ? this.followCount + ' Followed' : 'Follow'}
+            {this.btnText}
           </a-button>
         </div>
         {modules.map(_module => {

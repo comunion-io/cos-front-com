@@ -101,7 +101,12 @@ export default {
       if (!!window.ethereum && window.ethereum.isMetaMask) {
         const login = await this.$store.dispatch('login');
         if (login) {
-          this.$router.push({ name: 'square' });
+          // 如果有from参数，则跳转回原页面
+          if (this.$route.params.from) {
+            this.$router.push({ path: this.$route.params.from });
+          } else {
+            this.$router.push({ name: 'square' });
+          }
         }
       } else {
         const url = 'https://metamask.io/';
