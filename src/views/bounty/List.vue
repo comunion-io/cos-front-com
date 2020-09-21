@@ -3,7 +3,8 @@
   <div id="bounty">
     <div class="total">
       <div class="noti-icon flex-inline ai-center jc-center">
-        <a-icon type="notification" />
+        <!-- <a-icon type="notification" /> -->
+        <img src="@/assets/images/bounty-icon.png" />
       </div>
       <span class="num">{{ total }}&nbsp; Bounties</span>in the Comunion.
     </div>
@@ -44,18 +45,18 @@ export default {
   background: rgba(242, 243, 244, 1);
   min-height: calc(100vh - 70px);
   padding: 28px 150px 0 150px;
-  .noti-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background-color: #dce0fe;
-    .anticon {
-      width: 20px;
-      height: 20px;
-      font-size: 20px;
-      color: @primary-color;
-    }
-  }
+  // .noti-icon {
+  //   width: 38px;
+  //   height: 38px;
+  //   border-radius: 50%;
+  //   background-color: #dce0fe;
+  //   .anticon {
+  //     width: 20px;
+  //     height: 20px;
+  //     font-size: 20px;
+  //     color: @primary-color;
+  //   }
+  // }
   .total {
     display: flex;
     flex-direction: row;
