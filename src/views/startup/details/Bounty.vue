@@ -1,11 +1,13 @@
 <script>
 import BountyList from '@/components/bounty-list/BountyList';
 import { getStartUpBounties } from '@/services';
+import StartupInfo from './blocks/StartupInfo';
 
 export default {
   props: {
     // startup id
-    id: String
+    id: String,
+    startup: Object
   },
   data() {
     return {
@@ -14,14 +16,13 @@ export default {
   },
   render(h) {
     return (
-      <div id="home-startup-bounty">
+      <a-card>
+        <StartupInfo startup={this.startup} />
         <p class="bounty-total">
           <span>Bounty:</span> <span>{this.total}</span>
         </p>
-        <a-card>
-          <BountyList fetchData={this.fetchData} />
-        </a-card>
-      </div>
+        <BountyList fetchData={this.fetchData} />
+      </a-card>
     );
   },
   methods: {
