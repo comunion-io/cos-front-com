@@ -43,5 +43,5 @@ export default function(store) {
   // startup类型
   createLazyState(store, 'categories', [], getCategories);
   // 技能标签
-  createLazyState(store, 'skills', [], () => getTags('skills'));
+  createLazyState(store, 'skills', [], () => getTags({ source: 'skills' }));
 }
