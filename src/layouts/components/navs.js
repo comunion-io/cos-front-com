@@ -3,5 +3,5 @@ export default [
   { name: 'square', title: 'Home' },
   { name: 'bounty', title: 'Bounty' },
   { name: 'exchange', title: 'Exchange' },
-  { name: 'governace', title: 'Governace' }
+  { name: 'governance', title: 'Governance' }
 ];

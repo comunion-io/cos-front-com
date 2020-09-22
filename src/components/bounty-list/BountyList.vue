@@ -35,7 +35,7 @@
                 </a-button>
               </a-button-group>
               <ul class="state-info">
-                <li class="state">State: {{ getBountyStatus(bounty.status) }}</li>
+                <li class="state">Status: {{ getBountyStatus(bounty.status) }}</li>
                 <!-- <li class="hours">11 Hours left</li> -->
                 <li class="hunters">{{ bounty.hunters.length }} Hunters</li>
                 <!-- <li class="paied">1 Paied</li> -->

@@ -33,10 +33,10 @@ const routes = [
       },
       // startupmanagement
       {
-        path: '/bounty/startup-manage',
+        path: '/bounty/startup-management',
         name: 'startupManage',
         meta: {
-          title: 'Startup Manage',
+          title: 'Startup Management',
           skipAuth: false
         },
         component: () =>
@@ -72,13 +72,13 @@ const routes = [
         component: () => import(/* webpackChunkName: 'exchange' */ '@/views/exchange/List.vue')
       },
       {
-        path: '/governace',
-        name: 'governace',
+        path: '/governance',
+        name: 'governance',
         meta: {
-          title: 'Governace',
+          title: 'Governance',
           skipAuth: true
         },
-        component: () => import(/* webpackChunkName: 'governace' */ '@/views/governace/List.vue')
+        component: () => import(/* webpackChunkName: 'governance' */ '@/views/governance/List.vue')
       },
       {
         path: '/startup/detail/:id',
