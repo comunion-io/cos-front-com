@@ -1,5 +1,5 @@
 <template>
-  <div>这里是Governace</div>
+  <div>这里是Governance</div>
 </template>
 
 <script>

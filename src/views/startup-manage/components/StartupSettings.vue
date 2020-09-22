@@ -4,13 +4,13 @@ import TabFinance from './setting-details/Finance';
 export default {
   components: {
     TabFinance,
-    TabGoverance: () => import('./setting-details/Goverance')
+    TabGovernance: () => import('./setting-details/Governance')
   },
 
   data() {
     return {
       selectedTab: 'Finance',
-      tabs: ['Finance', 'Goverance']
+      tabs: ['Finance', 'Governance']
     };
   },
 
