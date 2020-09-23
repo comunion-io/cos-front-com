@@ -9,8 +9,8 @@
         </a-col>
         <a-col :span="16">
           <div class="actions">
-            <a-tabs default-active-key="1">
-              <a-tab-pane key="1" tab="My Startup">
+            <a-tabs default-active-key="MyStartup" @change="tabOnChange">
+              <a-tab-pane key="MyStartup" tab="My Startup">
                 <div class="flex-column ai-center" style="padding: 0 30px 30px">
                   <!--<startup-item :startup="newStartupItem" @click.native="createStartUp" />-->
                   <a-spin class="w-100p" size="large" :spinning="loading">
@@ -31,7 +31,7 @@
                   </a-spin>
                 </div>
               </a-tab-pane>
-              <a-tab-pane key="2" tab="Follow Startup" force-render>
+              <a-tab-pane key="FollowStartup" tab="Follow Startup" force-render>
                 <div class="flex-column ai-center" style="padding: 0 30px 30px">
                   <a-spin class="w-100p" size="large" :spinning="followStartupLoading">
                     <a-empty v-if="followStartups.length === 0" />
@@ -176,27 +176,25 @@ export default {
     onClickFollowStartup(startup) {
       this.$router.push({ name: 'startupDetail', params: { id: startup.id } });
     },
+    tabOnChange(activeKey) {
+      switch (activeKey) {
+        case 'MyStartup':
+          this.getMyStartups();
+          break;
+        case 'FollowStartup':
+          this.getFollowStartups();
+          break;
+        default:
+          break;
+      }
+    },
     // 获取follow startup列表
     async getFollowStartups() {
       this.followStartupLoading = true;
-      await this.refreshFollowStartups();
-      this.followStartupLoading = false;
-    },
-    // 刷新follow startup列表
-    async refreshFollowStartups() {
-      this.clearFollowStartupTimer(); // 清除定时器
       const [data, total] = await getFollowStartups(this.followStartupSearch);
       this.followStartups = data;
       this.followStartupTotal = total;
-      // 15秒刷新一次数据
-      this.followStartupTimer = setTimeout(this.refreshFollowStartups, INTERVAL_TIME);
-    },
-    // 清除刷新follow startup列表的定时器
-    clearFollowStartupTimer() {
-      if (this.followStartupTimer) {
-        clearTimeout(this.followStartupTimer);
-        this.followStartupTimer = null;
-      }
+      this.followStartupLoading = false;
     }
   },
   mounted() {
@@ -206,8 +204,6 @@ export default {
   },
   beforeDestroy() {
     this.clearTimeout();
-    // 清除刷新follow startup列表的定时器
-    this.clearFollowStartupTimer();
   }
 };
 </script>
