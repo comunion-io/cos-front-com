@@ -24,7 +24,7 @@
               </a-form-model-item>
               <!-- title -->
               <a-form-model-item label="Title" prop="title" class="form-item">
-                <a-input size="large" v-model="form.title" placeholder="Title" :max-length="50" />
+                <a-input size="large" v-model="form.title" placeholder="Title" />
               </a-form-model-item>
               <!-- type -->
               <a-form-model-item label="Type" prop="type" class="form-item">
