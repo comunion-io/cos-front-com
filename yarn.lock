@@ -3018,6 +3018,11 @@ commander@2.17.x:
   resolved "https://registry.npm.taobao.org/commander/download/commander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
   integrity sha1-vXerfebelCBc6sxy8XFtKfIKd78=
 
+commander@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.npm.taobao.org/commander/download/commander-5.0.0.tgz#dbf1909b49e5044f8fdaf0adc809f0c0722bdfd0"
+  integrity sha1-2/GQm0nlBE+P2vCtyAnwwHIr39A=
+
 commander@^2.18.0, commander@^2.20.0:
   version "2.20.3"
   resolved "https://registry.npm.taobao.org/commander/download/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
@@ -3820,6 +3825,15 @@ detect-node@^2.0.4:
   version "2.0.4"
   resolved "https://registry.npm.taobao.org/detect-node/download/detect-node-2.0.4.tgz#014ee8f8f669c5c58023da64b8179c083a28c46c"
   integrity sha1-AU7o+PZpxcWAI9pkuBecCDooxGw=
+
+devmoji@^2.1.9:
+  version "2.1.9"
+  resolved "https://registry.npm.taobao.org/devmoji/download/devmoji-2.1.9.tgz#ad45d6fe133bcddbb527aac5d4eafe292823b4c0"
+  integrity sha1-rUXW/hM7zdu1J6rF1Or+KSgjtMA=
+  dependencies:
+    chalk "^4.0.0"
+    commander "5.0.0"
+    ts-interface-checker "0.1.10"
 
 diffie-hellman@^5.0.0:
   version "5.0.3"
@@ -10205,6 +10219,11 @@ tryer@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/tryer/download/tryer-1.0.1.tgz#f2c85406800b9b0f74c9f7465b81eaad241252f8"
   integrity sha1-8shUBoALmw90yfdGW4HqrSQSUvg=
+
+ts-interface-checker@0.1.10:
+  version "0.1.10"
+  resolved "https://registry.npm.taobao.org/ts-interface-checker/download/ts-interface-checker-0.1.10.tgz#b68a49e37e90a05797e590f08494dd528bf383cf"
+  integrity sha1-topJ436QoFeX5ZDwhJTdUovzg88=
 
 ts-pnp@^1.1.6:
   version "1.2.0"

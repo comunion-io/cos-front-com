@@ -39,6 +39,7 @@
     "babel-plugin-import": "^1.13.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "commitizen": "^4.2.1",
+    "devmoji": "^2.1.9",
     "eslint": "^5.16.0",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-vue": "^5.2.3",
@@ -58,7 +59,9 @@
     }
   },
   "gitHooks": {
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "prepare-commit-msg": "devmoji -e --lint",
+    "commit-msg": "commitlint -x @commitlint/config-conventional -E HUSKY_GIT_PARAMS"
   },
   "lint-staged": {
     "*.{js,vue}": [
