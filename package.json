@@ -58,11 +58,6 @@
       "autoprefixer": {}
     }
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged",
-    "prepare-commit-msg": "devmoji -e --lint",
-    "commit-msg": "commitlint -x @commitlint/config-conventional -E HUSKY_GIT_PARAMS"
-  },
   "lint-staged": {
     "*.{js,vue}": [
       "vue-cli-service lint",
