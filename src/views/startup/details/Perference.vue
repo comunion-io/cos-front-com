@@ -143,10 +143,10 @@ export default {
     }
   },
   render(h) {
-    const { modules, startup } = this;
+    const { id, modules, startup } = this;
     return (
       <a-card loading={this.loading}>
-        <StartupInfo startup={startup} />
+        <StartupInfo id={id} startup={startup} />
         {modules.map(_module => {
           const { title, icon, fields } = _module;
           return (
@@ -165,8 +165,4 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-.followed {
-  background-color: gray;
-}
-</style>
+<style lang="less" scoped></style>

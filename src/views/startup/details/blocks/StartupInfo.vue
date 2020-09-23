@@ -3,6 +3,7 @@ import { mapGetters } from 'vuex';
 import { followStartup, cancelFollowStartup, getStartupIsFollowed } from '@/services';
 export default {
   props: {
+    id: String,
     startup: {
       type: Object,
       default: () => ({})
@@ -36,6 +37,9 @@ export default {
           this.getStartupIsFollowed();
         }
       }
+    },
+    startup(v) {
+      this.followCount = this.startup.followCount;
     }
   },
   methods: {
@@ -88,7 +92,8 @@ export default {
         <a-button
           type="primary"
           // size="large"
-          class={`${this.isFollowed ? 'followed' : ''} ml-auto`}
+          class="ml-auto"
+          style={this.isFollowed ? { backgroundColor: 'gray' } : {}}
           onClick={this.followBtnOnClick}
           loading={this.followBtnLoading}
         >
