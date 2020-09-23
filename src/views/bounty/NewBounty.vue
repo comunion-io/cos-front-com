@@ -36,18 +36,9 @@
               </a-form-model-item>
               <!-- key words -->
               <a-form-model-item label="KeyWords" prop="keywords" class="form-item">
-                <a-select
-                  size="large"
-                  v-model="form.keywords"
-                  placeholder="Please select keywords"
-                  mode="multiple"
-                  :maxTagCount="3"
-                >
-                  <a-select-option v-for="item in skills" :key="item">
-                    {{ item }}
-                  </a-select-option>
-                </a-select>
+                <skills v-model="form.keywords" />
               </a-form-model-item>
+
               <!-- email -->
               <a-form-model-item label="Contract Email" prop="contactEmail" class="form-item">
                 <a-input size="large" v-model="form.contactEmail" placeholder="contact email" />
@@ -134,8 +125,9 @@
 // 例如：import 《组件名称》 from '《组件路径》';
 import { urlValidator, validateBountyTitle } from '@/utils/validators';
 import BbsInput from '@/components/form/BbsInput';
+import Skills from '@/components/form/Skills';
 import SubmitBalance from '@/components/form/SubmitBalance';
-import { getMyStartups, getTags, getPrepareBountyId, createBounty } from '@/services';
+import { getMyStartups, getPrepareBountyId, createBounty } from '@/services';
 import { COMUNION_BOUNTY_RECEIVE_ACCOUNT, web3 } from '@/libs/web3';
 import { bountyAbi } from '@/libs/abis/bounty';
 import { mapGetters } from 'vuex';
@@ -144,7 +136,8 @@ export default {
   // import引入的组件需要注入到对象中才能使用
   components: {
     BbsInput,
-    SubmitBalance
+    SubmitBalance,
+    Skills
   },
   data() {
     return {
@@ -165,7 +158,6 @@ export default {
 
       // 当前账户创建的startups
       startups: [],
-      skills: [],
       /* bounty 下拉选项 */
       bountyTypes: ['contest', 'cooperative'],
       rules: {
@@ -339,13 +331,6 @@ export default {
       if (targetStartup) {
         this.form.startupId = targetStartup.id;
       }
-    },
-
-    async getTags() {
-      const skills = await getTags({ source: 'skills' });
-      if (skills.length > 0) {
-        this.skills = skills;
-      }
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
@@ -353,7 +338,6 @@ export default {
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
     this.getMeStartups();
-    this.getTags();
   },
   beforeCreate() {}, // 生命周期 - 创建之前
   beforeMount() {}, // 生命周期 - 挂载之前
