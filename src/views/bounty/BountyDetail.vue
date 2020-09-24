@@ -99,7 +99,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['account'])
+    ...mapGetters(['account', 'isLoggedIn'])
   },
   async mounted() {
     this.detail = await getBountyDetail(this.$route.params.id);
@@ -170,6 +170,11 @@ export default {
   methods: {
     // hunter 承接bounty, hunter 向bounty 的发布者缴纳10个币的保证金
     async startWork() {
+      // 如果未登录，则跳转到引导页
+      if (!this.isLoggedIn) {
+        this.$router.push({ name: 'guide', params: { from: this.$route.fullPath } });
+        return;
+      }
       if (this.detail && this.detail.id) {
         const tx = {
           from: this.account,
