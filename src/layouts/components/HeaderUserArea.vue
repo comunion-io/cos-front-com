@@ -124,8 +124,10 @@ export default {
 }
 
 .connected {
+  width: 424px;
+  height: 274px;
   .description {
-    margin-top: 15px;
+    margin-top: 20px;
     font-weight: 400;
     color: rgba(205, 205, 205, 1);
     font-size: 7px;
@@ -146,6 +148,10 @@ export default {
     margin-left: 32px;
   }
 
+  /deep/ .ant-divider-horizontal {
+    margin: 18px 0;
+  }
+
   .show-user-info {
     .account {
       margin-left: 5px;
@@ -155,10 +161,10 @@ export default {
       color: rgba(153, 153, 153, 1);
       font-size: 7px;
       margin-left: 28px;
-      margin-top: -2px;
+      margin-top: 6px;
     }
     .transform-btn {
-      margin-top: 4px;
+      margin-top: 8px;
       margin-left: 38px;
     }
   }
