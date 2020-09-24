@@ -66,10 +66,11 @@ export default {
 
   .title {
     font-size: 24px;
+    line-height: 24px;
     font-family: Microsoft YaHei;
     font-weight: bold;
     color: rgba(0, 0, 0, 1);
-    margin-bottom: 24px;
+    margin: 30px 0 42px;
     text-align: center;
   }
 
@@ -102,10 +103,10 @@ export default {
           &:after {
             content: '';
             position: absolute;
-            height: 6px;
+            height: 5px;
             left: 17px;
             right: 17px;
-            bottom: -3px;
+            bottom: -2px;
             border-radius: 3px;
             background-color: #6170ff;
             z-index: 1;
