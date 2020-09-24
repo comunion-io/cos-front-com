@@ -154,13 +154,15 @@ export default {
             </a-button>
             <ul class="pl-16 t-grey ">
               <li>
-                Solid understanding of the blockchain industry. Your current industry relationships
-                and resources are encouraged to build Aurora collaboratio.
+                The bounty’s content have been flushed to IPFS blockchain for consensus between
+                startup and hunter, if the hunter who had hunt the bounty have any question ,please
+                go to{' '}
+                <a href="https://bbs.comunion.io/" target="bbs">
+                  comunion bbs
+                </a>{' '}
+                for arguement
               </li>
-              <li class="mt-16">
-                Solid understanding of the blockchain industry. Your current industry relationships
-                and resources are encouraged to build Aurora collaboratio.
-              </li>
+              <li class="mt-16">The hunter need pay 10 UVU to hunt the bounty</li>
             </ul>
           </a-card>
         </div>
