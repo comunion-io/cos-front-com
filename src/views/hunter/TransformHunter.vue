@@ -16,7 +16,7 @@
           <a-form-model-item label="About" prop="about">
             <a-textarea
               v-model="form.about"
-              placeholder="Please input something about bounty"
+              placeholder="Please input something about hunter"
               :maxLength="200"
               :auto-size="{ minRows: 3, maxRows: 5 }"
             />
