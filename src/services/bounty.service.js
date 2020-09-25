@@ -73,12 +73,8 @@ export async function getBountyDetail(id) {
  * @param params 转币后的txid
  * @returns
  */
-export async function startupWork(startupId, bountyId, params) {
-  const { error, data } = await request(
-    'post',
-    `/cores/startups/${startupId}/bounties/${bountyId}:startWork`,
-    params
-  );
+export async function startupWork(bountyId, params) {
+  const { error, data } = await request('post', `/cores/bounties/${bountyId}:startWork`, params);
   return error ? {} : data;
 }
 
@@ -89,4 +85,17 @@ export async function startupWork(startupId, bountyId, params) {
  */
 export async function getUserBounties(query, userId) {
   return commonList(`cores/bounties/users/${userId}`, query);
+}
+
+/**
+ * @description  chuan
+ *
+ * @export
+ * @param startupId
+ * @returns
+ */
+export async function getBountyToken(startupId) {
+  const url = `/cores/startups/${startupId}/payTokens`;
+  const { error, data } = await request('get', url);
+  return error ? {} : data.payTokens;
 }

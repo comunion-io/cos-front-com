@@ -199,7 +199,7 @@ export default {
             }
             const txid = result.result;
             try {
-              await startupWork(this.detail.startup.id, this.detail.id, { txid });
+              await startupWork(this.detail.id, { txid });
               // TODO 更改step 的状态
             } catch (error) {
               console.error(error);
