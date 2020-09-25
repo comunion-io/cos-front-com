@@ -74,14 +74,12 @@
                           v-model="form.payments[index].token"
                           style="width: 80px"
                         >
-                          <a-select-option :value="1">
-                            USDT
-                          </a-select-option>
-                          <a-select-option :value="2">
-                            BTC
-                          </a-select-option>
-                          <a-select-option :value="3">
-                            ETH
+                          <a-select-option
+                            v-for="(token, index) of tokens"
+                            :value="token.name"
+                            :key="index"
+                          >
+                            {{ token.symbol }}
                           </a-select-option>
                         </a-select>
                       </a-input>
@@ -127,7 +125,7 @@ import { urlValidator, validateBountyTitle } from '@/utils/validators';
 import BbsInput from '@/components/form/BbsInput';
 import Skills from '@/components/form/Skills';
 import SubmitBalance from '@/components/form/SubmitBalance';
-import { getMyStartups, getPrepareBountyId, createBounty } from '@/services';
+import { getMyStartups, getPrepareBountyId, createBounty, getBountyToken } from '@/services';
 import { COMUNION_BOUNTY_RECEIVE_ACCOUNT, web3 } from '@/libs/web3';
 import { bountyAbi } from '@/libs/abis/bounty';
 import { mapGetters } from 'vuex';
@@ -153,11 +151,13 @@ export default {
         intro: '',
         descriptionAddr: '',
         duration: '',
-        payments: [{ token: 1, value: '' }]
+        payments: [{ token: 'ETH', value: '' }]
       },
 
       // 当前账户创建的startups
       startups: [],
+      // 创建bounty 的下拉token
+      tokens: [],
       /* bounty 下拉选项 */
       bountyTypes: ['contest', 'cooperative'],
       rules: {
@@ -310,7 +310,18 @@ export default {
      * @description 获取bounty上链的合约实例
      */
     async getContractInstance(formData, bountyId) {
-      const paymentToken = formData.payments.map(item => item.token);
+      const paymentToken = formData.payments.map(item => {
+        switch (item.token) {
+          case 'ETH':
+            return 1;
+          case 'DTC':
+            return 2;
+          case 'USDT':
+            return 3;
+          default:
+            return 4;
+        }
+      });
       const peymantValue = formData.payments.map(item => item.value);
       const contract = new web3.eth.Contract(bountyAbi, COMUNION_BOUNTY_RECEIVE_ACCOUNT);
       const contractBounty = await contract.methods.newBounty(
@@ -331,6 +342,15 @@ export default {
       if (targetStartup) {
         this.form.startupId = targetStartup.id;
       }
+    },
+
+    async getTokens() {
+      const startupId = this.$route.query.startupId;
+      try {
+        this.tokens = await getBountyToken(startupId);
+      } catch (error) {
+        console.error(error);
+      }
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
@@ -338,6 +358,7 @@ export default {
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
     this.getMeStartups();
+    this.getTokens();
   },
   beforeCreate() {}, // 生命周期 - 创建之前
   beforeMount() {}, // 生命周期 - 挂载之前
