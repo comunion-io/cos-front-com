@@ -93,7 +93,7 @@ export default {
           type="primary"
           // size="large"
           class="ml-auto"
-          style={this.isFollowed ? { backgroundColor: 'gray' } : {}}
+          style={(this.isFollowed ? { backgroundColor: 'gray' } : {}, { minWidth: '120px' })}
           onClick={this.followBtnOnClick}
           loading={this.followBtnLoading}
         >
