@@ -18,16 +18,12 @@
           :disabled="isEdit"
         />
       </a-form-model-item>
+
       <!-- skills-->
-      <a-form-model-item label="Skills" prop="skills" class="form-item">
-        <a-input
-          size="large"
-          v-model="form.skills"
-          placeholder="skills"
-          :disabled="isEdit"
-          :max-length="50"
-        />
+      <a-form-model-item label="Skill" prop="skills" class="form-item">
+        <skills v-model="form.skills" :disabled="isEdit" />
       </a-form-model-item>
+
       <!-- about -->
       <a-form-model-item label="About" prop="about" class="form-item">
         <a-input
@@ -69,17 +65,23 @@
 <script>
 import { urlValidator } from '@/utils/validators';
 import BbsInput from '@/components/form/BbsInput';
+import Skills from '@/components/form/Skills';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Hunter',
   components: {
-    BbsInput
+    BbsInput,
+    Skills
+  },
+  computed: {
+    ...mapGetters(['hunterInfo'])
   },
   data() {
     return {
       form: {
         hunterName: '',
-        skill: '',
+        skill: [],
         about: '',
         descriptionAddr: '',
         email: ''
@@ -121,11 +123,23 @@ export default {
      */
     editHunter() {
       this.isEdit = false;
+    },
+
+    initForm() {
+      if (this.hunterInfo) {
+        this.form = {
+          hunterName: this.hunterInfo.name,
+          about: this.hunterInfo.about,
+          skill: this.hunterInfo.skills,
+          descriptionAddr: this.hunterInfo.descriptionAddr,
+          email: this.hunterInfo.email
+        };
+      }
     }
   },
 
   mounted() {
-    //  TODO 获取当前的hunter 写入表单
+    this.initForm();
   }
 };
 </script>

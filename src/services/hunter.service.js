@@ -7,11 +7,3 @@ export async function transformToHunter(body) {
   const { error } = await request('put', '/account/users/me/hunters', body);
   return !error;
 }
-
-/**
- * @description hunter-我的
- */
-// export async function getMyHunterInfo() {
-//   const { error, data } = await request('get', '/cores/hunters/me');
-//   return error ? null : data;
-// }
