@@ -30,8 +30,8 @@
             </div>
             <div class="flex" style="margin-top: 44px">
               <a-button-group class="flex">
-                <a-button>
-                  Comunion
+                <a-button @click="toStartup(bounty)">
+                  {{ bounty.startup.name }}
                 </a-button>
               </a-button-group>
               <ul class="state-info">
@@ -128,6 +128,15 @@ export default {
 
     goToDetail(bounty) {
       this.$router.push({ name: 'bountyDetail', params: { id: bounty.id } });
+    },
+
+    toStartup(bounty) {
+      const startupId = bounty && bounty.startup && bounty.startup.id ? bounty.startup.id : '';
+      if (startupId)
+        this.$router.push({
+          name: 'startupDetail',
+          params: { id: startupId }
+        });
     },
 
     getBountyStatus(status) {
