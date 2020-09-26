@@ -1,64 +1,76 @@
 <template>
   <div class="hunter">
-    <a-form-model
-      class="vertical-form"
-      ref="ruleForm"
-      :model="form"
-      :rules="rules"
-      :layout="'horizontal'"
-      @submit.prevent="onSubmit"
-    >
-      <!-- name -->
-      <a-form-model-item label="Hunter Name" prop="name" class="form-item">
-        <a-input
-          size="large"
-          v-model="form.hunterName"
-          placeholder="hunter name"
-          :max-length="50"
-          :disabled="isEdit"
-        />
-      </a-form-model-item>
+    <a-spin :spinning="spinning">
+      <a-form-model
+        class="vertical-form"
+        ref="ruleForm"
+        :model="form"
+        :rules="rules"
+        :layout="'horizontal'"
+        @submit.prevent="onSubmit"
+      >
+        <!-- name -->
+        <a-form-model-item label="Hunter Name" prop="name" class="form-item">
+          <a-input
+            size="large"
+            v-model="form.name"
+            placeholder="hunter name"
+            :max-length="50"
+            :disabled="isEdit"
+          />
+        </a-form-model-item>
 
-      <!-- skills-->
-      <a-form-model-item label="Skill" prop="skills" class="form-item">
-        <skills v-model="form.skills" :disabled="isEdit" />
-      </a-form-model-item>
+        <!-- skills-->
+        <a-form-model-item label="Skill" prop="skills" class="form-item">
+          <skills v-model="form.skills" :disabled="isEdit" />
+        </a-form-model-item>
 
-      <!-- about -->
-      <a-form-model-item label="About" prop="about" class="form-item">
-        <a-input
-          size="large"
-          v-model="form.about"
-          placeholder="about"
-          :disabled="isEdit"
-          :max-length="50"
-        />
-      </a-form-model-item>
-      <!-- description -->
-      <bbs-input v-model="form.descriptionAddr" :disabled="isEdit" />
+        <!-- about -->
+        <a-form-model-item label="About" prop="about" class="form-item">
+          <a-input
+            size="large"
+            v-model="form.about"
+            placeholder="about"
+            :disabled="isEdit"
+            :max-length="50"
+          />
+        </a-form-model-item>
+        <!-- description -->
+        <bbs-input v-model="form.descriptionAddr" :disabled="isEdit" />
 
-      <!-- email -->
-      <a-form-model-item label="Email" prop="email" class="form-item">
-        <a-input
-          size="large"
-          v-model="form.email"
-          :disabled="isEdit"
-          placeholder="hunter name"
-          :max-length="50"
-        />
-      </a-form-model-item>
+        <!-- email -->
+        <a-form-model-item label="Email" prop="email" class="form-item">
+          <a-input
+            size="large"
+            v-model="form.email"
+            :disabled="isEdit"
+            placeholder="hunter name"
+            :max-length="50"
+          />
+        </a-form-model-item>
 
-      <a-form-model-item>
-        <div class="flex">
-          <a-button v-if="isEdit" class="flex-1 mr-20" size="large" @click="editHunter()">
-            Edit
-          </a-button>
-          <a-button v-else type="primary" size="large" block html-type="submit">
-            Submit
-          </a-button>
-        </div>
-      </a-form-model-item>
-    </a-form-model>
+        <a-form-model-item>
+          <div class="flex">
+            <a-button v-if="isEdit" class="flex-1 mr-20" size="large" @click="editHunter()">
+              Edit
+            </a-button>
+
+            <a-row v-else style="width: 100%;">
+              <a-col :span="12">
+                <a-button size="large" @click="cancel()" style="width: 95%;">
+                  Cancel
+                </a-button>
+              </a-col>
+              <a-col :span="12" style="text-align: right;">
+                <a-button type="primary" size="large" block html-type="submit" style="width: 95%;">
+                  Submit
+                </a-button>
+              </a-col>
+            </a-row>
+          </div>
+        </a-form-model-item>
+      </a-form-model>
+    </a-spin>
   </div>
 </template>
 
@@ -66,7 +78,7 @@
 import { urlValidator } from '@/utils/validators';
 import BbsInput from '@/components/form/BbsInput';
 import Skills from '@/components/form/Skills';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'Hunter',
@@ -79,9 +91,10 @@ export default {
   },
   data() {
     return {
+      spinning: false,
       form: {
-        hunterName: '',
-        skill: [],
+        name: '',
+        skills: [],
         about: '',
         descriptionAddr: '',
         email: ''
@@ -106,6 +119,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['transformHunter']),
     /**
      * @description 提交表单
      */
@@ -113,8 +127,27 @@ export default {
       this.$refs.ruleForm.validate(async valid => {
         if (valid) {
           // TODO
-          console.log('%c\n  this.form :::----->', 'font-size:20px;background: purple;', this.form);
+          try {
+            this.spinning = true;
+            const success = await this.transformHunter(this.form);
+            if (success) {
+              this.spinning = false;
+              this.$router.push({
+                name: 'bounty'
+              });
+            }
+          } catch (error) {
+            console.error(error);
+          } finally {
+            this.spinning = false;
+          }
         }
+      });
+    },
+
+    cancel() {
+      this.$router.push({
+        name: 'bounty'
       });
     },
 
@@ -128,9 +161,9 @@ export default {
     initForm() {
       if (this.hunterInfo) {
         this.form = {
-          hunterName: this.hunterInfo.name,
+          name: this.hunterInfo.name,
           about: this.hunterInfo.about,
-          skill: this.hunterInfo.skills,
+          skills: this.hunterInfo.skills,
           descriptionAddr: this.hunterInfo.descriptionAddr,
           email: this.hunterInfo.email
         };
