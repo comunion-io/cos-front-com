@@ -5,8 +5,8 @@ import { request } from './request';
  * @description  主页点入bounty详情， 点击我 ，进入我的主页， 我的bouny 列表
  * @param startupId: startup 的id,
  */
-export async function getStartupMeBounties(query, startupId) {
-  return commonList(`cores/startups/${startupId}/bounties/me`, query);
+export async function getStartupMeBounties(query) {
+  return commonList(`cores/bounties/me`, query);
 }
 
 /**
