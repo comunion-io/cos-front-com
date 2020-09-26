@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { getBountiesForHunter } from '@/services';
+import { getStartupMeBounties } from '@/services';
 import BountyList from '@/components/bounty-list/BountyList';
 
 export default {
@@ -16,20 +16,11 @@ export default {
   components: {
     BountyList
   },
-  data() {
-    return {
-      // TODO hunter id 需要路由的方式传递
-      hunterId: 0
-    };
-  },
   methods: {
-    async getBounties(query) {
-      const [data, total] = await getBountiesForHunter(this.hunterId, query);
+    async fetchData(query) {
+      const [data, total] = await getStartupMeBounties(query);
       return [data, total];
     }
-  },
-  mounted() {
-    this.getBounties();
   }
 };
 </script>
