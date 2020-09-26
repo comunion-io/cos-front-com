@@ -28,7 +28,7 @@ export default {
           message.success('Copied!');
         }}
       >
-        <a>{address}</a>
+        <a href={`https://cn.etherscan.com/tx/${address}`}>{address}</a>
         <a-icon type="copy" style="margin-left:50px;font-size:12px" />
       </div>
     );
