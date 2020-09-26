@@ -132,9 +132,8 @@ export default {
             const success = await this.transformHunter(this.form);
             if (success) {
               this.spinning = false;
-              this.$router.push({
-                name: 'bounty'
-              });
+              this.$message.info('Update succeeded');
+              this.isEdit = true;
             }
           } catch (error) {
             console.error(error);
@@ -146,9 +145,7 @@ export default {
     },
 
     cancel() {
-      this.$router.push({
-        name: 'bounty'
-      });
+      this.isEdit = true;
     },
 
     /**
