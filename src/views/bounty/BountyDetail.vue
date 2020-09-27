@@ -28,6 +28,8 @@ export default {
   data() {
     return {
       detail: {},
+      // 按钮加载中
+      loading: false,
       bountyColumns: [
         {
           label: 'Startup',
@@ -132,16 +134,18 @@ export default {
     ...mapGetters(['account', 'isLoggedIn', 'user'])
   },
   async mounted() {
-    this.detail = await getBountyDetail(this.$route.params.id);
+    this.fetchData();
   },
   render(h) {
     const { detail } = this;
     // 是否是我发布的bounty
-    const isMyBounty = detail.createdBy?.id === this.user?.user?.id;
+    const isMyBounty = detail.createdBy?.id === this.user.user?.id;
     // 剩余天数
     const leftDays = detail.expiredAt ? moment(detail.expiredAt).diff(moment(), 'days') : false;
-    // 是否过期
-    const isExpired = leftDays === false ? false : leftDays <= 0;
+    // 是否已结束
+    const closed = detail.status === 2;
+    // 是否已经接过任务
+    const isStartedMyself = detail.hunters?.some(hunter => hunter.userId === this.user.user?.id);
     return (
       <div style="padding: 28px 50px">
         <div class="f-24 t-bold t-center" style="margin-bottom:48px">
@@ -172,6 +176,7 @@ export default {
                 showHeader={false}
                 columns={this.hunterColumns}
                 dataSource={detail.hunters || []}
+                pagination={false}
               />
             </a-card>
           </div>
@@ -197,24 +202,37 @@ export default {
                   description={
                     leftDays === false
                       ? ''
-                      : isExpired
-                      ? 'expired'
+                      : closed
+                      ? 'closed'
                       : `${leftDays} day${leftDays > 1 ? 's' : ''} left`
                   }
                 />
               </Steps>
             </div>
-            {isMyBounty || isExpired ? (
+            {isMyBounty || closed || isStartedMyself ? (
               <a-tooltip
                 class="my-32"
-                title={isExpired ? 'Expired.' : "You cann't accept your own bounty."}
+                title={
+                  closed
+                    ? 'Closed'
+                    : isStartedMyself
+                    ? 'You are in progress.'
+                    : "You cann't accept your own bounty."
+                }
               >
                 <a-button type="primary" block size="large" disabled>
-                  Start to work
+                  {isStartedMyself ? 'In progress' : 'Start to work'}
                 </a-button>
               </a-tooltip>
             ) : (
-              <a-button class="my-32" type="primary" block size="large" onClick={this.startWork}>
+              <a-button
+                class="my-32"
+                type="primary"
+                block
+                size="large"
+                loading={this.loading}
+                onClick={this.startWork}
+              >
                 Start to work
               </a-button>
             )}
@@ -236,6 +254,9 @@ export default {
     );
   },
   methods: {
+    async fetchData() {
+      this.detail = await getBountyDetail(this.$route.params.id);
+    },
     // hunter 承接bounty, hunter 向bounty 的发布者缴纳10个币的保证金
     async startWork() {
       // 如果未登录，则跳转到引导页
@@ -252,7 +273,7 @@ export default {
           // 暂时只用0.1个币， 上线的时候， 改成10个币
           value: web3.utils.numberToHex(Math.pow(10, 17))
         };
-
+        this.loading = true;
         window.ethereum.sendAsync(
           {
             method: 'eth_sendTransaction',
@@ -261,15 +282,14 @@ export default {
           },
           async (err, result) => {
             if (err) {
+              this.loading = false;
               return console.error(err);
             }
             const txid = result.result;
-            try {
-              await startupWork(this.detail.id, { txid });
-              // TODO 更改step 的状态
-            } catch (error) {
-              console.error(error);
+            if (await startupWork(this.detail.id, { txid })) {
+              this.fetchData();
             }
+            this.loading = false;
           }
         );
       }
