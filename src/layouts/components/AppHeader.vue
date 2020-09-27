@@ -4,7 +4,7 @@
       <router-link to="/" exact>
         <img src="@/assets/images/logo@4x.png" alt="" width="128" />
       </router-link>
-      <div class="navs flex ai-center ml-32">
+      <div class="navs flex ai-center ml-24">
         <router-link
           v-for="nav in navs"
           :key="nav.name"
@@ -89,7 +89,7 @@ export default {
   box-shadow: 0px 0px 8px 0px rgba(6, 0, 1, 0.07);
   .navs {
     .nav {
-      padding: 0 20px;
+      padding: 0 16px;
       height: 36px;
       font-weight: bold;
       font-size: 16px;

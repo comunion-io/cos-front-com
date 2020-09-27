@@ -1,6 +1,6 @@
 <template>
   <a-card id="hunter-manage" :bordered="false" style="margin-bottom: 24px;">
-    <h1 class="title">HunterManage</h1>
+    <h1 class="title">Hunter Management</h1>
     <section class="content">
       <a-tabs>
         <a-tab-pane key="1" tab="Hunter">

@@ -45,7 +45,8 @@ export default {
       fields: [
         {
           label: 'Wallet Address',
-          value: ''
+          value: '',
+          copyable: true
         },
         {
           label: 'Become Time',

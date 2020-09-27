@@ -5,6 +5,7 @@
       @click="modalVisible = true"
       :value="text"
       :placeholder="placeholder"
+      :disabled="disabled"
       readonly
     />
     <skill-modal
@@ -30,11 +31,15 @@ export default {
     },
     placeholder: {
       type: String,
-      default: 'Please select skills that required for the bounty'
+      default: 'Please select skills'
     },
     maxLength: {
       type: Number,
       default: 3
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -44,6 +49,11 @@ export default {
   },
   computed: {
     text() {
+      console.log(
+        '%c 🍤 this.value: ',
+        'font-size:20px;background-color: #4b4b4b;color:#fff;',
+        this.value
+      );
       return this.value.join(',');
     }
   },

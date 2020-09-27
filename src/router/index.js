@@ -14,7 +14,7 @@ const routes = [
     component: () => import(/* webpackChunkName: 'basic-layout' */ '@/layouts/BasicLayout.vue'),
     children: [
       {
-        path: '',
+        path: '/',
         name: 'square',
         meta: {
           title: 'Home',
@@ -132,7 +132,7 @@ const routes = [
         path: '/hunter/manage',
         name: 'hunterManage',
         meta: {
-          title: 'hunterManage'
+          title: 'Hunter Management'
         },
         component: () =>
           import(/* webpackChunkName: 'hunterManage' */ '@/views/hunter-manage/HunterManage')

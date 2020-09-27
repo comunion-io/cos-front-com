@@ -4,6 +4,7 @@
       <a-tag
         v-for="skill in currentSkills"
         :key="skill"
+        class="tag-item"
         :class="{ selected: selectedSkills.includes(skill) }"
         @click.native="toggleSelect(skill)"
       >
@@ -14,13 +15,14 @@
         ref="input"
         type="text"
         size="small"
-        class="mr-16"
+        class="tag-item_input"
         :style="{ width: '78px' }"
         v-model.trim="inputValue"
         @keyup.enter="handleInputConfirm"
-        @keydown.esc.stop="cancelInput"
+        @keydown.esc.stop="doCancelInput"
+        @blur="onInputBlur"
       />
-      <a-tag @click="showInput"><a-icon type="plus"/></a-tag>
+      <a-tag class="tag-item" @click="showInput"><a-icon type="plus"/></a-tag>
     </div>
     <div class="mt-36">
       You can choose up to <span class="t-error">{{ maxLength }}</span> Skill Tags
@@ -75,9 +77,18 @@ export default {
     }
   },
   methods: {
-    cancelInput() {
+    doCancelInput() {
       this.inputVisible = false;
       this.inputValue = '';
+    },
+    onInputBlur() {
+      if (!this.inputValue) {
+        return this.doCancelInput();
+      }
+      if (!this.currentSkills.includes(this.inputValue)) {
+        this.currentSkills.push(this.inputValue);
+      }
+      this.doCancelInput();
     },
     toggleSelect(skill) {
       const index = this.selectedSkills.indexOf(skill);
@@ -98,16 +109,17 @@ export default {
       });
     },
     handleInputConfirm() {
-      if (!this.inputValue) return;
-      if (this.selectedSkills.length >= this.maxLength) {
-        return this.$message.warning(`You can choose up to ${this.maxLength} Skill Tags`);
+      if (!this.inputValue) {
+        return this.doCancelInput();
       }
       if (!this.currentSkills.includes(this.inputValue)) {
         this.currentSkills.push(this.inputValue);
       }
+      if (this.selectedSkills.length >= this.maxLength) {
+        return this.$message.warning(`You can choose up to ${this.maxLength} Skill Tags`);
+      }
       this.selectedSkills.push(this.inputValue);
-      this.inputValue = '';
-      this.inputVisible = false;
+      return this.doCancelInput();
     },
     onOk() {
       this.$emit('ok', this.selectedSkills);
@@ -123,5 +135,14 @@ export default {
     background: @primary-color;
     color: #fff;
   }
+}
+.tag-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  padding: 0 12px;
+  height: 24px;
 }
 </style>

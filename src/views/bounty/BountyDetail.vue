@@ -1,23 +1,42 @@
 <script>
-import { Steps } from 'ant-design-vue';
+import { Steps, Timeline } from 'ant-design-vue';
 import { getBountyDetail, startupWork } from '@/services';
 import Descriptions from '@/components/display/Descriptions';
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 import { web3, COMUNION_RECEIVE_HUNTER_TRANSFER } from '@/libs/web3';
+import CopyableAddress from '@/components/helper/CopyableAddress';
 
 const { Step } = Steps;
+
+function getHunterBountyProcess(hunter) {
+  const list = [
+    ['Start work', hunter.startedAt],
+    ['Submitted', hunter.submittedAt],
+    ['Paid', hunter.paidAt],
+    ['Quit', hunter.quitedAt]
+  ];
+  return list.reduceRight((arr, item) => {
+    if (item[1]) {
+      arr.push([item[0], moment(item[1]).format('YYYY-MM-DD')]);
+    }
+    return arr;
+  }, []);
+}
 
 export default {
   data() {
     return {
       detail: {},
+      // 按钮加载中
+      loading: false,
       bountyColumns: [
         {
           label: 'Startup',
           value: 'startup.name',
           render: (v, record) => {
             return (
-              <router-link to={{ name: 'startupDetail', params: { id: record.startup.id } }}>
+              <router-link to={{ name: 'startupDetail', params: { id: record.startup?.id } }}>
                 {v}
               </router-link>
             );
@@ -28,13 +47,15 @@ export default {
           value: 'type'
         },
         {
-          label: 'Create by',
-          value: '',
+          label: 'Created by',
+          value: 'createdBy.name',
           render: (v, record) => {
-            return (
-              <router-link to={{ name: 'startupDetail', params: { id: record.id } }}>
+            return record.createdBy?.isHunter ? (
+              <router-link to={{ name: 'bountyHome', params: { userId: record.createdBy?.id } }}>
                 {v}
               </router-link>
+            ) : (
+              <CopyableAddress address={v} />
             );
           }
         },
@@ -88,24 +109,43 @@ export default {
         },
         {
           dataIndex: 'status',
+          align: 'right',
           customRender: (text, record) => {
-            return `${text}(${record.paidAt ||
-              record.quitedAt ||
-              record.submittedAt ||
-              record.startedAt})`;
+            const process = getHunterBountyProcess(record);
+            return (
+              <a-tooltip placement="left" overlayClassName="bounty-detail-overlay">
+                <template slot="title">
+                  <div class="mb-16 t-bold">{record.name}:</div>
+                  <Timeline reverse>
+                    {process.map(item => (
+                      <Timeline.Item>{`${item[0]} (${item[1]})`}</Timeline.Item>
+                    ))}
+                  </Timeline>
+                </template>
+                <span>{`${process[0][0]} (${process[0][1]})`}</span>
+              </a-tooltip>
+            );
           }
         }
       ]
     };
   },
   computed: {
-    ...mapGetters(['account', 'isLoggedIn'])
+    ...mapGetters(['account', 'isLoggedIn', 'user'])
   },
   async mounted() {
-    this.detail = await getBountyDetail(this.$route.params.id);
+    this.fetchData();
   },
   render(h) {
     const { detail } = this;
+    // 是否是我发布的bounty
+    const isMyBounty = detail.createdBy?.id === this.user.user?.id;
+    // 剩余天数
+    const leftDays = detail.expiredAt ? moment(detail.expiredAt).diff(moment(), 'days') : false;
+    // 是否已结束
+    const closed = detail.status === 2;
+    // 是否已经接过任务
+    const isStartedMyself = detail.hunters?.some(hunter => hunter.userId === this.user.user?.id);
     return (
       <div style="padding: 28px 50px">
         <div class="f-24 t-bold t-center" style="margin-bottom:48px">
@@ -119,7 +159,12 @@ export default {
                   <a-tag class="keyword">{tag}</a-tag>
                 ))}
               </div>
-              <Descriptions class="mt-32" columns={this.bountyColumns} dataSource={detail} />
+              <Descriptions
+                class="mt-32"
+                label-width={164}
+                columns={this.bountyColumns}
+                dataSource={detail}
+              />
             </a-card>
             <a-card bordered={false} class="hunter-card">
               <div slot="title">
@@ -127,9 +172,11 @@ export default {
                 <span class="ml-8 t-primary f-15">{detail.hunters?.length || 0}</span>
               </div>
               <a-table
+                row-key="hunterId"
                 showHeader={false}
                 columns={this.hunterColumns}
                 dataSource={detail.hunters || []}
+                pagination={false}
               />
             </a-card>
           </div>
@@ -137,30 +184,69 @@ export default {
             <div class="flex ai-center jc-center">
               {(detail.payments || []).map(payment => (
                 <span class="mx-24 pay-item f-18 t-bold">
-                  {payment.value}
-                  {payment.token}
+                  {payment.value} {payment.token}
                 </span>
               ))}
             </div>
             <div class="mt-24">
               <Steps current={detail.status ?? 0} labelPlacement="vertical">
-                <Step title="Open" sub-title="2020-06-02 12:00" />
+                <Step
+                  title="Open"
+                  sub-title={
+                    detail.createdAt ? moment(detail.createdAt).format('YYYY-MM-DD hh:mm') : ''
+                  }
+                />
                 <Step title="InProgress" />
-                <Step title="Closed" description="90 days left" />
+                <Step
+                  title="Closed"
+                  description={
+                    leftDays === false
+                      ? ''
+                      : closed
+                      ? 'closed'
+                      : `${leftDays} day${leftDays > 1 ? 's' : ''} left`
+                  }
+                />
               </Steps>
             </div>
-            <a-button class="my-32" type="primary" block size="large" onClick={this.startWork}>
-              Start to work
-            </a-button>
+            {isMyBounty || closed || isStartedMyself ? (
+              <a-tooltip
+                class="my-32"
+                title={
+                  closed
+                    ? 'Closed'
+                    : isStartedMyself
+                    ? 'You are in progress.'
+                    : "You cann't accept your own bounty."
+                }
+              >
+                <a-button type="primary" block size="large" disabled>
+                  {isStartedMyself ? 'In progress' : 'Start to work'}
+                </a-button>
+              </a-tooltip>
+            ) : (
+              <a-button
+                class="my-32"
+                type="primary"
+                block
+                size="large"
+                loading={this.loading}
+                onClick={this.startWork}
+              >
+                Start to work
+              </a-button>
+            )}
             <ul class="pl-16 t-grey ">
               <li>
-                Solid understanding of the blockchain industry. Your current industry relationships
-                and resources are encouraged to build Aurora collaboratio.
+                The bounty’s content have been flushed to IPFS blockchain for consensus between
+                startup and hunter, if the hunter who had hunt the bounty have any question ,please
+                go to{' '}
+                <a href="https://bbs.comunion.io/" target="bbs">
+                  comunion bbs
+                </a>{' '}
+                for arguement
               </li>
-              <li class="mt-16">
-                Solid understanding of the blockchain industry. Your current industry relationships
-                and resources are encouraged to build Aurora collaboratio.
-              </li>
+              <li class="mt-16">The hunter need pay 10 UVU to hunt the bounty</li>
             </ul>
           </a-card>
         </div>
@@ -168,6 +254,9 @@ export default {
     );
   },
   methods: {
+    async fetchData() {
+      this.detail = await getBountyDetail(this.$route.params.id);
+    },
     // hunter 承接bounty, hunter 向bounty 的发布者缴纳10个币的保证金
     async startWork() {
       // 如果未登录，则跳转到引导页
@@ -184,7 +273,7 @@ export default {
           // 暂时只用0.1个币， 上线的时候， 改成10个币
           value: web3.utils.numberToHex(Math.pow(10, 17))
         };
-
+        this.loading = true;
         window.ethereum.sendAsync(
           {
             method: 'eth_sendTransaction',
@@ -193,15 +282,14 @@ export default {
           },
           async (err, result) => {
             if (err) {
+              this.loading = false;
               return console.error(err);
             }
             const txid = result.result;
-            try {
-              await startupWork(this.detail.startup.id, this.detail.id, { txid });
-              // TODO 更改step 的状态
-            } catch (error) {
-              console.error(error);
+            if (await startupWork(this.detail.id, { txid })) {
+              this.fetchData();
             }
+            this.loading = false;
           }
         );
       }
@@ -249,5 +337,19 @@ export default {
 }
 /deep/ .ant-steps-item-subtitle {
   font-size: 12px;
+}
+</style>
+
+<style lang="less">
+@import '~@/assets/styles/variables.less';
+.bounty-detail-overlay {
+  .ant-tooltip-inner {
+    padding: 16px;
+    background: #fff;
+    color: @text-color;
+  }
+  .ant-timeline-item-head {
+    background: @primary-color;
+  }
 }
 </style>
