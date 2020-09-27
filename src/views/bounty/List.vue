@@ -1,12 +1,13 @@
 <template>
   <!-- bounty 的主页面 -->
   <div id="bounty">
-    <div class="total">
+    <div class="total flex ai-center">
       <div class="noti-icon flex-inline ai-center jc-center">
         <!-- <a-icon type="notification" /> -->
-        <img src="@/assets/images/bounty-icon.png" />
+        <img src="@/assets/images/money_pocket@2x.png" />
       </div>
-      <span class="num">{{ total }}&nbsp; Bounties</span>in the Comunion.
+      <span class="ml-16 mr-8 t-bold" style="color:#000">{{ total }}&nbsp; Bounties</span>in the
+      Comunion.
     </div>
 
     <!-- 显示 bounty-->
@@ -45,39 +46,37 @@ export default {
   background: rgba(242, 243, 244, 1);
   min-height: calc(100vh - 70px);
   padding: 28px 150px 0 150px;
-  // .noti-icon {
-  //   width: 38px;
-  //   height: 38px;
-  //   border-radius: 50%;
-  //   background-color: #dce0fe;
-  //   .anticon {
-  //     width: 20px;
-  //     height: 20px;
-  //     font-size: 20px;
-  //     color: @primary-color;
-  //   }
-  // }
-  .total {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 20px;
-
+  .noti-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #ffd7c8;
     img {
-      width: 38px;
-      height: 38px;
-      margin-right: 10px;
-    }
-
-    .num {
-      margin: 0 0.5em 0 1em;
-      font-size: 14px;
-      font-family: Microsoft YaHei;
-      font-weight: bold;
-      color: rgba(0, 0, 0, 1);
+      width: 20px;
+      height: 20px;
     }
   }
+  // .total {
+  //   display: flex;
+  //   flex-direction: row;
+  //   align-items: center;
+  //   justify-content: flex-start;
+  //   margin-bottom: 20px;
+
+  //   img {
+  //     width: 38px;
+  //     height: 38px;
+  //     margin-right: 10px;
+  //   }
+
+  //   .num {
+  //     margin: 0 0.5em 0 1em;
+  //     font-size: 14px;
+  //     font-family: Microsoft YaHei;
+  //     font-weight: bold;
+  //     color: rgba(0, 0, 0, 1);
+  //   }
+  // }
   .bounties {
     margin-top: 30px;
     min-height: 240px;

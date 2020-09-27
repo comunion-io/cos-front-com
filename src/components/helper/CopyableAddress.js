@@ -21,15 +21,18 @@ export default {
     const { address } = context.props;
     if (!address) return null;
     return (
-      <div
-        class="flex-inline ai-center"
-        onClick={() => {
-          copy(address);
-          message.success('Copied!');
-        }}
-      >
-        <a href={`https://cn.etherscan.com/tx/${address}`}>{address}</a>
-        <a-icon type="copy" style="margin-left:50px;font-size:12px" />
+      <div class="flex-inline ai-center">
+        <a href={`https://cn.etherscan.com/tx/${address}`} target="_etherscan">
+          {address}
+        </a>
+        <a-icon
+          type="copy"
+          style="margin-left:50px;font-size:12px"
+          onClick={() => {
+            copy(address);
+            message.success('Copied!');
+          }}
+        />
       </div>
     );
   }

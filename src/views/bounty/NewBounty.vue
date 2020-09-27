@@ -40,7 +40,7 @@
               </a-form-model-item>
 
               <!-- email -->
-              <a-form-model-item label="Contract Email" prop="contactEmail" class="form-item">
+              <a-form-model-item label="Contact Email" prop="contactEmail" class="form-item">
                 <a-input size="large" v-model="form.contactEmail" placeholder="contact email" />
               </a-form-model-item>
               <!-- intro -->
@@ -167,6 +167,11 @@ export default {
             required: true,
             trigger: 'blur',
             validator: validateBountyTitle
+          },
+          {
+            min: 100,
+            trigger: 'blur',
+            message: 'At least 100 words are required'
           }
         ],
         type: [{ required: true, message: 'Please select Type', trigger: 'change' }],
