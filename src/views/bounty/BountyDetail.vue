@@ -10,17 +10,21 @@ const { Step } = Steps;
 export default {
   data() {
     return {
+      loading: false,
+      startWorkBtnDisabled: false,
       detail: {},
       bountyColumns: [
         {
           label: 'Startup',
           value: 'startup.name',
           render: (v, record) => {
-            return (
-              <router-link to={{ name: 'startupDetail', params: { id: record.startup.id } }}>
-                {v}
-              </router-link>
-            );
+            if (record.startup) {
+              return (
+                <router-link to={{ name: 'startupDetail', params: { id: record.startup.id } }}>
+                  {v}
+                </router-link>
+              );
+            }
           }
         },
         {
@@ -31,11 +35,13 @@ export default {
           label: 'Create by',
           value: '',
           render: (v, record) => {
-            return (
-              <router-link to={{ name: 'startupDetail', params: { id: record.id } }}>
-                {v}
-              </router-link>
-            );
+            if (record) {
+              return (
+                <router-link to={{ name: 'startupDetail', params: { id: record.id } }}>
+                  {v}
+                </router-link>
+              );
+            }
           }
         },
         {
@@ -149,7 +155,15 @@ export default {
                 <Step title="Closed" description="90 days left" />
               </Steps>
             </div>
-            <a-button class="my-32" type="primary" block size="large" onClick={this.startWork}>
+            <a-button
+              class="my-32"
+              type="primary"
+              block
+              size="large"
+              loading={this.loading}
+              disabled={this.startWorkBtnDisabled}
+              onClick={this.startWork}
+            >
               Start to work
             </a-button>
             <ul class="pl-16 t-grey ">
@@ -178,6 +192,7 @@ export default {
         return;
       }
       if (this.detail && this.detail.id) {
+        this.loading = true;
         const tx = {
           from: this.account,
           to: COMUNION_RECEIVE_HUNTER_TRANSFER,
@@ -195,14 +210,17 @@ export default {
           },
           async (err, result) => {
             if (err) {
+              this.loading = false;
               return console.error(err);
             }
             const txid = result.result;
             try {
               await startupWork(this.detail.id, { txid });
-              // TODO 更改step 的状态
+              this.startWorkBtnDisabled = true;
             } catch (error) {
               console.error(error);
+            } finally {
+              this.loading = false;
             }
           }
         );
