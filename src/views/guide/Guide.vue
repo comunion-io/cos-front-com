@@ -48,10 +48,10 @@
           </div>
         </div>
         <p class="f-15 t-bold" style="margin-top:48px;">Sign in Ethereum Mainnet</p>
-        <a-card class="connect-card">
+        <a-card class="connect-card" @click="connectMetaMask">
           <div class="flex ai-center">
             <img src="@/assets/images/guide/connect.png" alt="" width="24" height="28" />
-            <div class="ml-20 t-grey" @click="connectMetaMask">Connect account by metamask</div>
+            <div class="ml-20 t-grey">Connect account by metamask</div>
           </div>
         </a-card>
         <div class="features flex flex-wrap">
@@ -162,6 +162,12 @@ export default {
     }
     /deep/ & > .ant-card-body {
       padding: 24px 34px;
+    }
+    &:active {
+      box-shadow: 0 0 12px 2px rgba(24, 144, 255, 0.5);
+      .t-grey {
+        color: rgba(24, 144, 255, 1);
+      }
     }
   }
   .features {
