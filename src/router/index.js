@@ -154,7 +154,7 @@ const routes = [
         name: 'bountyHome',
         meta: {
           title: 'BountyHome',
-          skipAuth: false
+          skipAuth: true
         },
         component: () =>
           import(/* webpackChunkName: 'bountyHome' */ '@/views/hunter/BountyHome.vue')
