@@ -91,9 +91,12 @@ export default {
         </div>
         <a-button
           type="primary"
-          // size="large"
           class="ml-auto"
-          style={(this.isFollowed ? { backgroundColor: 'gray' } : {}, { minWidth: '120px' })}
+          style={{
+            minWidth: '144px',
+            height: '44px',
+            backgroundColor: this.isFollowed ? 'gray' : ''
+          }}
           onClick={this.followBtnOnClick}
           loading={this.followBtnLoading}
         >
