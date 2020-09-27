@@ -74,8 +74,8 @@ export async function getBountyDetail(id) {
  * @returns
  */
 export async function startupWork(bountyId, params) {
-  const { error, data } = await request('post', `/cores/bounties/${bountyId}:startWork`, params);
-  return error ? {} : data;
+  const { error } = await request('post', `/cores/bounties/${bountyId}:startWork`, params);
+  return !error;
 }
 
 /**

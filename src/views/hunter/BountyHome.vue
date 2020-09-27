@@ -5,15 +5,7 @@
 
     <!-- hunter信息 -->
     <div class="info-table f-15 mb-32">
-      <div class="info-tr flex ai-center" v-for="field in fields" :key="field.label">
-        <label class="t-bold no-shrink">{{ field.label }}</label>
-        <p v-if="field.type === 'link'" class="mb-0 t-grey">
-          <a :href="field.value" target="_black">
-            {{ field.value }}
-          </a>
-        </p>
-        <p v-else class="mb-0 t-grey">{{ field.value }}</p>
-      </div>
+      <Descriptions :columns="fields" :dataSource="hunterInfo" />
     </div>
 
     <!-- bounty列表 -->
@@ -29,12 +21,14 @@
 
 <script>
 import { getUserBounties, getUserInfo } from '@/services';
+import Descriptions from '@/components/display/Descriptions';
 import BountyList from '@/components/bounty-list/BountyList';
 
 export default {
   name: 'BountyHome',
   components: {
-    BountyList
+    BountyList,
+    Descriptions
   },
   data() {
     return {
@@ -42,27 +36,33 @@ export default {
       hunterName: '',
       loading: false,
       icon: require('./images/money_pocket.png'),
+      hunterInfo: null,
       fields: [
         {
           label: 'Wallet Address',
-          value: ''
+          value: 'walletAddress',
+          copyable: true
         },
         {
           label: 'Become Time',
-          value: ''
+          value: 'becomeTime'
         },
         {
           label: 'Skill Tag',
-          value: ''
+          value: 'skillTag'
         },
         {
           label: 'About',
-          value: ''
+          value: 'about'
         },
         {
           label: 'Description',
-          value: '',
-          type: 'link'
+          value: 'description',
+          render: v => (
+            <a href={v} target="_black">
+              {v}
+            </a>
+          )
         }
       ],
       total: 0,
@@ -82,8 +82,9 @@ export default {
     // 获取用户信息
     async getUserInfo() {
       const data = await getUserInfo(this.$route.params.userId);
+      let hunterInfo = {};
       if (data) {
-        this.fields[0].value = data.publicKey;
+        hunterInfo.walletAddress = data.publicKey;
         if (data.hunter) {
           this.hunterName = data.hunter.name;
           let date = new Date(data.hunter.createdAt);
@@ -92,12 +93,13 @@ export default {
           const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
           const hour = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
           const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
-          this.fields[1].value = `${year}-${month}-${day} ${hour}:${minutes}`;
-          this.fields[2].value = data.hunter.skills.join(', ');
-          this.fields[3].value = data.hunter.about;
-          this.fields[4].value = data.hunter.descriptionAddr;
+          hunterInfo.becomeTime = `${year}-${month}-${day} ${hour}:${minutes}`;
+          hunterInfo.skillTag = data.hunter.skills.join(', ');
+          hunterInfo.about = data.hunter.about;
+          hunterInfo.description = data.hunter.descriptionAddr;
         }
       }
+      this.hunterInfo = hunterInfo;
     }
   }
 };
