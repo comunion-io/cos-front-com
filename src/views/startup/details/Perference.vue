@@ -13,7 +13,8 @@ export default {
     modules() {
       // 投票地址过多，展示为可点击
       let voteAssignAddr;
-      if (this.startup.settings?.voteAssignAddrs?.length) {
+      // 当Governance选项为ALL时，隐藏Assign Address字段
+      if (this.startup.settings?.voteAssignAddrs?.length && this.startup.settings?.type !== 'ALL') {
         const addrs = this.startup.settings.voteAssignAddrs;
         voteAssignAddr = addrs.slice(0, 2).map((addr, index) => {
           return {
