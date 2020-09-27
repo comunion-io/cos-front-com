@@ -100,7 +100,7 @@ export default {
           icon: require('./images/team.png'),
           title: (
             <span>
-              Teamnumber: <span class="t-primary f-16">2</span>
+              Team Mumber: <span class="t-primary f-16">2</span>
             </span>
           ),
           fields: []
