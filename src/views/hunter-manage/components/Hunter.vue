@@ -51,18 +51,24 @@
 
         <a-form-model-item>
           <div class="flex">
-            <a-button v-if="isEdit" class="flex-1 mr-20" size="large" @click="editHunter()">
+            <a-button
+              v-if="isEdit"
+              class="flex-1 mt-36"
+              size="large"
+              @click="editHunter()"
+              style="width: 100%;"
+            >
               Edit
             </a-button>
 
-            <a-row v-else style="width: 100%;">
+            <a-row v-else class="mt-36" style="width: 100%;">
               <a-col :span="12">
                 <a-button size="large" @click="cancel()" style="width: 95%;">
                   Cancel
                 </a-button>
               </a-col>
               <a-col :span="12" style="text-align: right;">
-                <a-button type="primary" size="large" block html-type="submit" style="width: 95%;">
+                <a-button type="primary" size="large" block html-type="submit" style="width: 100%;">
                   Submit
                 </a-button>
               </a-col>
@@ -174,4 +180,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="less" scoped>
+.hunter {
+  max-width: 590px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+</style>

@@ -27,6 +27,8 @@ export default {
 
 <style scoped lang="less">
 #hunter-bounty {
+  margin: 0 100px;
+
   .bounty-list {
     margin-top: 40px;
     min-height: 500px;
