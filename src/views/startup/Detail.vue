@@ -1,5 +1,6 @@
 <script>
 import TabPerference from './details/Perference';
+import StartupInfo from './details/blocks/StartupInfo';
 import { getStartupDetail } from '@/services';
 export default {
   components: {
@@ -40,7 +41,10 @@ export default {
             ))}
           </a-tabs>
         </a-card>
-        <TabComponent class="flex-1" id={this.$route.params.id} startup={this.startup} />
+        <a-card class="flex-1">
+          <StartupInfo id={this.$route.params.id} startup={this.startup} />
+          <TabComponent id={this.$route.params.id} startup={this.startup} />
+        </a-card>
       </div>
     );
   }

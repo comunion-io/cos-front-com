@@ -1,7 +1,6 @@
 <script>
 import BountyList from '@/components/bounty-list/BountyList';
 import { getStartUpBounties } from '@/services';
-import StartupInfo from './blocks/StartupInfo';
 
 export default {
   props: {
@@ -16,13 +15,12 @@ export default {
   },
   render(h) {
     return (
-      <a-card>
-        <StartupInfo startup={this.startup} />
+      <div>
         <p class="bounty-total">
           <span>Bounty:</span> <span>{this.total}</span>
         </p>
         <BountyList fetchData={this.fetchData} />
-      </a-card>
+      </div>
     );
   },
   methods: {

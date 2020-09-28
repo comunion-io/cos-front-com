@@ -1,6 +1,5 @@
 <script>
 import Descriptions from '@/components/display/Descriptions';
-import StartupInfo from './blocks/StartupInfo';
 
 export default {
   props: {
@@ -11,10 +10,12 @@ export default {
   computed: {
     // 模块
     modules() {
+      // Governance type
+      const governance = this.startup.settings?.type?.toLowerCase();
       // 投票地址过多，展示为可点击
       let voteAssignAddr;
-      // 当Governance选项为ALL时，隐藏Assign Address字段
-      if (this.startup.settings?.voteAssignAddrs?.length && this.startup.settings?.type !== 'ALL') {
+      // 当Governance选项为pos时
+      if (governance === 'pos') {
         const addrs = this.startup.settings.voteAssignAddrs;
         voteAssignAddr = addrs.slice(0, 2).map((addr, index) => {
           return {
@@ -73,7 +74,11 @@ export default {
           title: 'Governance',
           fields: [
             { label: 'Governance', value: 'settings.type' },
-            ...(voteAssignAddr || []),
+            ...(governance === 'all'
+              ? []
+              : governance === 'founderassign'
+              ? voteAssignAddr || []
+              : [{ label: 'Token Balance', value: 'settings.voteTokenLimit' }]),
             {
               label: 'Vote',
               value: 'settings.voteSupportPercent',
@@ -144,10 +149,9 @@ export default {
     }
   },
   render(h) {
-    const { id, modules, startup } = this;
+    const { modules } = this;
     return (
-      <a-card loading={this.loading}>
-        <StartupInfo id={id} startup={startup} />
+      <div>
         {modules.map(_module => {
           const { title, icon, fields } = _module;
           return (
@@ -160,7 +164,7 @@ export default {
             </div>
           );
         })}
-      </a-card>
+      </div>
     );
   }
 };
