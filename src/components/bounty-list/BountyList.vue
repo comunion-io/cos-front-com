@@ -29,8 +29,21 @@
               </a-button>
             </div>
             <div class="flex" style="margin-top: 44px">
+              <img
+                v-if="bounty.startup.logo"
+                style="width: 36px; height: 36px;"
+                src="bounty.startup.logo"
+                alt=""
+              />
+
+              <img
+                v-if="!bounty.startup.logo"
+                style="width: 36px; height: 36px;"
+                src="@/assets/images/comunion_logo.png"
+                alt=""
+              />
               <a-button-group class="flex">
-                <a-button @click.stop="toStartup(bounty)">
+                <a-button class="startup-btn" @click.stop="toStartup(bounty)">
                   {{ bounty.startup.name }}
                 </a-button>
               </a-button-group>
@@ -195,6 +208,13 @@ export default {
         margin-left: auto;
         color: #6170ff;
       }
+    }
+
+    .startup-btn {
+      height: 36px;
+      width: 108px;
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
     }
   }
 }
