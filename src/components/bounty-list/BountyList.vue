@@ -30,7 +30,7 @@
             </div>
             <div class="flex" style="margin-top: 44px">
               <a-button-group class="flex">
-                <a-button @click="toStartup(bounty)">
+                <a-button @click.stop="toStartup(bounty)">
                   {{ bounty.startup.name }}
                 </a-button>
               </a-button-group>
