@@ -13,59 +13,10 @@
 
     <a-spin size="large" :spinning="loading">
       <div class="bounty-list flex-column">
-        <bounty-card v-for="bounty in bounties" :key="bounty.id" @click.native="goToDetail(bounty)">
-          <div class="bounty-info" slot="bounty-info">
-            <div class="flex">
-              <div class="title">
-                {{ bounty.title }}
-              </div>
-
-              <a-button
-                class="currency-btn"
-                v-for="payment of bounty.payments"
-                :key="payment.token"
-              >
-                {{ payment.value }} {{ payment.token }}
-              </a-button>
-            </div>
-            <div class="flex" style="margin-top: 44px">
-              <img
-                v-if="bounty.startup.logo"
-                style="width: 36px; height: 36px;"
-                src="bounty.startup.logo"
-                alt=""
-              />
-
-              <img
-                v-if="!bounty.startup.logo"
-                style="width: 36px; height: 36px;"
-                src="@/assets/images/comunion_logo.png"
-                alt=""
-              />
-              <a-button-group class="flex">
-                <a-button class="startup-btn" @click.stop="toStartup(bounty)">
-                  {{ bounty.startup.name }}
-                </a-button>
-              </a-button-group>
-              <ul class="state-info">
-                <li class="state">Status: {{ getBountyStatus(bounty.status) }}</li>
-                <!-- <li class="hours">11 Hours left</li> -->
-                <li class="hunters">{{ bounty.hunters.length }} Hunters</li>
-                <!-- <li class="paied">1 Paied</li> -->
-              </ul>
-              <!-- <div class="ml-auto flex ai-center">Closed Bounty</div> -->
-            </div>
-          </div>
-
-          <!-- <div class="hunter-info" slot="hunter-info">
-            <div>
-              <a-collapse expand-icon-position="right" :bordered="false">
-                <a-collapse-panel key="1" header="Hunter: 5">
-                  <p>hello panel</p>
-                </a-collapse-panel>
-              </a-collapse>
-            </div>
-          </div> -->
+        <bounty-card v-for="bounty in bounties" :key="bounty.id" :bounty="bounty">
+          <template v-slot:cardFooter>
+            <slot name="cardFooter" v-bind:bounty="bounty"></slot>
+          </template>
         </bounty-card>
         <div class="empty">
           <a-empty v-if="!loading && !bounties.length" />
@@ -88,7 +39,6 @@
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
 import BountyCard from './BountyCard';
-import { bountyStatus } from '@/filters/bounty';
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: {
@@ -137,23 +87,6 @@ export default {
       } finally {
         this.loading = false;
       }
-    },
-
-    goToDetail(bounty) {
-      this.$router.push({ name: 'bountyDetail', params: { id: bounty.id } });
-    },
-
-    toStartup(bounty) {
-      const startupId = bounty && bounty.startup && bounty.startup.id ? bounty.startup.id : '';
-      if (startupId)
-        this.$router.push({
-          name: 'startupDetail',
-          params: { id: startupId }
-        });
-    },
-
-    getBountyStatus(status) {
-      return bountyStatus(status);
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
@@ -182,41 +115,6 @@ export default {
 //@import url(); 引入公共css类
 .bounty-list {
   margin-top: 20px;
-
-  .bounty-info {
-    cursor: pointer;
-    .title {
-      width: 594px;
-      line-height: 20px;
-      font-size: 18px;
-      font-family: Microsoft YaHei;
-      font-weight: bold;
-      color: #000000;
-    }
-
-    .currency-btn {
-      border: none;
-      line-height: 12px;
-      font-size: 15px;
-      font-family: Microsoft YaHei;
-      font-weight: bold;
-      color: #6170ff;
-      &:last-child {
-        color: #ffad4d;
-      }
-      &:first-child {
-        margin-left: auto;
-        color: #6170ff;
-      }
-    }
-
-    .startup-btn {
-      height: 36px;
-      width: 108px;
-      border-bottom-left-radius: 0;
-      border-top-left-radius: 0;
-    }
-  }
 }
 .empty {
   margin-top: 20px;
