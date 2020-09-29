@@ -30,6 +30,8 @@ export default {
       detail: {},
       // 按钮加载中
       loading: false,
+      /** 是否禁用 start to work 按钮 */
+      isDisabled: false,
       bountyColumns: [
         {
           label: 'Startup',
@@ -232,6 +234,7 @@ export default {
                 type="primary"
                 block
                 size="large"
+                disabled={this.isDisabled}
                 loading={this.loading}
                 onClick={this.startWork}
               >
@@ -285,6 +288,7 @@ export default {
           async (err, result) => {
             if (err) {
               this.loading = false;
+              this.isDisabled = false;
               return console.error(err);
             }
             const txid = result.result;
@@ -292,6 +296,7 @@ export default {
               this.fetchData();
             }
             this.loading = false;
+            this.isDisabled = true;
           }
         );
       }
