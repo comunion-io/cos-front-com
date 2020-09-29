@@ -121,7 +121,7 @@
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import { urlValidator, validateBountyTitle } from '@/utils/validators';
+import { urlValidator, validateBountyTitle, validateBountyIntro } from '@/utils/validators';
 import BbsInput from '@/components/form/BbsInput';
 import Skills from '@/components/form/Skills';
 import SubmitBalance from '@/components/form/SubmitBalance';
@@ -177,7 +177,18 @@ export default {
         type: [{ required: true, message: 'Please select Type', trigger: 'change' }],
         keywords: [{ required: true, message: 'Please input keywords', trigger: 'blur' }],
         contactEmail: [{ required: true, message: 'Please input contact Email', trigger: 'blur' }],
-        intro: [{ required: true, message: 'Please input intro', trigger: 'blur' }],
+        intro: [
+          {
+            required: true,
+            validator: validateBountyIntro,
+            trigger: 'blur'
+          },
+          {
+            min: 100,
+            trigger: 'blur',
+            message: 'At least 100 words are required'
+          }
+        ],
         descriptionAddr: [
           {
             required: true,
