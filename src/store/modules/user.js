@@ -174,7 +174,7 @@ const actions = {
           // 登录
           const ret = await login({ publicKey: account, signature });
           if (!ret) {
-            throw new Error('Error when login, please try agian');
+            throw new Error('Error when login, please try again');
           }
           commit('SET_USER', ret);
           // 注册metamask事件
