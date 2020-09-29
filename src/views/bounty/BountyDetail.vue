@@ -35,11 +35,13 @@ export default {
           label: 'Startup',
           value: 'startup.name',
           render: (v, record) => {
-            return (
-              <router-link to={{ name: 'startupDetail', params: { id: record.startup?.id } }}>
-                {v}
-              </router-link>
-            );
+            if (record.startup) {
+              return (
+                <router-link to={{ name: 'startupDetail', params: { id: record.startup.id } }}>
+                  {v}
+                </router-link>
+              );
+            }
           }
         },
         {

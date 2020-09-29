@@ -33,12 +33,27 @@ const mutations = {
       ls.removeItem(USER_INFO);
     }
   },
-  // 更新账户信息
+
+  /**
+   * @description metamask 切换账号， comunion需要退出重登
+   *
+   * @param state
+   * @param [account='']
+   */
   UPDATE_ACCOUNT(state, account = '') {
+    if (ls.getItem(USER_ACCOUNT_ADDRESS)) {
+      this.dispatch('logout');
+    }
     state.account = account;
     ls.setItem(USER_ACCOUNT_ADDRESS, account);
   },
-  // 账号发生变更
+
+  /**
+   * @description chain id 发生变更
+   *
+   * @param state
+   * @param chainId
+   */
   HANDLE_NEW_CHAIN(state, chainId) {
     console.log(chainId);
   },
@@ -159,7 +174,7 @@ const actions = {
           // 登录
           const ret = await login({ publicKey: account, signature });
           if (!ret) {
-            throw new Error('Error when login, please try agian');
+            throw new Error('Error when login, please try again');
           }
           commit('SET_USER', ret);
           // 注册metamask事件
