@@ -12,7 +12,7 @@
         </a-button>
       </div>
       <div class="flex" style="margin-top: 44px">
-        <img v-if="bounty.startup.logo" class="logo" src="bounty.startup.logo" alt="" />
+        <img v-if="bounty.startup.logo" class="logo" :src="bounty.startup.logo" alt="" />
 
         <img
           v-if="!bounty.startup.logo"
@@ -150,6 +150,10 @@ export default {
       border-top-left-radius: 0;
       background: rgba(109, 122, 255, 0.05);
       color: #000;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: inline-block;
     }
   }
   .state-info {
