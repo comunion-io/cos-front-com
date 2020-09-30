@@ -58,6 +58,8 @@ export const validateBountyIntro = (rule, value, callback) => {
     callback(new Error('Please input'));
   } else if (!/^[a-zA-Z0-9_\s]*$/.test(value) && value.length >= 300) {
     callback(new Error('仅支持字母，数字，空格和下划线, 最多300个字符'));
+  } else {
+    callback();
   }
 };
 

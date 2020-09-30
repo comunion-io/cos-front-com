@@ -167,11 +167,6 @@ export default {
             required: true,
             trigger: 'blur',
             validator: validateBountyTitle
-          },
-          {
-            min: 100,
-            trigger: 'blur',
-            message: 'At least 100 words are required'
           }
         ],
         type: [{ required: true, message: 'Please select Type', trigger: 'change' }],
