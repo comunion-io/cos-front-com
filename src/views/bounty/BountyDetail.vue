@@ -143,7 +143,7 @@ export default {
   render(h) {
     const { detail } = this;
     // 是否是我发布的bounty
-    const isMyBounty = detail.createdBy?.id === this.user.user?.id;
+    const isMyBounty = detail.createdBy?.id === this.user.id;
     // 剩余天数
     const leftDays = detail.expiredAt ? moment(detail.expiredAt).diff(moment(), 'days') : false;
     // 是否已结束
