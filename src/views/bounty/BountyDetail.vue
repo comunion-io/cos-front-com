@@ -172,7 +172,7 @@ export default {
             </a-card>
             <a-card bordered={false} class="hunter-card">
               <div slot="title">
-                <span>Hunter</span>
+                <span>Hunter{detail.hunters?.length > 1 ? 's' : ''}</span>
                 <span class="ml-8 t-primary f-15">{detail.hunters?.length || 0}</span>
               </div>
               <a-table

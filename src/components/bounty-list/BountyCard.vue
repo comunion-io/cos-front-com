@@ -28,7 +28,9 @@
         <ul class="state-info">
           <li class="state">Status: {{ getBountyStatus(bounty.status) }}</li>
           <!-- <li class="hours">11 Hours left</li> -->
-          <li class="hunters">{{ bounty.hunters.length }} Hunters</li>
+          <li class="hunters">
+            {{ bounty.hunters.length }} Hunter{{ bounty.hunters.length > 1 ? 's' : '' }}
+          </li>
           <!-- <li class="paied">1 Paied</li> -->
         </ul>
         <!-- <div class="ml-auto flex ai-center">Closed Bounty</div> -->
