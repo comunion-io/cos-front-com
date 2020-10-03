@@ -6,7 +6,7 @@
         <!-- <a-icon type="notification" /> -->
         <img src="@/assets/images/startup-icon.png" />
       </div>
-      <span class="num">{{ total }}&nbsp;Startups</span>in the Comunion.
+      <span class="num">{{ total }}&nbsp;Start-Ups</span>in the Comunion.
     </div>
 
     <!-- search -->

@@ -73,7 +73,7 @@ export default {
         email: ''
       },
       rules: {
-        name: [{ required: true, message: 'Please input startup name', trigger: 'blur' }],
+        name: [{ required: true, message: 'Please input start-up name', trigger: 'blur' }],
         skills: [
           {
             type: 'array',

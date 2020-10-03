@@ -15,7 +15,7 @@
               @submit.prevent="onsubmit"
             >
               <!-- startup -->
-              <a-form-model-item label="Startup name" prop="startupId" class="form-item">
+              <a-form-model-item label="Start-Up name" prop="startupId" class="form-item">
                 <a-select size="large" v-model="form.startupId" placeholder="Comunion">
                   <a-select-option v-for="item in startups" :key="item.id">
                     {{ item.name }}
@@ -104,8 +104,8 @@
                 <SubmitBalance />
               </a-form-model-item>
               <p class="mt-32 t-grey">
-                We will store the content to and all the information what u had inputed, all that
-                wil be submited to the We will store Ethereum
+                All the bounty information what u had created, wil be submited to ethereum mainnet
+                and the bounty description will be stored to IPFS
               </p>
               <p class="t-gray">
                 Mainnet BlockChain
@@ -161,7 +161,7 @@ export default {
       /* bounty 下拉选项 */
       bountyTypes: ['contest', 'cooperative'],
       rules: {
-        startupId: [{ required: true, message: 'Please select startup', trigger: 'change' }],
+        startupId: [{ required: true, message: 'Please select start-up', trigger: 'change' }],
         title: [
           {
             required: true,

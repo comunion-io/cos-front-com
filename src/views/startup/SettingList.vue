@@ -1,7 +1,7 @@
 <!-- comunion setting 列表页面 -->
 <template>
   <div class="setting-startup">
-    <div class="title">Setting Startup</div>
+    <div class="title">Setting Start-Up</div>
     <div class="content">
       <a-row :gutter="20">
         <a-col :span="8">
@@ -10,7 +10,7 @@
         <a-col :span="16">
           <div class="actions">
             <a-tabs default-active-key="MyStartup" @change="tabOnChange">
-              <a-tab-pane key="MyStartup" tab="My Startup">
+              <a-tab-pane key="MyStartup" tab="My Start-Up">
                 <div class="flex-column ai-center" style="padding: 0 30px 30px">
                   <!--<startup-item :startup="newStartupItem" @click.native="createStartUp" />-->
                   <a-spin class="w-100p" size="large" :spinning="loading">
@@ -31,7 +31,7 @@
                   </a-spin>
                 </div>
               </a-tab-pane>
-              <a-tab-pane key="FollowStartup" tab="Follow Startup" force-render>
+              <a-tab-pane key="FollowStartup" tab="Follow Start-Up" force-render>
                 <div class="flex-column ai-center" style="padding: 0 30px 30px">
                   <a-spin class="w-100p" size="large" :spinning="followStartupLoading">
                     <a-empty v-if="followStartups.length === 0" />
@@ -79,8 +79,8 @@ export default {
       // 新建
       newStartupItem: {
         logo: require('@/assets/images/plus_icon@2x.png'),
-        name: 'New Startup',
-        mission: 'Initial your dream, lunch your startup'
+        name: 'New Start-Up',
+        mission: 'Initial your dream, lunch your start-up'
       },
       // 搜索条件
       search: {

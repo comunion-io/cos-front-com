@@ -21,7 +21,7 @@
         size="large"
         @click="createStartup"
       >
-        +&nbsp;New Startup
+        +&nbsp;New Start-Up
       </a-button>
       <MegaMenu />
       <router-link v-if="isLoggedIn" :to="{ name: 'startupSetting' }">

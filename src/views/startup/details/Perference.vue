@@ -37,7 +37,7 @@ export default {
       return [
         {
           icon: require('./images/startup.png'),
-          title: 'Startup',
+          title: 'Start-Up',
           fields: [
             { label: 'Name', value: 'name' },
             { label: 'Type', value: 'category.name' },

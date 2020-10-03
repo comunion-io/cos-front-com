@@ -1,6 +1,6 @@
 <template>
   <div id="startup-manage">
-    <div class="title">Startup Management</div>
+    <div class="title">Start-Up Management</div>
     <div class="content mb-24">
       <div class="tabs flex ai-center">
         <div

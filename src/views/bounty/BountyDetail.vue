@@ -34,7 +34,7 @@ export default {
       isDisabled: false,
       bountyColumns: [
         {
-          label: 'Startup',
+          label: 'Start-Up',
           value: 'startup.name',
           render: (v, record) => {
             if (record.startup) {
@@ -184,7 +184,7 @@ export default {
               />
             </a-card>
           </div>
-          <a-card class="right">
+          <a-card class="right no-shrink">
             <div class="flex ai-center jc-center">
               {(detail.payments || []).map(payment => (
                 <span class="mx-24 pay-item f-18 t-bold">
