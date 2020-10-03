@@ -149,7 +149,7 @@ export default {
     // 是否已结束
     const closed = detail.status === 2;
     // 是否已经接过任务
-    const isStartedMyself = detail.hunters?.some(hunter => hunter.userId === this.user.user?.id);
+    const isStartedMyself = detail.hunters?.some(hunter => hunter.userId === this.user.id);
     return (
       <div style="padding: 28px 50px">
         <div class="f-24 t-bold t-center" style="margin-bottom:48px">
