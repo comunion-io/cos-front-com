@@ -37,6 +37,7 @@
       </div>
     </div>
     <slot name="cardFooter" v-bind:bounty="bounty"></slot>
+    <slot name="hunterInfo" v-bind:bounty="bounty"></slot>
   </div>
 </template>
 
@@ -114,7 +115,7 @@ export default {
     padding-left: 32px;
     padding-right: 30px;
     .title {
-      width: 594px;
+      width: calc(100% - 244px);
       line-height: 20px;
       font-size: 18px;
       font-family: Microsoft YaHei;

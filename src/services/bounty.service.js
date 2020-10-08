@@ -99,3 +99,55 @@ export async function getBountyToken(startupId) {
   const { error, data } = await request('get', url);
   return error ? {} : data.payTokens;
 }
+
+/**
+ * @description 提交 bounty
+ * @author Ze Hui
+ * @date 08/10/2020
+ * @export
+ * @param bountyId
+ * @returns {*}
+ */
+export async function submittedBounty(bountyId) {
+  const { error } = await request('post', `/cores/bounties/${bountyId}:submitted`);
+  return !error;
+}
+
+/**
+ * @description 退出bounty
+ * @author Ze Hui
+ * @date 08/10/2020
+ * @export
+ * @param bountyId
+ * @returns {*}
+ */
+export async function quitedBounty(bountyId) {
+  const { error } = await request('post', `/cores/bounties/${bountyId}:quited`);
+  return !error;
+}
+
+/**
+ * @description 支付bounty
+ * @author Ze Hui
+ * @date 08/10/2020
+ * @export
+ * @param bountyId
+ * @returns {*}
+ */
+export async function paidBounty(bountyId) {
+  const { error } = await request('post', `/cores/bounties/${bountyId}:paid`);
+  return !error;
+}
+
+/**
+ * @description bounty 创建者拒绝 hunter
+ * @author Ze Hui
+ * @date 08/10/2020
+ * @export
+ * @param bountyId
+ * @returns {*}
+ */
+export async function rejectedBounty(bountyId) {
+  const { error } = await request('post', `/cores/bounties/${bountyId}:rejected`);
+  return !error;
+}
