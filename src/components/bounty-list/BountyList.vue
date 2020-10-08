@@ -17,6 +17,9 @@
           <template v-slot:cardFooter>
             <slot name="cardFooter" v-bind:bounty="bounty"></slot>
           </template>
+          <template v-slot:hunterInfo>
+            <slot name="hunterInfo" v-bind:bounty="bounty"></slot>
+          </template>
         </bounty-card>
         <div class="empty">
           <a-empty v-if="!loading && !bounties.length" />
