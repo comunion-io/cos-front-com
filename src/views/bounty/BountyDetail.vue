@@ -164,7 +164,7 @@ export default {
                 ))}
               </div>
               <Descriptions
-                class="mt-32"
+                class="mt-24"
                 label-width={164}
                 columns={this.bountyColumns}
                 dataSource={detail}
@@ -314,6 +314,7 @@ export default {
   /deep/ .ant-card-head-title {
     font-size: 18px;
     font-weight: bold;
+    white-space: initial;
   }
 }
 .hunter-card {
@@ -322,13 +323,12 @@ export default {
   }
 }
 .keyword {
+  margin-right: 10px;
+  margin-bottom: 10px;
   height: 28px;
   line-height: 28px;
   background: #f3f3f3;
   color: @primary-color;
-  & + & {
-    margin-left: 10px;
-  }
 }
 .right {
   width: 380px;
