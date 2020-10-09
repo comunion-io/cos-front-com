@@ -15,7 +15,7 @@
               @submit.prevent="onsubmit"
             >
               <!-- startup -->
-              <a-form-model-item label="Startup name" prop="startupId" class="form-item">
+              <a-form-model-item label="Start-Up name" prop="startupId" class="form-item">
                 <a-select size="large" v-model="form.startupId" placeholder="Comunion">
                   <a-select-option v-for="item in startups" :key="item.id">
                     {{ item.name }}
@@ -104,8 +104,8 @@
                 <SubmitBalance />
               </a-form-model-item>
               <p class="mt-32 t-grey">
-                We will store the content to and all the information what u had inputed, all that
-                wil be submited to the We will store Ethereum
+                All the bounty information what u had created, wil be submited to ethereum mainnet
+                and the bounty description will be stored to IPFS
               </p>
               <p class="t-gray">
                 Mainnet BlockChain
@@ -121,7 +121,7 @@
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import { urlValidator, validateBountyTitle } from '@/utils/validators';
+import { urlValidator, validateBountyTitle, validateBountyIntro } from '@/utils/validators';
 import BbsInput from '@/components/form/BbsInput';
 import Skills from '@/components/form/Skills';
 import SubmitBalance from '@/components/form/SubmitBalance';
@@ -161,12 +161,22 @@ export default {
       /* bounty 下拉选项 */
       bountyTypes: ['contest', 'cooperative'],
       rules: {
-        startupId: [{ required: true, message: 'Please select startup', trigger: 'change' }],
+        startupId: [{ required: true, message: 'Please select start-up', trigger: 'change' }],
         title: [
           {
             required: true,
             trigger: 'blur',
             validator: validateBountyTitle
+          }
+        ],
+        type: [{ required: true, message: 'Please select Type', trigger: 'change' }],
+        keywords: [{ required: true, message: 'Please input keywords', trigger: 'blur' }],
+        contactEmail: [{ required: true, message: 'Please input contact Email', trigger: 'blur' }],
+        intro: [
+          {
+            required: true,
+            validator: validateBountyIntro,
+            trigger: 'blur'
           },
           {
             min: 100,
@@ -174,10 +184,6 @@ export default {
             message: 'At least 100 words are required'
           }
         ],
-        type: [{ required: true, message: 'Please select Type', trigger: 'change' }],
-        keywords: [{ required: true, message: 'Please input keywords', trigger: 'blur' }],
-        contactEmail: [{ required: true, message: 'Please input contact Email', trigger: 'blur' }],
-        intro: [{ required: true, message: 'Please input intro', trigger: 'blur' }],
         descriptionAddr: [
           {
             required: true,

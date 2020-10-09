@@ -30,9 +30,11 @@ export default {
       detail: {},
       // 按钮加载中
       loading: false,
+      /** 是否禁用 start to work 按钮 */
+      isDisabled: false,
       bountyColumns: [
         {
-          label: 'Startup',
+          label: 'Start-Up',
           value: 'startup.name',
           render: (v, record) => {
             if (record.startup) {
@@ -141,13 +143,13 @@ export default {
   render(h) {
     const { detail } = this;
     // 是否是我发布的bounty
-    const isMyBounty = detail.createdBy?.id === this.user.user?.id;
+    const isMyBounty = detail.createdBy?.id === this.user.id;
     // 剩余天数
     const leftDays = detail.expiredAt ? moment(detail.expiredAt).diff(moment(), 'days') : false;
     // 是否已结束
     const closed = detail.status === 2;
     // 是否已经接过任务
-    const isStartedMyself = detail.hunters?.some(hunter => hunter.userId === this.user.user?.id);
+    const isStartedMyself = detail.hunters?.some(hunter => hunter.userId === this.user.id);
     return (
       <div style="padding: 28px 50px">
         <div class="f-24 t-bold t-center" style="margin-bottom:48px">
@@ -162,7 +164,7 @@ export default {
                 ))}
               </div>
               <Descriptions
-                class="mt-32"
+                class="mt-24"
                 label-width={164}
                 columns={this.bountyColumns}
                 dataSource={detail}
@@ -170,7 +172,7 @@ export default {
             </a-card>
             <a-card bordered={false} class="hunter-card">
               <div slot="title">
-                <span>Hunter</span>
+                <span>Hunter{detail.hunters?.length > 1 ? 's' : ''}</span>
                 <span class="ml-8 t-primary f-15">{detail.hunters?.length || 0}</span>
               </div>
               <a-table
@@ -182,7 +184,7 @@ export default {
               />
             </a-card>
           </div>
-          <a-card class="right">
+          <a-card class="right no-shrink">
             <div class="flex ai-center jc-center">
               {(detail.payments || []).map(payment => (
                 <span class="mx-24 pay-item f-18 t-bold">
@@ -232,6 +234,7 @@ export default {
                 type="primary"
                 block
                 size="large"
+                disabled={this.isDisabled}
                 loading={this.loading}
                 onClick={this.startWork}
               >
@@ -285,6 +288,7 @@ export default {
           async (err, result) => {
             if (err) {
               this.loading = false;
+              this.isDisabled = false;
               return console.error(err);
             }
             const txid = result.result;
@@ -292,6 +296,7 @@ export default {
               this.fetchData();
             }
             this.loading = false;
+            this.isDisabled = true;
           }
         );
       }
@@ -309,6 +314,7 @@ export default {
   /deep/ .ant-card-head-title {
     font-size: 18px;
     font-weight: bold;
+    white-space: initial;
   }
 }
 .hunter-card {
@@ -317,13 +323,12 @@ export default {
   }
 }
 .keyword {
+  margin-right: 10px;
+  margin-bottom: 10px;
   height: 28px;
   line-height: 28px;
   background: #f3f3f3;
   color: @primary-color;
-  & + & {
-    margin-left: 10px;
-  }
 }
 .right {
   width: 380px;

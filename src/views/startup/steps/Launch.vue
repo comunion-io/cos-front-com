@@ -11,7 +11,7 @@
       </article>
     </div>
     <p class="tip t-grey">
-      When the startup had been submited to blockchain，you can enjoy above functions.
+      When the start-up had been submited to blockchain，you can enjoy above functions.
     </p>
     <a-row :gutter="20">
       <a-col :span="6">
@@ -25,7 +25,7 @@
       </a-col>
       <a-col :span="12">
         <a-button block size="large" type="primary" :loading="loading" @click="launch">
-          Launch Startup
+          Launch Start-Up
         </a-button>
         <div class="mt-8 t-grey">
           Balance: <span class="t-bold">{{ this.balance }} &nbsp;ETH</span>

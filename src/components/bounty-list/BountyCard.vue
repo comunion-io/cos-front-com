@@ -12,7 +12,7 @@
         </a-button>
       </div>
       <div class="flex" style="margin-top: 44px">
-        <img v-if="bounty.startup.logo" class="logo" src="bounty.startup.logo" alt="" />
+        <img v-if="bounty.startup.logo" class="logo" :src="bounty.startup.logo" alt="" />
 
         <img
           v-if="!bounty.startup.logo"
@@ -28,13 +28,16 @@
         <ul class="state-info">
           <li class="state">Status: {{ getBountyStatus(bounty.status) }}</li>
           <!-- <li class="hours">11 Hours left</li> -->
-          <li class="hunters">{{ bounty.hunters.length }} Hunters</li>
+          <li class="hunters">
+            {{ bounty.hunters.length }} Hunter{{ bounty.hunters.length > 1 ? 's' : '' }}
+          </li>
           <!-- <li class="paied">1 Paied</li> -->
         </ul>
         <!-- <div class="ml-auto flex ai-center">Closed Bounty</div> -->
       </div>
     </div>
     <slot name="cardFooter" v-bind:bounty="bounty"></slot>
+    <slot name="hunterInfo" v-bind:bounty="bounty"></slot>
   </div>
 </template>
 
@@ -112,7 +115,7 @@ export default {
     padding-left: 32px;
     padding-right: 30px;
     .title {
-      width: 594px;
+      width: calc(100% - 244px);
       line-height: 20px;
       font-size: 18px;
       font-family: Microsoft YaHei;
@@ -150,6 +153,10 @@ export default {
       border-top-left-radius: 0;
       background: rgba(109, 122, 255, 0.05);
       color: #000;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: inline-block;
     }
   }
   .state-info {

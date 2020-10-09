@@ -36,7 +36,7 @@ const routes = [
         path: '/bounty/startup-management',
         name: 'startupManage',
         meta: {
-          title: 'Startup Management',
+          title: 'Start-Up Management',
           skipAuth: false
         },
         component: () =>
@@ -84,7 +84,7 @@ const routes = [
         path: '/startup/detail/:id',
         name: 'startupDetail',
         meta: {
-          title: 'Startup Detail',
+          title: 'Start-Up Detail',
           skipAuth: true
         },
         component: () =>
@@ -94,7 +94,7 @@ const routes = [
         path: '/startup/new',
         name: 'newStartup',
         meta: {
-          title: 'New Startup',
+          title: 'New Start-Up',
           skipAuth: false
         },
         component: () => import(/* webpackChunkName: 'newStartup' */ '@/views/startup/New.vue')
@@ -103,7 +103,7 @@ const routes = [
         path: '/startup/setting',
         name: 'startupSetting',
         meta: {
-          title: 'Setting Startup'
+          title: 'Setting Start-Up'
         },
         component: () =>
           import(/* webpackChunkName: 'newStartup' */ '@/views/startup/SettingList.vue')
@@ -112,7 +112,7 @@ const routes = [
         path: '/startup/setting/:id',
         name: 'startupSettingDetail',
         meta: {
-          title: 'Startup Setting'
+          title: 'Start-Up Setting'
         },
         component: () =>
           import(/* webpackChunkName: 'startupSetting' */ '@/views/startup/SettingDetail.vue')

@@ -20,7 +20,7 @@
         <a-form-model-item label="The Fundraising Contact Address"
           >Auto generate after creation</a-form-model-item
         >
-        <a-form-model-item label="Startup Fundraising Address" prop="addr">
+        <a-form-model-item label="Start-Up Fundraising Address" prop="addr">
           <a-input
             size="large"
             :disabled="!form.enabled"

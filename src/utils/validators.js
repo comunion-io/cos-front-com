@@ -41,11 +41,23 @@ export const validateName = (rule, value, callback) => {
   }
 };
 
+/* bounty title 验证 */
 export const validateBountyTitle = (rule, value, callback) => {
   if (value === '') {
     callback(new Error('Please input'));
-  } else if (!/^[a-zA-Z0-9_\s]*$/.test(value) && value.length >= 100) {
-    callback(new Error('仅支持字母，数字，空格和下划线, 至少200个字母'));
+  } else if (!/^[a-zA-Z0-9_\s]*$/.test(value) && value.length >= 200) {
+    callback(new Error('仅支持字母，数字，空格和下划线, 最多200个字符'));
+  } else {
+    callback();
+  }
+};
+
+/* bounty intro 验证 */
+export const validateBountyIntro = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('Please input'));
+  } else if (!/^[a-zA-Z0-9_\s]*$/.test(value) && value.length >= 300) {
+    callback(new Error('仅支持字母，数字，空格和下划线, 最多300个字符'));
   } else {
     callback();
   }

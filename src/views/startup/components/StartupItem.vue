@@ -1,6 +1,6 @@
 <template>
   <div class="startup-item flex ai-center">
-    <img :src="startup.logo || defaultLogo" alt="Startup logo" class="logo" />
+    <img :src="startup.logo || defaultLogo" alt="Start-Up logo" class="logo" />
     <div class="flex-1">
       <div class="flex ai-center">
         <div class="t-dark t-trunc" :title="startup.name">{{ startup.name }}</div>

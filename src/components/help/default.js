@@ -12,11 +12,11 @@ export default [
     url: 'https://wiki.comunion.io/help-center/what-is-the-comunion'
   },
   {
-    title: 'What is the Startup?',
+    title: 'What is the Start-Up?',
     url: 'https://wiki.comunion.io/help-center/what-is-the-startup'
   },
   {
-    title: 'How to create a Startup?',
+    title: 'How to create a Start-Up?',
     url: 'https://wiki.comunion.io/help-center/how-to-create-a-startup'
   },
   {

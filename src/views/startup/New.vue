@@ -1,6 +1,6 @@
 <template>
   <a-card id="new-start-up" :bordered="false" style="margin-bottom: 24px;">
-    <h1 class="title">{{ isEdit ? 'Edit' : 'New' }} Startup</h1>
+    <h1 class="title">{{ isEdit ? 'Edit' : 'New' }} Start-Up</h1>
     <section class="content">
       <div class="form" v-if="createState === 'beforeCreate'">
         <a-form-model
@@ -14,11 +14,11 @@
           <a-row :gutter="20">
             <a-col :span="16">
               <!-- name -->
-              <a-form-model-item label="Startup Name" prop="name">
+              <a-form-model-item label="Start-Up Name" prop="name">
                 <a-input
                   size="large"
                   v-model="form.name"
-                  placeholder="Startup Name"
+                  placeholder="Start-Up Name"
                   :max-length="50"
                   :disabled="isEdit"
                 />
@@ -55,7 +55,7 @@
               v-model="form.mission"
               :auto-size="{ minRows: 3, maxRows: 6 }"
               :max-length="200"
-              placeholder="Startup mission"
+              placeholder="Start-Up mission"
               :disabled="isEdit"
             />
           </a-form-model-item>
@@ -139,7 +139,7 @@ export default {
         descriptionAddr: ''
       },
       rules: {
-        name: [{ required: true, message: 'Please input startup name', trigger: 'blur' }],
+        name: [{ required: true, message: 'Please input start-up name', trigger: 'blur' }],
         categoryId: [{ required: true, message: 'Please select type', trigger: 'change' }],
         mission: [{ required: true, message: 'Please input mission', trigger: 'blur' }],
         descriptionAddr: [

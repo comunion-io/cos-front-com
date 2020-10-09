@@ -80,7 +80,6 @@ export default {
 
 <style scoped lang="less">
 .user-area {
-  margin-left: 20px;
   cursor: pointer;
   .user-info {
     & > div {

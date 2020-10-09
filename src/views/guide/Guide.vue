@@ -3,7 +3,7 @@
     <article class="left">
       <h3>
         Comunion - Decentralized Autonomous Organization (DAO) Collaboration Network<br />
-        The Next Generation Organization Form and Startup Fraternal Assistance Network
+        The Next Generation Organization Form and Start-Up Fraternal Assistance Network
       </h3>
       <p style="margin-top: 60px">
         The Comunion is a DAO collaboration network that reshapes traditional labors transactions
@@ -13,10 +13,10 @@
       </p>
       <p style="margin-top: 28px;">
         In the Comunion, laborers directly exchange project capital gains through skills through the
-        Comunion Bounty network; Startup Founders can use the Comunion to initialize the traditional
-        startup structure to the corresponding the DAO structure, which is used to raise human
-        resources, funds, and Marketing and other resources to help Startup and laborers realize
-        free value transactions.
+        Comunion Bounty network; Start-Up Founders can use the Comunion to initialize the
+        traditional start-up structure to the corresponding the DAO structure, which is used to
+        raise human resources, funds, and Marketing and other resources to help Start-Up and
+        laborers realize free value transactions.
       </p>
       <a-button class="more-btn">
         <a href="https://wiki.comunion.io/" target="_blank">MORE</a>
@@ -30,7 +30,7 @@
             src="@/assets/images/guide/metamask.png"
             width="27"
             height="25"
-          />&nbsp; to log in with Chrome browsert&nbsp;<img
+          />&nbsp; to log in with Chrome browser&nbsp;<img
             src="@/assets/images/guide/chrome.png"
             width="26"
             height="26"
@@ -43,7 +43,7 @@
           <div class="ml-20">
             <h3 class="f-18 t-bold">Comunion</h3>
             <p class="mt-12 mb-0 t-grey">
-              The Next Generation Organization Form and Startup Fraternal Assistance Network
+              The Next Generation Organization Form and Start-Up Fraternal Assistance Network
             </p>
           </div>
         </div>
@@ -75,8 +75,8 @@ export default {
       features: [
         {
           img: require('@/assets/images/guide/startup.png'),
-          title: 'New Startup',
-          intro: 'Initial your dream, launch your startup'
+          title: 'New Start-Up',
+          intro: 'Initial your dream, launch your start-up'
         },
         {
           img: require('@/assets/images/guide/hunter.png'),

@@ -41,9 +41,6 @@ const mutations = {
    * @param [account='']
    */
   UPDATE_ACCOUNT(state, account = '') {
-    if (ls.getItem(USER_ACCOUNT_ADDRESS)) {
-      this.dispatch('logout');
-    }
     state.account = account;
     ls.setItem(USER_ACCOUNT_ADDRESS, account);
   },

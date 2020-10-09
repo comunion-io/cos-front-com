@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="item">
-        <div class="title">Startup Name</div>
+        <div class="title">Start-Up Name</div>
         <div class="value-wrap">
           <div class="value-text">{{ form.name }}</div>
         </div>
@@ -46,7 +46,7 @@
             v-model="form.mission"
             :auto-size="{ minRows: 3, maxRows: 6 }"
             :max-length="200"
-            placeholder="Startup mission"
+            placeholder="Start-Up mission"
             :disabled="!isEditing"
             style="margin-top: 8px;"
           />
@@ -75,7 +75,7 @@
       <div class="item">
         <div class="value-wrap">
           <p class="mt-20 t-grey f-14">
-            Startup Name and Type can not be modified
+            Start-Up Name and Type can not be modified
           </p>
         </div>
       </div>
