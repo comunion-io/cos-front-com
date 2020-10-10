@@ -109,8 +109,8 @@ export async function getBountyToken(startupId) {
  * @returns {*}
  */
 export async function submittedBounty(bountyId) {
-  const { error } = await request('post', `/cores/bounties/${bountyId}:submitted`);
-  return !error;
+  let res = await request('put', `/cores/bounties/${bountyId}:submitted`);
+  return res;
 }
 
 /**
@@ -122,8 +122,8 @@ export async function submittedBounty(bountyId) {
  * @returns {*}
  */
 export async function quitedBounty(bountyId) {
-  const { error } = await request('post', `/cores/bounties/${bountyId}:quited`);
-  return !error;
+  const res = await request('put', `/cores/bounties/${bountyId}:quited`);
+  return res;
 }
 
 /**
