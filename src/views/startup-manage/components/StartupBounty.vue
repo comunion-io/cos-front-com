@@ -21,16 +21,33 @@
                   :data-source="slotProps.bounty.hunters"
                 >
                   <a-list-item slot="renderItem" slot-scope="item">
-                    <a slot="actions" style="color: #6170ff;">
-                      <span @click="payBounty(slotProps.bounty.id)">
-                        Pay
+                    <template v-if="slotProps.bounty.status === 2">
+                      <a slot="actions" style="color: #6170ff;">
+                        <span @click="payBounty(slotProps.bounty.id)">
+                          Pay
+                        </span>
+                      </a>
+                      <a slot="actions" style="color: #d80000;">
+                        <span @click="rejectBounty(slotProps.bounty.id)">
+                          Reject
+                        </span>
+                      </a>
+                    </template>
+                    <template v-else-if="slotProps.bounty.status === 3">
+                      <span slot="actions">
+                        Paid
                       </span>
-                    </a>
-                    <a slot="actions" style="color: #d80000;">
-                      <span @click="rejectBounty(slotProps.bounty.id)">
-                        Reject
-                      </span>
-                    </a>
+                    </template>
+                    <template v-else-if="slotProps.bounty.status === 5">
+                      Rejected
+                    </template>
+                    <template v-else-if="slotProps.bounty.status === 4">
+                      Quited
+                    </template>
+                    <template v-else>
+                      <a slot="actions"> -- </a>
+                    </template>
+
                     <a-list-item-meta>
                       <a slot="title">
                         <span @click="toMyInfo(item)">
@@ -38,7 +55,7 @@
                         </span>
                       </a>
                     </a-list-item-meta>
-                    <div>{{ getStatusInfo(item) }}</div>
+                    <div>{{ getStatusInfo(item, slotProps.bounty.status) }}</div>
                   </a-list-item>
                 </a-list>
               </a-collapse-panel>
@@ -95,20 +112,23 @@ export default {
       return [data, total];
     },
 
-    getStatusInfo(hunterInfo) {
+    /** 翻译bounty的状态信息  */
+    getStatusInfo(hunterInfo, status) {
       let hunterStatusStr = '';
 
       if (hunterInfo) {
-        if (hunterInfo.quitedAt) {
+        if (hunterInfo.quitedAt && status === 4) {
           hunterStatusStr = `Quited (${moment(hunterInfo.quitedAt).format('YYYY-MM-DD')})`;
-        } else if (hunterInfo.paidAt) {
+        } else if (hunterInfo.paidAt && status === 3) {
           hunterStatusStr = `Paid (${moment(hunterInfo.paiedAt).format('YYYY-MM-DD')})`;
-        } else if (hunterInfo.startedAt) {
+        } else if (hunterInfo.startedAt && status === 1) {
           hunterStatusStr = `Start Work (${moment(hunterInfo.startedAt).format('YYYY-MM-DD')})`;
-        } else if (hunterInfo.submittedAt) {
+        } else if (hunterInfo.submittedAt && status === 2) {
           hunterStatusStr = `Submitted (${moment(hunterInfo.submittedAt).format('YYYY-MM-DD')})`;
+        } else if (hunterInfo.rejectedAt && status === 5) {
+          hunterStatusStr = `Submitted (${moment(hunterInfo.rejectedAt).format('YYYY-MM-DD')})`;
         } else {
-          hunterStatusStr = '';
+          hunterStatusStr = '--';
         }
       }
       return hunterStatusStr;
@@ -187,12 +207,21 @@ export default {
         display: flex;
         align-items: center;
         background-color: #f3f3f3;
+        font-size: 15px;
+        font-family: Microsoft YaHei;
+        font-weight: bold;
+        color: #6170ff;
       }
 
       /deep/ .ant-collapse-content {
         background-color: #f3f3f3;
         border-top: unset;
         padding: 0 20px;
+      }
+
+      /deep/ .ant-list-item-meta {
+        flex: unset;
+        min-width: 20%;
       }
     }
   }
