@@ -13,9 +13,9 @@
 
     <a-spin size="large" :spinning="loading">
       <div class="bounty-list flex-column">
-        <bounty-card v-for="bounty in bounties" :key="bounty.id" :bounty="bounty">
+        <bounty-card v-for="(bounty, index) in bounties" :key="bounty.id" :bounty="bounty">
           <template v-slot:cardFooter>
-            <slot name="cardFooter" v-bind:bounty="bounty"></slot>
+            <slot name="cardFooter" v-bind:bounty="bounty" v-bind:index="index"></slot>
           </template>
           <template v-slot:hunterInfo>
             <slot name="hunterInfo" v-bind:bounty="bounty"></slot>
@@ -90,6 +90,10 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    // 方便父组件调用该方法设置bounties的值
+    setBounties(bounties) {
+      this.bounties = bounties;
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
