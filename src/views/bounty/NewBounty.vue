@@ -76,7 +76,7 @@
                         >
                           <a-select-option
                             v-for="(token, index) of tokens"
-                            :value="token.name"
+                            :value="token.symbol"
                             :key="index"
                           >
                             {{ token.symbol }}
