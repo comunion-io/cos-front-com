@@ -14,6 +14,9 @@
     <a-spin size="large" :spinning="loading">
       <div class="bounty-list flex-column">
         <bounty-card v-for="(bounty, index) in bounties" :key="bounty.id" :bounty="bounty">
+          <template v-slot:closeBtn>
+            <slot name="closeBtn" v-bind:bounty="bounty"> </slot>
+          </template>
           <template v-slot:cardFooter>
             <slot name="cardFooter" v-bind:bounty="bounty" v-bind:index="index"></slot>
           </template>

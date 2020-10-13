@@ -11,6 +11,23 @@
     </a-row>
     <section class="bounty-list">
       <bounty-list :fetchData="fetchData">
+        <template v-slot:closeBtn="slotProps">
+          <div class="ml-auto flex ai-center">
+            <template
+              v-if="slotProps.bounty.status !== 2 && slotProps.bounty.transactionState === 2"
+            >
+              <a-popconfirm
+                title="Are you sure？"
+                ok-text="Yes"
+                cancel-text="No"
+                @confirm="confirmCloseBounty(slotProps.bounty)"
+              >
+                <a>Close Bounty</a>
+              </a-popconfirm>
+            </template>
+          </div>
+        </template>
+
         <template v-slot:hunterInfo="slotProps">
           <div class="hunter-info" v-if="slotProps.bounty.hunters.length > 0">
             <a-collapse expand-icon-position="right">
@@ -21,28 +38,32 @@
                   :data-source="slotProps.bounty.hunters"
                 >
                   <a-list-item slot="renderItem" slot-scope="item">
-                    <template v-if="slotProps.bounty.status === 2">
+                    <template v-if="item.status === 2">
                       <a slot="actions" style="color: #6170ff;">
-                        <span @click="payBounty(slotProps.bounty.id)">
+                        <span @click="payBounty(slotProps.bounty.id, item)">
                           Pay
                         </span>
                       </a>
                       <a slot="actions" style="color: #d80000;">
-                        <span @click="rejectBounty(slotProps.bounty.id)">
+                        <span @click="rejectBounty(slotProps.bounty.id, item)">
                           Reject
                         </span>
                       </a>
                     </template>
-                    <template v-else-if="slotProps.bounty.status === 3">
+                    <template v-else-if="item.status === 3">
                       <span slot="actions">
                         Paid
                       </span>
                     </template>
-                    <template v-else-if="slotProps.bounty.status === 5">
-                      Rejected
+                    <template v-else-if="item.status === 5">
+                      <span slot="actions">
+                        Rejected
+                      </span>
                     </template>
-                    <template v-else-if="slotProps.bounty.status === 4">
-                      Quited
+                    <template v-else-if="item.status === 4">
+                      <span slot="actions">
+                        Quited
+                      </span>
                     </template>
                     <template v-else>
                       <a slot="actions"> -- </a>
@@ -55,7 +76,7 @@
                         </span>
                       </a>
                     </a-list-item-meta>
-                    <div>{{ getStatusInfo(item, slotProps.bounty.status) }}</div>
+                    <div>{{ getStatusInfo(item) }}</div>
                   </a-list-item>
                 </a-list>
               </a-collapse-panel>
@@ -71,7 +92,7 @@
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
 import BountyList from '@/components/bounty-list/BountyList';
-import { getStartUpBounties, paidBounty, rejectedBounty } from '@/services';
+import { getStartUpBounties, paidBounty, rejectedBounty, closeBounty } from '@/services';
 import moment from 'moment';
 
 export default {
@@ -113,20 +134,20 @@ export default {
     },
 
     /** 翻译bounty的状态信息  */
-    getStatusInfo(hunterInfo, status) {
+    getStatusInfo(hunterInfo) {
       let hunterStatusStr = '';
 
       if (hunterInfo) {
-        if (hunterInfo.quitedAt && status === 4) {
+        if (hunterInfo.quitedAt && hunterInfo.status === 4) {
           hunterStatusStr = `Quited (${moment(hunterInfo.quitedAt).format('YYYY-MM-DD')})`;
-        } else if (hunterInfo.paidAt && status === 3) {
+        } else if (hunterInfo.paidAt && hunterInfo.status === 3) {
           hunterStatusStr = `Paid (${moment(hunterInfo.paiedAt).format('YYYY-MM-DD')})`;
-        } else if (hunterInfo.startedAt && status === 1) {
+        } else if (hunterInfo.startedAt && hunterInfo.status === 1) {
           hunterStatusStr = `Start Work (${moment(hunterInfo.startedAt).format('YYYY-MM-DD')})`;
-        } else if (hunterInfo.submittedAt && status === 2) {
+        } else if (hunterInfo.submittedAt && hunterInfo.status === 2) {
           hunterStatusStr = `Submitted (${moment(hunterInfo.submittedAt).format('YYYY-MM-DD')})`;
-        } else if (hunterInfo.rejectedAt && status === 5) {
-          hunterStatusStr = `Submitted (${moment(hunterInfo.rejectedAt).format('YYYY-MM-DD')})`;
+        } else if (hunterInfo.rejectedAt && hunterInfo.status === 5) {
+          hunterStatusStr = `rejectedAt (${moment(hunterInfo.rejectedAt).format('YYYY-MM-DD')})`;
         } else {
           hunterStatusStr = '--';
         }
@@ -140,9 +161,9 @@ export default {
     },
 
     /* 支付bounty */
-    async payBounty(bountyId) {
+    async payBounty(bountyId, hunter) {
       try {
-        const res = await paidBounty(bountyId);
+        const res = await paidBounty(bountyId, { userId: hunter.userId });
         if (res) {
           this.fetchData();
         }
@@ -152,14 +173,29 @@ export default {
     },
 
     /* bounty创建者拒绝 hunter */
-    async rejectBounty(bountyId) {
+    async rejectBounty(bountyId, hunter) {
       try {
-        const res = await rejectedBounty(bountyId);
+        const res = await rejectedBounty(bountyId, { userId: hunter.userId });
         if (res) {
           this.fetchData();
         }
       } catch (error) {
         console.error(error);
+      }
+    },
+
+    /** 确定关闭bounty */
+    async confirmCloseBounty(bounty) {
+      if (bounty) {
+        const id = bounty.id;
+        try {
+          const isClosed = await closeBounty(id);
+          if (isClosed) {
+            bounty.status = 2;
+          }
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
   },
@@ -219,10 +255,10 @@ export default {
         padding: 0 20px;
       }
 
-      /deep/ .ant-list-item-meta {
-        flex: unset;
-        min-width: 20%;
-      }
+      // /deep/ .ant-list-item-meta {
+      //   flex: unset;
+      //   min-width: 20%;
+      // }
     }
   }
 }
