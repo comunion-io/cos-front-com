@@ -134,8 +134,8 @@ export async function quitedBounty(bountyId) {
  * @param bountyId
  * @returns {*}
  */
-export async function paidBounty(bountyId) {
-  const { error } = await request('post', `/cores/bounties/${bountyId}:paid`);
+export async function paidBounty(bountyId, data) {
+  const { error } = await request('put', `/cores/bounties/${bountyId}:paid`, data);
   return !error;
 }
 
@@ -147,7 +147,21 @@ export async function paidBounty(bountyId) {
  * @param bountyId
  * @returns {*}
  */
-export async function rejectedBounty(bountyId) {
-  const { error } = await request('post', `/cores/bounties/${bountyId}:rejected`);
+export async function rejectedBounty(bountyId, data) {
+  const { error } = await request('put', `/cores/bounties/${bountyId}:rejected`, data);
+  return !error;
+}
+
+/**
+ * @description 关闭bounty
+ * @author Ze Hui
+ * @date 13/10/2020
+ * @export
+ * @param bountyId
+ * @param data
+ * @returns {*}
+ */
+export async function closeBounty(bountyId, data) {
+  const { error } = await request('put', `/cores/bounties/${bountyId}:closed`, data);
   return !error;
 }

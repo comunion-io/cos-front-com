@@ -35,7 +35,7 @@
           </li>
           <!-- <li class="paied">1 Paied</li> -->
         </ul>
-        <!-- <div class="ml-auto flex ai-center">Closed Bounty</div> -->
+        <slot name="closeBtn" v-bind:bounty="bounty"></slot>
       </div>
     </div>
     <slot name="cardFooter" v-bind:bounty="bounty"></slot>
@@ -177,6 +177,9 @@ export default {
       font-size: 13px;
       font-family: Microsoft YaHei;
       font-weight: 400;
+      & + li {
+        margin-left: 20px;
+      }
     }
 
     .state {
