@@ -16,7 +16,13 @@
             >
               <!-- startup -->
               <a-form-model-item label="Start-Up name" prop="startupId" class="form-item">
-                <a-select size="large" v-model="form.startupId" placeholder="Comunion">
+                <a-select
+                  size="large"
+                  v-model="form.startupId"
+                  @change="getTokens(form.startupId)"
+                  placeholder="Comunion"
+                  :loading="startupLoading"
+                >
                   <a-select-option v-for="item in startups" :key="item.id">
                     {{ item.name }}
                   </a-select-option>
@@ -73,6 +79,7 @@
                           default-value=""
                           v-model="form.payments[index].token"
                           style="width: 80px"
+                          :loading="tokenLoading"
                         >
                           <a-select-option
                             v-for="(token, index) of tokens"
@@ -160,6 +167,8 @@ export default {
       tokens: [],
       /* bounty 下拉选项 */
       bountyTypes: ['contest', 'cooperative'],
+      tokenLoading: false,
+      startupLoading: false,
       rules: {
         startupId: [{ required: true, message: 'Please select start-up', trigger: 'change' }],
         title: [
@@ -347,20 +356,29 @@ export default {
     },
 
     async getMeStartups() {
-      const [data] = await getMyStartups();
-      this.startups = data.filter(item => item.state === 2);
-      const targetStartup = this.startups.find(item => item.id === this.$route.query.startupId);
-      if (targetStartup) {
-        this.form.startupId = targetStartup.id;
+      try {
+        this.startupLoading = true;
+        const [data] = await getMyStartups();
+        this.startupLoading = false;
+        this.startups = data.filter(item => item.state === 2);
+        const targetStartup = this.startups.find(item => item.id === this.$route.query.startupId);
+        if (targetStartup) {
+          this.form.startupId = targetStartup.id;
+        }
+      } catch (error) {
+        this.startupLoading = false;
       }
     },
 
-    async getTokens() {
-      const startupId = this.$route.query.startupId;
+    async getTokens(startupId) {
       try {
+        this.tokenLoading = true;
         this.tokens = await getBountyToken(startupId);
+        this.tokenLoading = false;
       } catch (error) {
         console.error(error);
+      } finally {
+        this.tokenLoading = false;
       }
     }
   },
@@ -369,7 +387,7 @@ export default {
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
     this.getMeStartups();
-    this.getTokens();
+    this.getTokens(this.$route.query.startupId);
   },
   beforeCreate() {}, // 生命周期 - 创建之前
   beforeMount() {}, // 生命周期 - 挂载之前
