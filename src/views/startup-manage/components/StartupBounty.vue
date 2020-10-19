@@ -11,6 +11,23 @@
     </a-row>
     <section class="bounty-list">
       <bounty-list :fetchData="fetchData">
+        <template v-slot:closeBtn="slotProps">
+          <div class="ml-auto flex ai-center">
+            <template
+              v-if="slotProps.bounty.status !== 2 && slotProps.bounty.transactionState === 2"
+            >
+              <a-popconfirm
+                title="Are you sure？"
+                ok-text="Yes"
+                cancel-text="No"
+                @confirm="confirmCloseBounty(slotProps.bounty)"
+              >
+                <a>Close Bounty</a>
+              </a-popconfirm>
+            </template>
+          </div>
+        </template>
+
         <template v-slot:hunterInfo="slotProps">
           <div class="hunter-info" v-if="slotProps.bounty.hunters.length > 0">
             <a-collapse expand-icon-position="right">
@@ -21,16 +38,37 @@
                   :data-source="slotProps.bounty.hunters"
                 >
                   <a-list-item slot="renderItem" slot-scope="item">
-                    <a slot="actions" style="color: #6170ff;">
-                      <span @click="payBounty(slotProps.bounty.id)">
-                        Pay
+                    <template v-if="item.status === 2">
+                      <a slot="actions" style="color: #6170ff;">
+                        <span @click="payBounty(slotProps.bounty.id, item)">
+                          Pay
+                        </span>
+                      </a>
+                      <a slot="actions" style="color: #d80000;">
+                        <span @click="rejectBounty(slotProps.bounty.id, item)">
+                          Reject
+                        </span>
+                      </a>
+                    </template>
+                    <template v-else-if="item.status === 3">
+                      <span slot="actions">
+                        Paid
                       </span>
-                    </a>
-                    <a slot="actions" style="color: #d80000;">
-                      <span @click="rejectBounty(slotProps.bounty.id)">
-                        Reject
+                    </template>
+                    <template v-else-if="item.status === 5">
+                      <span slot="actions">
+                        Rejected
                       </span>
-                    </a>
+                    </template>
+                    <template v-else-if="item.status === 4">
+                      <span slot="actions">
+                        Quited
+                      </span>
+                    </template>
+                    <template v-else>
+                      <a slot="actions"> -- </a>
+                    </template>
+
                     <a-list-item-meta>
                       <a slot="title">
                         <span @click="toMyInfo(item)">
@@ -54,7 +92,7 @@
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
 import BountyList from '@/components/bounty-list/BountyList';
-import { getStartUpBounties, paidBounty, rejectedBounty } from '@/services';
+import { getStartUpBounties, paidBounty, rejectedBounty, closeBounty } from '@/services';
 import moment from 'moment';
 
 export default {
@@ -95,20 +133,23 @@ export default {
       return [data, total];
     },
 
+    /** 翻译bounty的状态信息  */
     getStatusInfo(hunterInfo) {
       let hunterStatusStr = '';
 
       if (hunterInfo) {
-        if (hunterInfo.quitedAt) {
+        if (hunterInfo.quitedAt && hunterInfo.status === 4) {
           hunterStatusStr = `Quited (${moment(hunterInfo.quitedAt).format('YYYY-MM-DD')})`;
-        } else if (hunterInfo.paidAt) {
+        } else if (hunterInfo.paidAt && hunterInfo.status === 3) {
           hunterStatusStr = `Paid (${moment(hunterInfo.paiedAt).format('YYYY-MM-DD')})`;
-        } else if (hunterInfo.startedAt) {
+        } else if (hunterInfo.startedAt && hunterInfo.status === 1) {
           hunterStatusStr = `Start Work (${moment(hunterInfo.startedAt).format('YYYY-MM-DD')})`;
-        } else if (hunterInfo.submittedAt) {
+        } else if (hunterInfo.submittedAt && hunterInfo.status === 2) {
           hunterStatusStr = `Submitted (${moment(hunterInfo.submittedAt).format('YYYY-MM-DD')})`;
+        } else if (hunterInfo.rejectedAt && hunterInfo.status === 5) {
+          hunterStatusStr = `rejectedAt (${moment(hunterInfo.rejectedAt).format('YYYY-MM-DD')})`;
         } else {
-          hunterStatusStr = '';
+          hunterStatusStr = '--';
         }
       }
       return hunterStatusStr;
@@ -120,9 +161,9 @@ export default {
     },
 
     /* 支付bounty */
-    async payBounty(bountyId) {
+    async payBounty(bountyId, hunter) {
       try {
-        const res = await paidBounty(bountyId);
+        const res = await paidBounty(bountyId, { userId: hunter.userId });
         if (res) {
           this.fetchData();
         }
@@ -132,14 +173,29 @@ export default {
     },
 
     /* bounty创建者拒绝 hunter */
-    async rejectBounty(bountyId) {
+    async rejectBounty(bountyId, hunter) {
       try {
-        const res = await rejectedBounty(bountyId);
+        const res = await rejectedBounty(bountyId, { userId: hunter.userId });
         if (res) {
           this.fetchData();
         }
       } catch (error) {
         console.error(error);
+      }
+    },
+
+    /** 确定关闭bounty */
+    async confirmCloseBounty(bounty) {
+      if (bounty) {
+        const id = bounty.id;
+        try {
+          const isClosed = await closeBounty(id);
+          if (isClosed) {
+            bounty.status = 2;
+          }
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
   },
@@ -187,6 +243,10 @@ export default {
         display: flex;
         align-items: center;
         background-color: #f3f3f3;
+        font-size: 15px;
+        font-family: Microsoft YaHei;
+        font-weight: bold;
+        color: #6170ff;
       }
 
       /deep/ .ant-collapse-content {
@@ -194,6 +254,11 @@ export default {
         border-top: unset;
         padding: 0 20px;
       }
+
+      // /deep/ .ant-list-item-meta {
+      //   flex: unset;
+      //   min-width: 20%;
+      // }
     }
   }
 }

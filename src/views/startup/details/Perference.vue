@@ -15,7 +15,7 @@ export default {
       // 投票地址过多，展示为可点击
       let voteAssignAddr;
       // 当Governance选项为pos时
-      if (governance === 'pos') {
+      if (governance === 'founderassign') {
         const addrs = this.startup.settings.voteAssignAddrs;
         voteAssignAddr = addrs.slice(0, 2).map((addr, index) => {
           return {

@@ -7,9 +7,11 @@
           {{ bounty.title }}
         </div>
 
-        <a-button class="currency-btn" v-for="payment of bounty.payments" :key="payment.token">
-          {{ payment.value }} {{ payment.token }}
-        </a-button>
+        <div class="ml-auto operation-btn">
+          <a-button class="currency-btn" v-for="payment of bounty.payments" :key="payment.token">
+            {{ payment.value }} {{ payment.token }}
+          </a-button>
+        </div>
       </div>
       <div class="flex" style="margin-top: 44px">
         <img v-if="bounty.startup.logo" class="logo" :src="bounty.startup.logo" alt="" />
@@ -33,7 +35,7 @@
           </li>
           <!-- <li class="paied">1 Paied</li> -->
         </ul>
-        <!-- <div class="ml-auto flex ai-center">Closed Bounty</div> -->
+        <slot name="closeBtn" v-bind:bounty="bounty"></slot>
       </div>
     </div>
     <slot name="cardFooter" v-bind:bounty="bounty"></slot>
@@ -123,6 +125,11 @@ export default {
       color: #000000;
     }
 
+    .operation-btn {
+      display: flex;
+      flex-direction: row;
+    }
+
     .currency-btn {
       border: none;
       line-height: 12px;
@@ -170,6 +177,9 @@ export default {
       font-size: 13px;
       font-family: Microsoft YaHei;
       font-weight: 400;
+      & + li {
+        margin-left: 20px;
+      }
     }
 
     .state {
