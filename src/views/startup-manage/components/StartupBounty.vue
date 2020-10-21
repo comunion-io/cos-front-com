@@ -17,10 +17,10 @@
               v-if="slotProps.bounty.status !== 2 && slotProps.bounty.transactionState === 2"
             >
               <a-popconfirm
-                title="Are you sure？"
+                title="Are you sure to close bounty？"
                 ok-text="Yes"
                 cancel-text="No"
-                @confirm="confirmCloseBounty(slotProps.bounty)"
+                @confirm.stop="confirmCloseBounty(slotProps.bounty)"
               >
                 <a>Close Bounty</a>
               </a-popconfirm>
@@ -40,14 +40,28 @@
                   <a-list-item slot="renderItem" slot-scope="item">
                     <template v-if="item.status === 2">
                       <a slot="actions" style="color: #6170ff;">
-                        <span @click="payBounty(slotProps.bounty.id, item)">
-                          Pay
-                        </span>
+                        <a-popconfirm
+                          title="Are you sure to pay?"
+                          ok-text="Submit"
+                          cancel-text="No"
+                          @confirm="payBounty(slotProps.bounty.id, item)"
+                        >
+                          <span>
+                            Pay
+                          </span>
+                        </a-popconfirm>
                       </a>
                       <a slot="actions" style="color: #d80000;">
-                        <span @click="rejectBounty(slotProps.bounty.id, item)">
-                          Reject
-                        </span>
+                        <a-popconfirm
+                          title="Are you sure to reject?"
+                          ok-text="Submit"
+                          cancel-text="No"
+                          @confirm="rejectBounty(slotProps.bounty.id, item)"
+                        >
+                          <span>
+                            Reject
+                          </span>
+                        </a-popconfirm>
                       </a>
                     </template>
                     <template v-else-if="item.status === 3">
@@ -165,7 +179,7 @@ export default {
       try {
         const res = await paidBounty(bountyId, { userId: hunter.userId });
         if (res) {
-          this.fetchData();
+          hunter.status = res.status;
         }
       } catch (error) {
         console.error(error);
@@ -177,7 +191,7 @@ export default {
       try {
         const res = await rejectedBounty(bountyId, { userId: hunter.userId });
         if (res) {
-          this.fetchData();
+          hunter.status = res.status;
         }
       } catch (error) {
         console.error(error);
