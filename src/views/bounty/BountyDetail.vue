@@ -27,6 +27,8 @@ function getHunterBountyProcess(hunter) {
 export default {
   data() {
     return {
+      // 轮询的timeout
+      pollTimeout: null,
       detail: {},
       // 按钮加载中
       loading: false,
@@ -116,6 +118,7 @@ export default {
           align: 'right',
           customRender: (text, record) => {
             const process = getHunterBountyProcess(record);
+            if (!process.length) return 'Pending...';
             return (
               <a-tooltip placement="left" overlayClassName="bounty-detail-overlay">
                 <template slot="title">
@@ -139,6 +142,12 @@ export default {
   },
   async mounted() {
     this.fetchData();
+  },
+  destroyed() {
+    if (this.pollTimeout) {
+      clearTimeout(this.pollTimeout);
+      this.pollTimeout = null;
+    }
   },
   render(h) {
     const { detail } = this;
@@ -261,6 +270,16 @@ export default {
   methods: {
     async fetchData() {
       this.detail = await getBountyDetail(this.$route.params.id);
+      // 存在有Pending状态的hunter
+      if (
+        this.detail?.hunters?.some(hunter => {
+          return !hunter.startedAt;
+        })
+      ) {
+        this.pollTimeout = setTimeout(() => {
+          this.fetchData();
+        }, 3000);
+      }
     },
     // hunter 承接bounty, hunter 向bounty 的发布者缴纳10个币的保证金
     async startWork() {
