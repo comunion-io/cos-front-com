@@ -2,33 +2,24 @@
 <template>
   <div class="bounty-card">
     <div class="bounty-info" @click="goToDetail(bounty)">
-      <div class="flex">
-        <div class="title">
-          {{ bounty.title }}
+      <div class="header">
+        <div class="company" @click.stop="toStartup(bounty)">
+          <img v-if="bounty.startup.logo" class="logo" :src="bounty.startup.logo" alt="logo" />
+          <img v-else class="logo" src="@/assets/images/comunion_logo.png" alt="logo" />
+          <span class="company-name">{{ bounty.startup.name }}</span>
         </div>
-
-        <div class="ml-auto operation-btn">
-          <a-button class="currency-btn" v-for="payment of bounty.payments" :key="payment.token">
+        <div class="payments">
+          <div class="payment" v-for="payment of bounty.payments" :key="payment.token">
             {{ payment.value }} {{ payment.token }}
-          </a-button>
+          </div>
         </div>
       </div>
-      <div class="flex" style="margin-top: 44px">
-        <img v-if="bounty.startup.logo" class="logo" :src="bounty.startup.logo" alt="" />
-
-        <img
-          v-if="!bounty.startup.logo"
-          class="logo"
-          src="@/assets/images/comunion_logo.png"
-          alt=""
-        />
-        <a-button-group class="flex">
-          <a-button class="startup-btn" @click.stop="toStartup(bounty)">
-            {{ bounty.startup.name }}
-          </a-button>
-        </a-button-group>
+      <div class="title">{{ bounty.title }}</div>
+      <div class="flex">
         <ul class="state-info">
-          <li class="state">Status: {{ getBountyStatus(bounty.status) }}</li>
+          <li class="state" :class="{ stateClosed: bounty.status === 2 }">
+            Status: {{ getBountyStatus(bounty.status) }}
+          </li>
           <!-- <li class="hours">11 Hours left</li> -->
           <li class="hunters">
             {{ bounty.hunters.length }} Hunter{{ bounty.hunters.length > 1 ? 's' : '' }}
@@ -105,24 +96,64 @@ export default {
 <style lang="less" scoped>
 //@import url(); 引入公共css类
 .bounty-card {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   background: rgba(255, 255, 255, 1);
-  box-shadow: 0px 0px 4px 4px rgba(6, 0, 1, 0.04);
-  border-radius: 4px;
+  box-shadow: 0px 4px 4px 0px rgba(212, 212, 212, 0.5);
 
   .bounty-info {
     cursor: pointer;
-    padding-top: 38px;
-    padding-bottom: 26px;
-    padding-left: 32px;
-    padding-right: 30px;
+    padding: 20px 30px;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+
+      .company {
+        .logo {
+          width: 24px;
+          height: 24px;
+          border-radius: 100%;
+          vertical-align: middle;
+          margin-right: 12px;
+        }
+        .company-name {
+          color: #000000;
+          font-family: MicrosoftYaHei;
+        }
+      }
+      .payments {
+        display: flex;
+        .payment {
+          margin-left: 12px;
+          height: 24px;
+          padding: 0 8px;
+          border-radius: 12px;
+          font-size: 12px;
+          font-weight: 500;
+          line-height: 24px;
+          &:nth-of-type(2n + 1) {
+            color: #6271d2;
+            background-color: fade(#6271d2, 10);
+          }
+          &:nth-of-type(2n) {
+            color: #ea981a;
+            background-color: fade(#ea981a, 10);
+          }
+        }
+      }
+    }
+
     .title {
-      width: calc(100% - 244px);
-      line-height: 20px;
+      width: 100%;
+      max-width: 590px;
+      line-height: 32px;
       font-size: 18px;
-      font-family: Microsoft YaHei;
+      font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
       font-weight: bold;
       color: #000000;
+      margin-bottom: 20px;
     }
 
     .operation-btn {
@@ -145,50 +176,38 @@ export default {
         color: #6170ff;
       }
     }
-
-    .logo {
-      width: 36px;
-      height: 36px;
-      border-top-left-radius: 5px;
-      border-bottom-left-radius: 5px;
-    }
-
-    .startup-btn {
-      height: 36px;
-      width: 108px;
-      border-bottom-left-radius: 0;
-      border-top-left-radius: 0;
-      background: rgba(109, 122, 255, 0.05);
-      color: #000;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      display: inline-block;
-    }
   }
   .state-info {
     display: flex;
     margin-bottom: 0;
-    line-height: 32px;
+    line-height: 20px;
+    padding: 0;
 
     li {
       color: #666666;
-      min-width: 100px;
-      font-size: 13px;
+      // min-width: 100px;
+      font-size: 14px;
+      line-height: 20px;
       font-family: Microsoft YaHei;
       font-weight: 400;
+      color: #999999;
       & + li {
-        margin-left: 20px;
+        margin-left: 30px;
       }
     }
 
     .state {
-      color: #3fc580;
+      color: #00c73c;
+      list-style: none;
+
+      &.stateClosed {
+        color: #999999;
+      }
     }
   }
   /deep/ .ant-collapse-header {
     padding: 0;
-    margin-top: 48px;
+    // margin-top: 48px;
     background: #fff;
   }
 
