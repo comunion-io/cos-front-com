@@ -7,7 +7,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "update:api": "y2s update -y --js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
@@ -51,7 +52,8 @@
     "prettier": "^1.19.1",
     "vue-cli-plugin-vuetify": "^2.0.5",
     "vue-svg-loader": "0.8.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "y2s": "^0.2.2"
   },
   "postcss": {
     "plugins": {
