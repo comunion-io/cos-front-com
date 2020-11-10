@@ -53,7 +53,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { getStartups } from '@/services';
+import services from '@/services';
 import Card from './card/Card';
 
 export default {
@@ -84,10 +84,11 @@ export default {
   methods: {
     async getStartups() {
       this.loading = true;
-      const [data, total] = await getStartups(this.search);
+      const { error, data } = await services['cores@startups-列表'](this.search);
+      // const [data, total] = await getStartups(this.search);
       this.loading = false;
-      this.startups = data;
-      this.total = total;
+      this.startups = error ? [] : data.result;
+      this.total = error ? 0 : data.total;
     }
   },
   mounted() {

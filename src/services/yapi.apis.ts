@@ -1,4 +1,6 @@
-export const apis = {
+import { Apis } from './yapi.api'
+
+export const apis: Apis = {
   'account@login': {
     u: '/login',
     m: 'POST',

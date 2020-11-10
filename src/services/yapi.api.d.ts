@@ -1,660 +1,660 @@
-export type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'PATCH'
+export type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'PATCH';
 
 export interface ServiceRequestAndResponseMap {
   'account@login': {
-    params: {}
-    query: {}
-    body: {}
+    params: {};
+    query: {};
+    body: {};
     response: {
-      id: string
-      publicKey: string
-      avatar: string
+      id: string;
+      publicKey: string;
+      avatar: string;
       hunter?: {
-        name: string
-        skills?: string[]
-        about: string
-        descriptionAddr: string
-        email: string
-      }
-    }
-  }
+        name: string;
+        skills?: string[];
+        about: string;
+        descriptionAddr: string;
+        email: string;
+      };
+    };
+  };
   'account@用户-hunter-更新': {
-    params: {}
-    query: {}
-    body: {}
-    response: {}
-  }
+    params: {};
+    query: {};
+    body: {};
+    response: {};
+  };
   'account@用户-我的': {
-    params: {}
-    query: {}
-    body: {}
+    params: {};
+    query: {};
+    body: {};
     response: {
-      id: string
-      publicKey: string
-      avatar: string
+      id: string;
+      publicKey: string;
+      avatar: string;
       hunter?: {
-        name: string
-        skills?: string[]
-        about?: string
-        descriptionAddr: string
-        email: string
-        createdAt: string
-      }
-    }
-  }
+        name: string;
+        skills?: string[];
+        about?: string;
+        descriptionAddr: string;
+        email: string;
+        createdAt: string;
+      };
+    };
+  };
   'account@用户-获取': {
     params: {
       userId: any;
-    }
-    query: {}
-    body: {}
+    };
+    query: {};
+    body: {};
     response: {
-      id: string
-      publicKey: string
-      avatar: string
+      id: string;
+      publicKey: string;
+      avatar: string;
       hunter?: {
-        name: string
-        skills?: string[]
-        about?: string
-        descriptionAddr: string
-        email: string
-        createdAt: string
-      }
-    }
-  }
+        name: string;
+        skills?: string[];
+        about?: string;
+        descriptionAddr: string;
+        email: string;
+        createdAt: string;
+      };
+    };
+  };
   'account@获取nonce': {
-    params: {}
-    query: {}
-    body: {}
-    response: any
-  }
+    params: {};
+    query: {};
+    body: {};
+    response: any;
+  };
   'cores@bounty-closed': {
     params: {
       bountyId: any;
-    }
-    query: {}
-    body: {}
-    response: {}
-  }
+    };
+    query: {};
+    body: {};
+    response: {};
+  };
   'cores@startup-follow-创建': {
     params: {
       startupId: any;
-    }
-    query: {}
-    body: {}
-    response: {}
-  }
+    };
+    query: {};
+    body: {};
+    response: {};
+  };
   'cores@startups-我的-follow列表': {
-    params: {}
+    params: {};
     query: {
       limit: any;
       offset: any;
-    }
-    body: {}
+    };
+    body: {};
     response: {
       result: {
-        id: string
-        name: string
-        mission: string
-        logo: string
-        descriptionAddr: string
+        id: string;
+        name: string;
+        mission: string;
+        logo: string;
+        descriptionAddr: string;
         category: {
-          id?: string
-          name?: string
-        }
+          id?: string;
+          name?: string;
+        };
         /**
          * @description 0 无意义状态,1 待确认,2 上链成功,3 未确认到交易
          */
-        state: number
+        state: number;
         /**
          * @description 0 无意义状态,1 待确认,2 上链成功,3 未确认到交易
          */
-        settingState: string
-        isIRO: boolean
-      }[]
-      total: number
-    }
-  }
+        settingState: string;
+        isIRO: boolean;
+      }[];
+      total: number;
+    };
+  };
   'cores@startup-follow-取消': {
     params: {
       startupId: any;
-    }
-    query: {}
-    body: {}
-    response: {}
-  }
+    };
+    query: {};
+    body: {};
+    response: {};
+  };
   'cores@bounty-列表-用户': {
     params: {
       userId: any;
-    }
+    };
     query: {
       limit: any;
       offset: any;
       keyword: any;
-    }
-    body: {}
+    };
+    body: {};
     response: {
-      total?: number
+      total?: number;
       result?: {
-        id: string
+        id: string;
         startup: {
-          id: string
-          name: string
-        }
-        userId: string
+          id: string;
+          name: string;
+        };
+        userId: string;
         /**
          * @description contest,cooperative
          */
-        type: string
-        keywords?: string[]
-        intro: string
-        contactEmail: string
-        descriptionAddr?: string
-        descriptionFileAddr?: string
-        duration: number
+        type: string;
+        keywords?: string[];
+        intro: string;
+        contactEmail: string;
+        descriptionAddr?: string;
+        descriptionFileAddr?: string;
+        duration: number;
         payments: {
-          token: string
-          value: number
-        }[]
+          token: string;
+          value: number;
+        }[];
         hunters?: {
-          hunterId: string
-          userId: string
-          name: string
+          hunterId: string;
+          userId: string;
+          name: string;
           /**
            * @description 0 startwork,1 submitted,2 paid,3 quited
            */
-          status: number
-          startedAt: string
-          submittedAt: string
-          quitedAt: string
-          paidAt: string
+          status: number;
+          startedAt: string;
+          submittedAt: string;
+          quitedAt: string;
+          paidAt: string;
           payments: {
-            token: string
-            value: string
-          }[]
-        }[]
+            token: string;
+            value: string;
+          }[];
+        }[];
         /**
          * @description 0 open,1 proccess,2 closed
          */
-        status?: number
-        blockAddr?: string
+        status?: number;
+        blockAddr?: string;
         /**
          * @description 0 无意义状态,1 待确认,2 上链成功,3 未确认到交易
          */
-        transactionState: number
-      }[]
-    }
-  }
+        transactionState: number;
+      }[];
+    };
+  };
   'cores@startup-是否被follow': {
     params: {
       startupId: any;
-    }
-    query: {}
-    body: {}
+    };
+    query: {};
+    body: {};
     response: {
-      hasFollowed: boolean
-    }
-  }
+      hasFollowed: boolean;
+    };
+  };
   'cores@bounty-startwork': {
     params: {
       bountyId: any;
-    }
-    query: {}
-    body: {}
-    response: {}
-  }
+    };
+    query: {};
+    body: {};
+    response: {};
+  };
   'cores@bounty-submitted': {
     params: {
       bountyId: any;
-    }
-    query: {}
-    body: {}
-    response: {}
-  }
+    };
+    query: {};
+    body: {};
+    response: {};
+  };
   'cores@bounty-quited': {
     params: {
       bountyId: any;
-    }
-    query: {}
-    body: {}
-    response: {}
-  }
+    };
+    query: {};
+    body: {};
+    response: {};
+  };
   'cores@bounty-paid': {
     params: {
       bountyId: any;
-    }
-    query: {}
-    body: {}
-    response: {}
-  }
+    };
+    query: {};
+    body: {};
+    response: {};
+  };
   'cores@bounty-rejected': {
     params: {
       bountyId: any;
-    }
-    query: {}
-    body: {}
-    response: {}
-  }
+    };
+    query: {};
+    body: {};
+    response: {};
+  };
   'cores@startup-获取支付Token列表': {
     params: {
       startupId: any;
-    }
-    query: {}
-    body: {}
-    response: {}
-  }
+    };
+    query: {};
+    body: {};
+    response: {};
+  };
   'cores@startup-bounty-列表': {
     params: {
       startupId: any;
-    }
+    };
     query: {
       limit: any;
       offset: any;
       keyword: any;
-    }
-    body: {}
+    };
+    body: {};
     response: {
-      total?: number
+      total?: number;
       result?: {
-        id: string
+        id: string;
         startup: {
-          id: string
-          name: string
-        }
+          id: string;
+          name: string;
+        };
         createdBy: {
-          id: string
-          name: string
-          isHunter: boolean
-        }
-        type: string
-        keywords?: string[]
-        intro: string
-        contactEmail: string
-        descriptionAddr?: string
-        descriptionFileAddr?: string
-        duration: number
+          id: string;
+          name: string;
+          isHunter: boolean;
+        };
+        type: string;
+        keywords?: string[];
+        intro: string;
+        contactEmail: string;
+        descriptionAddr?: string;
+        descriptionFileAddr?: string;
+        duration: number;
         payments: {
-          token: string
-          value: number
-        }[]
+          token: string;
+          value: number;
+        }[];
         hunters?: {
-          hunterId: string
-          userId: string
-          name: string
-          status: number
-          startedAt: string
-          submittedAt: string
-          quitedAt: string
-          paidAt: string
+          hunterId: string;
+          userId: string;
+          name: string;
+          status: number;
+          startedAt: string;
+          submittedAt: string;
+          quitedAt: string;
+          paidAt: string;
           payments: {
-            token: string
-            value: string
-          }[]
-          transactionState: number
-          rejectedAt: string
-        }[]
-        status?: number
-        blockAddr?: string
-        transactionState: number
-        createdAt: string
-        expiredAt: string
-        serialNo: number
-      }[]
-    }
-  }
+            token: string;
+            value: string;
+          }[];
+          transactionState: number;
+          rejectedAt: string;
+        }[];
+        status?: number;
+        blockAddr?: string;
+        transactionState: number;
+        createdAt: string;
+        expiredAt: string;
+        serialNo: number;
+      }[];
+    };
+  };
   'cores@startup-bounty-列表-我的': {
     params: {
       startupId: any;
-    }
+    };
     query: {
       limit: any;
       offset: any;
       keyword: any;
-    }
-    body: {}
+    };
+    body: {};
     response: {
-      total?: number
+      total?: number;
       result?: {
-        id: string
+        id: string;
         startup: {
-          id: string
-          name: string
-        }
-        userId: string
+          id: string;
+          name: string;
+        };
+        userId: string;
         /**
          * @description contest,cooperative
          */
-        type: string
-        keywords?: string[]
-        intro: string
-        contactEmail: string
-        descriptionAddr?: string
-        descriptionFileAddr?: string
-        duration: number
+        type: string;
+        keywords?: string[];
+        intro: string;
+        contactEmail: string;
+        descriptionAddr?: string;
+        descriptionFileAddr?: string;
+        duration: number;
         payments: {
-          token: string
-          value: number
-        }[]
+          token: string;
+          value: number;
+        }[];
         hunters?: {
-          hunterId: string
-          userId: string
-          name: string
+          hunterId: string;
+          userId: string;
+          name: string;
           /**
            * @description 0 startwork,1 submitted,2 paid,3 quited
            */
-          status: number
-          startedAt: string
-          submittedAt: string
-          quitedAt: string
-          paidAt: string
+          status: number;
+          startedAt: string;
+          submittedAt: string;
+          quitedAt: string;
+          paidAt: string;
           payments: {
-            token: string
-            value: string
-          }[]
-        }[]
+            token: string;
+            value: string;
+          }[];
+        }[];
         /**
          * @description 0 open,1 proccess,2 closed
          */
-        status?: number
-        blockAddr?: string
+        status?: number;
+        blockAddr?: string;
         /**
          * @description 0 无意义状态,1 待确认,2 上链成功,3 未确认到交易
          */
-        transactionState: number
-        createdAt: string
-        expiredAt: string
-      }[]
-    }
-  }
+        transactionState: number;
+        createdAt: string;
+        expiredAt: string;
+      }[];
+    };
+  };
   'cores@bounty-列表': {
-    params: {}
+    params: {};
     query: {
       limit: any;
       offset: any;
       keyword: any;
-    }
-    body: {}
+    };
+    body: {};
     response: {
-      total?: number
+      total?: number;
       result?: {
-        id: string
+        id: string;
         startup: {
-          id: string
-          name: string
-          logo: string
-        }
+          id: string;
+          name: string;
+          logo: string;
+        };
         createdBy: {
-          id: string
-          name: string
-          isHunter: boolean
-        }
-        type: string
-        keywords?: string[]
-        intro: string
-        contactEmail: string
-        descriptionAddr?: string
-        descriptionFileAddr?: string
-        duration: number
+          id: string;
+          name: string;
+          isHunter: boolean;
+        };
+        type: string;
+        keywords?: string[];
+        intro: string;
+        contactEmail: string;
+        descriptionAddr?: string;
+        descriptionFileAddr?: string;
+        duration: number;
         payments: {
-          token: string
-          value: number
-        }[]
+          token: string;
+          value: number;
+        }[];
         hunters?: {
-          hunterId: string
-          userId: string
-          name: string
-          status: number
-          startedAt: string
-          submittedAt: string
-          quitedAt: string
-          paidAt: string
+          hunterId: string;
+          userId: string;
+          name: string;
+          status: number;
+          startedAt: string;
+          submittedAt: string;
+          quitedAt: string;
+          paidAt: string;
           payments: {
-            token: string
-            value: string
-          }[]
-        }[]
-        status?: number
-        blockAddr?: string
-        transactionState: number
-        createdAt: string
-        expiredAt: string
-      }[]
-    }
-  }
+            token: string;
+            value: string;
+          }[];
+        }[];
+        status?: number;
+        blockAddr?: string;
+        transactionState: number;
+        createdAt: string;
+        expiredAt: string;
+      }[];
+    };
+  };
   'cores@bounty-列表-我的': {
-    params: {}
+    params: {};
     query: {
       limit: any;
       offset: any;
       keyword: any;
-    }
-    body: {}
+    };
+    body: {};
     response: {
-      total?: number
+      total?: number;
       result?: {
-        id: string
+        id: string;
         startup: {
-          id: string
-          name: string
-        }
-        userId: string
+          id: string;
+          name: string;
+        };
+        userId: string;
         /**
          * @description contest,cooperative
          */
-        type: string
-        keywords?: string[]
-        intro: string
-        contactEmail: string
-        descriptionAddr?: string
-        descriptionFileAddr?: string
-        duration: number
+        type: string;
+        keywords?: string[];
+        intro: string;
+        contactEmail: string;
+        descriptionAddr?: string;
+        descriptionFileAddr?: string;
+        duration: number;
         payments: {
-          token: string
-          value: number
-        }[]
+          token: string;
+          value: number;
+        }[];
         hunters?: {
-          hunterId: string
-          userId: string
-          name: string
+          hunterId: string;
+          userId: string;
+          name: string;
           /**
            * @description 0 初始状态, 1 startwork,2 submitted,3 paid,4 quited
            */
-          status: number
-          startedAt: string
-          submittedAt: string
-          quitedAt: string
-          paidAt: string
+          status: number;
+          startedAt: string;
+          submittedAt: string;
+          quitedAt: string;
+          paidAt: string;
           payments: {
-            token: string
-            value: string
-          }[]
-        }[]
+            token: string;
+            value: string;
+          }[];
+        }[];
         /**
          * @description 0 open,1 proccess,2 closed
          */
-        status?: number
-        blockAddr?: string
+        status?: number;
+        blockAddr?: string;
         /**
          * @description 0 无意义状态,1 待确认,2 上链成功,3 未确认到交易
          */
-        transactionState: number
-        createdAt: string
-        expiredAt: string
-      }[]
-    }
-  }
+        transactionState: number;
+        createdAt: string;
+        expiredAt: string;
+      }[];
+    };
+  };
   'cores@bounty-获取-我的': {
     params: {
       id: any;
-    }
-    query: {}
-    body: {}
+    };
+    query: {};
+    body: {};
     response: {
-      id: string
+      id: string;
       startup: {
-        id: string
-        name: string
-      }
-      userId: string
-      type: string
-      keywords?: string[]
-      intro: string
-      contactEmail: string
-      descriptionAddr?: string
-      descriptionFileAddr: string
-      duration: number
+        id: string;
+        name: string;
+      };
+      userId: string;
+      type: string;
+      keywords?: string[];
+      intro: string;
+      contactEmail: string;
+      descriptionAddr?: string;
+      descriptionFileAddr: string;
+      duration: number;
       payments: {
-        token: string
-        value: number
-      }[]
+        token: string;
+        value: number;
+      }[];
       hunters?: {
-        hunterId: string
-        userId: string
-        name: string
+        hunterId: string;
+        userId: string;
+        name: string;
         /**
          * @description 0 初始状态, 1 startwork,2 submitted,3 paid,4 quited
          */
-        status: number
-        startedAt: string
-        submittedAt: string
-        quitedAt: string
-        paidAt: string
+        status: number;
+        startedAt: string;
+        submittedAt: string;
+        quitedAt: string;
+        paidAt: string;
         payments: {
-          token: string
-          value: string
-        }[]
-      }[]
-      status: number
-      blockAddr: string
-      transactionState: number
-      createdAt: string
-      expiredAt: string
-    }
-  }
+          token: string;
+          value: string;
+        }[];
+      }[];
+      status: number;
+      blockAddr: string;
+      transactionState: number;
+      createdAt: string;
+      expiredAt: string;
+    };
+  };
   'cores@bounty-获取': {
     params: {
       id: any;
-    }
-    query: {}
-    body: {}
+    };
+    query: {};
+    body: {};
     response: {
-      id: string
+      id: string;
       startup: {
-        id: string
-        name: string
-      }
-      userId: string
-      type: string
-      keywords?: string[]
-      intro: string
-      contactEmail: string
-      descriptionAddr?: string
-      descriptionFileAddr: string
-      duration: number
+        id: string;
+        name: string;
+      };
+      userId: string;
+      type: string;
+      keywords?: string[];
+      intro: string;
+      contactEmail: string;
+      descriptionAddr?: string;
+      descriptionFileAddr: string;
+      duration: number;
       payments: {
-        token: string
-        value: number
-      }[]
+        token: string;
+        value: number;
+      }[];
       hunters?: {
-        hunterId: string
-        userId: string
-        name: string
-        status: number
-        startedAt: string
-        submittedAt: string
-        quitedAt: string
-        paidAt: string
+        hunterId: string;
+        userId: string;
+        name: string;
+        status: number;
+        startedAt: string;
+        submittedAt: string;
+        quitedAt: string;
+        paidAt: string;
         payments: {
-          token: string
-          value: string
-        }[]
-      }[]
-      status: number
-      blockAddr: string
-      transactionState: number
-      createdAt: string
-      expiredAt: string
-    }
-  }
+          token: string;
+          value: string;
+        }[];
+      }[];
+      status: number;
+      blockAddr: string;
+      transactionState: number;
+      createdAt: string;
+      expiredAt: string;
+    };
+  };
   'cores@bounty-创建': {
     params: {
       id: any;
-    }
-    query: {}
-    body: {}
+    };
+    query: {};
+    body: {};
     response: {
-      id: string
-    }
-  }
+      id: string;
+    };
+  };
   'cores@tags': {
-    params: {}
+    params: {};
     query: {
       /**
        * @description skills 技能
        */
       source: any;
-    }
-    body: {}
-    response: string[]
-  }
+    };
+    body: {};
+    response: string[];
+  };
   'cores@startup-获取prepare id': {
-    params: {}
-    query: {}
-    body: {}
+    params: {};
+    query: {};
+    body: {};
     response: {
-      id: string
-    }
-  }
+      id: string;
+    };
+  };
   'cores@startup-我的-获取': {
     params: {
       startupId: any;
-    }
-    query: {}
-    body: {}
+    };
+    query: {};
+    body: {};
     response: {
-      id?: string
-      name?: string
-      mission?: string
-      logo?: string
-      descriptionAddr?: string
+      id?: string;
+      name?: string;
+      mission?: string;
+      logo?: string;
+      descriptionAddr?: string;
       category?: {
-        id?: string
-        name?: string
-        code?: string
-        source?: string
-      }
+        id?: string;
+        name?: string;
+        code?: string;
+        source?: string;
+      };
       settings?: {
-        tokenName?: string
-        tokenSymbol?: string
-        tokenAddr?: string
+        tokenName?: string;
+        tokenSymbol?: string;
+        tokenAddr?: string;
         walletAddrs?: {
-          addr?: string
-          name?: string
-        }[]
-        type?: string
-        voteTokenLimit?: string
-        voteAssignAddrs?: string[]
-        voteSupportPercent?: number
-        voteMinApprovalPercent?: number
-        voteMinDurationHours?: string
-        voteMaxDurationHours?: string
-      }
+          addr?: string;
+          name?: string;
+        }[];
+        type?: string;
+        voteTokenLimit?: string;
+        voteAssignAddrs?: string[];
+        voteSupportPercent?: number;
+        voteMinApprovalPercent?: number;
+        voteMinDurationHours?: string;
+        voteMaxDurationHours?: string;
+      };
       transaction?: {
-        txId?: string
-        blockAddr?: string
-      }
-    }
-  }
+        txId?: string;
+        blockAddr?: string;
+      };
+    };
+  };
   'cores@startup-创建': {
-    params: {}
-    query: {}
-    body: {}
+    params: {};
+    query: {};
+    body: {};
     response: {
-      id: string
-    }
-  }
+      id: string;
+    };
+  };
   'cores@startups-我的-列表': {
-    params: {}
+    params: {};
     query: {
       limit: any;
       offset: any;
@@ -664,145 +664,145 @@ false 上链失败或确认中的,
 为空   全部
        */
       isInBlock: any;
-    }
-    body: {}
+    };
+    body: {};
     response: {
       result: {
-        id: string
-        name: string
-        mission: string
-        logo: string
-        descriptionAddr: string
+        id: string;
+        name: string;
+        mission: string;
+        logo: string;
+        descriptionAddr: string;
         category: {
-          id?: string
-          name?: string
-        }
+          id?: string;
+          name?: string;
+        };
         /**
          * @description 0 无意义状态,1 待确认,2 上链成功,3 未确认到交易
          */
-        state: number
+        state: number;
         /**
          * @description 0 无意义状态,1 待确认,2 上链成功,3 未确认到交易
          */
-        settingState: string
-        isIRO: boolean
-      }[]
-      total: number
-    }
-  }
+        settingState: string;
+        isIRO: boolean;
+      }[];
+      total: number;
+    };
+  };
   'cores@startup-更新': {
     params: {
       startupId: any;
-    }
-    query: {}
-    body: {}
+    };
+    query: {};
+    body: {};
     response: {
-      id: string
-    }
-  }
+      id: string;
+    };
+  };
   'cores@startup-获取': {
     params: {
       startupId: any;
-    }
-    query: {}
-    body: {}
+    };
+    query: {};
+    body: {};
     response: {
-      id?: string
-      name?: string
-      mission?: string
-      logo?: string
-      descriptionAddr?: string
+      id?: string;
+      name?: string;
+      mission?: string;
+      logo?: string;
+      descriptionAddr?: string;
       category?: {
-        id?: string
-        name?: string
-        code?: string
-        source?: string
-      }
+        id?: string;
+        name?: string;
+        code?: string;
+        source?: string;
+      };
       settings?: {
-        tokenName?: string
-        tokenSymbol?: string
-        tokenAddr?: string
+        tokenName?: string;
+        tokenSymbol?: string;
+        tokenAddr?: string;
         walletAddrs?: {
-          addr?: string
-          name?: string
-        }[]
-        type?: string
-        voteTokenLimit?: string
-        voteAssignAddrs?: string[]
-        voteSupportPercent?: number
-        voteMinApprovalPercent?: number
-        voteMinDurationHours?: string
-        voteMaxDurationHours?: string
-      }
+          addr?: string;
+          name?: string;
+        }[];
+        type?: string;
+        voteTokenLimit?: string;
+        voteAssignAddrs?: string[];
+        voteSupportPercent?: number;
+        voteMinApprovalPercent?: number;
+        voteMinDurationHours?: string;
+        voteMaxDurationHours?: string;
+      };
       transaction?: {
-        txId?: string
-        blockAddr?: string
-      }
-    }
-  }
+        txId?: string;
+        blockAddr?: string;
+      };
+    };
+  };
   'cores@startup-回退': {
     params: {
       id: any;
-    }
-    query: {}
-    body: {}
-    response: any
-  }
+    };
+    query: {};
+    body: {};
+    response: any;
+  };
   'cores@startups-列表': {
-    params: {}
+    params: {};
     query: {
       limit: any;
       offset: any;
-    }
-    body: {}
+    };
+    body: {};
     response: {
       result: {
-        id: string
-        name: string
-        mission: string
-        logo: string
-        descriptionAddr: string
+        id: string;
+        name: string;
+        mission: string;
+        logo: string;
+        descriptionAddr: string;
         category: {
-          id?: string
-          name?: string
-        }
-        isIRO: boolean
-        bountyCount: string
-        followCount: string
-      }[]
-      total: number
-    }
-  }
+          id?: string;
+          name?: string;
+        };
+        isIRO: boolean;
+        bountyCount: string;
+        followCount: string;
+      }[];
+      total: number;
+    };
+  };
   'cores@startup-settings-回退': {
     params: {
       id: any;
-    }
-    query: {}
-    body: {}
-    response: any
-  }
+    };
+    query: {};
+    body: {};
+    response: any;
+  };
   'cores@startup-settings-更新': {
     params: {
       id: any;
-    }
-    query: {}
-    body: {}
+    };
+    query: {};
+    body: {};
     response: {
-      id: string
-    }
-  }
+      id: string;
+    };
+  };
   'cores@文件上传': {
-    params: {}
-    query: {}
+    params: {};
+    query: {};
     body: {
-      image: File
-    }
+      image: File;
+    };
     response: {
-      downloadUrl: string
-    }
-  }
+      downloadUrl: string;
+    };
+  };
   'cores@分类-列表': {
-    params: {}
+    params: {};
     query: {
       limit: any;
       offset: any;
@@ -810,37 +810,37 @@ false 上链失败或确认中的,
        * @description startup;
        */
       source: any;
-    }
-    body: {}
+    };
+    body: {};
     response: {
       result: {
-        id: string
-        name: string
-        code: string
+        id: string;
+        name: string;
+        code: string;
         /**
          * @description startup;
          */
-        srouce: string
-      }
-      total: string
-    }
-  }
+        srouce: string;
+      };
+      total: string;
+    };
+  };
   'cores@分类-获取': {
     params: {
       categoryId: any;
-    }
-    query: {}
-    body: {}
+    };
+    query: {};
+    body: {};
     response: {
-      id?: string
-      name?: string
-      code?: string
-      srouce?: string
-    }
-  }
+      id?: string;
+      name?: string;
+      code?: string;
+      srouce?: string;
+    };
+  };
 }
 
-export type ServiceKeys = keyof ServiceRequestAndResponseMap
+export type ServiceKeys = keyof ServiceRequestAndResponseMap;
 
 export type ServiceReturn = {
   [P in ServiceKeys]: (
@@ -848,35 +848,35 @@ export type ServiceReturn = {
       ServiceRequestAndResponseMap[P]['params'] &
       ServiceRequestAndResponseMap[P]['query'],
     body?: ServiceRequestAndResponseMap[P]['body']
-  ) => Promise<ServiceFunctionResponse<ServiceRequestAndResponseMap[P]['response']>>
-}
+  ) => Promise<ServiceFunctionResponse<ServiceRequestAndResponseMap[P]['response']>>;
+};
 
 export interface ApiDefine {
-  u: string
-  m: Method
+  u: string;
+  m: Method;
   // params
-  p?: (string | number)[]
+  p?: (string | number)[];
   // query
-  q?: string[]
+  q?: string[];
   // done / undone
-  d: 0 | 1
+  d: 0 | 1;
 }
 
-export type Apis = Record<ServiceKeys, ApiDefine>
+export type Apis = Record<ServiceKeys, ApiDefine>;
 
 export interface RequestQuery {
-  [key: string]: string | number | RequestQuery
+  [key: string]: string | number | RequestQuery;
 }
 
 export interface RequestBody {
-  [key: string]: any
+  [key: string]: any;
 }
 
 export interface ServiceFunctionResponse<T = any> {
-  error: boolean
-  data: T | null | undefined
-  message?: string
-  stack?: string | object
+  error: boolean;
+  data: T | null | undefined;
+  message?: string;
+  stack?: string | object;
 }
 
 export type RequestAdapter<T = unknown> = (
@@ -884,5 +884,6 @@ export type RequestAdapter<T = unknown> = (
   method: Method,
   query: RequestQuery,
   body: RequestBody,
-  done?: boolean
-) => Promise<ServiceFunctionResponse<T>>
+  extraParams: any,
+  done: boolean
+) => Promise<ServiceFunctionResponse<T>>;
