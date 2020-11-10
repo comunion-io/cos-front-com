@@ -2437,11 +2437,6 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.npm.taobao.org/boolbase/download/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-bowser@^2.5.4:
-  version "2.9.0"
-  resolved "https://registry.npm.taobao.org/bowser/download/bowser-2.9.0.tgz#3bed854233b419b9a7422d9ee3e85504373821c9"
-  integrity sha1-O+2FQjO0GbmnQi2e4+hVBDc4Ick=
-
 brace-expansion@^1.1.7:
   version "1.1.11"
   resolved "https://registry.npm.taobao.org/brace-expansion/download/brace-expansion-1.1.11.tgz#3c7fcbf529d87226f3d2f52b966ff5271eb441dd"
@@ -11509,10 +11504,10 @@ y18n@^4.0.0:
   resolved "https://registry.npm.taobao.org/y18n/download/y18n-4.0.0.tgz#95ef94f85ecc81d007c264e190a120f0a3c8566b"
   integrity sha1-le+U+F7MgdAHwmThkKEg8KPIVms=
 
-y2s@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.npm.taobao.org/y2s/download/y2s-0.2.2.tgz#33849038ed4691a5c0a278fe102d9e4601e60fec"
-  integrity sha1-M4SQOO1GkaXAonj+EC2eRgHmD+w=
+y2s@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.npm.taobao.org/y2s/download/y2s-0.2.3.tgz?cache=0&sync_timestamp=1604994515456&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fy2s%2Fdownload%2Fy2s-0.2.3.tgz#94f16da108c9ed58a161a54d8f994210aca6f980"
+  integrity sha1-lPFtoQjJ7VihYaVNj5lCEKym+YA=
   dependencies:
     axios "^0.20.0"
     cz-conventional-changelog "^3.3.0"
