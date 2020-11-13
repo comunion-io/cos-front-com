@@ -1,8 +1,9 @@
-import { Apis } from './yapi.api'
+/* eslint-disable */
+import { Apis } from './yapi.api';
 
 export const apis: Apis = {
   'account@login': {
-    u: '/login',
+    u: '/account/login',
     m: 'POST',
     d: 0
   },
@@ -191,7 +192,7 @@ export const apis: Apis = {
     d: 0
   },
   'cores@startups-列表': {
-    u: '/startups',
+    u: '/cores/startups',
     m: 'GET',
     q: ['limit', 'offset'],
     d: 1
@@ -225,4 +226,4 @@ export const apis: Apis = {
     p: ['categoryId'],
     d: 1
   }
-}
+};

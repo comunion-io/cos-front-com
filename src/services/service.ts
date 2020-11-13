@@ -14,7 +14,7 @@ export const services = createServices(
   ) => {
     const ret = await request(
       method.toLocaleLowerCase(),
-      '/cores' + url,
+      url,
       { ...query, ...body },
       extraParams,
       done ? null : 'https://yapi.comunion.io/mock/19'

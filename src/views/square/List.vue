@@ -85,7 +85,6 @@ export default {
     async getStartups() {
       this.loading = true;
       const { error, data } = await services['cores@startups-列表'](this.search);
-      // const [data, total] = await getStartups(this.search);
       this.loading = false;
       this.startups = error ? [] : data.result;
       this.total = error ? 0 : data.total;

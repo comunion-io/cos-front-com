@@ -751,7 +751,13 @@ false 上链失败或确认中的,
   'cores@startups-列表': {
     params: {}
     query: {
+      /**
+       * @description 每页条数
+       */
       limit: any;
+      /**
+       * @description 前置数据条数
+       */
       offset: any;
     }
     body: {}
