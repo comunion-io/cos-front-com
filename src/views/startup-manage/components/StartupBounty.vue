@@ -106,8 +106,9 @@
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
 import BountyList from '@/components/bounty-list/BountyList';
-import { getStartUpBounties, paidBounty, rejectedBounty, closeBounty } from '@/services';
+// import { getStartUpBounties, paidBounty, rejectedBounty, closeBounty } from '@/services';
 import moment from 'moment';
+import services from '@/services';
 
 export default {
   // import引入的组件需要注入到对象中才能使用
@@ -143,8 +144,13 @@ export default {
      * @returns {Promise<*>}
      */
     async fetchData(query) {
-      const [data, total] = await getStartUpBounties(this.startupId, query);
-      return [data, total];
+      const { error, data } = await services['cores@startup-bounty-列表'](
+        { startupId: this.startupId },
+        query
+      );
+      return error ? [[], 0] : [data.result, data.total];
+      // const [data, total] = await getStartUpBounties(this.startupId, query);
+      // return [data, total];
     },
 
     /** 翻译bounty的状态信息  */
@@ -177,7 +183,13 @@ export default {
     /* 支付bounty */
     async payBounty(bountyId, hunter) {
       try {
-        const res = await paidBounty(bountyId, { userId: hunter.userId });
+        // const res = await paidBounty(bountyId, { userId: hunter.userId });
+
+        const { error } = await services['cores@bounty-paid'](
+          { bountyId },
+          { userId: hunter.userId }
+        );
+        const res = !error;
         if (res) {
           hunter.status = res.status;
         }
@@ -189,7 +201,13 @@ export default {
     /* bounty创建者拒绝 hunter */
     async rejectBounty(bountyId, hunter) {
       try {
-        const res = await rejectedBounty(bountyId, { userId: hunter.userId });
+        // const res = await rejectedBounty(bountyId, { userId: hunter.userId });
+
+        const { error } = await services['cores@bounty-rejected'](
+          { bountyId },
+          { userId: hunter.userId }
+        );
+        const res = !error;
         if (res) {
           hunter.status = res.status;
         }
@@ -203,7 +221,10 @@ export default {
       if (bounty) {
         const id = bounty.id;
         try {
-          const isClosed = await closeBounty(id);
+          // const isClosed = await closeBounty(id);
+          const { error } = await services['cores@bounty-closed']({ bountyId: id });
+          const isClosed = !error;
+
           if (isClosed) {
             bounty.status = 2;
           }

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Apis } from './yapi.api';
+import { Apis } from './yapi.api'
 
 export const apis: Apis = {
   'account@login': {
@@ -29,7 +29,7 @@ export const apis: Apis = {
     d: 0
   },
   'cores@bounty-closed': {
-    u: '/bounties/{bountyId}:closed',
+    u: '/cores/bounties/{bountyId}:closed',
     m: 'PUT',
     p: ['bountyId'],
     d: 1
@@ -53,11 +53,11 @@ export const apis: Apis = {
     d: 1
   },
   'cores@bounty-列表-用户': {
-    u: '/bounties/users/{userId}',
+    u: '/cores/bounties/users/{userId}',
     m: 'GET',
     p: ['userId'],
     q: ['limit', 'offset', 'keyword'],
-    d: 0
+    d: 1
   },
   'cores@startup-是否被follow': {
     u: '/startups/{startupId}/hasFollowed',
@@ -66,66 +66,66 @@ export const apis: Apis = {
     d: 1
   },
   'cores@bounty-startwork': {
-    u: '/bounties/{bountyId}:startWork',
+    u: 'cores/bounties/{bountyId}:startWork',
     m: 'POST',
     p: ['bountyId'],
     d: 1
   },
   'cores@bounty-submitted': {
-    u: '/bounties/{bountyId}:submitted',
+    u: '/cores/bounties/{bountyId}:submitted',
     m: 'PUT',
     p: ['bountyId'],
     d: 1
   },
   'cores@bounty-quited': {
-    u: '/bounties/{bountyId}:quited',
+    u: '/cores/bounties/{bountyId}:quited',
     m: 'PUT',
     p: ['bountyId'],
     d: 1
   },
   'cores@bounty-paid': {
-    u: '/bounties/{bountyId}:paid',
+    u: '/cores/bounties/{bountyId}:paid',
     m: 'PUT',
     p: ['bountyId'],
     d: 1
   },
   'cores@bounty-rejected': {
-    u: '/bounties/{bountyId}:rejected',
+    u: '/cores/bounties/{bountyId}:rejected',
     m: 'PUT',
     p: ['bountyId'],
     d: 1
   },
   'cores@startup-获取支付Token列表': {
-    u: '/startups/{startupId}/payTokens',
+    u: '/cores/startups/{startupId}/payTokens',
     m: 'GET',
     p: ['startupId'],
     d: 1
   },
   'cores@startup-bounty-列表': {
-    u: '/startups/{startupId}/bounties',
+    u: '/cores/startups/{startupId}/bounties',
     m: 'GET',
     p: ['startupId'],
     q: ['limit', 'offset', 'keyword'],
     d: 1
   },
   'cores@startup-bounty-列表-我的': {
-    u: '/startups/{startupId}/bounties/me',
+    u: '/cores/startups/{startupId}/bounties/me',
     m: 'GET',
     p: ['startupId'],
     q: ['limit', 'offset', 'keyword'],
     d: 1
   },
   'cores@bounty-列表': {
-    u: '/bounties',
+    u: '/cores/bounties',
     m: 'GET',
     q: ['limit', 'offset', 'keyword'],
     d: 1
   },
   'cores@bounty-列表-我的': {
-    u: '/bounties/me',
+    u: '/cores/bounties/me',
     m: 'GET',
     q: ['limit', 'offset', 'keyword'],
-    d: 0
+    d: 1
   },
   'cores@bounty-获取-我的': {
     u: '/bounties/:id/me',
@@ -134,13 +134,13 @@ export const apis: Apis = {
     d: 0
   },
   'cores@bounty-获取': {
-    u: '/bounties/:id',
+    u: '/cores/bounties/:id',
     m: 'GET',
     p: ['id'],
-    d: 0
+    d: 1
   },
   'cores@bounty-创建': {
-    u: '/startups/{id}/bounties',
+    u: '/cores/startups/{id}/bounties',
     m: 'POST',
     p: ['id'],
     d: 0
@@ -152,9 +152,9 @@ export const apis: Apis = {
     d: 0
   },
   'cores@startup-获取prepare id': {
-    u: '/startups/prepareId',
+    u: '/cores/startups/prepareId',
     m: 'GET',
-    d: 0
+    d: 1
   },
   'cores@startup-我的-获取': {
     u: '/startups/me/{startupId}',
