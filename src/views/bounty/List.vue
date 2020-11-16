@@ -18,8 +18,9 @@
 </template>
 
 <script>
-import { getHomeBounties } from '@/services';
+// import { getHomeBounties } from '@/services';
 import BountyList from '@/components/bounty-list/BountyList';
+import services from '@/services';
 
 export default {
   name: 'Bounty',
@@ -33,9 +34,10 @@ export default {
   },
   methods: {
     async fetchData(query) {
-      const [data, total] = await getHomeBounties(query);
-      this.total = total;
-      return [data, total];
+      // const [data, total] = await getHomeBounties(query);
+      const { error, data } = await services['cores@bounty-列表'](query);
+      this.total = error ? 0 : data.total;
+      return error ? [[], 0] : [data.result, data.total];
     }
   }
 };

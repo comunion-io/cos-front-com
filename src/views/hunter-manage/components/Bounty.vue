@@ -37,8 +37,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { getStartupMeBounties, quitedBounty, submittedBounty } from '@/services';
+// import { getStartupMeBounties, quitedBounty, submittedBounty } from '@/services';
 import BountyList from '@/components/bounty-list/BountyList';
+import services from '@/services';
 
 export default {
   name: 'Bounty',
@@ -50,8 +51,11 @@ export default {
   },
   methods: {
     async fetchData(query) {
-      const [data, total] = await getStartupMeBounties(query);
-      return [data, total];
+      //  const [data, total] = await getStartupMeBounties(query);
+      // return [data, total];
+      const { error, data } = await services['cores@bounty-列表-我的'](query);
+      const [bounties, total] = error ? [[], 0] : [data.result, data.total];
+      return [bounties, total];
     },
     // 获取开始时间信息
     getStartInfo(bounty) {
@@ -68,7 +72,8 @@ export default {
     // 提交
     async onSubmit(slotProps) {
       const { bounty, index } = slotProps;
-      const { error, data } = await submittedBounty(bounty.id);
+      // const { error, data } = await submittedBounty(bounty.id);
+      const { error, data } = await services['cores@bounty-submitted']({ bountyId: bounty.id });
       if (!error) {
         this.$message.success('Success');
         let bounties = this.$refs.bountyList.bounties;
@@ -84,7 +89,8 @@ export default {
     // quit
     async onQuit(slotProps) {
       const { bounty, index } = slotProps;
-      const { error, data } = await quitedBounty(bounty.id);
+      // const { error, data } = await quitedBounty(bounty.id);
+      const { error, data } = await services['cores@bounty-quited']({ bountyId: bounty.id });
       if (!error) {
         this.$message.success('Success');
         let bounties = this.$refs.bountyList.bounties;

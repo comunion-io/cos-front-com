@@ -1,6 +1,7 @@
 <script>
 import { Steps, Timeline } from 'ant-design-vue';
-import { getBountyDetail, startupWork } from '@/services';
+// import { getBountyDetail, startupWork } from '@/services';
+import services from '@/services';
 import Descriptions from '@/components/display/Descriptions';
 import { mapGetters } from 'vuex';
 import moment from 'moment';
@@ -269,7 +270,10 @@ export default {
   },
   methods: {
     async fetchData() {
-      this.detail = await getBountyDetail(this.$route.params.id);
+      // this.detail = await getBountyDetail(this.$route.params.id);
+      const { error, data } = await services['cores@bounty-获取']({ id: this.$route.params.id });
+      this.detail = error ? {} : data;
+
       // 存在有Pending状态的hunter
       if (
         this.detail?.hunters?.some(hunter => {
@@ -311,9 +315,20 @@ export default {
               return console.error(err);
             }
             const txid = result.result;
-            if (await startupWork(this.detail.id, { txid })) {
+
+            // if (await startupWork(this.detail.id, { txid })) {
+            //   this.fetchData();
+            // }
+            const { error } = await services['cores@bounty-startwork'](
+              {
+                bountyId: this.detail.id
+              },
+              { txid }
+            );
+            if (!error) {
               this.fetchData();
             }
+
             this.loading = false;
             this.isDisabled = true;
           }

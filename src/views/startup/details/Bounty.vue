@@ -1,6 +1,7 @@
 <script>
 import BountyList from '@/components/bounty-list/BountyList';
-import { getStartUpBounties } from '@/services';
+// import { getStartUpBounties } from '@/services';
+import services from '@/services';
 
 export default {
   props: {
@@ -25,9 +26,16 @@ export default {
   },
   methods: {
     async fetchData(query) {
-      const [data, total] = await getStartUpBounties(this.id, query);
-      this.total = total;
-      return [data, total];
+      const { error, data } = await services['cores@startup-bounty-列表'](
+        { startupId: this.id },
+        query
+      );
+      this.total = data.total;
+      return error ? [[], 0] : [data.result, data.total];
+
+      // const [data, total] = await getStartUpBounties(this.id, query);
+      // this.total = total;
+      // return [data, total];
     }
   }
 };
