@@ -20,17 +20,17 @@ const instance = axios.create({
 });
 
 // 请求拦截器
-instance.interceptors.request.use(config => {
-  // do something
-  if (localStorage.getItem('token')) {
-    // 添加token
-    instance.defaults.headers.common['Authorization'] = document.cookie
-      .split(';')
-      .find(ele => ele.includes('COMUNION_SESSION'))
-      .split('=')[1];
-  }
-  return config;
-});
+// instance.interceptors.request.use(config => {
+//   // do something
+//   if (localStorage.getItem('token')) {
+//     // 添加token
+//     instance.defaults.headers.common['Authorization'] = document.cookie
+//       .split(';')
+//       .find(ele => ele.includes('COMUNION_SESSION'))
+//       .split('=')[1];
+//   }
+//   return config;
+// });
 
 // 相应拦截器
 instance.interceptors.response.use(
@@ -60,7 +60,7 @@ instance.interceptors.response.use(
     return {
       error: true,
       data: message,
-      detail: res.response
+      stack: res.response
     };
   }
 );
@@ -96,7 +96,7 @@ function removeCancelSource(_cancelSource) {
 
 // 统一封装请求接口
 // keepWhenNavigate 路由跳转时是否保留而不取消
-export async function request(method, url, paramsOrData, ext = {}) {
+export async function request(method, url, paramsOrData, ext = {}, _baseURL) {
   const source = CancelToken.source();
   const { keepWhenNavigate, bodyParams } = Object.assign(
     {
@@ -110,12 +110,14 @@ export async function request(method, url, paramsOrData, ext = {}) {
   let ret;
   if (['post', 'put', 'patch'].includes(method)) {
     ret = await instance[method](url, paramsOrData, {
+      baseURL: _baseURL || baseURL,
       cancelToken: source.token,
       params: bodyParams,
       responseType: ext.responseType || 'json'
     });
   } else {
     ret = await instance[method](url, {
+      baseURL: _baseURL || baseURL,
       cancelToken: source.token,
       params: paramsOrData,
       responseType: ext.responseType || 'json'

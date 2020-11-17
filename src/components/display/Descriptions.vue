@@ -1,5 +1,6 @@
 <script>
 import { get } from 'lodash';
+import CopyableAddress from '@/components/helper/CopyableAddress';
 export default {
   props: {
     columns: {

@@ -132,10 +132,11 @@ import { urlValidator, validateBountyTitle, validateBountyIntro } from '@/utils/
 import BbsInput from '@/components/form/BbsInput';
 import Skills from '@/components/form/Skills';
 import SubmitBalance from '@/components/form/SubmitBalance';
-import { getMyStartups, getPrepareBountyId, createBounty, getBountyToken } from '@/services';
+import services, { getMyStartups } from '@/services';
 import { COMUNION_BOUNTY_RECEIVE_ACCOUNT, web3 } from '@/libs/web3';
 import { bountyAbi } from '@/libs/abis/bounty';
 import { mapGetters } from 'vuex';
+// import services from '@/services';
 
 export default {
   // import引入的组件需要注入到对象中才能使用
@@ -249,7 +250,11 @@ export default {
         if (valid) {
           this.spinning = true;
           try {
-            const { id } = await getPrepareBountyId();
+            // const { id } = await getPrepareBountyId();
+
+            const { error, data } = await services['cores@startup-获取prepare id']();
+            const id = error ? '' : data;
+
             if (id) {
               this.ethSendTranscation(this.form, id);
             }
@@ -303,15 +308,18 @@ export default {
     async createBounty(formData, bountyId, txid) {
       try {
         // 创建 bounty
-        const data = { ...formData, txid, ...{ id: bountyId }, descriptionFileAddr: '-1' }; // descriptionFileAddr等后端删除了， 前端也要删除
-        data.duration = +data.duration;
-        for (const payment of data.payments) {
+        const params = { ...formData, txid, ...{ id: bountyId }, descriptionFileAddr: '-1' }; // descriptionFileAddr等后端删除了， 前端也要删除
+        params.duration = +params.duration;
+        for (const payment of params.payments) {
           payment.value = +payment.value;
           payment.token = payment.token.toString();
         }
 
         const startupId = this.$route.query.startupId;
-        const bounty = await createBounty(startupId, data);
+
+        // const bounty = await createBounty(startupId, data);
+        const { error, data } = await services['cores@bounty-创建']({ id: startupId }, params);
+        const bounty = error ? {} : data;
 
         if (bounty.id) {
           this.$router.push({
@@ -373,7 +381,9 @@ export default {
     async getTokens(startupId) {
       try {
         this.tokenLoading = true;
-        this.tokens = await getBountyToken(startupId);
+        // this.tokens = await getBountyToken(startupId);
+        const { error, data } = await services['cores@startup-获取支付Token列表']({ startupId });
+        this.tokens = error ? {} : data.payTokens;
         this.tokenLoading = false;
       } catch (error) {
         console.error(error);

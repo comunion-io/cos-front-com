@@ -1,4 +1,5 @@
 <script>
+import CopyableAddress from '@/components/helper/CopyableAddress';
 import Descriptions from '@/components/display/Descriptions';
 
 export default {

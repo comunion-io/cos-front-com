@@ -20,9 +20,10 @@
 </template>
 
 <script>
-import { getUserBounties, getUserInfo } from '@/services';
+import services, { getUserInfo } from '@/services';
 import Descriptions from '@/components/display/Descriptions';
 import BountyList from '@/components/bounty-list/BountyList';
+// import services from '@/services';
 
 export default {
   name: 'BountyHome',
@@ -75,9 +76,14 @@ export default {
   methods: {
     // 获取bounty列表
     async fetchData(query) {
-      const [data, total] = await getUserBounties(query, this.$route.params.userId);
-      this.total = total;
-      return [data, total];
+      // const [data, total] = await getUserBounties(query, this.$route.params.userId);
+      // return [data, total];
+      const { error, data } = await services['cores@bounty-列表-用户'](
+        { userId: this.$route.params.userId },
+        query
+      );
+      this.total = data.total;
+      return error ? [[], 0] : [data.result, data.total];
     },
     // 获取用户信息
     async getUserInfo() {

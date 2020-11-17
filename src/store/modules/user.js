@@ -1,5 +1,5 @@
 import { message } from 'ant-design-vue';
-import { LOGIN_TIME, TEST_NET_WORK_NAME, USER_INFO, USER_ACCOUNT_ADDRESS } from '@/configs/storage';
+import { LOGIN_TIME, NET_WORK_NAME, USER_INFO, USER_ACCOUNT_ADDRESS } from '@/configs/storage';
 import { web3, initWeb3 } from '@/libs/web3';
 import { getNonce, login, logout, getMe, transformToHunter } from '@/services';
 import router from '@/router';
@@ -17,7 +17,7 @@ const state = {
   /** 登录后的账号，目前只是钱包地址 */
   account: ls.getItem(USER_ACCOUNT_ADDRESS) || '',
   /** metamask 网络名称 */
-  netWorkName: ls.getItem(TEST_NET_WORK_NAME) || '',
+  netWorkName: ls.getItem(NET_WORK_NAME) || '',
   /** 登录时间 */
   logInTime: ls.getItem(LOGIN_TIME)
   // hunter信息
@@ -72,42 +72,42 @@ const mutations = {
       case '1':
         console.log('This is mainnet');
         state.netWorkName = 'mainnet';
-        ls.setItem(TEST_NET_WORK_NAME, 'mainnet');
+        ls.setItem(NET_WORK_NAME, 'mainnet');
         break;
       case '2':
         console.log('This is the deprecated Morden test network.');
         state.netWorkName = 'Morden';
-        ls.setItem(TEST_NET_WORK_NAME, 'Morden');
+        ls.setItem(NET_WORK_NAME, 'Morden');
 
         break;
       case '3':
         console.log('This is the ropsten test network.');
         state.netWorkName = 'ropsten';
-        ls.setItem(TEST_NET_WORK_NAME, 'ropsten');
+        ls.setItem(NET_WORK_NAME, 'ropsten');
 
         break;
       case '4':
         console.log('This is the Rinkeby test network.');
         state.netWorkName = 'Rinkeby';
-        ls.setItem(TEST_NET_WORK_NAME, 'Rinkeby');
+        ls.setItem(NET_WORK_NAME, 'Rinkeby');
 
         break;
       case '5':
         console.log('this is the Goerli test network');
         state.netWorkName = 'Goerli';
-        ls.setItem(TEST_NET_WORK_NAME, 'Goerli');
+        ls.setItem(NET_WORK_NAME, 'Goerli');
 
         break;
       case '42':
         console.log('This is the Kovan test network.');
         state.netWorkName = 'Kovan';
-        ls.setItem(TEST_NET_WORK_NAME, 'Kovan');
+        ls.setItem(NET_WORK_NAME, 'Kovan');
 
         break;
       default:
         console.log('This is an unknown network.');
         state.netWorkName = 'unknown';
-        ls.setItem(TEST_NET_WORK_NAME, 'unknown');
+        ls.setItem(NET_WORK_NAME, 'unknown');
     }
   }
 
