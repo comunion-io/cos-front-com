@@ -8,7 +8,7 @@ export const apis: Apis = {
     d: 0
   },
   'account@用户-hunter-更新': {
-    u: '/users/me/hunters',
+    u: '/account/users/me/hunters',
     m: 'PUT',
     d: 1
   },

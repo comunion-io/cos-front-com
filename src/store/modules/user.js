@@ -1,7 +1,7 @@
 import { message } from 'ant-design-vue';
 import { LOGIN_TIME, NET_WORK_NAME, USER_INFO, USER_ACCOUNT_ADDRESS } from '@/configs/storage';
 import { web3, initWeb3 } from '@/libs/web3';
-import { getNonce, login, logout, getMe, transformToHunter } from '@/services';
+import services, { getNonce, login, logout, getMe } from '@/services';
 import router from '@/router';
 
 const ls = window.localStorage;
@@ -219,7 +219,7 @@ const actions = {
 
   // transform hunter
   async transformHunter({ dispatch }, data) {
-    if (await transformToHunter(data)) {
+    if (await services['account@用户-hunter-更新'](data)) {
       // 获取我的信息
       dispatch('refreshMe');
       return true;
