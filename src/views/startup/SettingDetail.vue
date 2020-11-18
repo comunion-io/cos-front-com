@@ -55,7 +55,7 @@ import { Steps } from 'ant-design-vue';
 import { settingAbi } from '@/libs/abis/setting';
 import { COMMUNION_SETTING_RECEIVE_ACCOUNT, web3 } from '@/libs/web3';
 import { STARTUP_SETTING_STORE_KEY } from '@/configs/storage';
-import { getMyStartupDetail, updateStartupSetting } from '@/services';
+import services, { getMyStartupDetail } from '@/services';
 import { merge } from '@/utils';
 import Finance from './steps/Finance';
 import Governance from './steps/Governance';
@@ -212,7 +212,11 @@ export default {
     },
 
     async createSetting(formData, txid) {
-      if (await updateStartupSetting(this.$route.params.id, { ...formData, txid })) {
+      const { error } = await services['cores@startup-settings-更新'](this.$route.params.id, {
+        ...formData,
+        txid
+      });
+      if (!error) {
         sessionStorage.removeItem(this.storeKey);
         this.completed = true;
       }

@@ -1,4 +1,4 @@
-import { getCategories, getTags } from '@/services';
+import services, { getCategories } from '@/services';
 
 /**
  * 按需请求数据
@@ -43,5 +43,8 @@ export default function(store) {
   // startup类型
   createLazyState(store, 'categories', [], getCategories);
   // 技能标签
-  createLazyState(store, 'skills', [], () => getTags({ source: 'skills' }));
+  createLazyState(store, 'skills', [], async () => {
+    const { error, data } = await services['cores@tags']({ source: 'skills' });
+    return error ? [] : data;
+  });
 }

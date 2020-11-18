@@ -8,7 +8,7 @@ export const apis: Apis = {
     d: 0
   },
   'account@用户-hunter-更新': {
-    u: '/users/me/hunters',
+    u: '/account/users/me/hunters',
     m: 'PUT',
     d: 1
   },
@@ -146,10 +146,10 @@ export const apis: Apis = {
     d: 0
   },
   'cores@tags': {
-    u: '/tags',
+    u: '/cores/tags',
     m: 'GET',
     q: ['source'],
-    d: 0
+    d: 1
   },
   'cores@startup-获取prepare id': {
     u: '/cores/startups/prepareId',
@@ -204,7 +204,7 @@ export const apis: Apis = {
     d: 0
   },
   'cores@startup-settings-更新': {
-    u: '/startups/{id}/settings',
+    u: '/cores/startups/{id}/settings',
     m: 'PUT',
     p: ['id'],
     d: 1
