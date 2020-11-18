@@ -146,10 +146,10 @@ export const apis: Apis = {
     d: 0
   },
   'cores@tags': {
-    u: '/tags',
+    u: '/cores/tags',
     m: 'GET',
     q: ['source'],
-    d: 0
+    d: 1
   },
   'cores@startup-获取prepare id': {
     u: '/cores/startups/prepareId',
