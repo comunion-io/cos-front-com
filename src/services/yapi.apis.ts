@@ -204,7 +204,7 @@ export const apis: Apis = {
     d: 0
   },
   'cores@startup-settings-更新': {
-    u: '/startups/{id}/settings',
+    u: '/cores/startups/{id}/settings',
     m: 'PUT',
     p: ['id'],
     d: 1
