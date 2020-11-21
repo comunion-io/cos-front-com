@@ -7,6 +7,7 @@ export default {
     TabPerference,
     TabBounty: () => import('./details/Bounty'),
     TabExchange: () => import('./details/Exchange'),
+    TabDisco: () => import('./details/Dosci.vue'),
     TabIRO: () => import('./details/IRO'),
     TabVote: () => import('./details/Vote'),
     TabProposals: () => import('./details/Proposals')
@@ -14,7 +15,7 @@ export default {
   data() {
     return {
       selectedTab: 'Perference',
-      tabs: ['Perference', 'Bounty', 'Exchange', 'IRO', 'Vote', 'Proposals'],
+      tabs: ['Perference', 'Bounty', 'Disco', 'Exchange', 'IRO', 'Vote', 'Proposals'],
       loading: false,
       startup: {}
     };
