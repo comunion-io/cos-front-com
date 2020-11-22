@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "start": "yarn serve",
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --mode development",
     "build": "vue-cli-service build",
+    "build-dev": "vue-cli-service build --mode development",
+    "build-prod": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint",
     "commit": "git-cz",
     "update:api": "y2s update -y"
