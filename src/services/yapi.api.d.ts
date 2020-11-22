@@ -19,6 +19,12 @@ export interface ServiceRequestAndResponseMap {
       }
     }
   }
+  'account@logout': {
+    params: {}
+    query: {}
+    body: {}
+    response: {}
+  }
   'account@用户-hunter-更新': {
     params: {}
     query: {}
@@ -66,8 +72,12 @@ export interface ServiceRequestAndResponseMap {
   'account@获取nonce': {
     params: {}
     query: {}
-    body: {}
-    response: {}
+    body: {
+      publicKey: string | number | boolean
+    }
+    response: {
+      nonce: string
+    }
   }
   'cores@bounty-closed': {
     params: {

@@ -5,7 +5,12 @@ export const apis: Apis = {
   'account@login': {
     u: '/account/login',
     m: 'POST',
-    d: 0
+    d: 1
+  },
+  'account@logout': {
+    u: '/account/logout',
+    m: 'GET',
+    d: 1
   },
   'account@用户-hunter-更新': {
     u: '/account/users/me/hunters',
@@ -15,18 +20,18 @@ export const apis: Apis = {
   'account@用户-我的': {
     u: '/account/users/me',
     m: 'GET',
-    d: 0
+    d: 1
   },
   'account@用户-获取': {
     u: '/account/users/{userId}',
     m: 'GET',
     p: ['userId'],
-    d: 0
+    d: 1
   },
   'account@获取nonce': {
     u: '/account/nonce',
-    m: 'GET',
-    d: 0
+    m: 'POST',
+    d: 1
   },
   'cores@bounty-closed': {
     u: '/cores/bounties/{bountyId}:closed',
@@ -192,7 +197,7 @@ export const apis: Apis = {
     d: 0
   },
   'cores@startups-列表': {
-    u: '/cores/cores/startups',
+    u: '/cores/startups',
     m: 'GET',
     q: ['limit', 'offset'],
     d: 1
