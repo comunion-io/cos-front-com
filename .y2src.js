@@ -8,5 +8,6 @@ module.exports = {
   // folder to save service files 生成的service相关文件的存储位置
   outputPath: 'src/services',
   // wether to save the origin yapi api json response to file 是否保存api.json文件
-  saveJson: false
+  saveJson: false,
+  trim: true
 };

@@ -11504,13 +11504,12 @@ y18n@^4.0.0:
   resolved "https://registry.npm.taobao.org/y18n/download/y18n-4.0.0.tgz#95ef94f85ecc81d007c264e190a120f0a3c8566b"
   integrity sha1-le+U+F7MgdAHwmThkKEg8KPIVms=
 
-y2s@^0.2.6:
-  version "0.2.6"
-  resolved "https://registry.npm.taobao.org/y2s/download/y2s-0.2.6.tgz#e1f19bee6c765526fcd9a810527775e8503f1379"
-  integrity sha1-4fGb7mx2VSb82agQUnd16FA/E3k=
+y2s@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.npm.taobao.org/y2s/download/y2s-0.3.0.tgz#ab8fa43ee3c40bf73da4fa5f5e9af7f82c84ec6e"
+  integrity sha1-q4+kPuPEC/c9pPpfXpr3+CyE7G4=
   dependencies:
     axios "^0.20.0"
-    cz-conventional-changelog "^3.3.0"
     fs-extra "^9.0.1"
     inquirer "^7.3.3"
     ora "^5.1.0"

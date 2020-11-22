@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import services, { getUserInfo } from '@/services';
+import services from '@/services';
 import Descriptions from '@/components/display/Descriptions';
 import BountyList from '@/components/bounty-list/BountyList';
 // import services from '@/services';
@@ -87,9 +87,9 @@ export default {
     },
     // 获取用户信息
     async getUserInfo() {
-      const data = await getUserInfo(this.$route.params.userId);
+      const { error, data } = await services['account@用户-获取'](this.$route.params.userId);
       let hunterInfo = {};
-      if (data) {
+      if (!error) {
         hunterInfo.walletAddress = data.publicKey;
         if (data.hunter) {
           this.hunterName = data.hunter.name;
