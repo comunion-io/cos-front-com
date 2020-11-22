@@ -44,7 +44,7 @@ export default function(store) {
   createLazyState(store, 'categories', [], getCategories);
   // 技能标签
   createLazyState(store, 'skills', [], async () => {
-    const { error, data } = await services['cores@tags']({ source: 'skills' });
+    const { error, data } = await services['cores@startup-tags']({ source: 'skills' });
     return error ? [] : data;
   });
 }

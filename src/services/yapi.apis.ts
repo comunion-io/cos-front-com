@@ -13,18 +13,18 @@ export const apis: Apis = {
     d: 1
   },
   'account@用户-我的': {
-    u: '/users/me',
+    u: '/account/users/me',
     m: 'GET',
     d: 0
   },
   'account@用户-获取': {
-    u: '/users/{userId}',
+    u: '/account/users/{userId}',
     m: 'GET',
     p: ['userId'],
     d: 0
   },
   'account@获取nonce': {
-    u: '/nonce',
+    u: '/account/nonce',
     m: 'GET',
     d: 0
   },
@@ -35,19 +35,19 @@ export const apis: Apis = {
     d: 1
   },
   'cores@startup-follow-创建': {
-    u: '/startups/{startupId}/follows',
+    u: '/cores/startups/{startupId}/follows',
     m: 'POST',
     p: ['startupId'],
     d: 1
   },
   'cores@startups-我的-follow列表': {
-    u: '/startups/me/followed',
+    u: '/cores/startups/me/followed',
     m: 'GET',
     q: ['limit', 'offset'],
     d: 1
   },
   'cores@startup-follow-取消': {
-    u: '/startups/{startupId}/follows',
+    u: '/cores/startups/{startupId}/follows',
     m: 'DELETE',
     p: ['startupId'],
     d: 1
@@ -60,13 +60,13 @@ export const apis: Apis = {
     d: 1
   },
   'cores@startup-是否被follow': {
-    u: '/startups/{startupId}/hasFollowed',
+    u: '/cores/startups/{startupId}/hasFollowed',
     m: 'GET',
     p: ['startupId'],
     d: 1
   },
   'cores@bounty-startwork': {
-    u: 'cores/bounties/{bountyId}:startWork',
+    u: '/cores/bounties/{bountyId}:startWork',
     m: 'POST',
     p: ['bountyId'],
     d: 1
@@ -116,7 +116,7 @@ export const apis: Apis = {
     d: 1
   },
   'cores@bounty-列表': {
-    u: '/cores/bounties',
+    u: '/bounties',
     m: 'GET',
     q: ['limit', 'offset', 'keyword'],
     d: 1
@@ -128,10 +128,10 @@ export const apis: Apis = {
     d: 1
   },
   'cores@bounty-获取-我的': {
-    u: '/bounties/:id/me',
+    u: '/cores/bounties/:id/me',
     m: 'GET',
     p: ['id'],
-    d: 0
+    d: 1
   },
   'cores@bounty-获取': {
     u: '/cores/bounties/:id',
@@ -143,9 +143,9 @@ export const apis: Apis = {
     u: '/cores/startups/{id}/bounties',
     m: 'POST',
     p: ['id'],
-    d: 0
+    d: 1
   },
-  'cores@tags': {
+  'cores@startup-tags': {
     u: '/cores/tags',
     m: 'GET',
     q: ['source'],
@@ -157,48 +157,48 @@ export const apis: Apis = {
     d: 1
   },
   'cores@startup-我的-获取': {
-    u: '/startups/me/{startupId}',
+    u: '/cores/startups/me/{startupId}',
     m: 'GET',
     p: ['startupId'],
-    d: 0
+    d: 1
   },
   'cores@startup-创建': {
-    u: '/startups',
+    u: '/cores/startups',
     m: 'POST',
     d: 1
   },
   'cores@startups-我的-列表': {
-    u: '/startups/me',
+    u: '/cores/startups/me',
     m: 'GET',
     q: ['limit', 'offset', 'isInBlock'],
     d: 1
   },
   'cores@startup-更新': {
-    u: '/startups/{startupId}',
+    u: '/cores/startups/{startupId}',
     m: 'PUT',
     p: ['startupId'],
     d: 0
   },
   'cores@startup-获取': {
-    u: '/startups/{startupId}',
+    u: '/cores/startups/{startupId}',
     m: 'GET',
     p: ['startupId'],
     d: 0
   },
   'cores@startup-回退': {
-    u: '/startups/{id}:restore',
+    u: '/cores/startups/{id}:restore',
     m: 'POST',
     p: ['id'],
     d: 0
   },
   'cores@startups-列表': {
-    u: '/cores/startups',
+    u: '/cores/cores/startups',
     m: 'GET',
     q: ['limit', 'offset'],
     d: 1
   },
   'cores@startup-settings-回退': {
-    u: '/startups/{id}/settings:restore',
+    u: '/cores/startups/{id}/settings:restore',
     m: 'POST',
     p: ['id'],
     d: 0
@@ -210,20 +210,20 @@ export const apis: Apis = {
     d: 1
   },
   'cores@文件上传': {
-    u: '/files',
+    u: '/cores/files',
     m: 'POST',
     d: 0
   },
   'cores@分类-列表': {
-    u: '/categories',
+    u: '/cores/categories',
     m: 'GET',
     q: ['limit', 'offset', 'source'],
     d: 1
   },
   'cores@分类-获取': {
-    u: '/categories/{categoryId}',
+    u: '/cores/categories/{categoryId}',
     m: 'GET',
     p: ['categoryId'],
     d: 1
   }
-};
+}

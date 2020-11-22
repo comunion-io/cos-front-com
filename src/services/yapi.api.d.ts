@@ -1,3 +1,4 @@
+/* eslint-disable */
 export type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'PATCH'
 
 export interface ServiceRequestAndResponseMap {
@@ -66,7 +67,7 @@ export interface ServiceRequestAndResponseMap {
     params: {}
     query: {}
     body: {}
-    response: any
+    response: {}
   }
   'cores@bounty-closed': {
     params: {
@@ -586,7 +587,7 @@ export interface ServiceRequestAndResponseMap {
       id: string
     }
   }
-  'cores@tags': {
+  'cores@startup-tags': {
     params: {}
     query: {
       /**
@@ -746,7 +747,7 @@ false 上链失败或确认中的,
     }
     query: {}
     body: {}
-    response: any
+    response: {}
   }
   'cores@startups-列表': {
     params: {}
@@ -785,7 +786,7 @@ false 上链失败或确认中的,
     }
     query: {}
     body: {}
-    response: any
+    response: {}
   }
   'cores@startup-settings-更新': {
     params: {
