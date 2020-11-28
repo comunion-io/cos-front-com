@@ -1,7 +1,7 @@
 import { message } from 'ant-design-vue';
 import { LOGIN_TIME, NET_WORK_NAME, USER_INFO, USER_ACCOUNT_ADDRESS } from '@/configs/storage';
 import { web3, initWeb3 } from '@/libs/web3';
-import services, { getNonce, login, logout, getMe } from '@/services';
+import services from '@/services';
 import router from '@/router';
 
 const ls = window.localStorage;
@@ -121,8 +121,8 @@ const actions = {
   // 刷新我的个人信息
   async refreshMe({ commit }) {
     // 获取我的信息
-    const myInfo = await getMe();
-    if (myInfo) {
+    const { error, data: myInfo } = await services['account@用户-我的']();
+    if (!error) {
       commit('SET_USER', myInfo);
     }
   },
@@ -159,21 +159,26 @@ const actions = {
         const account = accounts[0].toLowerCase();
         // 初始化web3
         initWeb3();
-        // 获取nonce
-        const nonce = await getNonce(account);
         // 获取当前连接网络的ID
         const netWorkId = await web3.eth.net.getId();
         commit('HANDLE_NEW_NETWORK', netWorkId + '');
+        // 获取nonce
+        const { error, data: nonceResp } = await services['account@获取nonce']({
+          publicKey: account
+        });
 
-        if (nonce) {
+        if (!error) {
           // 对nonce签名
-          let signature = await web3.eth.personal.sign(nonce, account);
+          let signature = await web3.eth.personal.sign(nonceResp.nonce, account);
           // 登录
-          const ret = await login({ publicKey: account, signature });
-          if (!ret) {
+          const { error, data } = await services['account@login']({
+            publicKey: account,
+            signature
+          });
+          if (error) {
             throw new Error('Error when login, please try again');
           }
-          commit('SET_USER', ret);
+          commit('SET_USER', data);
           // 注册metamask事件
           // FIXME: on之前需要先off
           ethereum.autoRefreshOnNetworkChange = true;
@@ -208,7 +213,7 @@ const actions = {
    * @returns {Promise<void>}
    */
   async logout({ commit }) {
-    await logout();
+    await services['account@logout']();
     commit('UPDATE_ACCOUNT', '');
     commit('SET_USER', {});
     // 跳到首页

@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "start": "yarn serve",
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --mode development",
     "build": "vue-cli-service build",
+    "build-dev": "vue-cli-service build --mode development",
+    "build-prod": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint",
     "commit": "git-cz",
     "update:api": "y2s update -y"
@@ -55,7 +57,7 @@
     "vue-cli-plugin-vuetify": "^2.0.5",
     "vue-svg-loader": "0.8.0",
     "vue-template-compiler": "^2.6.10",
-    "y2s": "^0.2.6"
+    "y2s": "^0.3.0"
   },
   "postcss": {
     "plugins": {

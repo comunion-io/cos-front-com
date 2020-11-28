@@ -1,3 +1,4 @@
+/* eslint-disable */
 export type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'PATCH'
 
 export interface ServiceRequestAndResponseMap {
@@ -17,6 +18,12 @@ export interface ServiceRequestAndResponseMap {
         email: string
       }
     }
+  }
+  'account@logout': {
+    params: {}
+    query: {}
+    body: {}
+    response: {}
   }
   'account@用户-hunter-更新': {
     params: {}
@@ -65,8 +72,12 @@ export interface ServiceRequestAndResponseMap {
   'account@获取nonce': {
     params: {}
     query: {}
-    body: {}
-    response: any
+    body: {
+      publicKey: string | number | boolean
+    }
+    response: {
+      nonce: string
+    }
   }
   'cores@bounty-closed': {
     params: {
@@ -586,7 +597,7 @@ export interface ServiceRequestAndResponseMap {
       id: string
     }
   }
-  'cores@tags': {
+  'cores@startup-tags': {
     params: {}
     query: {
       /**
@@ -746,7 +757,7 @@ false 上链失败或确认中的,
     }
     query: {}
     body: {}
-    response: any
+    response: {}
   }
   'cores@startups-列表': {
     params: {}
@@ -785,7 +796,7 @@ false 上链失败或确认中的,
     }
     query: {}
     body: {}
-    response: any
+    response: {}
   }
   'cores@startup-settings-更新': {
     params: {
