@@ -6,7 +6,7 @@
     <div class="content">
       <div class="icon-wrap">
         <FundraisingIcon v-if="type === 'disco'" class="icon" />
-        <Trading v-else-if="type === 'exchange'" class="icon" />
+        <TradingIcon v-else-if="type === 'exchange'" class="icon" />
       </div>
       <div class="info">
         <p class="name">
@@ -42,7 +42,34 @@
 
 <script>
 import FundraisingIcon from './fundraising.svg';
-import Trading from './trading.svg';
+import TradingIcon from './trading.svg';
+
+// 状态的文字描述, key值为字段type + '_' + 字段status
+const statusTextMap = new Map([
+  // DISCO募资合约生成中
+  ['disco_1', 'Creating'],
+  // DISCO募资合约生成成功
+  ['disco_2', 'Wait for enable'],
+  // DISCO募资合约生成失败
+  ['disco_3', 'Failed to create contract'],
+  // DISCO提交后pending
+  ['disco_4', 'Pending'],
+  // DISCO提交后失败
+  ['disco_5', 'Failed to enable DISCO'],
+  // DISCO提交后成功，募资等待开始
+  ['disco_6', 'Waitting to start'],
+  // DISCO提交成功-募资成功
+  ['disco_7', 'Succeed'],
+  // DISCO提交成功-募资失败
+  ['disco_8', 'Failed'],
+  // DISCO提交成功，募资进行中
+  ['disco_9', 'In Progress'],
+  // Exchange注入中
+  ['exchange_10', 'Inpouring'],
+  // exchange注入失败
+  ['exchange_12', 'Inpour failed']
+]);
+
 export default {
   props: {
     status: {
@@ -54,26 +81,11 @@ export default {
     }
   },
   data() {
-    return {
-      // 状态的文字描述, key值为字段type + '_' + 字段status
-      statusTextMap: new Map([
-        ['disco_1', 'Creating'], // DISCO募资合约生成中
-        ['disco_2', 'Wait for enable'], // DISCO募资合约生成成功
-        ['disco_3', 'Failed to create contract'], // DISCO募资合约生成失败
-        ['disco_4', 'Pending'], // DISCO提交后pending
-        ['disco_5', 'Failed to enable DISCO'], // DISCO提交后失败
-        ['disco_6', 'Waitting to start'], // DISCO提交后成功，募资等待开始
-        ['disco_7', 'Succeed'], // DISCO提交成功-募资成功
-        ['disco_8', 'Failed'], // DISCO提交成功-募资失败
-        ['disco_9', 'In Progress'], // DISCO提交成功，募资进行中
-        ['exchange_10', 'Inpouring'], // Exchange注入中
-        ['exchange_12', 'Inpour failed'] // exchange注入失败
-      ])
-    };
+    return {};
   },
   components: {
     FundraisingIcon,
-    Trading
+    TradingIcon
   },
   computed: {
     title() {
@@ -95,8 +107,10 @@ export default {
     resultDesc() {
       let desc = '';
       if (
-        (this.status === '6' && this.type === 'disco') || // DISCO提交后成功，募资等待开始
-        (this.status === '9' && this.type === 'disco') // DISCO提交成功，募资进行中
+        // DISCO提交后成功，募资等待开始
+        (this.status === '6' && this.type === 'disco') ||
+        // DISCO提交成功，募资进行中
+        (this.status === '9' && this.type === 'disco')
       ) {
         desc =
           'You have enabled DISCO,Exchange will be opened automatically after successful fund-raising！';
@@ -108,9 +122,12 @@ export default {
     resultVisible() {
       let visible = false;
       if (
-        (this.status === '6' && this.type === 'disco') || //
-        (this.status === '9' && this.type === 'disco') || // DISCO提交成功，募资进行中
-        (this.status === '11' && this.type === 'exchange') // exchange注入成功
+        // DISCO提交后成功，募资等待开始
+        (this.status === '6' && this.type === 'disco') ||
+        // DISCO提交成功，募资进行中
+        (this.status === '9' && this.type === 'disco') ||
+        // exchange注入成功
+        (this.status === '11' && this.type === 'exchange')
       ) {
         visible = true;
       }
@@ -119,40 +136,57 @@ export default {
     disabled() {
       let disabled = false;
       if (
-        this.status === '1' || // 当DISCO募资合约生成中时
-        (this.status === '2' && this.type === 'exchange') || // 当DISCO募资合约生成成功，不可手动开启交易
-        this.status === '4' || // DISCO提交后pending，不可操作
-        (this.status === '6' && this.type === 'exchange') || // DISCO提交后成功，募资等待开始, 不可手动开启交易
-        (this.status === '9' && this.type === 'exchange') || // DISCO提交成功，募资进行中，不可手动开启交易
-        this.status === '10' || // Exchange注入中
-        (this.status === '11' && this.type === 'disco') // exchange注入成功，不可再开启募资
+        // 当DISCO募资合约生成中时
+        this.status === '1' ||
+        // 当DISCO募资合约生成成功，不可手动开启交易
+        (this.status === '2' && this.type === 'exchange') ||
+        // DISCO提交后pending，不可操作
+        this.status === '4' ||
+        // DISCO提交后成功，募资等待开始, 不可手动开启交易
+        (this.status === '6' && this.type === 'exchange') ||
+        // DISCO提交成功，募资进行中，不可手动开启交易
+        (this.status === '9' && this.type === 'exchange') ||
+        // Exchange注入中
+        this.status === '10' ||
+        // exchange注入成功，不可再开启募资
+        (this.status === '11' && this.type === 'disco')
       ) {
         disabled = true;
       }
-      //
       return disabled;
     },
     // 状态文字样式类型 red红色 blue蓝色 gray灰色
     statusTextType() {
       let type = 'blue';
       if (
+        // DISCO募资合约生成中
         (this.status === '1' && this.type === 'disco') ||
+        // DISCO提交后pending
         (this.status === '4' && this.type === 'disco') ||
-        (this.status === '10' && this.type === 'exchange') // Exchange注入中
+        // Exchange注入中
+        (this.status === '10' && this.type === 'exchange')
       ) {
         type = 'gray';
       } else if (
-        (this.status === '2' && this.type === 'disco') || // DISCO募资合约生成成功
-        (this.status === '6' && this.type === 'disco') || // DISCO提交后成功，募资等待开始
-        (this.status === '7' && this.type === 'disco') || // DISCO提交成功-募资成功
-        (this.status === '9' && this.type === 'disco') // DISCO提交成功，募资进行中
+        // DISCO募资合约生成成功
+        (this.status === '2' && this.type === 'disco') ||
+        // DISCO提交后成功，募资等待开始
+        (this.status === '6' && this.type === 'disco') ||
+        // DISCO提交成功-募资成功
+        (this.status === '7' && this.type === 'disco') ||
+        // DISCO提交成功，募资进行中
+        (this.status === '9' && this.type === 'disco')
       ) {
         type = 'blue';
       } else if (
-        (this.status === '3' && this.type === 'disco') || // DISCO募资合约生成失败
-        (this.status === '5' && this.type === 'disco') || // DISCO提交后失败
-        (this.status === '8' && this.type === 'disco') || // DISCO提交成功-募资失败
-        (this.status === '12' && this.type === 'exchange') // exchange注入失败
+        // DISCO募资合约生成失败
+        (this.status === '3' && this.type === 'disco') ||
+        // DISCO提交后失败
+        (this.status === '5' && this.type === 'disco') ||
+        // DISCO提交成功-募资失败
+        (this.status === '8' && this.type === 'disco') ||
+        // exchange注入失败
+        (this.status === '12' && this.type === 'exchange')
       ) {
         type = 'red';
       }
@@ -161,19 +195,7 @@ export default {
     // 状态文字文字描述，为undefind则不显示
     statusText() {
       let key = `${this.type}_${this.status}`;
-      return this.statusTextMap.get(key);
-    }
-  },
-  watch: {
-    status() {
-      this.update();
-    }
-  },
-  methods: {
-    update() {
-      if (this.status === '0') {
-      } else if (this.status === '1') {
-      }
+      return statusTextMap.get(key);
     }
   }
 };
