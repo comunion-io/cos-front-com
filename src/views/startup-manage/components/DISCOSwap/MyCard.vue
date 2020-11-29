@@ -54,7 +54,22 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      // 状态的文字描述, key值为字段type + '_' + 字段status
+      statusTextMap: new Map([
+        ['disco_1', 'Creating'], // DISCO募资合约生成中
+        ['disco_2', 'Wait for enable'], // DISCO募资合约生成成功
+        ['disco_3', 'Failed to create contract'], // DISCO募资合约生成失败
+        ['disco_4', 'Pending'], // DISCO提交后pending
+        ['disco_5', 'Failed to enable DISCO'], // DISCO提交后失败
+        ['disco_6', 'Waitting to start'], // DISCO提交后成功，募资等待开始
+        ['disco_7', 'Succeed'], // DISCO提交成功-募资成功
+        ['disco_8', 'Failed'], // DISCO提交成功-募资失败
+        ['disco_9', 'In Progress'], // DISCO提交成功，募资进行中
+        ['exchange_10', 'Inpouring'], // Exchange注入中
+        ['exchange_12', 'Inpour failed'] // exchange注入失败
+      ])
+    };
   },
   components: {
     FundraisingIcon,
@@ -65,18 +80,17 @@ export default {
       return this.type === 'disco' ? 'DISCO' : 'Create Exchange';
     },
     textList() {
-      if (this.type === 'disco') {
-        return [
-          'Help investors get well investment project',
-          'Help developers to change token to ETH',
-          'Help start-up to raise the funds needed for the development'
-        ];
-      }
-      return [
-        'Liquidity providers earn a 0.3% fee on all trades proportional to',
-        'their share of the pool. Fees are added to the pool, accrue in real',
-        'time and can be claimed by withdrawing your liquidity.'
-      ];
+      return this.type === 'disco'
+        ? [
+            'Help investors get well investment project',
+            'Help developers to change token to ETH',
+            'Help start-up to raise the funds needed for the development'
+          ]
+        : [
+            'Liquidity providers earn a 0.3% fee on all trades proportional to',
+            'their share of the pool. Fees are added to the pool, accrue in real',
+            'time and can be claimed by withdrawing your liquidity.'
+          ];
     },
     resultDesc() {
       let desc = '';
@@ -144,44 +158,10 @@ export default {
       }
       return type;
     },
-    // 状态文字文字描述，为空则不显示
+    // 状态文字文字描述，为undefind则不显示
     statusText() {
-      let text = '';
-      if (this.status === '1' && this.type === 'disco') {
-        // DISCO募资合约生成中
-        text = 'Creating';
-      } else if (this.status === '2' && this.type === 'disco') {
-        // DISCO募资合约生成成功
-        text = 'Wait for enable';
-      } else if (this.status === '3' && this.type === 'disco') {
-        // DISCO募资合约生成失败
-        text = 'Failed to create contract';
-      } else if (this.status === '4' && this.type === 'disco') {
-        // DISCO提交后pending
-        text = 'Pending';
-      } else if (this.status === '5' && this.type === 'disco') {
-        // DISCO提交后失败
-        text = 'Failed to enable DISCO';
-      } else if (this.status === '6' && this.type === 'disco') {
-        // DISCO提交后成功，募资等待开始
-        text = 'Waitting to start';
-      } else if (this.status === '7' && this.type === 'disco') {
-        // DISCO提交成功-募资成功
-        text = 'Succeed';
-      } else if (this.status === '8' && this.type === 'disco') {
-        // DISCO提交成功-募资失败
-        text = 'Failed';
-      } else if (this.status === '9' && this.type === 'disco') {
-        // DISCO提交成功，募资进行中
-        text = 'In Progress';
-      } else if (this.status === '10' && this.type === 'exchange') {
-        // Exchange注入中
-        text = 'Inpouring';
-      } else if (this.status === '12' && this.type === 'exchange') {
-        // exchange注入失败
-        text = 'Inpour failed';
-      }
-      return text;
+      let key = `${this.type}_${this.status}`;
+      return this.statusTextMap.get(key);
     }
   },
   watch: {
