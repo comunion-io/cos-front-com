@@ -111,7 +111,8 @@
 import { mapGetters } from 'vuex';
 // import { Transaction } from 'ethereumjs-tx';
 // import { EthereumTx } from 'ethereumjs-tx/dist/fake';
-import { COMUNION_RECEIVER_STARTUP_ACCOUNT, web3 } from '@/libs/web3';
+import { web3 } from '@/libs/web3';
+import { COMUNION_RECEIVER_STARTUP_ACCOUNT } from '@/configs/app';
 import { urlValidator } from '@/utils/validators';
 import { startupAbi } from '@/libs/abis/startup';
 import {
