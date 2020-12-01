@@ -63,6 +63,15 @@ const routes = [
         component: () => import(/* webpackChunkName: 'bounty' */ '@/views/bounty/BountyDetail.vue')
       },
       {
+        path: '/disco',
+        name: 'disco',
+        meta: {
+          title: 'DISCO',
+          skipAuth: true
+        },
+        component: () => import(/* webpackChunkName: 'disco' */ '@/views/disco/Disco.vue')
+      },
+      {
         path: '/exchange',
         name: 'exchange',
         meta: {
