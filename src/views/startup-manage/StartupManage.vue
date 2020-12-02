@@ -19,6 +19,7 @@
       ></StartupManagePerference>
       <StartupSetting v-else-if="activeTab === 'Settings'"></StartupSetting>
       <StartupBounty v-else-if="activeTab === 'Bounty'" :startupId="startupId"></StartupBounty>
+      <DISCOSwap v-else-if="activeTab === 'DISCO & Swap'" />
     </div>
   </div>
 </template>
@@ -26,9 +27,10 @@
 import StartupManagePerference from './components/StartupPerference';
 import StartupSetting from './components/StartupSettings';
 import StartupBounty from './components/StartupBounty';
+import DISCOSwap from './components/DISCOSwap/index'; // DISCO&Swap页面组件
 
 export default {
-  components: { StartupManagePerference, StartupSetting, StartupBounty },
+  components: { StartupManagePerference, StartupSetting, StartupBounty, DISCOSwap },
   data() {
     return {
       activeTab: 'Perference',
@@ -39,7 +41,7 @@ export default {
         { name: 'Bounty' },
         { name: 'Team' },
         { name: 'Operation' },
-        { name: 'Fundraising' }
+        { name: 'DISCO & Swap' }
       ]
     };
   },
