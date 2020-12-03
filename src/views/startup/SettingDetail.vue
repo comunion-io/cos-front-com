@@ -53,7 +53,8 @@
 import { mapGetters } from 'vuex';
 import { Steps } from 'ant-design-vue';
 import { settingAbi } from '@/libs/abis/setting';
-import { COMMUNION_SETTING_RECEIVE_ACCOUNT, web3 } from '@/libs/web3';
+import { web3 } from '@/libs/web3';
+import { COMMUNION_SETTING_RECEIVE_ACCOUNT } from '@/configs/app';
 import { STARTUP_SETTING_STORE_KEY } from '@/configs/storage';
 import services, { getMyStartupDetail } from '@/services';
 import { merge } from '@/utils';

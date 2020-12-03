@@ -1,11 +1,12 @@
 <script>
 import { Steps, Timeline } from 'ant-design-vue';
+import { mapGetters } from 'vuex';
+import moment from 'moment';
 // import { getBountyDetail, startupWork } from '@/services';
 import services from '@/services';
 import Descriptions from '@/components/display/Descriptions';
-import { mapGetters } from 'vuex';
-import moment from 'moment';
-import { web3, COMUNION_RECEIVE_HUNTER_TRANSFER } from '@/libs/web3';
+import { web3 } from '@/libs/web3';
+import { COMUNION_RECEIVE_HUNTER_TRANSFER } from '@/configs/app';
 import CopyableAddress from '@/components/helper/CopyableAddress';
 
 const { Step } = Steps;
