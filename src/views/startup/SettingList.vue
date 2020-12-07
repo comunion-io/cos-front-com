@@ -139,7 +139,7 @@ export default {
           // 前往bountymanager 页面
           this.$router.push({
             name: 'startupManage',
-            query: { startupId: startup.id }
+            params: { id: startup.id }
           });
         }
       }

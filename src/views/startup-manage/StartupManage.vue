@@ -13,13 +13,10 @@
           {{ tab.name }}
         </div>
       </div>
-      <StartupManagePerference
-        v-if="activeTab === 'Perference'"
-        :startupId="startupId"
-      ></StartupManagePerference>
-      <StartupSetting v-else-if="activeTab === 'Settings'"></StartupSetting>
-      <StartupBounty v-else-if="activeTab === 'Bounty'" :startupId="startupId"></StartupBounty>
+      <StartupManagePerference v-if="activeTab === 'Perference'" :startupId="$route.params.id" />
+      <StartupSetting v-else-if="activeTab === 'Settings'" />
       <DISCOSwap v-else-if="activeTab === 'DISCO & Swap'" />
+      <StartupBounty v-else-if="activeTab === 'Bounty'" :startupId="$route.params.id" />
     </div>
   </div>
 </template>
@@ -34,7 +31,6 @@ export default {
   data() {
     return {
       activeTab: 'Perference',
-      startupId: this.$route.query.startupId,
       tabs: [
         { name: 'Perference' },
         { name: 'Settings' },

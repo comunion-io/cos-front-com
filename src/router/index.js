@@ -31,17 +31,6 @@ const routes = [
         },
         component: () => import(/* webpackChunkName: 'bounty' */ '@/views/bounty/List.vue')
       },
-      // startupmanagement
-      {
-        path: '/bounty/startup-management',
-        name: 'startupManage',
-        meta: {
-          title: 'Start-Up Management',
-          skipAuth: false
-        },
-        component: () =>
-          import(/* webpackChunkName: 'bounty' */ '@/views/startup-manage/StartupManage.vue')
-      },
       // new bounty
       {
         path: '/bounty/new',
@@ -90,7 +79,7 @@ const routes = [
         component: () => import(/* webpackChunkName: 'governance' */ '@/views/governance/List.vue')
       },
       {
-        path: '/startup/detail/:id',
+        path: '/startup/:id',
         name: 'startupDetail',
         meta: {
           title: 'Start-Up Detail',
@@ -98,6 +87,17 @@ const routes = [
         },
         component: () =>
           import(/* webpackChunkName: 'startupDetail' */ '@/views/startup/Detail.vue')
+      },
+      // startupmanagement
+      {
+        path: '/startup/:id/management',
+        name: 'startupManage',
+        meta: {
+          title: 'Start-Up Management',
+          skipAuth: false
+        },
+        component: () =>
+          import(/* webpackChunkName: 'bounty' */ '@/views/startup-manage/StartupManage.vue')
       },
       {
         path: '/startup/new',
