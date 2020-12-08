@@ -1,24 +1,61 @@
 <template>
   <div class="container">
-    <div class="card-container"></div>
-    <div class="chart-container">
-      <total-chart :chartData="chartData" />
+    <div class="card-container">
+      <disco-card></disco-card>
     </div>
-    <div class="tabs-container"></div>
+    <div class="chart-container">
+      <daito-total-chart :chart-data="chartData" />
+    </div>
+    <div class="tabs-container">
+      <c-tabs :tab-panes="tabPanes" :active-key="tabActiveKey" @change="onTabsChange">
+        <template v-slot:disco>
+          <disco-table />
+        </template>
+        <template v-slot:swap>
+          <swap-table />
+        </template>
+      </c-tabs>
+    </div>
   </div>
 </template>
 
 <script>
-import TotalChart from './components/TotalChart.vue';
+import DaitoTotalChart from './components/DaitoTotalChart.vue';
+import DiscoTable from './components/DiscoTable.vue';
+import SwapTable from './components/SwapTable.vue';
+import DiscoCard from './components/DiscoCard.vue';
+import CTabs from '@/components/tabs/CTabs.vue';
+
+const tabPanes = [
+  {
+    name: 'disco',
+    title: 'DISCO'
+  },
+  {
+    name: 'swap',
+    title: 'Swap'
+  }
+];
 
 export default {
   components: {
-    TotalChart
+    DaitoTotalChart,
+    DiscoTable,
+    SwapTable,
+    DiscoCard,
+    CTabs
   },
   data() {
     return {
+      tabPanes,
+      tabActiveKey: 'disco',
       chartData: {}
     };
+  },
+  methods: {
+    onTabsChange(key) {
+      this.tabActiveKey = key;
+    }
   }
 };
 </script>
@@ -30,22 +67,15 @@ export default {
 
 .card-container {
   width: 100%;
-  height: 110px;
-  border: 1px solid yellow;
-  background-color: #fff;
 }
 
 .chart-container {
   width: 100%;
-  height: 332px;
   margin: 36px 0;
-  background-color: #fff;
 }
 
 .tabs-container {
   width: 100%;
-  height: 500px;
-  border: 1px solid red;
-  background-color: #fff;
+  height: 600px;
 }
 </style>
