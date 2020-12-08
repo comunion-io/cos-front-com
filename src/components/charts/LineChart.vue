@@ -1,9 +1,9 @@
 <template>
-  <basic-chart :option="lineOption" />
+  <c-chart :option="lineOption" />
 </template>
 
 <script>
-import BasicChart from './BasicChart.vue';
+import CChart, { getLinearGradient } from './CChart.vue';
 
 export const DEFAULT_GRID = {
   left: 0,
@@ -32,13 +32,55 @@ export const DEFAULT_SERIE = {
   smooth: 0.8,
   symbolSize: 4,
   lineStyle: {
-    color: '#6d9cfa',
+    color: '#6271D2',
     width: 1
   },
   itemStyle: {
-    color: '#6d9cfa',
+    color: '#6271D2',
     borderColor: '#fff',
     borderWidth: 3
+  }
+};
+
+export const AREA_SERIE = {
+  type: 'line',
+  showSymbol: false,
+  showAllSymbol: true,
+  symbol: 'circle',
+  symbolSize: 4,
+  lineStyle: {
+    color: '#6271D2',
+    width: 3
+  },
+  areaStyle: {
+    color: getLinearGradient()
+  },
+  itemStyle: {
+    color: '#6271D2',
+    borderColor: '#fff',
+    borderWidth: 3
+  }
+};
+
+export const AREA_TOOLTIP = {
+  trigger: 'axis',
+  backgroundColor: '#fff',
+  formatter: params => {
+    if (!params || !params.length) {
+      return null;
+    }
+
+    return `
+    <div style="width: auto; color: #595959;font-size: 12px; padding: 12px;border-radius: 3px;pointer-events: none;line-height: 12px;">
+      <div style="height: 18px; margin-bottom: 6px;">${params[0].name}</div>
+      ${params.map(
+        param =>
+          `<div style="display: flex; align-items: center;">${param.marker} <span>${
+            param.seriesName
+          }: ${param.value || ''}</span></div>`
+      )}
+    </div>
+  `;
   }
 };
 
@@ -64,8 +106,6 @@ export const DEFAULT_TOOLTIP = {
   }
 };
 
-const WATCH_PROPS = ['tooltip', 'grid', 'xAxis', 'yAxis', 'series'];
-
 export default {
   props: {
     tooltip: Object,
@@ -78,28 +118,11 @@ export default {
     }
   },
   components: {
-    BasicChart
+    CChart
   },
-  data() {
-    return {
-      lineOption: {}
-    };
-  },
-  created() {
-    WATCH_PROPS.forEach(prop => {
-      this.$watch(
-        function() {
-          return this[prop];
-        },
-        function(next, prev) {
-          this.setLineOption();
-        }
-      );
-    });
-  },
-  methods: {
-    setLineOption() {
-      this.lineOption = {
+  computed: {
+    lineOption() {
+      return {
         title: {
           show: false
         },

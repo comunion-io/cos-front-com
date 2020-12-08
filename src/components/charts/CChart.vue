@@ -1,9 +1,28 @@
 <template>
-  <div key="basic-chart" class="container" style="padding: 0;"></div>
+  <div class="c-chart-container" style="padding: 0;"></div>
 </template>
 
-<script lang="ts">
+<script>
 import echarts from 'echarts';
+
+export function getLinearGradient(colors) {
+  return new echarts.graphic.LinearGradient(
+    0,
+    0,
+    0,
+    1,
+    colors || [
+      {
+        offset: 0,
+        color: 'hsla(232, 55%, 60%, 1)'
+      },
+      {
+        offset: 1,
+        color: 'hsla(0, 0%, 100%, 0)'
+      }
+    ]
+  );
+}
 
 export default {
   props: {
@@ -62,7 +81,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.container {
+.c-chart-container {
   width: 100%;
   height: 100%;
 }
