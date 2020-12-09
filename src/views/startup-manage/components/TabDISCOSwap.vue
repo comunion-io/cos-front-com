@@ -47,8 +47,8 @@
 
 <script>
 import services from '@/services';
-import MyCard from './MyCard';
-import CreateContract from './CreateContract';
+import CreateContract from './DISCOSwap/CreateContract';
+import MyCard from './DISCOSwap/MyCard';
 export default {
   data() {
     return {

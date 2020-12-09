@@ -326,7 +326,7 @@ export default {
           this.$router.push({
             name: 'startupManage',
             params: { id: startupId },
-            query: { tab: 'bounty' }
+            query: { tab: 'Bounty' }
           });
         }
       } catch (err) {

@@ -1,117 +1,91 @@
-<template>
-  <div id="startup-manage">
-    <div class="title">Start-Up Management</div>
-    <div class="content mb-24">
-      <div class="tabs flex ai-center">
-        <div
-          class="tab flex ai-center jc-center flex-1 f-18 t-bold"
-          :class="{ active: activeTab === tab.name }"
-          v-for="tab in tabs"
-          :key="tab.name"
-          @click="tabOnChange(tab.name)"
-        >
-          {{ tab.name }}
-        </div>
-      </div>
-      <StartupManagePerference v-if="activeTab === 'Perference'" :startupId="$route.params.id" />
-      <StartupSetting v-else-if="activeTab === 'Settings'" />
-      <DISCOSwap v-else-if="activeTab === 'DISCO & Swap'" />
-      <StartupBounty v-else-if="activeTab === 'Bounty'" :startupId="$route.params.id" />
-    </div>
-  </div>
-</template>
 <script>
-import StartupManagePerference from './components/StartupPerference';
-import StartupSetting from './components/StartupSettings';
-import StartupBounty from './components/StartupBounty';
-import DISCOSwap from './components/DISCOSwap/index'; // DISCO&Swap页面组件
+import { isString } from '@/utils';
+import Breadcrumb from './components/Breadcrumb';
+import services from '@/services';
+
+const tabs = [
+  'Perference',
+  'Settings',
+  'Bounty',
+  'Team',
+  'Operation',
+  { name: 'DISCO & Swap', comp: 'DISCOSwap' }
+].map(item => {
+  if (isString(item)) {
+    return { name: item, comp: item };
+  }
+  return item;
+});
 
 export default {
-  components: { StartupManagePerference, StartupSetting, StartupBounty, DISCOSwap },
+  components: {
+    TabPerference: () => import('./components/TabPerference'),
+    TabSettings: () => import('./components/TabSettings'),
+    TabBounty: () => import('./components/TabBounty'),
+    TabTeam: () => 'Team',
+    TabOperation: () => 'Operation',
+    TabDISCOSwap: () => import('./components/TabDISCOSwap')
+  },
   data() {
     return {
-      activeTab: 'Perference',
-      tabs: [
-        { name: 'Perference' },
-        { name: 'Settings' },
-        { name: 'Bounty' },
-        { name: 'Team' },
-        { name: 'Operation' },
-        { name: 'DISCO & Swap' }
-      ]
+      selectedTab: tabs[0].name,
+      startupDetail: {}
     };
   },
-
-  methods: {
-    // tab改变
-    tabOnChange(tab) {
-      this.activeTab = tab;
+  async mounted() {
+    const tab = this.$route.query.tab;
+    if (tab && tabs.find(tab => tab.name === tab)) {
+      this.selectedTab = tab;
+    }
+    const { error, data } = await services['cores@startup-获取']({
+      startupId: this.$route.params.id
+    });
+    if (!error) {
+      this.startupDetail = data;
     }
   },
-  mounted() {
-    const tab = this.$route.query.tab;
-    if (tab === 'bounty') {
-      this.activeTab = 'Bounty';
-    } else {
-      this.activeTab = this.tabs[0].name;
-    }
+  render(h) {
+    const TabComponent = 'Tab' + tabs.find(tab => tab.name === this.selectedTab).comp;
+    return (
+      <div class="flex" style="padding: 16px 50px">
+        <a-card title="Start-Up Management" class="mr-20 side-menus">
+          <a-tabs vModel={this.selectedTab} tab-position="left">
+            {tabs.map(tab => (
+              <a-tab-pane key={tab.name} tab={tab.name}></a-tab-pane>
+            ))}
+          </a-tabs>
+        </a-card>
+        <a-card class="flex-1">
+          <Breadcrumb startupName={this.startupDetail.name} />
+          <TabComponent id={this.$route.params.id} startup={this.startup} />
+        </a-card>
+      </div>
+    );
   }
 };
 </script>
 <style lang="less" scoped>
-#startup-manage {
-  padding: 0 50px;
-
-  .title {
-    font-size: 24px;
-    line-height: 24px;
-    font-family: Microsoft YaHei;
-    font-weight: bold;
-    color: rgba(0, 0, 0, 1);
-    margin: 30px 0 42px;
-    text-align: center;
+.side-menus {
+  flex-shrink: 0;
+  width: 200px;
+  align-self: flex-start;
+  /deep/ .ant-card-head-title {
+    white-space: pre-wrap;
   }
-
-  .content {
-    background-color: #fff;
-    box-shadow: 0px 2px 4px 0px rgba(6, 0, 1, 0.04);
-    border-radius: 4px;
-
-    .tabs {
-      height: 70px;
-      position: relative;
-      padding: 0 30px;
-
-      &:after {
-        content: '';
-        position: absolute;
-        left: 30px;
-        right: 30px;
-        bottom: 0;
-        border-bottom: 1px solid #bfbfbf;
-      }
-      .tab {
-        color: #000;
-        cursor: pointer;
-        height: 100%;
-        position: relative;
-
-        &:hover,
-        &.active {
-          &:after {
-            content: '';
-            position: absolute;
-            height: 5px;
-            left: 17px;
-            right: 17px;
-            bottom: -2px;
-            border-radius: 3px;
-            background-color: #6170ff;
-            z-index: 1;
-          }
-        }
-      }
+  /deep/ .ant-tabs-left-bar {
+    border-right: none;
+  }
+  /deep/ .ant-tabs-tab {
+    margin-bottom: 14px;
+    padding-left: 6px;
+    text-align: left;
+    font-size: 15px;
+    &:not(.ant-tabs-tab-active) {
+      color: #000;
     }
+  }
+  /deep/ .ant-tabs-ink-bar {
+    display: none !important;
   }
 }
 </style>
