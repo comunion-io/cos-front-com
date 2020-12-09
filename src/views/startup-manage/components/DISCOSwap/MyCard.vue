@@ -34,7 +34,7 @@
         {{ this.resultDesc }}
       </div>
     </div>
-    <div class="btn" v-if="!disabled">
+    <div class="btn" v-if="!disabled" @click="onClick">
       <a-icon class="icon-btn" type="double-right" />
     </div>
   </div>
@@ -196,6 +196,11 @@ export default {
     statusText() {
       let key = `${this.type}_${this.status}`;
       return statusTextMap.get(key);
+    }
+  },
+  methods: {
+    onClick() {
+      this.$emit('onClick');
     }
   }
 };

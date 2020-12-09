@@ -1,7 +1,7 @@
 <template>
   <div class="disco-swap">
     <!-- 第一次进入 -->
-    <MyCard status="0" type="disco" />
+    <MyCard status="0" type="disco" @onClick="cardOnClick" />
     <MyCard status="0" type="exchange" />
     <!-- DISCO募资合约生成中 -->
     <MyCard status="1" type="disco" />
@@ -39,17 +39,47 @@
     <!-- exchange注入失败 -->
     <MyCard status="12" type="disco" />
     <MyCard status="12" type="exchange" />
+
+    <!-- 创建合约页面 -->
+    <CreateContract v-if="createContractVisible" />
   </div>
 </template>
 
 <script>
+import services from '@/services';
 import MyCard from './MyCard';
+import CreateContract from './CreateContract';
 export default {
   data() {
-    return {};
+    return {
+      // disco信息
+      disco: null,
+      // 是否显示创建合约页面
+      createContractVisible: false
+    };
   },
   components: {
-    MyCard
+    MyCard,
+    CreateContract
+  },
+  mounted() {
+    // 获取disco信息
+    this.getDisco();
+  },
+  methods: {
+    // 获取disco信息
+    async getDisco() {
+      let { error, data } = await services['cores@disco-startup-获取']({
+        startupId: this.$route.query.startupId
+      });
+      if (!error) {
+        this.disco = data;
+      }
+    },
+    // 卡片被点击
+    cardOnClick() {
+      this.createContractVisible = true;
+    }
   }
 };
 </script>
@@ -60,5 +90,6 @@ export default {
 
 .disco-swap {
   padding: 30px;
+  position: relative;
 }
 </style>
