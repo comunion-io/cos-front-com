@@ -33,17 +33,41 @@ export const apis: Apis = {
     m: 'POST',
     d: 1
   },
+  'cores@startup-follow-创建': {
+    u: '/cores/startups/{startupId}/follows',
+    m: 'POST',
+    p: ['startupId'],
+    d: 1
+  },
   'cores@bounty-closed': {
     u: '/cores/bounties/{bountyId}:closed',
     m: 'PUT',
     p: ['bountyId'],
     d: 1
   },
-  'cores@startup-follow-创建': {
-    u: '/cores/startups/{startupId}/follows',
+  'cores@disco-获取': {
+    u: '/cores/discos/{discoId}',
+    m: 'GET',
+    p: ['discoId'],
+    d: 0
+  },
+  'cores@disco-列表': {
+    u: '/cores/discos',
+    m: 'GET',
+    q: ['limit', 'offset', 'keyword', 'orderBy', 'isAsc'],
+    d: 0
+  },
+  'cores@disco-startup-获取': {
+    u: '/cores/startups/{startupId}/disco',
+    m: 'GET',
+    p: ['startupId'],
+    d: 0
+  },
+  'cores@disco-startup-创建': {
+    u: '/cores/startups/{startupId}/disco',
     m: 'POST',
     p: ['startupId'],
-    d: 1
+    d: 0
   },
   'cores@startups-我的-follow列表': {
     u: '/cores/startups/me/followed',
