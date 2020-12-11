@@ -3,6 +3,9 @@
     <a-tab-pane v-for="item in tabPanes" :key="item.name" :tab="item.title">
       <slot :name="item.name"></slot>
     </a-tab-pane>
+    <template slot="tabBarExtraContent">
+      <slot name="extra"></slot>
+    </template>
   </a-tabs>
 </template>
 
@@ -14,8 +17,8 @@ export default {
     contentClass: String
   },
   methods: {
-    onTabsChange(val) {
-      this.$emit('change', val);
+    onTabsChange(value) {
+      this.$emit('on-change', value);
     }
   }
 };
@@ -23,9 +26,6 @@ export default {
 
 <style lang="less">
 .c-tabs-container {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
   height: 100%;
   width: 100%;
   box-shadow: 0px 4px 60px 0px rgba(208, 208, 208, 0.5);
@@ -38,7 +38,6 @@ export default {
 
   .ant-tabs-top-bar {
     margin: 0;
-    flex-shrink: 0;
     padding: 0 30px;
 
     .ant-tabs-tab {
@@ -47,10 +46,24 @@ export default {
     }
   }
 
-  .ant-tabs-content {
-    flex: 1;
-    min-height: 0;
-    overflow: auto;
+  .ant-tabs-extra-content {
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    .ant-input {
+      width: 420px;
+      height: 36px;
+      line-height: 36px;
+      background-color: hsla(0, 0%, 75%, 0.1);
+      border-radius: 18px;
+      border: none;
+    }
+
+    .ant-input-suffix {
+      font-size: 22px;
+      color: hsla(0, 0%, 0%, 0.25);
+    }
   }
 }
 </style>

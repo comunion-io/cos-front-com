@@ -1,18 +1,26 @@
 <template>
-  <div class="container">
-    <div class="card-container">
+  <div class="full-width">
+    <div>
       <disco-card></disco-card>
     </div>
     <div class="chart-container">
       <daito-total-chart :chart-data="chartData" />
     </div>
-    <div class="tabs-container">
-      <c-tabs :tab-panes="tabPanes" :active-key="tabActiveKey" @change="onTabsChange">
+    <div>
+      <c-tabs
+        enable-search
+        :tab-panes="tabPanes"
+        :active-key="tabActiveKey"
+        @on-change="onTabsChange"
+      >
         <template v-slot:disco>
           <disco-table />
         </template>
         <template v-slot:swap>
           <swap-table />
+        </template>
+        <template v-slot:extra>
+          <a-input-search :key="tabActiveKey" @search="onKeywordSearch" />
         </template>
       </c-tabs>
     </div>
@@ -49,33 +57,29 @@ export default {
     return {
       tabPanes,
       tabActiveKey: 'disco',
-      chartData: {}
+      chartData: {},
+      keyword: ''
     };
   },
   methods: {
     onTabsChange(key) {
+      this.keyword = '';
       this.tabActiveKey = key;
+    },
+    onKeywordSearch(value) {
+      this.keyword = value;
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
-.container {
-  width: 100%;
-}
-
-.card-container {
+.full-width {
   width: 100%;
 }
 
 .chart-container {
-  width: 100%;
   margin: 36px 0;
-}
-
-.tabs-container {
-  width: 100%;
-  height: 600px;
+  height: 500px;
 }
 </style>

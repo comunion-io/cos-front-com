@@ -1,5 +1,9 @@
 <template>
-  <c-table key="disco-table" :columns="columns" :data-source="dataSource" />
+  <c-table key="disco-table" :columns="columns" :data-source="dataSource" @change="onTableChange">
+    <template #name="{ text }">
+      <a>{{ text }}</a>
+    </template>
+  </c-table>
 </template>
 
 <script>
@@ -9,7 +13,10 @@ const tableColumns = [
   {
     title: 'Startup',
     dataIndex: 'name',
-    width: 150
+    width: 150,
+    sorter: true,
+    scopedSlots: { customRender: 'name' },
+    ellipsis: true
   },
   {
     title: 'ShareToken',
@@ -22,18 +29,22 @@ const tableColumns = [
   },
   {
     title: 'InvestmentReward',
-    dataIndex: 'address1'
+    dataIndex: 'address1',
+    sorter: true
   },
   {
     title: 'Liquidity Pool',
-    dataIndex: 'address2'
+    dataIndex: 'address2',
+    sorter: true
   },
   {
     title: 'Status',
-    dataIndex: 'address3'
+    dataIndex: 'address3',
+    align: 'center'
   }
 ];
 
+// TODO: 待数据接入
 const data = [];
 for (let i = 0; i < 20; i++) {
   data.push({
@@ -53,9 +64,26 @@ export default {
   },
   data() {
     return {
-      columns: tableColumns,
-      dataSource: data
+      dataSource: data,
+      sortedInfo: {}
     };
+  },
+  mounted() {
+    console.log('disco table mounted');
+  },
+  computed: {
+    columns() {
+      const { columnKey, order } = this.sortedInfo || {};
+      return tableColumns.map(col => ({
+        ...col,
+        sortOrder: (columnKey === col.dataIndex && order) || undefined
+      }));
+    }
+  },
+  methods: {
+    onTableChange(pagination, filters, sorter) {
+      this.sortedInfo = sorter;
+    }
   }
 };
 </script>

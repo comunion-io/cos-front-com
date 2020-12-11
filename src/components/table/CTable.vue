@@ -1,7 +1,17 @@
 <template>
   <div class="c-table-warpper">
     <div class="c-table-container">
-      <a-table :columns="columns" :data-source="dataSource" :pagination="tableRecordCount" />
+      <a-table
+        :columns="columns"
+        :data-source="dataSource"
+        :pagination="false"
+        v-bind="$attrs"
+        v-on="$listeners"
+      >
+        <template v-for="col in columns" #[col.dataIndex]="text">
+          <slot :name="col.dataIndex" :text="text"></slot>
+        </template>
+      </a-table>
     </div>
     <div v-show="showPagination" class="c-table-pagination">
       <pagination v-bind="pagination" />
@@ -27,7 +37,7 @@ export default {
         };
       }
     },
-    showPagination: {
+    enablePagination: {
       type: Boolean,
       default: true
     },
@@ -41,10 +51,8 @@ export default {
     }
   },
   computed: {
-    tableRecordCount() {
-      return {
-        pageSize: this.dataSource?.length || 0
-      };
+    showPagination() {
+      return this.enablePagination && (this.dataSource?.length > 0 || this.pagination?.total > 0);
     }
   }
 };
@@ -66,15 +74,11 @@ export default {
 .c-table-container {
   flex: 1;
   min-height: 0;
-  overflow-y: auto;
+  overflow: auto;
 
   .ant-table {
     width: 100%;
     height: 100%;
-  }
-
-  .ant-table-pagination {
-    display: none;
   }
 
   .ant-table-thead > tr > th {

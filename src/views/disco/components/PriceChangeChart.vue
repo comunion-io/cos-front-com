@@ -1,30 +1,31 @@
 <template>
-  <div class="container">
-    <div class="title">DAITO Total</div>
-    <div class="sub-title">Daito</div>
-    <div class="chart">
-      <line-chart renderer="svg" :x-axis="xAxis" :series="series" />
-    </div>
-  </div>
+  <line-chart
+    className="container"
+    renderer="svg"
+    :tooltip="tooltip"
+    :animation="false"
+    :x-axis="xAxis"
+    :series="series"
+  />
 </template>
 
 <script>
-import LineChart, { DEFAULT_XAXIS, AREA_SERIE } from '@/components/charts/LineChart.vue';
+import LineChart, { DEFAULT_XAXIS, DEFAULT_SERIE } from '@/components/charts/LineChart.vue';
 
 export default {
   components: {
     LineChart
   },
   props: {
-    chartData: {
-      type: Object,
-      required: true
-    }
+    chartData: [String, Object]
   },
   data() {
     return {
       xAxis: [],
-      series: []
+      series: [],
+      tooltip: {
+        show: false
+      }
     };
   },
   created() {
@@ -41,7 +42,7 @@ export default {
     this.setChartSeriesAndXAxis(this.chartData);
   },
   methods: {
-    setChartSeriesAndXAxis(data) {
+    setChartSeriesAndXAxis(next) {
       // TODO: 待数据接入
       this.xAxis = [
         {
@@ -62,7 +63,7 @@ export default {
       ];
       this.series = [
         {
-          ...AREA_SERIE,
+          ...DEFAULT_SERIE,
           data: [23, 17, 16, 20, 21, 25, 32, 19, 18, 32]
         }
       ];
@@ -73,34 +74,8 @@ export default {
 
 <style lang="less" scoped>
 .container {
-  display: flex;
-  flex-direction: column;
+  max-width: 200px;
   width: 100%;
-  height: 435px;
-  padding: 12px;
-  background-color: #ffffff;
-  box-shadow: 0px 4px 60px 0px rgba(208, 208, 208, 0.5);
-}
-
-.title {
-  font-size: 20px;
-  font-weight: 500;
-  color: #000000;
-  line-height: 30px;
-  flex-shrink: 0;
-}
-
-.sub-title {
-  font-size: 12px;
-  font-weight: 400;
-  color: #79828b;
-  line-height: 18px;
-  flex-shrink: 0;
-}
-
-.chart {
-  flex: 1;
-  min-height: 0;
-  padding: 0;
+  height: 100%;
 }
 </style>

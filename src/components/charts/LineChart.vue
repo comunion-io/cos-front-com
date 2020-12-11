@@ -1,5 +1,5 @@
 <template>
-  <c-chart :option="lineOption" />
+  <c-chart :class="className" :renderer="renderer" :option="lineOption" />
 </template>
 
 <script>
@@ -29,7 +29,6 @@ export const DEFAULT_SERIE = {
   showSymbol: false,
   showAllSymbol: true,
   symbol: 'circle',
-  smooth: 0.8,
   symbolSize: 4,
   lineStyle: {
     color: '#6271D2',
@@ -62,30 +61,9 @@ export const AREA_SERIE = {
   }
 };
 
-export const AREA_TOOLTIP = {
-  trigger: 'axis',
-  backgroundColor: '#fff',
-  formatter: params => {
-    if (!params || !params.length) {
-      return null;
-    }
-
-    return `
-    <div style="width: auto; color: #595959;font-size: 12px; padding: 12px;border-radius: 3px;pointer-events: none;line-height: 12px;">
-      <div style="height: 18px; margin-bottom: 6px;">${params[0].name}</div>
-      ${params.map(
-        param =>
-          `<div style="display: flex; align-items: center;">${param.marker} <span>${
-            param.seriesName
-          }: ${param.value || ''}</span></div>`
-      )}
-    </div>
-  `;
-  }
-};
-
 export const DEFAULT_TOOLTIP = {
   trigger: 'axis',
+  padding: 0,
   backgroundColor: '#fff',
   formatter: params => {
     if (!params || !params.length) {
@@ -108,8 +86,20 @@ export const DEFAULT_TOOLTIP = {
 
 export default {
   props: {
-    tooltip: Object,
-    grid: Object,
+    className: String,
+    renderer: String,
+    animation: {
+      type: Boolean,
+      default: true
+    },
+    tooltip: {
+      type: Object,
+      default: () => DEFAULT_TOOLTIP
+    },
+    grid: {
+      type: Object,
+      default: () => DEFAULT_GRID
+    },
     xAxis: Array,
     yAxis: Array,
     series: {
@@ -123,14 +113,15 @@ export default {
   computed: {
     lineOption() {
       return {
+        animation: this.animation,
         title: {
           show: false
         },
         legend: {
           show: false
         },
-        tooltip: this.tooltip || DEFAULT_TOOLTIP,
-        grid: this.grid || DEFAULT_GRID,
+        tooltip: this.tooltip,
+        grid: this.grid,
         xAxis: this.xAxis && this.xAxis.length ? this.xAxis : [DEFAULT_XAXIS],
         yAxis: this.yAxis && this.yAxis.length ? this.yAxis : [DEFAULT_YAXIS],
         series: this.series
