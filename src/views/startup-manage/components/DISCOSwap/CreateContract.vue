@@ -1,4 +1,5 @@
 <template>
+  <!-- 创建 disco  -->
   <div class="create-contract">
     <div class="alert">
       <a-icon type="exclamation-circle" theme="filled" style="color: #faad14; margin-right: 12px" />
@@ -140,7 +141,13 @@
 <script>
 import moment from 'moment';
 import services from '@/services';
+import { mapGetters } from 'vuex';
+import { sendDiscoTransaction } from '@/utils/contract/disco';
+
 export default {
+  computed: {
+    ...mapGetters(['categories', 'account', 'netWorkName'])
+  },
   data() {
     return {
       loading: false,
@@ -222,13 +229,26 @@ export default {
     },
     async createDISCO(params) {
       this.loading = true;
-      let { error, data } = await services['cores@disco-startup-创建']({
-        startupId: this.$route.query.startupId,
-        ...params
-      });
-      if (!error) {
-        console.log(data);
+      // 预先获取一个id
+      const idObj = await services['cores@startup-获取prepare id']();
+      const id = idObj.id;
+      // 发起上链
+      const txid = await sendDiscoTransaction(params, id, this.account);
+      if (txid) {
+        let { error, data } = await services['cores@disco-startup-创建'](
+          { startupId: this.$route.query.startupId },
+          {
+            id,
+            ...params,
+            txid
+          }
+        );
+
+        if (!error) {
+          console.log(data);
+        }
       }
+
       this.loading = false;
     },
     updateTotalDepositToken() {
