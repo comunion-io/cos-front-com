@@ -27,18 +27,16 @@ export default {
       series: []
     };
   },
-  created() {
-    this.$watch(
-      function() {
-        return this.chartData;
-      },
-      function(next, prev) {
-        this.setChartSeriesAndXAxis(next);
-      }
-    );
-  },
   mounted() {
     this.setChartSeriesAndXAxis(this.chartData);
+  },
+  watch: {
+    chartData: {
+      handler(next) {
+        this.setChartSeriesAndXAxis(next);
+      },
+      deep: true
+    }
   },
   methods: {
     setChartSeriesAndXAxis(data) {

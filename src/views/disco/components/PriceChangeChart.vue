@@ -28,18 +28,16 @@ export default {
       }
     };
   },
-  created() {
-    this.$watch(
-      function() {
-        return this.chartData;
-      },
-      function(next, prev) {
-        this.setChartSeriesAndXAxis(next);
-      }
-    );
-  },
   mounted() {
     this.setChartSeriesAndXAxis(this.chartData);
+  },
+  watch: {
+    chartData: {
+      handler(next) {
+        this.setChartSeriesAndXAxis(this.chartData);
+      },
+      deep: true
+    }
   },
   methods: {
     setChartSeriesAndXAxis(next) {

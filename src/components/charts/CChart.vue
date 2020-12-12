@@ -32,11 +32,16 @@ export default {
       required: true
     }
   },
-  created() {
-    this.watchOption();
-  },
   mounted() {
     this.init();
+  },
+  watch: {
+    option: {
+      handler(next) {
+        this.init(next);
+      },
+      deep: true
+    }
   },
   methods: {
     init(option) {
@@ -56,25 +61,9 @@ export default {
         this.chartInstance.dispose();
         this.chartInstance = null;
       }
-    },
-    watchOption() {
-      if (this.unwatchOption) {
-        return;
-      }
-
-      this.unwatchOption = this.$watch(
-        function() {
-          return this.option;
-        },
-        function(nextOption) {
-          this.init(nextOption);
-        },
-        { deep: true }
-      );
     }
   },
   destroyed() {
-    this.unwatchOption();
     this.destroy();
   }
 };
