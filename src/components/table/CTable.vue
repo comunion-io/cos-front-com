@@ -31,9 +31,9 @@ export default {
       type: Object,
       default: function() {
         return {
-          pageSize: 100,
+          pageSize: 20,
           current: 1,
-          total: 100
+          total: 0
         };
       }
     },
