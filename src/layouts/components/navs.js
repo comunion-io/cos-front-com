@@ -2,6 +2,7 @@
 export default [
   { name: 'square', title: 'Home' },
   { name: 'bounty', title: 'Bounty' },
+  { name: 'disco', title: 'DISCO' },
   { name: 'exchange', title: 'Exchange' },
   { name: 'governance', title: 'Governance' }
 ];
