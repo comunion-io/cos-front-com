@@ -79,6 +79,14 @@ export interface ServiceRequestAndResponseMap {
       nonce: string
     }
   }
+  'cores@startup-follow-创建': {
+    params: {
+      startupId: any;
+    }
+    query: {}
+    body: {}
+    response: {}
+  }
   'cores@bounty-closed': {
     params: {
       bountyId: any;
@@ -87,7 +95,107 @@ export interface ServiceRequestAndResponseMap {
     body: {}
     response: {}
   }
-  'cores@startup-follow-创建': {
+  'cores@disco-获取': {
+    params: {
+      discoId: any;
+    }
+    query: {}
+    body: {}
+    response: {
+      id: string
+      startup: {
+        id: string
+        name: string
+        logo: string
+        tokenSymbol: string
+      }
+      walletAddr: string
+      tokenContract: string
+      description: string
+      fundRaisingTime: string
+      investmentReward: number
+      'rewardDeclineRate ': number
+      shareToken: number
+      minFundRaising: number
+      addLiquidityPool: number
+      totalDepositToken: number
+      txId: string
+      state: string
+    }
+  }
+  'cores@disco-列表': {
+    params: {}
+    query: {
+      limit: any;
+      offset: any;
+      keyword: any;
+      /**
+       * @description createdAt、startup、investmentReward、liquidityPool
+       */
+      orderBy: any;
+      /**
+       * @description true、false 默认为false
+       */
+      isAsc: any;
+    }
+    body: {}
+    response: {
+      result?: {
+        id: string
+        startup: {
+          id: string
+          name: string
+          logo: string
+          tokenSymbol: string
+        }
+        walletAddr: string
+        tokenContract: string
+        description: string
+        fundRaisingTime: string
+        investmentReward: number
+        'rewardDeclineRate ': number
+        shareToken: number
+        minFundRaising: number
+        addLiquidityPool: number
+        totalDepositToken: number
+        /**
+         * @description 交易id
+         */
+        txId: string
+        status: number
+      }
+      total: number
+    }
+  }
+  'cores@disco-startup-获取': {
+    params: {
+      startupId: any;
+    }
+    query: {}
+    body: {}
+    response: {
+      id?: string
+      startup?: {
+        id?: string
+        name?: string
+        logo?: string
+        tokenSymbol?: string
+      }
+      walletAddr?: string
+      tokenContract?: string
+      description?: string
+      fundRaisingTime?: string
+      investmentReward?: number
+      rewardDeclineRate?: number
+      shareToken?: number
+      minFundRaising?: number
+      addLiquidityPool?: number
+      totalDepositToken?: number
+      txId?: string
+      state?: string
+    }
+  }
+  'cores@disco-startup-创建': {
     params: {
       startupId: any;
     }
