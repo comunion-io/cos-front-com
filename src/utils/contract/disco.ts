@@ -39,7 +39,7 @@ async function sendDiscoTransaction(disco: Disco, id: string, account: string) {
     gasLimit: web3.utils.numberToHex(183943),
     chainId: chainId
   };
-  const shadowWindow = (window as any);
+  const shadowWindow = window as any;
   shadowWindow.ethereum.sendAsync(
     {
       method: 'eth_sendTransaction',
@@ -67,14 +67,8 @@ async function sendDiscoTransaction(disco: Disco, id: string, account: string) {
  */
 async function getDiscoContractInstance(disco: Disco, id: string) {
   const contract = new web3.eth.Contract(discoAbi, COMUNION_RECEIVER_STARTUP_ACCOUNT);
-  const contractDisco = await await contract.methods.newDisco(
-    id,
-    disco
-  );
+  const contractDisco = await await contract.methods.newDisco(id, disco);
   return contractDisco;
 }
 
-export {
-  getDiscoContractInstance,
-  sendDiscoTransaction
-};
+export { getDiscoContractInstance, sendDiscoTransaction };

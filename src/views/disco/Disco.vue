@@ -80,6 +80,5 @@ export default {
 
 .chart-container {
   margin: 36px 0;
-  height: 500px;
 }
 </style>
