@@ -8,8 +8,8 @@
         v-bind="$attrs"
         v-on="$listeners"
       >
-        <template v-for="col in columns" #[col.dataIndex]="text">
-          <slot :name="col.dataIndex" :text="text"></slot>
+        <template v-for="col in columns" #[col.dataIndex]="text, record, index">
+          <slot :name="col.dataIndex" :text="text" :record="record" :index="index"></slot>
         </template>
       </a-table>
     </div>

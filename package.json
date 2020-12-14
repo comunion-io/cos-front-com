@@ -10,7 +10,7 @@
     "lint": "vue-cli-service lint",
     "commit": "git-cz",
     "update:api": "y2s update -y",
-    "fmt-codes": "npx prettier --write ./src"
+    "fmt-codes": "npx prettier --write ./src/**"
   },
   "dependencies": {
     "ant-design-vue": "^1.5.6",
