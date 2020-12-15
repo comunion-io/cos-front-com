@@ -88,16 +88,36 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: 'startupDetail' */ '@/views/startup/Detail.vue')
       },
-      // startupmanagement
+      // 'startupManagement'
       {
         path: '/startup/:id/management',
-        name: 'startupManage',
+        name: 'startupManagement',
         meta: {
           title: 'Start-Up Management',
           skipAuth: false
         },
+        redirect: '/startup/:id/management/perference',
         component: () =>
-          import(/* webpackChunkName: 'bounty' */ '@/views/startup-manage/StartupManage.vue')
+          import(
+            /* webpackChunkName: 'startManagement' */ '@/views/startup-management/StartupManagement.vue'
+          ),
+        children: ['perference', 'settings', 'bounty', 'team', 'operation', 'DISCOSwap'].map(
+          key => {
+            const upCaseName = key[0].toUpperCase() + key.slice(1);
+            return {
+              path: key,
+              name: `startupManagement${upCaseName}`,
+              meta: {
+                title: `Start-Up Management ${upCaseName}`,
+                skipAuth: false
+              },
+              component: () =>
+                import(
+                  /* webpackChunkName: 'startManagement' */ `@/views/startup-management/tabs/Tab${upCaseName}.vue`
+                )
+            };
+          }
+        )
       },
       {
         path: '/startup/new',

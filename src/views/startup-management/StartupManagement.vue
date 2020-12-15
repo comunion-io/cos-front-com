@@ -9,28 +9,38 @@ const tabs = [
   'Bounty',
   'Team',
   'Operation',
-  { name: 'DISCO & Swap', comp: 'DISCOSwap' }
+  { name: 'DISCO & Swap', route: 'DISCOSwap' }
 ].map(item => {
-  if (isString(item)) {
-    return { name: item, comp: item };
-  }
-  return item;
+  const _isString = isString(item);
+  return {
+    name: _isString ? item : item.name,
+    route: `startupManagement${_isString ? item : item.route}`
+  };
 });
 
 export default {
-  components: {
-    TabPerference: () => import('./components/TabPerference'),
-    TabSettings: () => import('./components/TabSettings'),
-    TabBounty: () => import('./components/TabBounty'),
-    TabTeam: () => 'Team',
-    TabOperation: () => 'Operation',
-    TabDISCOSwap: () => import('./components/TabDISCOSwap')
-  },
+  // components: {
+  //   TabPerference: () => import('./components/TabPerference'),
+  //   TabSettings: () => import('./components/TabSettings'),
+  //   TabBounty: () => import('./components/TabBounty'),
+  //   TabTeam: () => 'Team',
+  //   TabOperation: () => 'Operation',
+  //   TabDISCOSwap: () => import('./components/TabDISCOSwap')
+  // },
   data() {
     return {
-      selectedTab: tabs[0].name,
       startupDetail: {}
     };
+  },
+  computed: {
+    selectedTab: {
+      get() {
+        return this.$route.name;
+      },
+      set(v) {
+        this.$router.push({ name: v, params: { id: this.$route.params.id } });
+      }
+    }
   },
   async mounted() {
     const tab = this.$route.query.tab;
@@ -45,19 +55,18 @@ export default {
     }
   },
   render(h) {
-    const TabComponent = 'Tab' + tabs.find(tab => tab.name === this.selectedTab).comp;
     return (
       <div class="flex" style="padding: 16px 50px">
         <a-card title="Start-Up Management" class="mr-20 side-menus">
           <a-tabs vModel={this.selectedTab} tab-position="left">
             {tabs.map(tab => (
-              <a-tab-pane key={tab.name} tab={tab.name}></a-tab-pane>
+              <a-tab-pane key={tab.route} tab={tab.name} />
             ))}
           </a-tabs>
         </a-card>
         <a-card class="flex-1">
           <Breadcrumb startupName={this.startupDetail.name} />
-          <TabComponent id={this.$route.params.id} startup={this.startup} />
+          <router-view id={this.$route.params.id} startup={this.startup} />
         </a-card>
       </div>
     );
