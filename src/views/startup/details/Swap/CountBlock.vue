@@ -2,7 +2,7 @@
   <div class="count-block">
     <p class="title">{{ title }}</p>
     <div class="number">
-      <span>{{ value.toFixed(2) }}</span>
+      <span>{{ formatValue }}</span>
       <span class="growth" :class="[growth >= 0 ? 'up' : 'down']">
         {{ symbol }}{{ Math.abs(growth) }}%
       </span>
@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { fmtNumber } from '@/utils/fmt';
+
 export default {
   props: {
     title: {
@@ -34,6 +36,9 @@ export default {
   computed: {
     symbol() {
       return this.growth >= 0 ? '+' : '-';
+    },
+    formatValue() {
+      return fmtNumber(this.value);
     }
   }
 };
