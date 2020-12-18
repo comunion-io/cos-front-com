@@ -11528,10 +11528,10 @@ y18n@^4.0.0:
   resolved "https://registry.npm.taobao.org/y18n/download/y18n-4.0.0.tgz#95ef94f85ecc81d007c264e190a120f0a3c8566b"
   integrity sha1-le+U+F7MgdAHwmThkKEg8KPIVms=
 
-y2s@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/y2s/-/y2s-0.4.0.tgz#979b03a1507022d6378444a52bb706ac2e0d7648"
-  integrity sha512-TKjjDvuFcQBlHwY8SgBsFvIlWihAQ2pWU3G0BCJDV3C+qiJrFwCvGPz+Ffy6xCtKITuCu70hoRbqPutnBiNfaw==
+y2s@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/y2s/-/y2s-0.4.1.tgz#1e06149b55504faffad248517d4b10c5cdba8109"
+  integrity sha512-8+MjGpbXFhDCQM2UWH+7Lwqx2xSWeO4D4wZ9LgEhuyLLuc1ExvLqdovCG64PHO4cBOzdSO0IaMSWZhooa1Dv1w==
   dependencies:
     axios "^0.20.0"
     fs-extra "^9.0.1"
