@@ -3,13 +3,34 @@
     <div class="title">DAITO Total</div>
     <div class="sub-title">Daito</div>
     <div class="chart">
-      <line-chart renderer="svg" :x-axis="xAxis" :series="series" />
+      <line-chart renderer="svg" :x-axis="xAxis" :grid="grid" :y-axis="yAxis" :series="series" />
     </div>
   </div>
 </template>
 
 <script>
-import LineChart, { DEFAULT_XAXIS, AREA_SERIE } from '@/components/charts/LineChart.vue';
+import LineChart, {
+  DEFAULT_XAXIS,
+  DEFAULT_YAXIS,
+  AREA_SERIE,
+  DEFAULT_GRID
+} from '@/components/charts/LineChart.vue';
+
+const customYAxis = {
+  ...DEFAULT_YAXIS,
+  show: true,
+  axisLine: {
+    show: false
+  },
+  splitLine: {
+    show: true,
+    lineStyle: {
+      color: '#ededed',
+      width: 1,
+      type: 'dashed'
+    }
+  }
+};
 
 export default {
   components: {
@@ -24,7 +45,12 @@ export default {
   data() {
     return {
       xAxis: [],
-      series: []
+      yAxis: [customYAxis],
+      series: [],
+      grid: {
+        ...DEFAULT_GRID,
+        bottom: 30
+      }
     };
   },
   mounted() {
@@ -44,6 +70,26 @@ export default {
       this.xAxis = [
         {
           ...DEFAULT_XAXIS,
+          show: true,
+          name: 'Month/Day',
+          nameLocation: 'end',
+          nameTextStyle: {
+            color: '#79828B',
+            fontSize: 11,
+            padding: [40, 0, 0, -75]
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#EDEDED',
+              width: 1
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            show: false
+          },
           data: [
             '11.01',
             '11.07',
@@ -94,6 +140,7 @@ export default {
   color: #79828b;
   line-height: 18px;
   flex-shrink: 0;
+  padding: 6px 0 16px;
 }
 
 .chart {
