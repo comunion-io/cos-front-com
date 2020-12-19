@@ -148,6 +148,13 @@ export default {
   computed: {
     ...mapGetters(['categories', 'account', 'netWorkName'])
   },
+  props: {
+    // startup -id 去查询startup的信息， 获取token contract
+    startupId: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       loading: false,
@@ -230,7 +237,7 @@ export default {
     async createDISCO(params) {
       this.loading = true;
       // 预先获取一个id
-      const idObj = await services['cores@startup-获取prepare id']();
+      const { data: idObj } = await services['cores@startup-获取prepare id']();
       const id = idObj.id;
       // 发起上链
       const txid = await sendDiscoTransaction(params, id, this.account);
