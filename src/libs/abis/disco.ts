@@ -1,5 +1,10 @@
-/**
- * @description Disco 的 abi
+/*
+ * @Author: zehui
+ * @Date: 2020-12-13 23:40:00
+ * @LastEditTime: 2020-12-20 21:33:48
+ * @LastEditors: Please set LastEditors
+ * @Description: disco 合约编译的abi, 用于web3新建disco的合约实例
+ * @FilePath: \cos-front-com\src\libs\abis\disco.js
  */
 export const discoAbi = [
   {

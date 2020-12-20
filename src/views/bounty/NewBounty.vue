@@ -239,7 +239,7 @@ export default {
     //     cancelText: 'Remove and quit',
     //     okText: 'Keep',
     //     onOk: () => {
-    //       this.$router.push({ name: 'startupManage', query: { tab: 'bounty' } });
+    //       this.$router.push({ name: 'startupManagementBounty' });
     //     }
     //   });
     // },
@@ -324,8 +324,8 @@ export default {
 
         if (bounty.id) {
           this.$router.push({
-            name: 'startupManage',
-            query: { tab: 'bounty', startupId: startupId }
+            name: 'startupManagementBounty',
+            params: { id: startupId }
           });
         }
       } catch (err) {

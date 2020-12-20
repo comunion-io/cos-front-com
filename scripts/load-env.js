@@ -9,7 +9,6 @@ const environmentFile = path.resolve(__dirname, '../configs', `.${argv.c}.env`);
 dotenv.config({
   path: environmentFile
 });
-console.log(process.env)
 spawn(command, argv._.slice(1), { stdio: 'inherit' }).on('exit', function(exitCode) {
   process.exit(exitCode);
 });

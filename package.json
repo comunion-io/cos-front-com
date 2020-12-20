@@ -31,9 +31,9 @@
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "@metamask/eslint-config": "^2.0.0",
+    "@types/echarts": "^4.9.2",
     "@typescript-eslint/eslint-plugin": "^4.7.0",
     "@typescript-eslint/parser": "^4.7.0",
-    "@types/echarts": "^4.9.2",
     "@vue/cli-plugin-babel": "^4.1.1",
     "@vue/cli-plugin-eslint": "^4.1.1",
     "@vue/cli-service": "^4.1.1",
@@ -60,7 +60,7 @@
     "vue-cli-plugin-vuetify": "^2.0.5",
     "vue-svg-loader": "0.8.0",
     "vue-template-compiler": "^2.6.10",
-    "y2s": "^0.3.0"
+    "y2s": "^0.4.1"
   },
   "postcss": {
     "plugins": {
@@ -71,7 +71,7 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,vue}": [
+    "*.{js,vue,ts,tsx}": [
       "vue-cli-service lint",
       "git add"
     ]

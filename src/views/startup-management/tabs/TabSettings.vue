@@ -1,10 +1,10 @@
 <script>
-import TabFinance from './setting-details/Finance';
+import TabFinance from './settings/Finance';
 
 export default {
   components: {
     TabFinance,
-    TabGovernance: () => import('./setting-details/Governance')
+    TabGovernance: () => import('./settings/Governance')
   },
 
   data() {
@@ -25,7 +25,7 @@ export default {
             ))}
           </a-tabs>
         </a-card>
-        <TabComponent class="flex-1" id={this.$route.query.startupId}></TabComponent>
+        <TabComponent class="flex-1" id={this.$route.params.id}></TabComponent>
       </div>
     );
   }

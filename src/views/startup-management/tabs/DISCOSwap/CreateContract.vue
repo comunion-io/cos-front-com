@@ -148,13 +148,6 @@ export default {
   computed: {
     ...mapGetters(['categories', 'account', 'netWorkName'])
   },
-  props: {
-    // startup -id 去查询startup的信息， 获取token contract
-    startupId: {
-      type: String,
-      required: true
-    }
-  },
   data() {
     return {
       loading: false,

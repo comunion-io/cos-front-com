@@ -103,12 +103,6 @@ import { merge } from '@/utils';
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: {},
-  props: {
-    startupId: {
-      type: String,
-      required: true
-    }
-  },
   data() {
     // 这里存放数据
     return {
@@ -139,7 +133,7 @@ export default {
   methods: {
     async getStartup() {
       try {
-        this.startup = await getMyStartupDetail(this.startupId);
+        this.startup = await getMyStartupDetail(this.$route.params.id);
         // this.patchValue();
         merge(this.form, this.startup);
         this.form.categoryId = this.startup.category.id;
