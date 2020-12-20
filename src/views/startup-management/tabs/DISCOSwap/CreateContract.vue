@@ -241,7 +241,7 @@ export default {
     async createDISCO(params) {
       this.loading = true;
       // 预先获取一个id
-      const idObj = await services['cores@startup-获取prepare id']();
+      const { data: idObj } = await services['cores@startup-获取prepare id']();
       const id = idObj.id;
       // 发起上链
       const txid = await sendDiscoTransaction(params, id, this.account);

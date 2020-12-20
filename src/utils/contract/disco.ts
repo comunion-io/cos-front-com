@@ -6,7 +6,7 @@ export interface Disco {
   walletAddr: string;
   tokenContract: string;
   description: string;
-  fundRaisingTime: string;
+  fundRaisingTime: string[];
   investmentReward: number;
   rewardDeclineRate: number;
   shareToken: number;
@@ -67,7 +67,36 @@ async function sendDiscoTransaction(disco: Disco, id: string, account: string) {
  */
 async function getDiscoContractInstance(disco: Disco, id: string) {
   const contract = new web3.eth.Contract(discoAbi, COMUNION_RECEIVER_STARTUP_ACCOUNT);
-  const contractDisco = await await contract.methods.newDisco(id, disco);
+
+  const {
+    walletAddr,
+    tokenContract,
+    description,
+    investmentReward,
+    rewardDeclineRate,
+    shareToken,
+    minFundRaising,
+    addLiquidityPool,
+    totalDepositToken
+  } = disco;
+
+  const fundRaisingTimeFrom = disco.fundRaisingTime[0];
+  const fundRaisingTimeTo = disco.fundRaisingTime[1];
+
+  const contractDisco = await await contract.methods.newDisco(
+    id,
+    walletAddr,
+    tokenContract,
+    description,
+    fundRaisingTimeFrom,
+    fundRaisingTimeTo,
+    investmentReward,
+    rewardDeclineRate,
+    shareToken,
+    minFundRaising,
+    addLiquidityPool,
+    totalDepositToken
+  );
   return contractDisco;
 }
 
