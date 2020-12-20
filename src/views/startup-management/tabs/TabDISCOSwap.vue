@@ -41,7 +41,7 @@
     <MyCard status="12" type="exchange" />
 
     <!-- 创建合约页面 -->
-    <CreateContract v-if="createContractVisible" />
+    <CreateContract v-if="createContractVisible" :startup="startup" />
   </div>
 </template>
 
@@ -58,6 +58,12 @@ export default {
       createContractVisible: false
     };
   },
+  props: {
+    startup: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   components: {
     MyCard,
     CreateContract
@@ -70,7 +76,7 @@ export default {
     // 获取disco信息
     async getDisco() {
       let { error, data } = await services['cores@disco-startup-获取']({
-        startupId: this.$route.query.startupId
+        startupId: this.$route.params.id
       });
       if (!error) {
         this.disco = data;
