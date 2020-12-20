@@ -43,7 +43,6 @@
 <script>
 import FundraisingIcon from './fundraising.svg';
 import TradingIcon from './trading.svg';
-
 // 状态的文字描述, key值为字段type + '_' + 字段status
 const statusTextMap = new Map([
   // DISCO募资合约生成中
@@ -69,7 +68,6 @@ const statusTextMap = new Map([
   // exchange注入失败
   ['exchange_12', 'Inpour failed']
 ]);
-
 export default {
   props: {
     status: {
@@ -210,7 +208,6 @@ export default {
 @discoColor: #6170ff;
 @exchangeColor: #f6af64;
 @btnWidth: 58px;
-
 .card {
   width: 100%;
   border-radius: 12px;
@@ -221,7 +218,6 @@ export default {
   &:last-of-type {
     margin-bottom: 0;
   }
-
   &.disco {
     background-color: lighten(@discoColor, 28%);
     .icon {
@@ -237,7 +233,6 @@ export default {
       background-color: lighten(@discoColor, 25%);
     }
   }
-
   &.exchange {
     background-color: lighten(@exchangeColor, 28%);
     .icon {
@@ -253,14 +248,12 @@ export default {
       background-color: lighten(@exchangeColor, 25%);
     }
   }
-
   &.disabled {
     background-color: #efefef;
     .icon {
       color: #fff;
     }
   }
-
   .content {
     display: flex;
     margin-bottom: 22px;

@@ -206,19 +206,19 @@ export const apis: Apis = {
     u: '/cores/startups/{startupId}',
     m: 'PUT',
     p: ['startupId'],
-    d: 0
+    d: 1
   },
   'cores@startup-获取': {
     u: '/cores/startups/{startupId}',
     m: 'GET',
     p: ['startupId'],
-    d: 0
+    d: 1
   },
   'cores@startup-回退': {
     u: '/cores/startups/{id}:restore',
     m: 'POST',
     p: ['id'],
-    d: 0
+    d: 1
   },
   'cores@startups-列表': {
     u: '/cores/startups',
@@ -230,7 +230,7 @@ export const apis: Apis = {
     u: '/cores/startups/{id}/settings:restore',
     m: 'POST',
     p: ['id'],
-    d: 0
+    d: 1
   },
   'cores@startup-settings-更新': {
     u: '/cores/startups/{id}/settings',
@@ -241,7 +241,7 @@ export const apis: Apis = {
   'cores@文件上传': {
     u: '/cores/files',
     m: 'POST',
-    d: 0
+    d: 1
   },
   'cores@分类-列表': {
     u: '/cores/categories',

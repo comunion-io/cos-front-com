@@ -31,17 +31,6 @@ const routes = [
         },
         component: () => import(/* webpackChunkName: 'bounty' */ '@/views/bounty/List.vue')
       },
-      // startupmanagement
-      {
-        path: '/bounty/startup-management',
-        name: 'startupManage',
-        meta: {
-          title: 'Start-Up Management',
-          skipAuth: false
-        },
-        component: () =>
-          import(/* webpackChunkName: 'bounty' */ '@/views/startup-manage/StartupManage.vue')
-      },
       // new bounty
       {
         path: '/bounty/new',
@@ -90,7 +79,7 @@ const routes = [
         component: () => import(/* webpackChunkName: 'governance' */ '@/views/governance/List.vue')
       },
       {
-        path: '/startup/detail/:id',
+        path: '/startup/:id',
         name: 'startupDetail',
         meta: {
           title: 'Start-Up Detail',
@@ -98,6 +87,37 @@ const routes = [
         },
         component: () =>
           import(/* webpackChunkName: 'startupDetail' */ '@/views/startup/Detail.vue')
+      },
+      // 'startupManagement'
+      {
+        path: '/startup/:id/management',
+        name: 'startupManagement',
+        meta: {
+          title: 'Start-Up Management',
+          skipAuth: false
+        },
+        redirect: '/startup/:id/management/perference',
+        component: () =>
+          import(
+            /* webpackChunkName: 'startManagement' */ '@/views/startup-management/StartupManagement.vue'
+          ),
+        children: ['perference', 'settings', 'bounty', 'team', 'operation', 'DISCOSwap'].map(
+          key => {
+            const upCaseName = key[0].toUpperCase() + key.slice(1);
+            return {
+              path: key,
+              name: `startupManagement${upCaseName}`,
+              meta: {
+                title: `Start-Up Management ${upCaseName}`,
+                skipAuth: false
+              },
+              component: () =>
+                import(
+                  /* webpackChunkName: 'startManagement' */ `@/views/startup-management/tabs/Tab${upCaseName}.vue`
+                )
+            };
+          }
+        )
       },
       {
         path: '/startup/new',

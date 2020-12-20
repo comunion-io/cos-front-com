@@ -115,12 +115,6 @@ export default {
   components: {
     BountyList
   },
-  props: {
-    startupId: {
-      type: String,
-      required: true
-    }
-  },
   data() {
     // 这里存放数据
     return {};
@@ -134,7 +128,7 @@ export default {
     newBounty() {
       this.$router.push({
         name: 'newBounty',
-        query: { startupId: this.startupId }
+        query: { startupId: this.$route.params.id }
       });
     },
 
@@ -145,12 +139,10 @@ export default {
      */
     async fetchData(query) {
       const { error, data } = await services['cores@startup-bounty-列表'](
-        { startupId: this.startupId },
+        { startupId: this.$route.params.id },
         query
       );
       return error ? [[], 0] : [data.result, data.total];
-      // const [data, total] = await getStartUpBounties(this.startupId, query);
-      // return [data, total];
     },
 
     /** 翻译bounty的状态信息  */
