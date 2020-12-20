@@ -47,8 +47,8 @@
 
 <script>
 import services from '@/services';
-import MyCard from './MyCard';
-import CreateContract from './CreateContract';
+import MyCard from './DISCOSwap/MyCard';
+import CreateContract from './DISCOSwap/CreateContract';
 export default {
   data() {
     return {
@@ -87,7 +87,6 @@ export default {
 <style lang="less" scoped>
 @discoColor: #6170ff;
 @exchangeColor: #f6af64;
-
 .disco-swap {
   padding: 30px;
   position: relative;
