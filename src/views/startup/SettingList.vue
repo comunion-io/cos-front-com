@@ -138,8 +138,8 @@ export default {
         } else if (startup.state === 2 && startup.settingState === 2) {
           // 前往bountymanager 页面
           this.$router.push({
-            name: 'startupManage',
-            query: { startupId: startup.id }
+            name: 'startupManagement',
+            params: { id: startup.id }
           });
         }
       }

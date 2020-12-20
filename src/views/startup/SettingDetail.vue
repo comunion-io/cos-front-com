@@ -12,7 +12,11 @@
             <a-step title="Launch" />
           </a-steps>
         </a-card>
-        <a-spin class="flex ai-center jc-center mt-24 w-100p" size="large" :spinning="!ready">
+        <a-spin
+          class="flex ai-center jc-center mt-24 w-100p loading-wrapper"
+          size="large"
+          :spinning="!ready"
+        >
           <template v-if="ready">
             <finance
               v-if="step === 0"
@@ -394,6 +398,12 @@ export default {
         width: calc(50% - 34px);
         background-color: @primary-color;
       }
+    }
+  }
+
+  .loading-wrapper {
+    .ant-spin-container {
+      width: 100%;
     }
   }
 }
