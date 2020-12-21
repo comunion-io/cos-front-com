@@ -234,7 +234,11 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.createDISCO(values);
+          this.createDISCO({
+            ...values,
+            tokenContract: this.tokenContract,
+            totalDepositToken: this.totalDepositToken
+          });
         }
       });
     },
@@ -271,8 +275,10 @@ export default {
         investmentReward = Number(investmentReward);
         addLiquidityPool = Number(addLiquidityPool);
         if (!isNaN(shareToken) && !isNaN(investmentReward) && !isNaN(addLiquidityPool)) {
-          this.totalDepositToken =
-            shareToken * (1 + investmentReward / 100 + addLiquidityPool / 100);
+          this.totalDepositToken = (
+            shareToken *
+            (1 + investmentReward / 100 + addLiquidityPool / 100)
+          ).toFixed(2);
         } else {
           this.totalDepositToken = '';
         }
