@@ -24,7 +24,7 @@
           <template v-slot:label>
             <p class="label">Token Contract</p>
           </template>
-          <p class="text">0x8BaE00A7dd89B1749E7b7aD54ffCbe20Ea5CB3cB</p>
+          <p class="text">{{ tokenContract }}</p>
         </a-form-item>
         <a-form-item>
           <template v-slot:label>
@@ -146,7 +146,10 @@ import { sendDiscoTransaction } from '@/utils/contract/disco';
 
 export default {
   computed: {
-    ...mapGetters(['categories', 'account', 'netWorkName'])
+    ...mapGetters(['categories', 'account', 'netWorkName']),
+    tokenContract() {
+      return this.startup?.settings?.tokenAddr || '';
+    }
   },
   data() {
     return {
@@ -210,6 +213,14 @@ export default {
       }
     };
   },
+  props: {
+    startup: {
+      type: Object,
+      default() {
+        return {};
+      }
+    }
+  },
   beforeCreate() {
     this.form = this.$form.createForm(this, {});
   },
@@ -223,14 +234,18 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.createDISCO(values);
+          this.createDISCO({
+            ...values,
+            tokenContract: this.tokenContract,
+            totalDepositToken: this.totalDepositToken
+          });
         }
       });
     },
     async createDISCO(params) {
       this.loading = true;
       // 预先获取一个id
-      const idObj = await services['cores@startup-获取prepare id']();
+      const { data: idObj } = await services['cores@startup-获取prepare id']();
       const id = idObj.id;
       // 发起上链
       const txid = await sendDiscoTransaction(params, id, this.account);
@@ -260,8 +275,10 @@ export default {
         investmentReward = Number(investmentReward);
         addLiquidityPool = Number(addLiquidityPool);
         if (!isNaN(shareToken) && !isNaN(investmentReward) && !isNaN(addLiquidityPool)) {
-          this.totalDepositToken =
-            shareToken * (1 + investmentReward / 100 + addLiquidityPool / 100);
+          this.totalDepositToken = (
+            shareToken *
+            (1 + investmentReward / 100 + addLiquidityPool / 100)
+          ).toFixed(2);
         } else {
           this.totalDepositToken = '';
         }

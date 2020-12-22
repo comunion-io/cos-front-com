@@ -66,7 +66,7 @@ export default {
         </a-card>
         <a-card class="flex-1">
           <Breadcrumb startupName={this.startupDetail.name} />
-          <router-view id={this.$route.params.id} startup={this.startup} />
+          <router-view id={this.$route.params.id} startup={this.startupDetail} />
         </a-card>
       </div>
     );
