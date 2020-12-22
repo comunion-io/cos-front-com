@@ -249,6 +249,11 @@ export default {
           if (err) {
             return console.error(err);
           }
+          console.log(
+            '%c 🌰 result: ',
+            'font-size:20px;background-color: #6EC1C2;color:#fff;',
+            result
+          );
           const txid = result.result;
           this.createStartUp(formData, startupId, txid);
         }
