@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-12-20 21:29:09
+ * @LastEditTime: 2020-12-23 00:21:08
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \cos-front-com\src\views\startup-management\tabs\DISCOSwap\CreateContract.vue
+-->
 <template>
   <!-- 创建 disco  -->
   <div class="create-contract">
@@ -9,6 +17,19 @@
     </div>
     <div class="content">
       <a-form layout="vertical" :form="form" hideRequiredMark @submit="createBtnOnClick">
+        <!-- Fund-Raising Contract Address: 募资的地址 -->
+        <a-form-item>
+          <template v-slot:label>
+            <p class="label">Fund-Raising Contract Address</p>
+          </template>
+          <a-input
+            class="input"
+            placeholder="Please input receiving fund raising wallet address"
+            autocomplete="off"
+            :value="txid"
+          />
+        </a-form-item>
+        <!-- start up 的钱包地址 -->
         <a-form-item>
           <template v-slot:label>
             <p class="label">Start-Up Wallet Address</p>
@@ -20,6 +41,7 @@
             v-decorator="['walletAddr', walletAddrConfig]"
           />
         </a-form-item>
+        <!-- start up token 的钱包地址 -->
         <a-form-item style="margin-bottom: 0;">
           <template v-slot:label>
             <p class="label">Token Contract</p>
@@ -129,8 +151,24 @@
           />
         </a-form-item>
         <a-form-item>
-          <a-button type="primary" class="btn" html-type="submit" :loading="loading">
+          <a-button
+            v-if="!fundraisingSuccess"
+            type="primary"
+            class="btn"
+            html-type="submit"
+            :loading="loading"
+          >
             Create Fund-Faising Contract
+          </a-button>
+          <a-button
+            v-if="fundraisingSuccess"
+            @click.prevent="enablDisco()"
+            type="primary"
+            class="btn"
+            html-type="submit"
+            :loading="loading"
+          >
+            Enable DISCO
           </a-button>
         </a-form-item>
       </a-form>
@@ -142,7 +180,7 @@
 import moment from 'moment';
 import services from '@/services';
 import { mapGetters } from 'vuex';
-import { sendDiscoTransaction } from '@/utils/contract/disco';
+import { DiscoTranscation } from '@/utils/contract/disco';
 
 export default {
   computed: {
@@ -153,6 +191,12 @@ export default {
   },
   data() {
     return {
+      // TODO
+      /** txid 上链后的合约地址 */
+      txid: '',
+      /** 募资成功的状态 */
+      fundraisingSuccess: false,
+      discoInstance: undefined,
       loading: false,
       totalDepositToken: '',
       walletAddrConfig: {
@@ -224,6 +268,9 @@ export default {
   beforeCreate() {
     this.form = this.$form.createForm(this, {});
   },
+  mounted() {
+    this.discoInstance = DiscoTranscation.getInstance();
+  },
   methods: {
     disabledDate(current) {
       // Can not select days before today and today
@@ -248,7 +295,7 @@ export default {
       const { data: idObj } = await services['cores@startup-获取prepare id']();
       const id = idObj.id;
       // 发起上链
-      const txid = await sendDiscoTransaction(params, id, this.account);
+      const txid = await this.discoInstance.sendDiscoTransaction(params, id, this.account);
       if (txid) {
         let { error, data } = await services['cores@disco-startup-创建'](
           { startupId: this.$route.query.startupId },
@@ -283,6 +330,15 @@ export default {
           this.totalDepositToken = '';
         }
       });
+    },
+
+    /**
+     * @description: 启用disco
+     * @param {*}
+     * @return {*}
+     */
+    enablDisco() {
+      this.discoInstance.enableDisco(this.id);
     }
   }
 };
