@@ -1,46 +1,65 @@
 <template>
   <c-table key="disco-table" :columns="columns" :data-source="dataSource" @change="onTableChange">
-    <template #name="{ text }">
-      <a>{{ text }}</a>
+    <template #name="{ record }">
+      <router-link class="link" to="/">
+        <div class="logo" :style="`background-image: url(${record.url || ''});`" />
+        <span class="title">{{ record.name }}</span>
+      </router-link>
+    </template>
+    <template #status="{ record }">
+      <c-badge :color="getStatusColor(record.status)" :text="record.statusText" />
     </template>
   </c-table>
 </template>
 
 <script>
 import CTable from '@/components/table/CTable.vue';
+import CBadge from '@/components/badge/CBadge.vue';
+
+import { getDiscos } from '@/services/disco.services';
 
 const tableColumns = [
   {
     title: 'Startup',
     dataIndex: 'name',
-    width: 150,
     sorter: true,
     scopedSlots: { customRender: 'name' },
+    width: 160,
     ellipsis: true
   },
   {
     title: 'ShareToken',
     dataIndex: 'age',
-    width: 150
+    width: 120,
+    ellipsis: true
   },
   {
     title: 'Foud-RaaisingETH(min)',
-    dataIndex: 'address'
+    dataIndex: 'address',
+    width: 200,
+    ellipsis: true
   },
   {
     title: 'InvestmentReward',
     dataIndex: 'address1',
-    sorter: true
+    sorter: true,
+    width: 160,
+    ellipsis: true
   },
   {
     title: 'Liquidity Pool',
     dataIndex: 'address2',
-    sorter: true
+    sorter: true,
+    width: 160,
+    ellipsis: true
   },
   {
     title: 'Status',
-    dataIndex: 'address3',
-    align: 'center'
+    dataIndex: 'status',
+    align: 'center',
+    scopedSlots: { customRender: 'status' },
+    width: 160,
+    ellipsis: true
   }
 ];
 
@@ -51,16 +70,19 @@ for (let i = 0; i < 20; i++) {
     key: i,
     name: `Edward King ${i}`,
     age: 32,
+    url: require('@/assets/images/guide/logo.png'),
     address: `London, Park Lane no. ${i}`,
     address1: `London, Park Lane no. ${i}`,
     address2: `London, Park Lane no. ${i}`,
-    address3: `London, Park Lane no. ${i}`
+    status: i % 2 === 0 ? 'waiting' : 'inprogress',
+    statusText: i % 2 === 0 ? 'Waiting for start' : 'Inprogress'
   });
 }
 
 export default {
   components: {
-    CTable
+    CTable,
+    CBadge
   },
   data() {
     return {
@@ -69,7 +91,7 @@ export default {
     };
   },
   mounted() {
-    console.log('disco table mounted');
+    this.loadDiscos();
   },
   computed: {
     columns() {
@@ -83,7 +105,50 @@ export default {
   methods: {
     onTableChange(pagination, filters, sorter) {
       this.sortedInfo = sorter;
+    },
+    getStatusColor(status) {
+      // TODO
+      switch (status) {
+        case 'waiting':
+          return '#E18D00';
+        case 'inprogress':
+          return '#6271D2';
+      }
+    },
+    async loadDiscos() {
+      // TODO
+      try {
+        const { result } = await getDiscos();
+        console.log('disco result: ', result);
+      } finally {
+      }
     }
   }
 };
 </script>
+
+<style lang="less" scoped>
+.link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  background-position: center;
+  background-size: contain;
+  margin-right: 10px;
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+</style>

@@ -45,6 +45,30 @@ export const apis: Apis = {
     p: ['bountyId'],
     d: 1
   },
+  'cores@exchange-获取': {
+    u: '/cores/exchanges/{exchangeId}',
+    m: 'GET',
+    p: ['exchangeId'],
+    d: 0
+  },
+  'cores@exchange-列表': {
+    u: '/cores/exchanges',
+    m: 'GET',
+    q: ['limit', 'offset'],
+    d: 0
+  },
+  'cores@exchange-startup-获取': {
+    u: '/cores/startups/{startupId}/exchange',
+    m: 'GET',
+    p: ['startupId'],
+    d: 0
+  },
+  'cores@exchange-startup-创建': {
+    u: '/cores/startups/{startupId}/exchange',
+    m: 'POST',
+    p: ['startupId'],
+    d: 0
+  },
   'cores@disco-获取': {
     u: '/cores/discos/{discoId}',
     m: 'GET',
@@ -55,7 +79,7 @@ export const apis: Apis = {
     u: '/cores/discos',
     m: 'GET',
     q: ['limit', 'offset', 'keyword', 'orderBy', 'isAsc'],
-    d: 0
+    d: 1
   },
   'cores@disco-startup-获取': {
     u: '/cores/startups/{startupId}/disco',

@@ -4,6 +4,8 @@
 
 <script>
 import echarts from 'echarts';
+import { debounce } from 'lodash';
+import { addDOMResizeObserver } from '@/utils/dom';
 
 export function getLinearGradient(colors) {
   return new echarts.graphic.LinearGradient(
@@ -32,8 +34,15 @@ export default {
       required: true
     }
   },
+  created() {
+    this.resize = debounce(this.resize, 300);
+  },
   mounted() {
     this.init();
+
+    this.removeResizeObserver = addDOMResizeObserver(this.$el, () => {
+      this.resize();
+    });
   },
   watch: {
     option: {
@@ -61,10 +70,19 @@ export default {
         this.chartInstance.dispose();
         this.chartInstance = null;
       }
+    },
+    resize() {
+      if (this.chartInstance != null) {
+        this.chartInstance.resize();
+      }
     }
   },
   destroyed() {
     this.destroy();
+
+    if (this.removeResizeObserver != null) {
+      this.removeResizeObserver();
+    }
   }
 };
 </script>

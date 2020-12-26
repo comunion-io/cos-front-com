@@ -95,6 +95,99 @@ export interface ServiceRequestAndResponseMap {
     body: {}
     response: {}
   }
+  'cores@exchange-获取': {
+    params: {
+      exchangeId: any;
+    }
+    query: {}
+    body: {}
+    response: {
+      /**
+       * @description exchange_id
+       */
+      id: string
+      /**
+       * @description transaction_id
+       */
+      txId: string
+      startup: {
+        id: string
+        name: string
+        logo: string
+        tokenSymbol: string
+        description: string
+      }
+      pairName: string
+      pairAddress: string
+      /**
+       * @description 0 待确认，1 已完成，2 未完成
+       */
+      status: number
+    }
+  }
+  'cores@exchange-列表': {
+    params: {}
+    query: {
+      limit: any;
+      offset: any;
+    }
+    body: {}
+    response: {
+      result?: {
+        id: string
+        txId: string
+        startup: {
+          id: string
+          name: string
+          logo: string
+          tokenSymbol: string
+        }
+        price: number
+        liquidities: number
+        volumes24Hrs: string
+        status: number
+      }
+      total: number
+    }
+  }
+  'cores@exchange-startup-获取': {
+    params: {
+      startupId: any;
+    }
+    query: {}
+    body: {}
+    response: {
+      /**
+       * @description exchange_id
+       */
+      id: string
+      /**
+       * @description transaction_id
+       */
+      txId: string
+      startup: {
+        id: string
+        name: string
+        logo: string
+        tokenSymbol: string
+        description: string
+      }
+      pairName: string
+      pairAddress: string
+      /**
+       * @description 0 待确认，1 已完成，2 未完成
+       */
+      status: number
+    }
+  }
+  'cores@exchange-startup-创建': {
+    params: {
+      startupId: any;
+    }
+    query: {}
+    body: {}
+    response: {}
+  }
   'cores@disco-获取': {
     params: {
       discoId: any;
@@ -153,7 +246,7 @@ export interface ServiceRequestAndResponseMap {
         description: string
         fundRaisingTime: string
         investmentReward: number
-        'rewardDeclineRate ': number
+        rewardDeclineRate: number
         shareToken: number
         minFundRaising: number
         addLiquidityPool: number

@@ -1,6 +1,6 @@
 <template>
   <div class="card-container">
-    <status-card v-for="item in cardItems" v-bind="item" :key="item.label" />
+    <status-card class="card-item" v-for="item in cardItems" v-bind="item" :key="item.label" />
   </div>
 </template>
 
@@ -49,5 +49,20 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+
+  .card-item {
+    flex: 0 0 24%;
+  }
+
+  @media screen and (max-width: 1400px) {
+    .card-item {
+      flex: 0 0 49%;
+
+      &:nth-child(1n + 3) {
+        margin-top: 20px;
+      }
+    }
+  }
 }
 </style>
