@@ -1,21 +1,20 @@
 <template>
-  <div>
-    <!-- 未开启DISCO，或者失败了 -->
-    <div class="not-open">
-      <a-icon class="icon" type="exclamation-circle" theme="filled" />
-      <span>Liquidity pool has not been opened yet.</span>
-    </div>
-
+  <a-spin size="large" :spinning="loading">
     <!-- 已开启DISCO -->
-    <div>
+    <div v-if="exchange.status === 1">
       <div class="blocks">
-        <CountBlock title="ETH" :value="603.71" :growth="1.37" name="Exchange Volume(24h)" />
-        <CountBlock title="ETH" :value="603.71" :growth="-1.37" name="Total Liquidity" />
-        <CountBlock title="ETH" :value="603.71" :growth="1.37" name="Transactions(24h)" />
+        <CountBlock
+          v-for="item in statistics"
+          :key="item.name"
+          :title="item.title"
+          :value="item.value"
+          :growth="item.growth"
+          :name="item.name"
+        />
       </div>
 
       <!-- 图表 -->
-      <Chart />
+      <Chart :exchange="exchange" />
 
       <div>
         <div class="tabs">
@@ -33,10 +32,17 @@
         <FundsPool v-else-if="activeTab === 'Funds Pool'" />
       </div>
     </div>
-  </div>
+
+    <!-- 未开启DISCO，或者失败了 -->
+    <div class="not-open" v-else>
+      <a-icon class="icon" type="exclamation-circle" theme="filled" />
+      <span>Liquidity pool has not been opened yet.</span>
+    </div>
+  </a-spin>
 </template>
 
 <script>
+import services from '@/services';
 import CountBlock from './CountBlock';
 import Swap from './Swap';
 import FundsPool from './FundsPool';
@@ -46,8 +52,21 @@ export default {
   data() {
     return {
       activeTab: 'Swap',
-      tabs: ['Swap', 'Funds Pool']
+      tabs: ['Swap', 'Funds Pool'],
+      exchange: {},
+      statistics: [
+        { name: 'Exchange Volume(24h)', title: 'ETH', value: 0, growth: 0 },
+        { name: 'Total Liquidity', title: 'ETH', value: 0, growth: 0 },
+        { name: 'Transactions(24h)', title: '', value: 0, growth: 0 }
+      ],
+      loading: false
     };
+  },
+  props: {
+    startup: {
+      type: Object,
+      default: () => {}
+    }
   },
   components: {
     CountBlock,
@@ -55,9 +74,53 @@ export default {
     FundsPool,
     Chart
   },
+  mounted() {
+    // 获取exchange
+    this.getExchange();
+  },
   methods: {
     tabOnChange(tab) {
       this.activeTab = tab;
+    },
+    // 获取exchange
+    async getExchange() {
+      this.loading = true;
+      const { error, data } = await services['cores@exchange-startup-获取']({
+        startupId: this.startup.id
+      });
+      this.loading = false;
+      this.exchange = error ? {} : data;
+      if (!error) {
+        this.getData();
+      }
+    },
+    async getData() {
+      const { error, data } = await services['cores@exchange-汇总']({
+        exchangeId: this.exchange.id
+      });
+      if (!error) {
+        let statistics = [
+          {
+            name: 'Exchange Volume(24h)',
+            title: 'ETH',
+            value: data.volumes24Hrs,
+            growth: data.volumes24HrsRate
+          },
+          {
+            name: 'Total Liquidity',
+            title: 'ETH',
+            value: data.liquidities,
+            growth: data.liquiditiesRate
+          },
+          {
+            name: 'Transactions(24h)',
+            title: '',
+            value: data.transactions24Hrs,
+            growth: data.transactions24HrsRate
+          }
+        ];
+        this.statistics = statistics;
+      }
     }
   }
 };

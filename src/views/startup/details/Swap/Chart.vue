@@ -1,9 +1,9 @@
 <template>
   <div class="wrap">
-    <div class="desc">
-      <span>UVU / ETH</span>
-      <span>0.9947 ETH</span>
-      <span>+1.15%</span>
+    <div class="desc" @click="onSwitch">
+      <span>{{ tokenName[0] }} / {{ tokenName[1] }}</span>
+      <span>{{ pricePerToken[0] }} {{ tokenName[1] }}</span>
+      <span>{{ priceChangeRate >= 0 ? '+' : '-' }}{{ priceChangeRate }}%</span>
       <span>24 Hours</span>
     </div>
     <div class="chart">
@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import services from '@/services';
 import LineChart, { AREA_SERIE } from '@/components/charts/LineChart.vue';
 
 const XAXIS = {
@@ -69,16 +70,44 @@ export default {
       grid: {},
       xAxis: [],
       yAxis: [],
-      series: []
+      series: [],
+      tokenName: [],
+      pricePerToken: [],
+      priceChangeRate: 0,
+      loading: false
     };
+  },
+  props: {
+    exchange: {
+      type: Object,
+      default: () => {}
+    }
   },
   components: {
     LineChart
   },
   mounted() {
-    this.setChartSeriesAndXAxis(this.chartData);
+    this.getData();
+    // this.setChartSeriesAndXAxis(this.chartData);
   },
   methods: {
+    // 获取数据
+    async getData() {
+      this.loading = true;
+      const { error, data } = await services['cores@exchange-价格变化']({
+        exchangeId: this.exchange.id
+      });
+      if (!error) {
+        this.tokenName = [data.tokenSymbol1, data.tokenSymbol2];
+        this.pricePerToken = [data.pricePerToken1, data.pricePerToken2];
+        this.priceChangeRate = data.priceChangeRate;
+        this.setChartSeriesAndXAxis({
+          xAxisValue: data.priceChanges.occuredDate,
+          seriesValue: data.priceChanges.price
+        });
+      }
+      this.loading = false;
+    },
     setChartSeriesAndXAxis(data) {
       this.grid = GRID;
       this.yAxis = [YAXIS];
@@ -86,27 +115,21 @@ export default {
       this.xAxis = [
         {
           ...XAXIS,
-          data: [
-            '11.01',
-            '11.07',
-            '11.13',
-            '11.19',
-            '11.25',
-            '12.01',
-            '12.07',
-            '12.13',
-            '12.19',
-            '12.25'
-          ]
+          data: data.xAxisValue
         }
       ];
       this.series = [
         {
           ...AREA_SERIE,
           name: 'price',
-          data: [23, 17, 16, 20, 21, 25, 32, 19, 18, 32]
+          data: data.seriesValue
         }
       ];
+    },
+    // 切换显示
+    onSwitch() {
+      this.tokenName = [this.tokenName[1], this.tokenName[0]];
+      this.pricePerToken = [this.pricePerToken[1], this.pricePerToken[0]];
     }
   }
 };
