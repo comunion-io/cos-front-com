@@ -101,9 +101,15 @@ export default {
         this.tokenName = [data.tokenSymbol1, data.tokenSymbol2];
         this.pricePerToken = [data.pricePerToken1, data.pricePerToken2];
         this.priceChangeRate = data.priceChangeRate;
+        let xAxisValue = [];
+        let seriesValue = [];
+        data.priceChanges.forEach(item => {
+          xAxisValue.push(item.occuredDay);
+          seriesValue.push(item.endPrice);
+        });
         this.setChartSeriesAndXAxis({
-          xAxisValue: data.priceChanges.occuredDate,
-          seriesValue: data.priceChanges.price
+          xAxisValue,
+          seriesValue
         });
       }
       this.loading = false;
