@@ -1,5 +1,12 @@
 <template>
-  <c-table key="disco-table" :columns="columns" :data-source="dataSource" @change="onTableChange">
+  <c-table
+    key="disco-table"
+    :loading="loading"
+    :columns="columns"
+    :data-source="dataSource"
+    @on-change="onTableChange"
+    @on-pagination-change="onPaginationChange"
+  >
     <template #name="{ record }">
       <router-link class="link" to="/">
         <div class="logo" :style="`background-image: url(${record.url || ''});`" />
@@ -16,7 +23,7 @@
 import CTable from '@/components/table/CTable.vue';
 import CBadge from '@/components/badge/CBadge.vue';
 
-import { getDiscos } from '@/services/disco.services';
+import services from '@/services';
 
 const tableColumns = [
   {
@@ -84,27 +91,45 @@ export default {
     CTable,
     CBadge
   },
+  props: {
+    keyword: String,
+    show: Boolean
+  },
   data() {
     return {
       dataSource: data,
-      sortedInfo: {}
+      offset: 0,
+      sortedInfo: {},
+      pagination: {},
+      loading: false
     };
   },
+  created() {
+    this.watchFilterParams();
+  },
   mounted() {
-    this.loadDiscos();
+    this.loadDiscoData();
   },
   computed: {
     columns() {
       const { columnKey, order } = this.sortedInfo || {};
       return tableColumns.map(col => ({
         ...col,
-        sortOrder: (columnKey === col.dataIndex && order) || undefined
+        className: columnKey === col.dataIndex && order != null ? 'table-head-selected' : undefined
       }));
     }
   },
+  watch: {
+    offset(next) {
+      this.loadDiscoData(null, next);
+    }
+  },
   methods: {
-    onTableChange(pagination, filters, sorter) {
+    onTableChange(filters, sorter) {
       this.sortedInfo = sorter;
+    },
+    onPaginationChange(offset, limit) {
+      this.offset = offset;
     },
     getStatusColor(status) {
       // TODO
@@ -115,13 +140,57 @@ export default {
           return '#6271D2';
       }
     },
-    async loadDiscos() {
-      // TODO
-      try {
-        const { result } = await getDiscos();
-        console.log('disco result: ', result);
-      } finally {
+    async loadDiscoData(params, offset = 0) {
+      const { show, keyword, sortedInfo } = params || this;
+
+      if (!show) {
+        this.loading = false;
+        return null;
       }
+
+      // TODO test
+      this.loading = true;
+
+      const { error, data } = await services['cores@disco-列表']({
+        limit: 20,
+        offset,
+        keyword,
+        orderBy: sortedInfo.columnKey,
+        isAsc: sortedInfo.order ? sortedInfo.order === 'ascend' : undefined
+      });
+
+      this.loading = false;
+      if (!error) {
+        const { result, ...p } = data || {};
+        this.pagination = p;
+        this.dataSource = result || [];
+      }
+    },
+    watchFilterParams() {
+      if (this.unwatchFilterParams != null) {
+        this.unwatchFilterParams();
+      }
+
+      this.unwatchFilterParams = this.$watch(
+        function() {
+          return {
+            show: this.show,
+            keyword: this.keyword,
+            sortedInfo: this.sortedInfo
+          };
+        },
+        async function(next, prev) {
+          this.loadDiscoData(next, 0);
+        },
+        {
+          deep: true
+        }
+      );
+    }
+  },
+  destroyed() {
+    if (this.unwatchFilterParams != null) {
+      this.unwatchFilterParams();
     }
   }
 };
@@ -150,5 +219,13 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+</style>
+
+<style lang="less">
+.table-head-selected {
+  .ant-table-column-title {
+    color: #5a70ff !important;
+  }
 }
 </style>

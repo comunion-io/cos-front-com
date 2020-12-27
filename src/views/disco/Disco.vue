@@ -4,7 +4,7 @@
       <disco-card></disco-card>
     </div>
     <div class="chart-container">
-      <daito-total-chart :chart-data="chartData" />
+      <daito-total-chart />
     </div>
     <div>
       <c-tabs
@@ -14,10 +14,10 @@
         @on-change="onTabsChange"
       >
         <template v-slot:disco>
-          <disco-table />
+          <disco-table :keyword="discoKeyword" :show="tabActiveKey === 'disco'" />
         </template>
         <template v-slot:swap>
-          <swap-table />
+          <swap-table :keyword="swapKeyword" :show="tabActiveKey === 'swap'" />
         </template>
         <template v-slot:extra>
           <a-input-search :key="tabActiveKey" @search="onKeywordSearch" />
@@ -57,9 +57,16 @@ export default {
     return {
       tabPanes,
       tabActiveKey: 'disco',
-      chartData: {},
       keyword: ''
     };
+  },
+  computed: {
+    discoKeyword() {
+      return this.tabActiveKey === 'disco' ? this.keyword : undefined;
+    },
+    swapKeyword() {
+      return this.tabActiveKey === 'swap' ? this.keyword : undefined;
+    }
   },
   methods: {
     onTabsChange(key) {
@@ -67,6 +74,7 @@ export default {
       this.tabActiveKey = key;
     },
     onKeywordSearch(value) {
+      console.log('keyword: ', value);
       this.keyword = value;
     }
   }

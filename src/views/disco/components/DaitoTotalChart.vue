@@ -3,7 +3,14 @@
     <div class="title">DAITO Total</div>
     <div class="sub-title">Daito</div>
     <div class="chart">
-      <line-chart renderer="svg" :x-axis="xAxis" :grid="grid" :y-axis="yAxis" :series="series" />
+      <line-chart
+        renderer="svg"
+        :loading="loading"
+        :x-axis="xAxis"
+        :grid="grid"
+        :y-axis="yAxis"
+        :series="series"
+      />
     </div>
   </div>
 </template>
@@ -15,6 +22,8 @@ import LineChart, {
   AREA_SERIE,
   DEFAULT_GRID
 } from '@/components/charts/LineChart.vue';
+
+import services from '@/services';
 
 const customYAxis = {
   ...DEFAULT_YAXIS,
@@ -36,14 +45,9 @@ export default {
   components: {
     LineChart
   },
-  props: {
-    chartData: {
-      type: Object,
-      required: true
-    }
-  },
   data() {
     return {
+      loading: false,
       xAxis: [],
       yAxis: [customYAxis],
       series: [],
@@ -54,15 +58,7 @@ export default {
     };
   },
   mounted() {
-    this.setChartSeriesAndXAxis(this.chartData);
-  },
-  watch: {
-    chartData: {
-      handler(next) {
-        this.setChartSeriesAndXAxis(next);
-      },
-      deep: true
-    }
+    this.loadDataAndSetChart();
   },
   methods: {
     setChartSeriesAndXAxis(data) {
@@ -110,6 +106,17 @@ export default {
           data: [23, 17, 16, 20, 21, 25, 32, 19, 18, 32]
         }
       ];
+    },
+    async loadDataAndSetChart() {
+      this.loading = true;
+
+      // TODO 联调具体相关接口
+      const { error, data } = await services['cores@disco-列表']({});
+
+      this.loading = false;
+      if (!error) {
+        this.setChartSeriesAndXAxis(data);
+      }
     }
   }
 };

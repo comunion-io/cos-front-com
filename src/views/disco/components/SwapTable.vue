@@ -1,5 +1,12 @@
 <template>
-  <c-table key="swap-table" :columns="columns" :data-source="dataSource">
+  <c-table
+    key="swap-table"
+    :loading="loading"
+    :columns="columns"
+    :data-source="dataSource"
+    @on-change="onTableChange"
+    @on-pagination-change="onPaginationChange"
+  >
     <template #name="{ record }">
       <router-link class="link" to="/">
         <div class="logo" :style="`background-image: url(${record.url || ''});`" />
@@ -17,6 +24,8 @@
 <script>
 import CTable from '@/components/table/CTable.vue';
 import PriceChangeChart from './PriceChangeChart.vue';
+
+import services from '@/services';
 
 const tableColumns = [
   {
@@ -75,24 +84,96 @@ export default {
     CTable,
     PriceChangeChart
   },
+  props: {
+    keyword: String,
+    show: Boolean
+  },
   data() {
     return {
       dataSource: data,
-      sortedInfo: {}
+      pagination: {},
+      sortedInfo: {},
+      offset: 0,
+      loading: false
     };
   },
+  created() {
+    this.watchFilterParams();
+  },
   mounted() {
-    console.log('swap table mounted');
+    this.loadSwapData();
   },
   computed: {
     columns() {
       const { columnKey, order } = this.sortedInfo || {};
-      return tableColumns.map(col => ({ ...col, sortOrder: columnKey === col.dataIndex && order }));
+      return tableColumns.map(col => ({
+        ...col,
+        className: columnKey === col.dataIndex && order != null ? 'table-head-selected' : undefined
+      }));
+    }
+  },
+  watch: {
+    offset(next) {
+      this.loadSwapData(null, next);
     }
   },
   methods: {
-    onTableChange(pagination, filters, sorter) {
+    onTableChange(filters, sorter) {
       this.sortedInfo = sorter;
+    },
+    onPaginationChange(offset, limit) {
+      this.offset = offset;
+    },
+    async loadSwapData(params, offset = 0) {
+      const { show, keyword, sortedInfo } = params || this;
+
+      if (!show) {
+        return null;
+      }
+
+      // TODO
+      this.loading = true;
+
+      const { error, data } = await services['cores@disco-列表']({
+        limit: 20,
+        offset,
+        keyword,
+        orderBy: sortedInfo.columnKey,
+        isAsc: sortedInfo.order ? sortedInfo.order === 'ascend' : undefined
+      });
+
+      this.loading = false;
+      if (!error) {
+        const { result, ...p } = data || {};
+        this.pagination = p;
+        this.dataSource = result || [];
+      }
+    },
+    watchFilterParams() {
+      if (this.unwatchFilterParams != null) {
+        this.unwatchFilterParams();
+      }
+
+      this.unwatchFilterParams = this.$watch(
+        function() {
+          return {
+            show: this.show,
+            keyword: this.keyword,
+            sortedInfo: this.sortedInfo
+          };
+        },
+        async function(next, prev) {
+          this.loadSwapData(next, 0);
+        },
+        {
+          deep: true
+        }
+      );
+    }
+  },
+  destroyed() {
+    if (this.unwatchFilterParams != null) {
+      this.unwatchFilterParams();
     }
   }
 };
@@ -128,5 +209,13 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+</style>
+
+<style lang="less">
+.table-head-selected {
+  .ant-table-column-title {
+    color: #5a70ff !important;
+  }
 }
 </style>
