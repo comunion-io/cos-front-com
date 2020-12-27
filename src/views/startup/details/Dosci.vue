@@ -16,17 +16,17 @@ export default {
           fields: [
             {
               label: 'Fund-Raising Contract Addrrss',
-              value: 'contract address',
+              value: 'txId',
               copyable: 'true'
             },
             {
               label: 'Start-Up Wallet Address',
-              value: 'wallet addrss',
+              value: 'walletAddr',
               copyable: 'true'
             },
             {
               label: 'Token Contract',
-              value: 'token contract',
+              value: 'tokenContract',
               copyable: 'true'
             },
             {
@@ -35,27 +35,27 @@ export default {
             },
             {
               label: 'Fund-Raising Time',
-              value: '2020-05-21'
+              value: 'fundRaisingTime'
             },
             {
               label: 'Sharte Token',
-              value: 'share token'
+              value: 'shareToken'
             },
             {
               label: 'Minimum Fundraising ETH',
-              value: 'fundraising'
+              value: 'minFundRaising'
             },
             {
               label: 'Investment Reward',
-              value: 'investment reward'
+              value: 'investmentReward'
             },
             {
               label: 'Add Liquidity Token',
-              value: 'liquidity'
+              value: 'addLiquidityPool'
             },
             {
               label: 'Total Deposit Token',
-              value: 'total'
+              value: 'totalDepositToken'
             },
             {
               label: 'Status',
@@ -91,7 +91,7 @@ export default {
             </div>
           );
         })}
-        {/** 暂时注释掉，在Sprint04的时候返注 
+        {/** 暂时注释掉，在Sprint04的时候返注
            <a href="#" class="disco-desc">
           What is DISCO
         </a>
