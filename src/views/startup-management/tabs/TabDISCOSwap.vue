@@ -19,7 +19,7 @@
     <MyCard status="5" type="disco" />
     <MyCard status="5" type="exchange" />
     <!-- DISCO提交后成功，募资等待开始 -->
-    <MyCard status="6" type="disco" />
+    <MyCard status="6" type="disco" @onClick="DISCODetailVisible = true" />
     <MyCard status="6" type="exchange" />
     <!-- DISCO提交成功-募资成功 -->
     <MyCard status="7" type="disco" />
@@ -42,6 +42,9 @@
 
     <!-- 创建合约页面 -->
     <CreateContract v-if="createContractVisible" :startup="startup" />
+
+    <!-- DISCO详情页面 -->
+    <DISCODetail v-if="DISCODetailVisible" :disco="disco" />
   </div>
 </template>
 
@@ -49,13 +52,16 @@
 import services from '@/services';
 import MyCard from './DISCOSwap/MyCard';
 import CreateContract from './DISCOSwap/CreateContract';
+import DISCODetail from './DISCOSwap/DISCODetail';
 export default {
   data() {
     return {
       // disco信息
       disco: null,
       // 是否显示创建合约页面
-      createContractVisible: false
+      createContractVisible: false,
+      // 是否显示DISCO详情页面
+      DISCODetailVisible: false
     };
   },
   props: {
@@ -66,7 +72,8 @@ export default {
   },
   components: {
     MyCard,
-    CreateContract
+    CreateContract,
+    DISCODetail
   },
   mounted() {
     // 获取disco信息
