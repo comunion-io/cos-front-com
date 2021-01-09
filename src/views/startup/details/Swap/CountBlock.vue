@@ -58,6 +58,7 @@ export default {
     font-size: 14px;
     font-weight: 500;
     line-height: 16px;
+    height: 16px;
     margin-bottom: 8px;
   }
   .number {
