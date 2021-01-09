@@ -79,6 +79,68 @@ export interface ServiceRequestAndResponseMap {
       nonce: string
     }
   }
+  'cores@exchanges-列表': {
+    params: {}
+    query: {
+      limit: any;
+      offset: any;
+    }
+    body: {}
+    response: {
+      result?: {
+        /**
+         * @description exchange_id
+         */
+        id: string
+        /**
+         * @description ethereum_transaction_id
+         */
+        txId: string
+        startup: {
+          id: string
+          name: string
+          logo: string
+          tokenSymbol: string
+        }
+        price: number
+        liquidities: number
+        volumes24Hrs: number
+        priceChanges: {
+          occuredDay: string
+          endPrice: number
+        }
+        status: number
+      }
+      total: number
+    }
+  }
+  'cores@bounty-closed': {
+    params: {
+      bountyId: any;
+    }
+    query: {}
+    body: {}
+    response: {}
+  }
+  'cores@startup-follow-创建': {
+    params: {
+      startupId: any;
+    }
+    query: {}
+    body: {}
+    response: {}
+  }
+  'cores@exchanges-统计合计': {
+    params: {}
+    query: {}
+    body: {}
+    response: {
+      volumes24Hrs: number
+      volumes24HrsRate: number
+      liquidities: number
+      liquiditiesRate: number
+    }
+  }
   'cores@exchange_transaction-获取': {
     params: {
       transactionId: any;
@@ -121,161 +183,6 @@ export interface ServiceRequestAndResponseMap {
        */
       status: number
       occuredAt: string
-    }
-  }
-  'cores@bounty-closed': {
-    params: {
-      bountyId: any;
-    }
-    query: {}
-    body: {}
-    response: {}
-  },
-  'cores@exchange-获取': {
-    params: {
-      exchangeId: any;
-    }
-    query: {}
-    body: {}
-    response: {
-      /**
-       * @description exchange_id
-       */
-      id: string
-      /**
-       * @description transaction_id
-       */
-      txId: string
-      startup: {
-        id: string
-        name: string
-        logo: string
-        tokenSymbol: string
-        description: string
-      }
-      pairName: string
-      pairAddress: string
-      /**
-       * @description 0 待确认，1 已完成，2 未完成
-       */
-      status: number
-    }
-  }
-  'cores@exchange-列表': {
-    params: {}
-    query: {
-      limit: any;
-      offset: any;
-    }
-    body: {}
-    response: {
-      result?: {
-        id: string
-        txId: string
-        startup: {
-          id: string
-          name: string
-          logo: string
-          tokenSymbol: string
-        }
-        price: number
-        liquidities: number
-        volumes24Hrs: string
-        status: number
-      }
-      total: number
-    }
-  }
-  'cores@exchange-startup-获取': {
-    params: {
-      startupId: any;
-    }
-    query: {}
-    body: {}
-    response: {
-      /**
-       * @description exchange_id
-       */
-      id: string
-      /**
-       * @description transaction_id
-       */
-      txId: string
-      startup: {
-        id: string
-        name: string
-        logo: string
-        tokenSymbol: string
-        description: string
-      }
-      pairName: string
-      pairAddress: string
-      /**
-       * @description 0 待确认，1 已完成，2 未完成
-       */
-      status: number
-    }
-  }
-  'cores@exchange-startup-创建': {
-    params: {
-      startupId: any;
-    }
-    query: {}
-    body: {}
-    response: {}
-  },
-  'cores@startup-follow-创
-    params: {
-      startupId: any;
-    }
-    query: {}
-    body: {}
-    response: {}
-  }
-  'cores@exchanges-统计合计': {
-    params: {}
-    query: {}
-    body: {}
-    response: {
-      volumes24Hrs: number
-      volumes24HrsRate: number
-      liquidities: number
-      liquiditiesRate: number
-    }
-  }
-  'cores@exchanges-列表': {
-    params: {}
-    query: {
-      limit: any;
-      offset: any;
-    }
-    body: {}
-    response: {
-      result?: {
-        /**
-         * @description exchange_id
-         */
-        id: string
-        /**
-         * @description ethereum_transaction_id
-         */
-        txId: string
-        startup: {
-          id: string
-          name: string
-          logo: string
-          tokenSymbol: string
-        }
-        price: number
-        liquidities: number
-        volumes24Hrs: number
-        priceChanges: {
-          occuredDay: string
-          avgPrice: number
-        }
-        status: number
-      }
-      total: number
     }
   }
   'cores@exchange_transaction-创建': {
@@ -402,13 +309,13 @@ export interface ServiceRequestAndResponseMap {
     body: {}
     response: {
       tokenSymbol1: string
-      tokenSymbol2: number
+      tokenSymbol2: string
       pricePerToken1: number
       pricePerToken2: number
       priceChangeRate: number
       priceChanges: {
         occuredDay: string
-        avgPrice: number
+        endPrice: number
       }
     }
   }
@@ -477,24 +384,27 @@ export interface ServiceRequestAndResponseMap {
     body: {}
     response: {
       id?: string
-      startup?: {
-        id?: string
-        name?: string
-        logo?: string
-        tokenSymbol?: string
-      }
       walletAddr?: string
-      tokenContract?: string
+      tokenAddr?: string
       description?: string
-      fundRaisingTime?: string
+      fundRaisingStartedAt?: string
+      fundRaisingEndedAt?: string
       investmentReward?: number
       rewardDeclineRate?: number
       shareToken?: number
       minFundRaising?: number
       addLiquidityPool?: number
       totalDepositToken?: number
+      /**
+       * @description 0 默认状态，1 等待开始，2 进行中，3 失败，4 成功
+       */
+      state?: number
       txId?: string
-      state?: string
+      fundRaisingAddr?: string
+      /**
+       * @description 0 无意义状态,1 待确认,2 上链成功,3 未确认到交易
+       */
+      transactionState?: number
     }
   }
   'cores@disco-列表': {
@@ -514,59 +424,22 @@ export interface ServiceRequestAndResponseMap {
     }
     body: {}
     response: {
+      total?: number
       result?: {
-        id: string
-        startup: {
-          id: string
-          name: string
-          logo: string
-          tokenSymbol: string
+        id?: string
+        startup?: {
+          id?: string
+          name?: string
+          logo?: string
+          tokenSymbol?: string
         }
-        walletAddr: string
-        tokenContract: string
-        description: string
-        fundRaisingTime: string
-        investmentReward: number
-        rewardDeclineRate: number
-        shareToken: number
-        minFundRaising: number
-        addLiquidityPool: number
-        totalDepositToken: number
-        /**
-         * @description 交易id
-         */
-        txId: string
-        status: number
-      }
-      total: number
-    }
-  }
-  'cores@disco-获取': {
-    params: {
-      discoId: any;
-    }
-    query: {}
-    body: {}
-    response: {
-      id: string
-      startup: {
-        id: string
-        name: string
-        logo: string
-        tokenSymbol: string
-      }
-      walletAddr: string
-      tokenContract: string
-      description: string
-      fundRaisingTime: string
-      investmentReward: number
-      'rewardDeclineRate ': number
-      shareToken: number
-      minFundRaising: number
-      addLiquidityPool: number
-      totalDepositToken: number
-      txId: string
-      state: string
+        investmentReward?: number
+        rewardDeclineRate?: number
+        shareToken?: number
+        minFundRaising?: number
+        addLiquidityPool?: number
+        state?: number
+      }[]
     }
   }
   'cores@startups-我的-follow列表': {
