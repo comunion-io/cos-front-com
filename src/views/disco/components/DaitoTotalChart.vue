@@ -3,40 +3,62 @@
     <div class="title">DAITO Total</div>
     <div class="sub-title">Daito</div>
     <div class="chart">
-      <line-chart renderer="svg" :x-axis="xAxis" :series="series" />
+      <line-chart
+        renderer="svg"
+        :loading="loading"
+        :x-axis="xAxis"
+        :grid="grid"
+        :y-axis="yAxis"
+        :series="series"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import LineChart, { DEFAULT_XAXIS, AREA_SERIE } from '@/components/charts/LineChart.vue';
+import LineChart, {
+  DEFAULT_XAXIS,
+  DEFAULT_YAXIS,
+  AREA_SERIE,
+  DEFAULT_GRID
+} from '@/components/charts/LineChart.vue';
+
+import services from '@/services';
+
+const customYAxis = {
+  ...DEFAULT_YAXIS,
+  show: true,
+  axisLine: {
+    show: false
+  },
+  splitLine: {
+    show: true,
+    lineStyle: {
+      color: '#ededed',
+      width: 1,
+      type: 'dashed'
+    }
+  }
+};
 
 export default {
   components: {
     LineChart
   },
-  props: {
-    chartData: {
-      type: Object,
-      required: true
-    }
-  },
   data() {
     return {
+      loading: false,
       xAxis: [],
-      series: []
+      yAxis: [customYAxis],
+      series: [],
+      grid: {
+        ...DEFAULT_GRID,
+        bottom: 30
+      }
     };
   },
   mounted() {
-    this.setChartSeriesAndXAxis(this.chartData);
-  },
-  watch: {
-    chartData: {
-      handler(next) {
-        this.setChartSeriesAndXAxis(next);
-      },
-      deep: true
-    }
+    this.loadDataAndSetChart();
   },
   methods: {
     setChartSeriesAndXAxis(data) {
@@ -44,6 +66,26 @@ export default {
       this.xAxis = [
         {
           ...DEFAULT_XAXIS,
+          show: true,
+          name: 'Month/Day',
+          nameLocation: 'end',
+          nameTextStyle: {
+            color: '#79828B',
+            fontSize: 11,
+            padding: [40, 0, 0, -75]
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#EDEDED',
+              width: 1
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            show: false
+          },
           data: [
             '11.01',
             '11.07',
@@ -64,6 +106,17 @@ export default {
           data: [23, 17, 16, 20, 21, 25, 32, 19, 18, 32]
         }
       ];
+    },
+    async loadDataAndSetChart() {
+      this.loading = true;
+
+      // TODO 联调具体相关接口
+      const { error, data } = await services['cores@disco-列表']({});
+
+      this.loading = false;
+      if (!error) {
+        this.setChartSeriesAndXAxis(data);
+      }
     }
   }
 };
@@ -94,6 +147,7 @@ export default {
   color: #79828b;
   line-height: 18px;
   flex-shrink: 0;
+  padding: 6px 0 16px;
 }
 
 .chart {

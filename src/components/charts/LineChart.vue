@@ -1,5 +1,5 @@
 <template>
-  <c-chart :class="className" :renderer="renderer" :option="lineOption" />
+  <c-chart :loading="loading" :class="className" :renderer="renderer" :option="lineOption" />
 </template>
 
 <script>
@@ -86,6 +86,7 @@ export const DEFAULT_TOOLTIP = {
 
 export default {
   props: {
+    loading: Boolean,
     className: String,
     renderer: String,
     animation: {
