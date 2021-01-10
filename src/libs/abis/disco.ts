@@ -1,10 +1,10 @@
 /*
  * @Author: zehui
  * @Date: 2020-12-13 23:40:00
- * @LastEditTime: 2020-12-20 21:33:48
- * @LastEditors: Please set LastEditors
+ * @LastEditTime : 2021-01-10 16:24:17
+ * @LastEditors  : Please set LastEditors
  * @Description: disco 合约编译的abi, 用于web3新建disco的合约实例
- * @FilePath: \cos-front-com\src\libs\abis\disco.js
+ * @FilePath     : \cos-front-com\src\libs\abis\disco.ts
  */
 export const discoAbi = [
   {
@@ -96,7 +96,7 @@ export const discoAbi = [
       },
       {
         internalType: 'address',
-        name: 'tokenContract',
+        name: 'tokenAddr',
         type: 'address'
       },
       {
@@ -106,12 +106,12 @@ export const discoAbi = [
       },
       {
         internalType: 'uint256',
-        name: 'fundRaisingTimeFrom',
+        name: 'fundRaisingStartedAt',
         type: 'uint256'
       },
       {
         internalType: 'uint256',
-        name: 'fundRaisingTimeTo',
+        name: 'fundRaisingEndedAt',
         type: 'uint256'
       },
       {
@@ -281,7 +281,7 @@ export const discoAbi = [
       },
       {
         internalType: 'address',
-        name: 'tokenContract',
+        name: 'tokenAddr',
         type: 'address'
       },
       {
@@ -291,12 +291,12 @@ export const discoAbi = [
       },
       {
         internalType: 'uint256',
-        name: 'fundRaisingTimeFrom',
+        name: 'fundRaisingStartedAt',
         type: 'uint256'
       },
       {
         internalType: 'uint256',
-        name: 'fundRaisingTimeTo',
+        name: 'fundRaisingEndedAt',
         type: 'uint256'
       },
       {
@@ -349,37 +349,6 @@ export const discoAbi = [
     outputs: [],
     payable: false,
     stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    constant: true,
-    inputs: [
-      {
-        internalType: 'string',
-        name: 'id',
-        type: 'string'
-      }
-    ],
-    name: 'getDisco',
-    outputs: [
-      {
-        internalType: 'address',
-        name: 'walletAddr',
-        type: 'address'
-      },
-      {
-        internalType: 'address',
-        name: 'tokenContract',
-        type: 'address'
-      },
-      {
-        internalType: 'string',
-        name: 'description',
-        type: 'string'
-      }
-    ],
-    payable: false,
-    stateMutability: 'view',
     type: 'function'
   },
   {

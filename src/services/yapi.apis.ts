@@ -39,12 +39,6 @@ export const apis: Apis = {
     q: ['limit', 'offset', 'keyword', 'orderBy', 'isAsc'],
     d: 1
   },
-  'cores@startup-disco和swap状态': {
-    u: '/cores/startups/{startupId}/discoSwapState',
-    m: 'POST',
-    p: ['startupId'],
-    d: 0
-  },
   'cores@disco-total统计': {
     u: '/cores/discos:statDiscoTotal',
     m: 'POST',
@@ -70,7 +64,7 @@ export const apis: Apis = {
     d: 1
   },
   'cores@disco-startup-创建': {
-    u: '/cores/startups/{startupId}/disco',
+    u: '/cores/startups/{startupId}/discos',
     m: 'POST',
     p: ['startupId'],
     d: 1
@@ -101,61 +95,61 @@ export const apis: Apis = {
     d: 1
   },
   'cores@exchange-startup-创建': {
-    u: '/startups/{startupId}/exchange',
+    u: '/cores/startups/{startupId}/exchange',
     m: 'POST',
     p: ['startupId'],
     d: 1
   },
   'cores@exchange-获取': {
-    u: '/exchanges/{exchangeId}',
+    u: '/cores/exchanges/{exchangeId}',
     m: 'GET',
     p: ['exchangeId'],
     d: 1
   },
   'cores@exchange-startup-获取': {
-    u: '/startups/{startupId}/exchange',
+    u: '/cores/startups/{startupId}/exchange',
     m: 'GET',
     p: ['startupId'],
     d: 1
   },
   'cores@exchanges-列表': {
-    u: '/exchanges',
+    u: '/cores/exchanges',
     m: 'GET',
     q: ['limit', 'offset'],
     d: 1
   },
   'cores@exchange_transaction-创建': {
-    u: '/exchanges/{exchangeId}/transactions',
+    u: '/cores/exchanges/{exchangeId}/transactions',
     m: 'POST',
     p: ['exchangeId'],
     d: 1
   },
   'cores@exchange_transaction-获取': {
-    u: '/exchange/transactions/{transactionId}',
+    u: '/cores/exchange/transactions/{transactionId}',
     m: 'GET',
     p: ['transactionId'],
     d: 1
   },
   'cores@exchange_transaction-列表': {
-    u: '/exchanges/{exchangeId}/transactions',
+    u: '/cores/exchanges/{exchangeId}/transactions',
     m: 'GET',
     p: ['exchangeId'],
     q: ['type', 'limit', 'offset'],
     d: 0
   },
   'cores@exchanges-统计合计': {
-    u: '/exchanges:stats',
+    u: '/cores/exchanges:stats',
     m: 'GET',
     d: 1
   },
   'cores@exchange-汇总': {
-    u: '/exchanges/{exchangeId}/stats:total',
+    u: '/cores/exchanges/{exchangeId}/stats:total',
     m: 'GET',
     p: ['exchangeId'],
     d: 1
   },
   'cores@exchange-价格变化': {
-    u: '/exchanges/{exchangeId}/stats:priceChange',
+    u: '/cores/exchanges/{exchangeId}/stats:priceChange',
     m: 'GET',
     p: ['exchangeId'],
     d: 1
