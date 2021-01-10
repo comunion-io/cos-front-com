@@ -1,10 +1,10 @@
 /*
  * @Author: zehui
  * @Date: 2020-12-13 23:40:00
- * @LastEditTime: 2021-01-04 23:54:44
- * @LastEditors: Please set LastEditors
+ * @LastEditTime : 2021-01-10 15:33:40
+ * @LastEditors  : Please set LastEditors
  * @Description: disco 上链的函数， 包括disco 合约的创建， 发起上链
- * @FilePath: \cos-front-com\src\utils\contract\disco.ts
+ * @FilePath     : \cos-front-com\src\utils\contract\disco.ts
  */
 import { discoAbi } from '@/libs/abis/disco';
 import { COMUNION_RECEIVER_STARTUP_ACCOUNT, web3 } from '@/libs/web3';
@@ -17,7 +17,7 @@ import { COMUNION_RECEIVER_STARTUP_ACCOUNT, web3 } from '@/libs/web3';
 export interface Disco {
   id: string;
   walletAddr: string;
-  tokenContract: string;
+  tokenAddr: string;
   description: string;
   fundRaisingTime: string[];
   investmentReward: number;
@@ -27,6 +27,8 @@ export interface Disco {
   addLiquidityPool: number;
   totalDepositToken: number;
   txId: string;
+  fundRaisingStartedAt: string;
+  fundRaisingEndedAt: string;
 }
 
 export class DiscoTranscation {
@@ -102,26 +104,25 @@ export class DiscoTranscation {
     this.contractInstance = new web3.eth.Contract(discoAbi, COMUNION_RECEIVER_STARTUP_ACCOUNT);
     const {
       walletAddr,
-      tokenContract,
+      tokenAddr,
       description,
       investmentReward,
       rewardDeclineRate,
       shareToken,
       minFundRaising,
-      addLiquidityPool
+      addLiquidityPool,
+      fundRaisingStartedAt,
+      fundRaisingEndedAt
     } = disco;
-
-    const fundRaisingTimeFrom = disco.fundRaisingTime[0].valueOf();
-    const fundRaisingTimeTo = disco.fundRaisingTime[1].valueOf();
     const totalDepositToken = +(+disco.totalDepositToken).toFixed(0);
 
     const contractDisco = await this.contractInstance.methods.newDisco(
       id,
       walletAddr,
-      tokenContract,
+      tokenAddr,
       description,
-      fundRaisingTimeFrom,
-      fundRaisingTimeTo,
+      fundRaisingStartedAt,
+      fundRaisingEndedAt,
       investmentReward,
       rewardDeclineRate,
       shareToken,

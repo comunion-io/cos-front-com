@@ -286,12 +286,18 @@ export default {
     createBtnOnClick(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
+        values.investmentReward = +values.investmentReward;
+        values.shareToken = +values.shareToken;
+        values.rewardDeclineRate = +values.rewardDeclineRate;
+        values.minFundRaising = +values.minFundRaising;
+        values.addLiquidityPool = +values.addLiquidityPool;
+
         const params = {
           ...values,
           fundRaisingStartedAt: values.fundRaisingTime[0].utc().format(),
           fundRaisingEndedAt: values.fundRaisingTime[1].utc().format(),
           tokenAddr: this.tokenAddr,
-          totalDepositToken: this.totalDepositToken
+          totalDepositToken: +this.totalDepositToken
         };
         this.$delete(params, 'fundRaisingTime');
         if (!err) {
@@ -300,19 +306,19 @@ export default {
       });
     },
     async createDISCO(params) {
-      debugger;
       this.loading = true;
       // 预先获取一个id
       const { error, data } = await services['cores@startup-获取prepareid']();
       if (!error) {
         const id = data.id;
+        this.discoBlockCallBack('0x123456', id, params);
         // 发起上链
-        await this.discoInstance.sendDiscoTransaction(
-          params,
-          id,
-          this.account,
-          this.discoBlockCallBack
-        );
+        // await this.discoInstance.sendDiscoTransaction(
+        //   params,
+        //   id,
+        //   this.account,
+        //   this.discoBlockCallBack
+        // );
       }
     },
 
@@ -323,14 +329,17 @@ export default {
      */
     async discoBlockCallBack(txid, id, params) {
       if (txid) {
-        let { error } = await services['cores@disco-startup-创建'](
-          { startupId: this.$route.query.startupId },
-          {
-            id,
-            ...params,
-            txid
-          }
+        console.log(
+          '%c 🍗 this.startup: ',
+          'font-size:20px;background-color: #465975;color:#fff;',
+          this.startup
         );
+        let { error } = await services['cores@disco-startup-创建']({
+          startupId: this.startup.id,
+          id,
+          ...params,
+          txid
+        });
 
         if (error) {
           console.error(error);
