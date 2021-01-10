@@ -70,7 +70,7 @@ export const apis: Apis = {
     d: 1
   },
   'cores@disco-startup-创建': {
-    u: '/cores/startups/{startupId}/discos',
+    u: '/cores/startups/{startupId}/disco',
     m: 'POST',
     p: ['startupId'],
     d: 1
@@ -101,61 +101,61 @@ export const apis: Apis = {
     d: 1
   },
   'cores@exchange-startup-创建': {
-    u: '/cores/startups/{startupId}/exchange',
+    u: '/startups/{startupId}/exchange',
     m: 'POST',
     p: ['startupId'],
     d: 1
   },
   'cores@exchange-获取': {
-    u: '/cores/exchanges/{exchangeId}',
+    u: '/exchanges/{exchangeId}',
     m: 'GET',
     p: ['exchangeId'],
     d: 1
   },
   'cores@exchange-startup-获取': {
-    u: '/cores/startups/{startupId}/exchange',
+    u: '/startups/{startupId}/exchange',
     m: 'GET',
     p: ['startupId'],
     d: 1
   },
   'cores@exchanges-列表': {
-    u: '/cores/exchanges',
+    u: '/exchanges',
     m: 'GET',
-    q: ['limit', 'offset', 'keyword', 'orderBy', 'isDesc'],
+    q: ['limit', 'offset'],
     d: 1
   },
   'cores@exchange_transaction-创建': {
-    u: '/cores/exchanges/{exchangeId}/transactions',
+    u: '/exchanges/{exchangeId}/transactions',
     m: 'POST',
     p: ['exchangeId'],
     d: 1
   },
   'cores@exchange_transaction-获取': {
-    u: '/cores/exchange/transactions/{transactionId}',
+    u: '/exchange/transactions/{transactionId}',
     m: 'GET',
     p: ['transactionId'],
     d: 1
   },
   'cores@exchange_transaction-列表': {
-    u: '/cores/exchanges/{exchangeId}/transactions',
+    u: '/exchanges/{exchangeId}/transactions',
     m: 'GET',
     p: ['exchangeId'],
     q: ['type', 'limit', 'offset'],
     d: 0
   },
   'cores@exchanges-统计合计': {
-    u: '/cores/exchanges:stats',
+    u: '/exchanges:stats',
     m: 'GET',
     d: 1
   },
   'cores@exchange-汇总': {
-    u: '/cores/exchanges/{exchangeId}/stats:total',
+    u: '/exchanges/{exchangeId}/stats:total',
     m: 'GET',
     p: ['exchangeId'],
     d: 1
   },
   'cores@exchange-价格变化': {
-    u: '/cores/exchanges/{exchangeId}/stats:priceChange',
+    u: '/exchanges/{exchangeId}/stats:priceChange',
     m: 'GET',
     p: ['exchangeId'],
     d: 1

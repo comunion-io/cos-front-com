@@ -24,7 +24,7 @@ export interface ServiceRequestAndResponseMap {
   'account@logout': {
     params: {}
     query: {}
-    body: {}
+    body: any
     response: {}
   }
   'account@用户-hunter-更新': {
@@ -42,7 +42,7 @@ export interface ServiceRequestAndResponseMap {
   'account@用户-我的': {
     params: {}
     query: {}
-    body: {}
+    body: any
     response: {
       id: string
       publicKey: string
@@ -62,7 +62,7 @@ export interface ServiceRequestAndResponseMap {
       userId: any;
     }
     query: {}
-    body: {}
+    body: any
     response: {
       id: string
       publicKey: string
@@ -233,20 +233,34 @@ export interface ServiceRequestAndResponseMap {
       totalEth?: number
     }
   }
-  'cores@disco-列表': {
+  'cores@exchanges-列表': {
     params: {}
     query: {
       limit: any;
       offset: any;
       keyword: any;
       /**
-       * @description createdAt、startup、investmentReward、liquidityPool
+       * @description createdAt、startup、liquidities、volumes24Hrs
        */
       orderBy: any;
       /**
        * @description true、false 默认为false
        */
-      isAsc: any;
+      isDesc: any;
+    }
+    body: {
+      id: string
+      walletAddr: string
+      tokenContract: string
+      description: string
+      fundRaisingTime: string
+      investmentReward: number
+      'rewardDeclineRate ': number
+      shareToken: number
+      minFundRaising: number
+      addLiquidityPool: number
+      totalDepositToken: number
+      txId: string
     }
     body: {
       id: string
@@ -277,9 +291,6 @@ export interface ServiceRequestAndResponseMap {
         shareToken?: number
         minFundRaising?: number
         addLiquidityPool?: number
-        /**
-         * @description 0 默认状态，1 等待开始，2 进行中，3 失败，4 成功
-         */
         state?: number
       }[]
     }
@@ -454,15 +465,6 @@ export interface ServiceRequestAndResponseMap {
     query: {
       limit: any;
       offset: any;
-      keyword: any;
-      /**
-       * @description createdAt、startup、liquidities、volumes24Hrs
-       */
-      orderBy: any;
-      /**
-       * @description true、false 默认为false
-       */
-      isDesc: any;
     }
     body: {
       id: string
@@ -737,7 +739,7 @@ export interface ServiceRequestAndResponseMap {
       limit: any;
       offset: any;
     }
-    body: {}
+    body: any
     response: {
       result: {
         id: string
@@ -779,7 +781,7 @@ export interface ServiceRequestAndResponseMap {
       offset: any;
       keyword: any;
     }
-    body: {}
+    body: any
     response: {
       total?: number
       result?: {
@@ -893,7 +895,7 @@ export interface ServiceRequestAndResponseMap {
       startupId: any;
     }
     query: {}
-    body: {}
+    body: any
     response: {}
   }
   'cores@startup-bounty-列表': {
@@ -905,7 +907,7 @@ export interface ServiceRequestAndResponseMap {
       offset: any;
       keyword: any;
     }
-    body: {}
+    body: any
     response: {
       total?: number
       result?: {
@@ -964,7 +966,7 @@ export interface ServiceRequestAndResponseMap {
       offset: any;
       keyword: any;
     }
-    body: {}
+    body: any
     response: {
       total?: number
       result?: {
@@ -1026,7 +1028,7 @@ export interface ServiceRequestAndResponseMap {
       offset: any;
       keyword: any;
     }
-    body: {}
+    body: any
     response: {
       total?: number
       result?: {
@@ -1081,7 +1083,7 @@ export interface ServiceRequestAndResponseMap {
       offset: any;
       keyword: any;
     }
-    body: {}
+    body: any
     response: {
       total?: number
       result?: {
@@ -1141,7 +1143,7 @@ export interface ServiceRequestAndResponseMap {
       id: any;
     }
     query: {}
-    body: {}
+    body: any
     response: {
       id: string
       startup: {
@@ -1189,7 +1191,7 @@ export interface ServiceRequestAndResponseMap {
       id: any;
     }
     query: {}
-    body: {}
+    body: any
     response: {
       id: string
       startup: {
@@ -1265,13 +1267,13 @@ export interface ServiceRequestAndResponseMap {
        */
       source: any;
     }
-    body: {}
+    body: any
     response: string[]
   }
   'cores@startup-获取prepareid': {
     params: {}
     query: {}
-    body: {}
+    body: any
     response: {
       id: string
     }
@@ -1351,7 +1353,7 @@ false 上链失败或确认中的,
        */
       isInBlock: any;
     }
-    body: {}
+    body: any
     response: {
       result: {
         id: string
@@ -1460,7 +1462,7 @@ false 上链失败或确认中的,
        */
       offset: any;
     }
-    body: {}
+    body: any
     response: {
       result: {
         id: string
@@ -1540,7 +1542,7 @@ false 上链失败或确认中的,
        */
       source: any;
     }
-    body: {}
+    body: any
     response: {
       result: {
         id: string
@@ -1559,7 +1561,7 @@ false 上链失败或确认中的,
       categoryId: any;
     }
     query: {}
-    body: {}
+    body: any
     response: {
       id?: string
       name?: string
@@ -1573,10 +1575,11 @@ export type ServiceKeys = keyof ServiceRequestAndResponseMap
 
 export type ServiceReturn = {
   [P in ServiceKeys]: (
-    data?: ServiceRequestAndResponseMap[P]['body'] &
+    data?: FormData | (
+      ServiceRequestAndResponseMap[P]['body'] &
       ServiceRequestAndResponseMap[P]['params'] &
       ServiceRequestAndResponseMap[P]['query']
-    ,
+    ),
     body?: ServiceRequestAndResponseMap[P]['body']
   ) => Promise<ServiceFunctionResponse<ServiceRequestAndResponseMap[P]['response']>>
 }
