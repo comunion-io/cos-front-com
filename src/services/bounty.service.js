@@ -71,7 +71,7 @@ export async function createBounty(id, params) {
  * OK
  */
 export async function getPrepareBountyId() {
-  const { error, data } = await services['cores@startup-获取prepare id']();
+  const { error, data } = await services['cores@startup-获取prepareid']();
   return error ? {} : data;
 
   // const { error, data } = await request('get', '/cores/prepareId');

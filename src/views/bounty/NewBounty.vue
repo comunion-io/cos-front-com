@@ -253,7 +253,7 @@ export default {
           try {
             // const { id } = await getPrepareBountyId();
 
-            const { error, data } = await services['cores@startup-获取prepare id']();
+            const { error, data } = await services['cores@startup-获取prepareid']();
             const id = error ? '' : data;
 
             if (id) {
