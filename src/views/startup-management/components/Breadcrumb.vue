@@ -28,18 +28,18 @@ export default {
           <Icon type="environment" theme="filled" class="t-primary" />
         </BreadcrumbItem>
         <BreadcrumbItem>
-          <route-link
+          <router-link
             class=".startup-management-breadcrumb_name t-trunc"
             to={{ name: 'startupManagement', id: this.$route.params.id }}
           >
             {this.startupName}
-          </route-link>
+          </router-link>
         </BreadcrumbItem>
         {items.map(item => (
           <BreadcrumbItem key={item.name}>
-            <route-link to={{ name: item.routeName, id: this.$route.params.id }}>
+            <router-link to={{ name: item.routeName, id: this.$route.params.id }}>
               {item.label}
-            </route-link>
+            </router-link>
           </BreadcrumbItem>
         ))}
       </Breadcrumb>
