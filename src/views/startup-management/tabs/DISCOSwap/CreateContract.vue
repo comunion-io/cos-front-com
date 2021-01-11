@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-12-20 21:29:09
- * @LastEditTime: 2020-12-23 00:21:08
+ * @LastEditTime: 2021-01-06 23:28:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \cos-front-com\src\views\startup-management\tabs\DISCOSwap\CreateContract.vue
@@ -18,7 +18,8 @@
     <div class="content">
       <a-form layout="vertical" :form="form" hideRequiredMark @submit="createBtnOnClick">
         <!-- Fund-Raising Contract Address: 募资的地址 -->
-        <a-form-item>
+        <!-- TODO zehui 上链接口调通以后， 这里需要注释 -->
+        <a-form-item v-if="false">
           <template v-slot:label>
             <p class="label">Fund-Raising Contract Address</p>
           </template>
@@ -295,9 +296,22 @@ export default {
       const { data: idObj } = await services['cores@startup-获取prepare id']();
       const id = idObj.id;
       // 发起上链
-      const txid = await this.discoInstance.sendDiscoTransaction(params, id, this.account);
+      await this.discoInstance.sendDiscoTransaction(
+        params,
+        id,
+        this.account,
+        this.discoBlockCallBack
+      );
+    },
+
+    /**
+     * @description: 上链后的回调
+     * @param {*} txid
+     * @return {*}
+     */
+    async discoBlockCallBack(txid, id, params) {
       if (txid) {
-        let { error, data } = await services['cores@disco-startup-创建'](
+        let { error } = await services['cores@disco-startup-创建'](
           { startupId: this.$route.query.startupId },
           {
             id,
@@ -306,13 +320,13 @@ export default {
           }
         );
 
-        if (!error) {
-          console.log(data);
+        if (error) {
+          console.error(error);
         }
       }
-
       this.loading = false;
     },
+
     updateTotalDepositToken() {
       this.$nextTick(() => {
         let values = this.form.getFieldsValue();

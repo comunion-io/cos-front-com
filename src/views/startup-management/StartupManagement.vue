@@ -29,6 +29,7 @@ export default {
   // },
   data() {
     return {
+      loading: true,
       startupDetail: {}
     };
   },
@@ -50,6 +51,7 @@ export default {
     const { error, data } = await services['cores@startup-获取']({
       startupId: this.$route.params.id
     });
+    this.loading = false;
     if (!error) {
       this.startupDetail = data;
     }
@@ -64,10 +66,14 @@ export default {
             ))}
           </a-tabs>
         </a-card>
-        <a-card class="flex-1">
-          <Breadcrumb startupName={this.startupDetail.name} />
-          <router-view id={this.$route.params.id} startup={this.startupDetail} />
-        </a-card>
+        {this.loading ? (
+          <a-spin />
+        ) : (
+          <a-card class="flex-1">
+            <Breadcrumb startupName={this.startupDetail.name} />
+            <router-view id={this.$route.params.id} startup={this.startupDetail} />
+          </a-card>
+        )}
       </div>
     );
   }

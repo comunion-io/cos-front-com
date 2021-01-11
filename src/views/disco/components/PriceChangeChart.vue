@@ -72,7 +72,7 @@ export default {
 
 <style lang="less" scoped>
 .container {
-  max-width: 200px;
+  max-width: 100px;
   width: 100%;
   height: 100%;
 }

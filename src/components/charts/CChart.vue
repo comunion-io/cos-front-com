@@ -1,9 +1,18 @@
 <template>
-  <div class="c-chart-container" style="padding: 0;"></div>
+  <div class="c-chart-container">
+    <div class="c-chart" style="padding: 0;"></div>
+    <div v-show="loading" class="c-spin">
+      <div class="c-spin-content">
+        <a-spin />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import echarts from 'echarts';
+import { debounce } from 'lodash';
+import { addDOMResizeObserver } from '@/utils/dom';
 
 export function getLinearGradient(colors) {
   return new echarts.graphic.LinearGradient(
@@ -26,14 +35,25 @@ export function getLinearGradient(colors) {
 
 export default {
   props: {
+    loading: {
+      type: Boolean,
+      default: false
+    },
     renderer: String,
     option: {
       type: Object,
       required: true
     }
   },
+  created() {
+    this.resize = debounce(this.resize, 300);
+  },
   mounted() {
     this.init();
+
+    this.removeResizeObserver = addDOMResizeObserver(this.$el.querySelector('.c-chart'), () => {
+      this.resize();
+    });
   },
   watch: {
     option: {
@@ -50,7 +70,10 @@ export default {
         return;
       }
 
-      const chartInstance = echarts.init(this.$el, this.renderer || 'canvas');
+      const chartInstance = echarts.init(
+        this.$el.querySelector('.c-chart'),
+        this.renderer || 'canvas'
+      );
 
       chartInstance.setOption(option || {});
 
@@ -61,17 +84,48 @@ export default {
         this.chartInstance.dispose();
         this.chartInstance = null;
       }
+    },
+    resize() {
+      if (this.chartInstance != null) {
+        this.chartInstance.resize();
+      }
     }
   },
   destroyed() {
     this.destroy();
+
+    if (this.removeResizeObserver != null) {
+      this.removeResizeObserver();
+    }
   }
 };
 </script>
 
 <style scoped lang="less">
 .c-chart-container {
+  position: relative;
   width: 100%;
   height: 100%;
+}
+
+.c-chart {
+  width: 100%;
+  height: 100%;
+}
+
+.c-spin {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  &-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>

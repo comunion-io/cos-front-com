@@ -1,7 +1,7 @@
 /*
  * @Author: zehui
  * @Date: 2020-12-13 23:40:00
- * @LastEditTime: 2020-12-23 00:32:28
+ * @LastEditTime: 2021-01-04 23:54:44
  * @LastEditors: Please set LastEditors
  * @Description: disco 上链的函数， 包括disco 合约的创建， 发起上链
  * @FilePath: \cos-front-com\src\utils\contract\disco.ts
@@ -50,7 +50,12 @@ export class DiscoTranscation {
    * @param id
    * @param account
    */
-  public async sendDiscoTransaction(disco: Disco, id: string, account: string) {
+  public async sendDiscoTransaction(
+    disco: Disco,
+    id: string,
+    account: string,
+    discoBlockCallBack: Function
+  ) {
     const contractInstance = await this.getDiscoContractInstance(disco, id);
     if (contractInstance) {
       const codeData = await contractInstance.encodeABI();
@@ -78,7 +83,7 @@ export class DiscoTranscation {
             return console.error(err);
           }
           const txid = result.result;
-          return txid;
+          discoBlockCallBack(txid, id, disco);
         }
       );
     }

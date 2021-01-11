@@ -33,7 +33,7 @@ import {
   Divider,
   Tooltip,
   // Drawer,
-  // Badge,
+  Badge,
   Pagination,
   List,
   Popconfirm,
@@ -74,7 +74,7 @@ Vue.use(Card);
 Vue.use(Divider);
 Vue.use(Tooltip);
 // Vue.use(Drawer);
-// Vue.use(Badge);
+Vue.use(Badge);
 Vue.use(Pagination);
 Vue.use(List);
 Vue.use(Popconfirm);

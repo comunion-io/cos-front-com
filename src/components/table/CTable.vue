@@ -5,6 +5,7 @@
         :columns="columns"
         :data-source="dataSource"
         :pagination="false"
+        @change="onChange"
         v-bind="$attrs"
         v-on="$listeners"
       >
@@ -14,7 +15,7 @@
       </a-table>
     </div>
     <div v-show="showPagination" class="c-table-pagination">
-      <pagination v-bind="pagination" />
+      <pagination v-bind="pagination" @change="handlePaginationChange" />
     </div>
   </div>
 </template>
@@ -31,8 +32,8 @@ export default {
       type: Object,
       default: function() {
         return {
-          pageSize: 20,
-          current: 1,
+          limit: 20,
+          offset: 1,
           total: 0
         };
       }
@@ -48,11 +49,22 @@ export default {
     dataSource: {
       type: Array,
       required: true
-    }
+    },
+    onChange: Function,
+    onPaginationChange: Function
   },
   computed: {
     showPagination() {
       return this.enablePagination && (this.dataSource?.length > 0 || this.pagination?.total > 0);
+    }
+  },
+  methods: {
+    handleChange(pagination, filters, sorter) {
+      this.$emit('on-change', filters, sorter);
+    },
+    handlePaginationChange(page, pageSize) {
+      const offset = page ? page - 1 * pageSize : 1;
+      this.$emit('on-pagination-change', offset, pageSize);
     }
   }
 };
