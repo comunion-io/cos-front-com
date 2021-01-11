@@ -9,7 +9,7 @@
         <div class="body">
           <div class="name">ETH</div>
           <div class="input-wrap">
-            <input class="input" type="text" />
+            <input class="input" v-model="token" @change="changedToken($event)" type="text" />
           </div>
         </div>
       </div>
@@ -24,7 +24,7 @@
         <div class="body">
           <div class="name">UVU</div>
           <div class="input-wrap">
-            <input class="input" type="text" />
+            <input class="input" v-model="ether" @change="changedEther($event)" type="text" />
           </div>
         </div>
       </div>
@@ -40,12 +40,41 @@
 
 <script>
 import ExchangeSVG from './exchange.svg';
+import { SwapTranscation } from '@/utils/contract/swap';
 export default {
   data() {
-    return {};
+    return {
+      token: 0,
+      ether: 0,
+      discoInstance: undefined
+    };
   },
   components: {
     ExchangeSVG
+  },
+  mounted() {
+    this.swapInstance = SwapTranscation.getInstance();
+  },
+  methods: {
+    /**
+     * @name: Zehui
+     * @description: token 兑换ether
+     * @param {*} value
+     * @return {*}
+     */
+    changedToken(value) {
+      console.log(this.token);
+    },
+
+    /**
+     * @name: Zehui
+     * @description: ether 兑换 token
+     * @param {*} value
+     * @return {*}
+     */
+    changedEther(value) {
+      console.log(this.ether);
+    }
   }
 };
 </script>
