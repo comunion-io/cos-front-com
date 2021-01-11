@@ -8,8 +8,7 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
     'no-console': 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    quotemark: [true, 'single']
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   },
   parserOptions: {
     parser: '@typescript-eslint/parser'
