@@ -39,13 +39,13 @@ export const apis: Apis = {
     q: ['limit', 'offset', 'keyword', 'orderBy', 'isAsc'],
     d: 1
   },
-  'cores@startup-disco和swap状态': {
+  'cores@startup-disco和swap 状态': {
     u: '/cores/startups/{startupId}/discoSwapState',
     m: 'POST',
     p: ['startupId'],
     d: 0
   },
-  'cores@disco-total统计': {
+  'cores@disco-total 统计': {
     u: '/cores/discos:statDiscoTotal',
     m: 'POST',
     q: ['limit', 'offset', 'keyword', 'orderBy', 'isAsc'],
@@ -236,7 +236,7 @@ export const apis: Apis = {
     d: 1
   },
   'cores@bounty-列表': {
-    u: '/cores/bounties',
+    u: '/bounties',
     m: 'GET',
     q: ['limit', 'offset', 'keyword'],
     d: 1
@@ -271,7 +271,7 @@ export const apis: Apis = {
     q: ['source'],
     d: 1
   },
-  'cores@startup-获取prepareid': {
+  'cores@startup-获取prepare id': {
     u: '/cores/startups/prepareId',
     m: 'GET',
     d: 1
