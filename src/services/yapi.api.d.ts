@@ -111,6 +111,23 @@ export interface ServiceRequestAndResponseMap {
       count: number
     }[]
   }
+  'cores@startup-disco和swap状态': {
+    params: {
+      startupId: any;
+    }
+    query: {}
+    body: {}
+    response: {
+      /**
+       * @description -1 未开启，0 创建中，1 等待开启（创建成功），2 创建失败，3 开启中，4 等待募资开始（数据库为4，时间未开始），5 募资成功，6 募资失败，7 募资中（数据库为4，时间进行中），8 募资结束（数据库为4，时间已结束）
+       */
+      discoState?: number
+      /**
+       * @description -1 未开启，0 待确认，1 已完成，2 未完成
+       */
+      swapState?: number
+    }
+  }
   'cores@disco-total统计': {
     params: {}
     query: {
@@ -216,34 +233,20 @@ export interface ServiceRequestAndResponseMap {
       totalEth?: number
     }
   }
-  'cores@exchanges-列表': {
+  'cores@disco-列表': {
     params: {}
     query: {
       limit: any;
       offset: any;
       keyword: any;
       /**
-       * @description createdAt、startup、liquidities、volumes24Hrs
+       * @description createdAt、startup、investmentReward、liquidityPool
        */
       orderBy: any;
       /**
        * @description true、false 默认为false
        */
-      isDesc: any;
-    }
-    body: {
-      id: string
-      walletAddr: string
-      tokenContract: string
-      description: string
-      fundRaisingTime: string
-      investmentReward: number
-      'rewardDeclineRate ': number
-      shareToken: number
-      minFundRaising: number
-      addLiquidityPool: number
-      totalDepositToken: number
-      txId: string
+      isAsc: any;
     }
     body: {
       id: string
@@ -451,6 +454,15 @@ export interface ServiceRequestAndResponseMap {
     query: {
       limit: any;
       offset: any;
+      keyword: any;
+      /**
+       * @description createdAt、startup、liquidities、volumes24Hrs
+       */
+      orderBy: any;
+      /**
+       * @description true、false 默认为false
+       */
+      isDesc: any;
     }
     body: {
       id: string
@@ -1513,7 +1525,9 @@ false 上链失败或确认中的,
   'cores@文件上传': {
     params: {}
     query: {}
-    body: FormData
+    body: {
+      image: File
+    }
     response: {
       downloadUrl: string
     }
