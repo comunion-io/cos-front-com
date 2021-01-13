@@ -28,8 +28,8 @@
             {{ tab }}
           </div>
         </div>
-        <Swap :startup="startup" v-if="activeTab === 'Swap'" />
-        <FundsPool :startup="startup" v-else-if="activeTab === 'Funds Pool'" />
+        <Swap :exchangeId="exchangeId" v-if="activeTab === 'Swap'" />
+        <FundsPool :exchangeId="exchangeId" v-else-if="activeTab === 'Funds Pool'" />
       </div>
     </div>
 
@@ -59,7 +59,8 @@ export default {
         { name: 'Total Liquidity', title: 'ETH', value: 0, growth: 0 },
         { name: 'Transactions(24h)', title: '', value: 0, growth: 0 }
       ],
-      loading: false
+      loading: false,
+      exchangeId: undefined
     };
   },
   props: {
@@ -90,6 +91,7 @@ export default {
       });
       this.loading = false;
       this.exchange = error ? {} : data;
+      this.exchangeId = this.exchange.id;
       if (!error) {
         this.getData();
       }

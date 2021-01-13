@@ -62,7 +62,7 @@ export default {
     exchangeId: {
       type: String,
       default() {
-        return '12345687';
+        return '';
       }
     }
   },
