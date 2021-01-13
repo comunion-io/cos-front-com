@@ -62,7 +62,7 @@
     "vue-cli-plugin-vuetify": "^2.0.5",
     "vue-svg-loader": "0.8.0",
     "vue-template-compiler": "^2.6.10",
-    "y2s": "^0.4.1"
+    "y2s": "^0.4.2"
   },
   "postcss": {
     "plugins": {
