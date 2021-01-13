@@ -5,7 +5,9 @@ export interface ServiceRequestAndResponseMap {
   'account@login': {
     params: {}
     query: {}
-    body: {}
+    body: {
+      walletAddr: string
+    }
     response: {
       id: string
       publicKey: string
@@ -28,7 +30,13 @@ export interface ServiceRequestAndResponseMap {
   'account@用户-hunter-更新': {
     params: {}
     query: {}
-    body: {}
+    body: {
+      name: string
+      skills: string[]
+      about: string
+      descriptionAddr: string
+      email: string
+    }
     response: {}
   }
   'account@用户-我的': {
@@ -79,13 +87,397 @@ export interface ServiceRequestAndResponseMap {
       nonce: string
     }
   }
+  'cores@disco-增长eth数量统计': {
+    params: {}
+    query: {
+      limit: any;
+      offset: any;
+      keyword: any;
+      /**
+       * @description createdAt、startup、investmentReward、liquidityPool
+       */
+      orderBy: any;
+      /**
+       * @description true、false 默认为false
+       */
+      isAsc: any;
+    }
+    body: {
+      timeFrom: string
+      timeTo: string
+    }
+    response: {
+      date: string
+      count: number
+    }[]
+  }
+  'cores@startup-disco和swap状态': {
+    params: {
+      startupId: any;
+    }
+    query: {}
+    body: {}
+    response: {
+      /**
+       * @description -1 未开启，0 创建中，1 等待开启（创建成功），2 创建失败，3 开启中，4 等待募资开始（数据库为4，时间未开始），5 募资成功，6 募资失败，7 募资中（数据库为4，时间进行中），8 募资结束（数据库为4，时间已结束）
+       */
+      discoState?: number
+      /**
+       * @description -1 未开启，0 待确认，1 已完成，2 未完成
+       */
+      swapState?: number
+    }
+  }
+  'cores@disco-total统计': {
+    params: {}
+    query: {
+      limit: any;
+      offset: any;
+      keyword: any;
+      /**
+       * @description createdAt、startup、investmentReward、liquidityPool
+       */
+      orderBy: any;
+      /**
+       * @description true、false 默认为false
+       */
+      isAsc: any;
+    }
+    body: {}
+    response: {
+      count: number
+      rate: string
+    }
+  }
+  'cores@disco-募集的eth总数统计': {
+    params: {}
+    query: {
+      limit: any;
+      offset: any;
+      keyword: any;
+      /**
+       * @description createdAt、startup、investmentReward、liquidityPool
+       */
+      orderBy: any;
+      /**
+       * @description true、false 默认为false
+       */
+      isAsc: any;
+    }
+    body: {}
+    response: {
+      count: number
+    }
+  }
+  'cores@startup-follow-创建': {
+    params: {
+      startupId: any;
+    }
+    query: {}
+    body: {}
+    response: {}
+  }
+  'cores@bounty-closed': {
+    params: {
+      bountyId: any;
+    }
+    query: {}
+    body: {}
+    response: {}
+  }
+  'cores@disco-startup-创建': {
+    params: {
+      startupId: any;
+    }
+    query: {}
+    body: {
+      id: string
+      walletAddr: string
+      tokenAddr: string
+      description: string
+      fundRaisingStartedAt: string
+      fundRaisingEndedAt: string
+      investmentReward: number
+      rewardDeclineRate: number
+      shareToken: number
+      minFundRaising: number
+      addLiquidityPool: number
+      totalDepositToken: number
+      txId: string
+    }
+    response: {}
+  }
+  'cores@disco-startup-investor-列表': {
+    params: {
+      startupId: any;
+    }
+    query: {
+      limit: any;
+      offset: any;
+    }
+    body: {
+      id: string
+      ethCount: number
+      txId: string
+    }
+    response: {
+      total?: number
+      result?: {
+        id: string
+        discoId: string
+        uid: string
+        walletAddr: string
+        ethCount: number
+        createdAt: string
+      }[]
+      totalEth?: number
+    }
+  }
+  'cores@disco-列表': {
+    params: {}
+    query: {
+      limit: any;
+      offset: any;
+      keyword: any;
+      /**
+       * @description createdAt、startup、investmentReward、liquidityPool
+       */
+      orderBy: any;
+      /**
+       * @description true、false 默认为false
+       */
+      isAsc: any;
+    }
+    body: {
+      id: string
+      walletAddr: string
+      tokenContract: string
+      description: string
+      fundRaisingTime: string
+      investmentReward: number
+      'rewardDeclineRate ': number
+      shareToken: number
+      minFundRaising: number
+      addLiquidityPool: number
+      totalDepositToken: number
+      txId: string
+    }
+    response: {
+      total?: number
+      result?: {
+        id?: string
+        startup?: {
+          id?: string
+          name?: string
+          logo?: string
+          tokenSymbol?: string
+        }
+        investmentReward?: number
+        rewardDeclineRate?: number
+        shareToken?: number
+        minFundRaising?: number
+        addLiquidityPool?: number
+        /**
+         * @description 0 默认状态，1 等待开始，2 进行中，3 失败，4 成功
+         */
+        state?: number
+      }[]
+    }
+  }
+  'cores@disco-startup-获取': {
+    params: {
+      startupId: any;
+    }
+    query: {}
+    body: {
+      id: string
+      walletAddr: string
+      tokenContract: string
+      description: string
+      fundRaisingTime: string
+      investmentReward: number
+      'rewardDeclineRate ': number
+      shareToken: number
+      minFundRaising: number
+      addLiquidityPool: number
+      totalDepositToken: number
+      txId: string
+    }
+    response: {
+      id: string
+      walletAddr: string
+      tokenAddr: string
+      description: string
+      fundRaisingStartedAt: string
+      fundRaisingEndedAt: string
+      investmentReward: number
+      rewardDeclineRate: number
+      shareToken: number
+      minFundRaising: number
+      addLiquidityPool: number
+      totalDepositToken: number
+      /**
+       * @description 0 默认状态，1 等待开始，2 进行中，3 失败，4 成功
+       */
+      state: number
+      txId: string
+      fundRaisingAddr: string
+      /**
+       * @description 0 无意义状态,1 待确认,2 上链成功,3 未确认到交易
+       */
+      transactionState: number
+    }
+  }
+  'cores@disco-startup-investor-创建': {
+    params: {
+      startupId: any;
+    }
+    query: {}
+    body: {
+      id: string
+      ethCount: number
+      txId: string
+    }
+    response: {}
+  }
+  'cores@exchange-startup-创建': {
+    params: {
+      startupId: any;
+    }
+    query: {}
+    body: {
+      txId: string
+    }
+    response: {
+      /**
+       * @description exchange_id
+       */
+      id: string
+      /**
+       * @description 0 待确认，1 已完成，2 未完成
+       */
+      status: number
+    }
+  }
+  'cores@exchange-获取': {
+    params: {
+      exchangeId: any;
+    }
+    query: {}
+    body: {
+      id: string
+      walletAddr: string
+      tokenContract: string
+      description: string
+      fundRaisingTime: string
+      investmentReward: number
+      'rewardDeclineRate ': number
+      shareToken: number
+      minFundRaising: number
+      addLiquidityPool: number
+      totalDepositToken: number
+      txId: string
+    }
+    response: {
+      /**
+       * @description exchange_id
+       */
+      id: string
+      /**
+       * @description transaction_id
+       */
+      txId: string
+      startup: {
+        id: string
+        name: string
+        logo: string
+        tokenName: string
+        tokenSymbol: string
+        mission: string
+      }
+      pairName: string
+      pairAddress: string
+      /**
+       * @description 0 待确认，1 已完成，2 未完成
+       */
+      status: number
+      followCount: number
+    }
+  }
+  'cores@exchange-startup-获取': {
+    params: {
+      startupId: any;
+    }
+    query: {}
+    body: {
+      id: string
+      walletAddr: string
+      tokenContract: string
+      description: string
+      fundRaisingTime: string
+      investmentReward: number
+      'rewardDeclineRate ': number
+      shareToken: number
+      minFundRaising: number
+      addLiquidityPool: number
+      totalDepositToken: number
+      txId: string
+    }
+    response: {
+      /**
+       * @description exchange_id
+       */
+      id: string
+      /**
+       * @description transaction_id
+       */
+      txId: string
+      startup: {
+        id: string
+        name: string
+        logo: string
+        tokenName: string
+        tokenSymbol: string
+        mission: string
+      }
+      pairName: string
+      pairAddress: string
+      /**
+       * @description 0 待确认，1 已完成，2 未完成
+       */
+      status: number
+      followCount: number
+    }
+  }
   'cores@exchanges-列表': {
     params: {}
     query: {
       limit: any;
       offset: any;
+      keyword: any;
+      /**
+       * @description createdAt、startup、liquidities、volumes24Hrs
+       */
+      orderBy: any;
+      /**
+       * @description true、false 默认为false
+       */
+      isDesc: any;
     }
-    body: {}
+    body: {
+      id: string
+      walletAddr: string
+      tokenContract: string
+      description: string
+      fundRaisingTime: string
+      investmentReward: number
+      'rewardDeclineRate ': number
+      shareToken: number
+      minFundRaising: number
+      addLiquidityPool: number
+      totalDepositToken: number
+      txId: string
+    }
     response: {
       result?: {
         /**
@@ -114,31 +506,39 @@ export interface ServiceRequestAndResponseMap {
       total: number
     }
   }
-  'cores@bounty-closed': {
+  'cores@exchange_transaction-创建': {
     params: {
-      bountyId: any;
+      exchangeId: any;
     }
     query: {}
-    body: {}
-    response: {}
-  }
-  'cores@startup-follow-创建': {
-    params: {
-      startupId: any;
+    body: {
+      txId: string
+      /**
+       * @description 客户钱包地址
+       */
+      account: string
+      /**
+       * @description 1 增加流动性，2 删除流动性，3 兑换
+       */
+      type: number
+      /**
+       * @description startup token数量
+       */
+      tokenAmount1: number
+      /**
+       * @description eth数量
+       */
+      tokenAmount2: number
     }
-    query: {}
-    body: {}
-    response: {}
-  }
-  'cores@exchanges-统计合计': {
-    params: {}
-    query: {}
-    body: {}
     response: {
-      volumes24Hrs: number
-      volumes24HrsRate: number
-      liquidities: number
-      liquiditiesRate: number
+      /**
+       * @description exchange_transaction_id
+       */
+      id: string
+      /**
+       * @description 0 待确认，1 已完成，2 未完成
+       */
+      status: number
     }
   }
   'cores@exchange_transaction-获取': {
@@ -146,7 +546,17 @@ export interface ServiceRequestAndResponseMap {
       transactionId: any;
     }
     query: {}
-    body: {}
+    body: {
+      txId: string
+      /**
+       * @description 客户钱包地址
+       */
+      account: string
+      /**
+       * @description 1 增加流动性，2 删除流动性，3 兑换
+       */
+      type: number
+    }
     response: {
       /**
        * @description exchange_transaction_id
@@ -185,23 +595,6 @@ export interface ServiceRequestAndResponseMap {
       occuredAt: string
     }
   }
-  'cores@exchange_transaction-创建': {
-    params: {
-      exchangeId: any;
-    }
-    query: {}
-    body: {}
-    response: {
-      /**
-       * @description exchange_transaction_id
-       */
-      id: string
-      /**
-       * @description 0 待确认，1 已完成，2 未完成
-       */
-      status: number
-    }
-  }
   'cores@exchange_transaction-列表': {
     params: {
       exchangeId: any;
@@ -214,7 +607,17 @@ export interface ServiceRequestAndResponseMap {
       limit: any;
       offset: any;
     }
-    body: {}
+    body: {
+      txId: string
+      /**
+       * @description 客户钱包地址
+       */
+      account: string
+      /**
+       * @description 1 增加流动性，2 删除流动性，3 兑换
+       */
+      type: number
+    }
     response: {
       result: {
         /**
@@ -254,36 +657,25 @@ export interface ServiceRequestAndResponseMap {
       total: number
     }
   }
-  'cores@exchange-获取': {
-    params: {
-      exchangeId: any;
-    }
+  'cores@exchanges-统计合计': {
+    params: {}
     query: {}
-    body: {}
-    response: {
-      /**
-       * @description exchange_id
-       */
-      id: string
-      /**
-       * @description transaction_id
-       */
+    body: {
       txId: string
-      startup: {
-        id: string
-        name: string
-        logo: string
-        tokenName: string
-        tokenSymbol: string
-        mission: string
-      }
-      pairName: string
-      pairAddress: string
       /**
-       * @description 0 待确认，1 已完成，2 未完成
+       * @description 客户钱包地址
        */
-      status: number
-      followCount: number
+      account: string
+      /**
+       * @description 1 增加流动性，2 删除流动性，3 兑换
+       */
+      type: number
+    }
+    response: {
+      volumes24Hrs: number
+      volumes24HrsRate: number
+      liquidities: number
+      liquiditiesRate: number
     }
   }
   'cores@exchange-汇总': {
@@ -291,7 +683,17 @@ export interface ServiceRequestAndResponseMap {
       exchangeId: any;
     }
     query: {}
-    body: {}
+    body: {
+      txId: string
+      /**
+       * @description 客户钱包地址
+       */
+      account: string
+      /**
+       * @description 1 增加流动性，2 删除流动性，3 兑换
+       */
+      type: number
+    }
     response: {
       volumes24Hrs: number
       volumes24HrsRate: number
@@ -306,7 +708,17 @@ export interface ServiceRequestAndResponseMap {
       exchangeId: any;
     }
     query: {}
-    body: {}
+    body: {
+      txId: string
+      /**
+       * @description 客户钱包地址
+       */
+      account: string
+      /**
+       * @description 1 增加流动性，2 删除流动性，3 兑换
+       */
+      type: number
+    }
     response: {
       tokenSymbol1: string
       tokenSymbol2: string
@@ -317,129 +729,6 @@ export interface ServiceRequestAndResponseMap {
         occuredDay: string
         endPrice: number
       }
-    }
-  }
-  'cores@exchange-startup-获取': {
-    params: {
-      startupId: any;
-    }
-    query: {}
-    body: {}
-    response: {
-      /**
-       * @description exchange_id
-       */
-      id: string
-      /**
-       * @description transaction_id
-       */
-      txId: string
-      startup: {
-        id: string
-        name: string
-        logo: string
-        tokenName: string
-        tokenSymbol: string
-        mission: string
-      }
-      pairName: string
-      pairAddress: string
-      /**
-       * @description 0 待确认，1 已完成，2 未完成
-       */
-      status: number
-      followCount: number
-    }
-  }
-  'cores@exchange-startup-创建': {
-    params: {
-      startupId: any;
-    }
-    query: {}
-    body: {}
-    response: {
-      /**
-       * @description exchange_id
-       */
-      id: string
-      /**
-       * @description 0 待确认，1 已完成，2 未完成
-       */
-      status: number
-    }
-  }
-  'cores@disco-startup-创建': {
-    params: {
-      startupId: any;
-    }
-    query: {}
-    body: {}
-    response: {}
-  }
-  'cores@disco-startup-获取': {
-    params: {
-      startupId: any;
-    }
-    query: {}
-    body: {}
-    response: {
-      id?: string
-      walletAddr?: string
-      tokenAddr?: string
-      description?: string
-      fundRaisingStartedAt?: string
-      fundRaisingEndedAt?: string
-      investmentReward?: number
-      rewardDeclineRate?: number
-      shareToken?: number
-      minFundRaising?: number
-      addLiquidityPool?: number
-      totalDepositToken?: number
-      /**
-       * @description 0 默认状态，1 等待开始，2 进行中，3 失败，4 成功
-       */
-      state?: number
-      txId?: string
-      fundRaisingAddr?: string
-      /**
-       * @description 0 无意义状态,1 待确认,2 上链成功,3 未确认到交易
-       */
-      transactionState?: number
-    }
-  }
-  'cores@disco-列表': {
-    params: {}
-    query: {
-      limit: any;
-      offset: any;
-      keyword: any;
-      /**
-       * @description createdAt、startup、investmentReward、liquidityPool
-       */
-      orderBy: any;
-      /**
-       * @description true、false 默认为false
-       */
-      isAsc: any;
-    }
-    body: {}
-    response: {
-      total?: number
-      result?: {
-        id?: string
-        startup?: {
-          id?: string
-          name?: string
-          logo?: string
-          tokenSymbol?: string
-        }
-        investmentReward?: number
-        rewardDeclineRate?: number
-        shareToken?: number
-        minFundRaising?: number
-        addLiquidityPool?: number
-        state?: number
-      }[]
     }
   }
   'cores@startups-我的-follow列表': {
@@ -558,7 +847,9 @@ export interface ServiceRequestAndResponseMap {
       bountyId: any;
     }
     query: {}
-    body: {}
+    body: {
+      txId: string
+    }
     response: {}
   }
   'cores@bounty-submitted': {
@@ -582,7 +873,9 @@ export interface ServiceRequestAndResponseMap {
       bountyId: any;
     }
     query: {}
-    body: {}
+    body: {
+      userId: string
+    }
     response: {}
   }
   'cores@bounty-rejected': {
@@ -590,7 +883,9 @@ export interface ServiceRequestAndResponseMap {
       bountyId: any;
     }
     query: {}
-    body: {}
+    body: {
+      userId: string
+    }
     response: {}
   }
   'cores@startup-获取支付Token列表': {
@@ -939,7 +1234,25 @@ export interface ServiceRequestAndResponseMap {
       id: any;
     }
     query: {}
-    body: {}
+    body: {
+      id: string
+      title: string
+      /**
+       * @description contest,cooperative
+       */
+      type: string
+      keywords?: string[]
+      contactEmail: string
+      intro: string
+      descriptionAddr?: string
+      descriptionFileAddr: string
+      duration: number
+      payments: {
+        token: string
+        value: number
+      }[]
+      txId: string
+    }
     response: {
       id: string
     }
@@ -955,7 +1268,7 @@ export interface ServiceRequestAndResponseMap {
     body: {}
     response: string[]
   }
-  'cores@startup-获取prepare id': {
+  'cores@startup-获取prepareid': {
     params: {}
     query: {}
     body: {}
@@ -968,7 +1281,14 @@ export interface ServiceRequestAndResponseMap {
       startupId: any;
     }
     query: {}
-    body: {}
+    body: {
+      name: string
+      categoryId: string
+      logo: string
+      mission: string
+      decriptionAddr: string
+      txId: string
+    }
     response: {
       id?: string
       name?: string
@@ -1006,7 +1326,15 @@ export interface ServiceRequestAndResponseMap {
   'cores@startup-创建': {
     params: {}
     query: {}
-    body: {}
+    body: {
+      id: string
+      name: string
+      categoryId: string
+      logo: string
+      mission: string
+      descriptionAddr: string
+      txId: string
+    }
     response: {
       id: string
     }
@@ -1053,7 +1381,14 @@ false 上链失败或确认中的,
       startupId: any;
     }
     query: {}
-    body: {}
+    body: {
+      name: string
+      categoryId: string
+      logo: string
+      mission: string
+      descriptionAddr: string
+      txId: string
+    }
     response: {
       id: string
     }
@@ -1063,7 +1398,14 @@ false 上链失败或确认中的,
       startupId: any;
     }
     query: {}
-    body: {}
+    body: {
+      name: string
+      categoryId: string
+      logo: string
+      mission: string
+      decriptionAddr: string
+      txId: string
+    }
     response: {
       id?: string
       name?: string
@@ -1150,7 +1492,32 @@ false 上链失败或确认中的,
       id: any;
     }
     query: {}
-    body: {}
+    body: {
+      tokenName: string
+      tokenSymbol: string
+      tokenAddr: string
+      walletAddrs: {
+        name: string
+        addr: string
+      }[]
+      /**
+       * @description FounderAssign;POS;ALL
+       */
+      voteType: string
+      /**
+       * @description 允许投票token数量限制，type=FounderAssign是不能为空
+       */
+      voteTokenLimit?: number
+      /**
+       * @description 允许投票的地址，type=POS时不能为空
+       */
+      voteAssignAddrs?: string[]
+      voteSupportPercent: number
+      voteMinApprovalPercent: number
+      voteMinDurationHours: number
+      voteMaxDurationHours: number
+      txId: string
+    }
     response: {
       id: string
     }
@@ -1158,9 +1525,7 @@ false 上链失败或确认中的,
   'cores@文件上传': {
     params: {}
     query: {}
-    body: {
-      image: File
-    }
+    body: FormData
     response: {
       downloadUrl: string
     }
@@ -1210,7 +1575,8 @@ export type ServiceReturn = {
   [P in ServiceKeys]: (
     data?: ServiceRequestAndResponseMap[P]['body'] &
       ServiceRequestAndResponseMap[P]['params'] &
-      ServiceRequestAndResponseMap[P]['query'],
+      ServiceRequestAndResponseMap[P]['query']
+    ,
     body?: ServiceRequestAndResponseMap[P]['body']
   ) => Promise<ServiceFunctionResponse<ServiceRequestAndResponseMap[P]['response']>>
 }
