@@ -67,7 +67,9 @@ export default {
     startup: {
       type: Object,
       default: () => {}
-    }
+    },
+    // startup id
+    id: String
   },
   components: {
     CountBlock,
@@ -86,9 +88,10 @@ export default {
     // 获取exchange
     async getExchange() {
       this.loading = true;
-      const { error, data } = await services['cores@exchange-startup-获取']({
-        startupId: this.startup.id
-      });
+      const params = {
+        startupId: this.id
+      };
+      const { error, data } = await services['cores@exchange-startup-获取'](params);
       this.loading = false;
       this.exchange = error ? {} : data;
       this.exchangeId = this.exchange.id;
