@@ -323,17 +323,12 @@ export default {
     },
 
     /**
-     * @description: 上链后的回调
+     * @description 上链后的回调
      * @param {*} txid
      * @return {*}
      */
     async discoBlockCallBack(txid, id, params) {
       if (txid) {
-        console.log(
-          '%c 🍗 this.startup: ',
-          'font-size:20px;background-color: #465975;color:#fff;',
-          this.startup
-        );
         let { error } = await services['cores@disco-startup-创建']({
           startupId: this.startup.id,
           id,
@@ -368,7 +363,7 @@ export default {
     },
 
     /**
-     * @description: 启用disco
+     * @description 启用disco
      * @param {*}
      * @return {*}
      */

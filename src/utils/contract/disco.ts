@@ -10,7 +10,7 @@ import { discoAbi } from '@/libs/abis/disco';
 import { COMUNION_RECEIVER_STARTUP_ACCOUNT, web3 } from '@/libs/web3';
 
 /**
- * @description: Disco 接口
+ * @description Disco 接口
  * @param {*}
  * @return {*}
  */
