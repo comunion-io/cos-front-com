@@ -1,3 +1,9 @@
+<!--
+ * @Author       : xiaodong
+ * @Date         : 2020-12-20 21:29:11
+ * @Descripttion : startup 创建 swap
+ * @FilePath     : \cos-front-com\src\views\startup\details\Swap\Swap.vue
+-->
 <template>
   <div>
     <div class="wrap">
@@ -32,7 +38,7 @@
     <p class="text">Minimum received: 99.74 UVU</p>
     <p class="text">Price Impact：1.34%</p>
     <p class="text">Liquidity Provider Fee：0.003 ETH</p>
-    <a-button class="btn" type="primary">
+    <a-button class="btn" type="primary" @click="swap()">
       Swap
     </a-button>
   </div>
@@ -41,6 +47,9 @@
 <script>
 import ExchangeSVG from './exchange.svg';
 import { SwapTranscation } from '@/utils/contract/swap';
+import services from '@/services';
+import { mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
@@ -48,6 +57,17 @@ export default {
       ether: 0,
       discoInstance: undefined
     };
+  },
+  props: {
+    exchangeId: {
+      type: String,
+      default() {
+        return '12345687';
+      }
+    }
+  },
+  computed: {
+    ...mapGetters(['account'])
   },
   components: {
     ExchangeSVG
@@ -58,7 +78,7 @@ export default {
   methods: {
     /**
      * @name: Zehui
-     * @description: token 兑换ether
+     * @description token 兑换ether
      * @param {*} value
      * @return {*}
      */
@@ -68,12 +88,48 @@ export default {
 
     /**
      * @name: Zehui
-     * @description: ether 兑换 token
+     * @description ether 兑换 token
      * @param {*} value
      * @return {*}
      */
     changedEther(value) {
       console.log(this.ether);
+    },
+
+    /**
+     * @name: Zehui
+     * @description 创建swap交易
+     * @param {*}
+     * @return {*}
+     */
+    swap() {
+      // TODO 上链后获取txid
+      const txid = '0x123455';
+      this.swapCallBack(txid);
+    },
+
+    /**
+     * @name: Zehui
+     * @description 上链后的回调
+     * @param {*} txid
+     * @return {*}
+     */
+    async swapCallBack(txid) {
+      if (this.exchangeId) {
+        const params = {
+          exchangeId: this.exchangeId,
+          txid,
+          type: 3,
+          account: this.account,
+          tokenAmount1: this.token,
+          tokenAmount2: this.ether
+        };
+        let { error } = await services['cores@exchange_transaction-创建'](params);
+
+        if (error) {
+          console.error(error);
+        }
+      }
     }
   }
 };

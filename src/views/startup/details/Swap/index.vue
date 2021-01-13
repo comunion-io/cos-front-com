@@ -28,8 +28,8 @@
             {{ tab }}
           </div>
         </div>
-        <Swap v-if="activeTab === 'Swap'" />
-        <FundsPool v-else-if="activeTab === 'Funds Pool'" />
+        <Swap :startup="startup" v-if="activeTab === 'Swap'" />
+        <FundsPool :startup="startup" v-else-if="activeTab === 'Funds Pool'" />
       </div>
     </div>
 

@@ -24,7 +24,7 @@ export class SwapTranscation {
 
   /**
    * @name: Zehui
-   * @description:  创建swap的实例
+   * @description  创建swap的实例
    * @param {*}
    * @return {*}
    */
@@ -35,7 +35,7 @@ export class SwapTranscation {
 
   /**
    * @name: Zehui
-   * @description: 获取abi的
+   * @description 获取abi的
    * @param {*}
    * @return {*}
    */
