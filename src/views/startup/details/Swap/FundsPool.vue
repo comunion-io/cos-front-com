@@ -105,7 +105,7 @@ export default {
     exchangeId: {
       type: String,
       default() {
-        return '12345687';
+        return '';
       }
     }
   },
@@ -146,17 +146,19 @@ export default {
      * @return {*}
      */
     async addLiquidityCallBack(txid) {
-      const params = {
-        txid,
-        exchangeId: this.exchangeId,
-        account: this.account,
-        type: 1,
-        tokenAmount1: this.addedToken,
-        tokenAmount2: this.addedEther
-      };
-      let { error } = await services['cores@exchange_transaction-创建'](params);
-      if (error) {
-        console.error(error);
+      if (this.exchangeId) {
+        const params = {
+          txid,
+          exchangeId: this.exchangeId,
+          account: this.account,
+          type: 1,
+          tokenAmount1: this.addedToken,
+          tokenAmount2: this.addedEther
+        };
+        let { error } = await services['cores@exchange_transaction-创建'](params);
+        if (error) {
+          console.error(error);
+        }
       }
     },
 
