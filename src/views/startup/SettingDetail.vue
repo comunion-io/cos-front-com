@@ -216,11 +216,19 @@ export default {
       return contractSetting;
     },
 
+    /**
+     * @name: Zehui
+     * @description: startup 的 setting 在上链成功后， 数据备份到后端
+     * @param {*}
+     * @return {*}
+     */
     async createSetting(formData, txid) {
-      const { error } = await services['cores@startup-settings-更新'](this.$route.params.id, {
+      const params = {
+        id: this.$route.params.id,
         ...formData,
         txid
-      });
+      };
+      const { error } = await services['cores@startup-settings-更新'](params);
       if (!error) {
         sessionStorage.removeItem(this.storeKey);
         this.completed = true;
