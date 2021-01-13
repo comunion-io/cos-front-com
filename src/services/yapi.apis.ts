@@ -39,6 +39,12 @@ export const apis: Apis = {
     q: ['limit', 'offset', 'keyword', 'orderBy', 'isAsc'],
     d: 1
   },
+  'cores@startup-disco和swap状态': {
+    u: '/cores/startups/{startupId}/discoSwapState',
+    m: 'POST',
+    p: ['startupId'],
+    d: 0
+  },
   'cores@disco-total统计': {
     u: '/cores/discos:statDiscoTotal',
     m: 'POST',
@@ -115,7 +121,7 @@ export const apis: Apis = {
   'cores@exchanges-列表': {
     u: '/cores/exchanges',
     m: 'GET',
-    q: ['limit', 'offset'],
+    q: ['limit', 'offset', 'keyword', 'orderBy', 'isDesc'],
     d: 1
   },
   'cores@exchange_transaction-创建': {
