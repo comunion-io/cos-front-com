@@ -42,6 +42,9 @@
     <!-- exchange注入失败 -->
     <!-- <MyCard status="12" type="disco" />
     <MyCard status="12" type="exchange" /> -->
+    <!-- DISCO提交成功-募资结束等待结果 -->
+    <!-- <MyCard status="13" type="disco" />
+    <MyCard status="13" type="exchange" /> -->
 
     <!-- 创建合约页面 -->
     <CreateContract v-if="createContractVisible" :startup="startup" />
@@ -153,6 +156,9 @@ export default {
       } else if (discoState === 7) {
         // DISCO提交成功，募资进行中
         this.status = '9';
+      } else if (discoState === 8) {
+        // DISCO提交成功-募资结束等待结果
+        this.status = '13';
       }
     },
     discoOnClick() {
@@ -168,7 +174,8 @@ export default {
         this.status === '6' ||
         this.status === '7' ||
         this.status === '8' ||
-        this.status === '9'
+        this.status === '9' ||
+        this.status === '13'
       ) {
         // 当状态为等待募资开始 或者 募资成功 或者 募资失败 或者 募资进行中时
         // 显示disco详情页面
