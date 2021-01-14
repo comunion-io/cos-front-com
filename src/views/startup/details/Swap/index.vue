@@ -88,10 +88,9 @@ export default {
     // 获取exchange
     async getExchange() {
       this.loading = true;
-      const params = {
+      const { error, data } = await services['cores@exchange-startup-获取']({
         startupId: this.id
-      };
-      const { error, data } = await services['cores@exchange-startup-获取'](params);
+      });
       this.loading = false;
       this.exchange = error ? {} : data;
       this.exchangeId = this.exchange.id;

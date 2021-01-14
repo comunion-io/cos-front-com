@@ -196,7 +196,6 @@ export default {
       txid: '',
       /** 募资成功的状态 */
       fundraisingSuccess: false,
-      discoInstance: undefined,
       loading: false,
       totalDepositToken: '',
       walletAddrConfig: {
@@ -311,14 +310,13 @@ export default {
       const { error, data } = await services['cores@startup-获取prepareid']();
       if (!error) {
         const id = data.id;
-        this.discoBlockCallBack('0x123456', id, params);
         // 发起上链
-        // await this.discoInstance.sendDiscoTransaction(
-        //   params,
-        //   id,
-        //   this.account,
-        //   this.discoBlockCallBack
-        // );
+        await this.discoInstance.sendDiscoTransaction(
+          params,
+          id,
+          this.account,
+          this.discoBlockCallBack
+        );
       }
     },
 
