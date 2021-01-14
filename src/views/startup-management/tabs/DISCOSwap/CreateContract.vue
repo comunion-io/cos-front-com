@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-12-20 21:29:09
- * @LastEditTime: 2021-01-06 23:28:32
+ * @LastEditTime: 2021-01-14 23:32:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \cos-front-com\src\views\startup-management\tabs\DISCOSwap\CreateContract.vue
@@ -360,11 +360,6 @@ export default {
 
 <style lang="less" scoped>
 .create-contract {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  padding: 30px;
   background-color: #fff;
   .alert {
     width: 100%;

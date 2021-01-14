@@ -1,8 +1,11 @@
 <template>
   <div class="disco-swap">
-    <MyCard :status="status" type="disco" @onClick="discoOnClick" />
-    <MyCard :status="status" type="exchange" @onClick="exchangeOnClick" />
+    <router-view v-if="$route.matched.length > 3" :startup="startup" />
 
+    <template v-else>
+      <MyCard :status="status" type="disco" @onClick="discoOnClick" />
+      <MyCard :status="status" type="exchange" @onClick="exchangeOnClick" />
+    </template>
     <!-- 第一次进入 -->
     <!-- <MyCard status="0" type="disco" />
     <MyCard status="0" type="exchange" /> -->
@@ -45,37 +48,17 @@
     <!-- DISCO提交成功-募资结束等待结果 -->
     <!-- <MyCard status="13" type="disco" />
     <MyCard status="13" type="exchange" /> -->
-
-    <!-- 创建合约页面 -->
-    <CreateContract v-if="createContractVisible" :startup="startup" />
-
-    <!-- DISCO详情页面 -->
-    <DISCODetail v-if="DISCODetailVisible" :disco="disco" />
-
-    <!-- 增加流动性页面 -->
-    <AddLiquidity v-if="addLiquidityVisible" />
   </div>
 </template>
 
 <script>
 import services from '@/services';
 import MyCard from './DISCOSwap/MyCard';
-import CreateContract from './DISCOSwap/CreateContract';
-import DISCODetail from './DISCOSwap/DISCODetail';
-import AddLiquidity from './DISCOSwap/AddLiquidity';
 export default {
   data() {
     return {
-      // disco信息
-      disco: null,
       // 自定义的DISCO&Swap的状态指
-      status: '0',
-      // 是否显示创建合约页面
-      createContractVisible: false,
-      // 是否显示DISCO详情页面
-      DISCODetailVisible: false,
-      // 是否显示增加流动性页面
-      addLiquidityVisible: false
+      status: '0'
     };
   },
   props: {
@@ -85,33 +68,18 @@ export default {
     }
   },
   components: {
-    MyCard,
-    CreateContract,
-    DISCODetail,
-    AddLiquidity
+    MyCard
   },
   mounted() {
     // 获取DISCO&Swap状态
     this.getDiscoSwapState();
-    // 获取disco信息
-    this.getDisco();
   },
   methods: {
-    // 获取disco信息
-    async getDisco() {
-      let { error, data } = await services['cores@disco-startup-获取']({
-        startupId: this.$route.params.id
-      });
-      if (!error) {
-        this.disco = data;
-      }
-    },
     // 获取disco swap状态
     async getDiscoSwapState() {
       let { error, data } = await services['cores@startup-disco和swap 状态']({
         startupId: this.startup.id
       });
-      console.log(data);
       if (!error) {
         const { discoState, swapState } = data;
         this.updateStatus(discoState, swapState);
@@ -165,7 +133,7 @@ export default {
       if (this.status === '0' || this.status === '3' || this.status === '12') {
         // 当第一次进入 或者 创建募资合约失败 或者 exchange注入失败时
         // 显示创建合约页面
-        this.showCreateContractView();
+        this.$router.push({ name: 'startupManagementDiscoForm' });
       } else if (this.status === '2') {
         // 当状态为创建合约成功，等待开启时
         // 显示开启页面
@@ -179,7 +147,7 @@ export default {
       ) {
         // 当状态为等待募资开始 或者 募资成功 或者 募资失败 或者 募资进行中时
         // 显示disco详情页面
-        this.showDiscoDetailView();
+        this.$router.push({ name: 'startupManagementDiscoDetail' });
       }
     },
     exchangeOnClick() {
@@ -198,17 +166,9 @@ export default {
         this.gotoStartupSwapView();
       }
     },
-    // 显示创建合约页面
-    showCreateContractView() {
-      this.createContractVisible = true;
-    },
     // 显示开启DISCO的页面
     showEnableDiscoView() {
       // TODO...
-    },
-    // 显示DISCO详情页面
-    showDiscoDetailView() {
-      this.DISCODetailVisible = true;
     },
     // 跳转到对应startup的swap页面
     gotoStartupSwapView() {
@@ -225,7 +185,7 @@ export default {
           </div>
         ),
         onOk: () => {
-          this.addLiquidityVisible = true;
+          this.$router.push({ name: 'startupManagementCreateExchange' });
         },
         onCancel() {
           console.log('Cancel');
@@ -240,7 +200,7 @@ export default {
 @discoColor: #6170ff;
 @exchangeColor: #f6af64;
 .disco-swap {
-  padding: 30px;
+  // padding: 30px;
   position: relative;
 }
 </style>
