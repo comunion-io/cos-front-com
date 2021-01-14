@@ -5,11 +5,11 @@ import { isNumber } from './utils';
  * @param {Number} num 需要格式化的数字
  */
 export function fmtNumber(num) {
-  num = +num;
-  if (!isNumber(num) || isNaN(num)) {
+  const n = +num;
+  if (!isNumber(n) || isNaN(n)) {
     return num;
   }
 
   // TODO: 根据不同语言区域进行区分格式化数字
-  return new Intl.NumberFormat().format(num);
+  return new Intl.NumberFormat().format(n);
 }

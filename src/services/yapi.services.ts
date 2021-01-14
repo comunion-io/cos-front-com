@@ -22,7 +22,7 @@ export function createServices(createFunc: RequestAdapter): ServiceReturn {
         if (api.p?.length) {
           api.p.forEach(paramKey => {
             delete _body[paramKey]
-            url = url.replace(new RegExp(`:${paramKey}|{${paramKey}}`, 'g'), (payload as PayloadData)[paramKey])
+            url = url.replace(new RegExp(`:${paramKey}|{${paramKey}}`, 'g'),(payload as PayloadData)[paramKey])
           })
         }
         // query

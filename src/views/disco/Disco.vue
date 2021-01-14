@@ -57,25 +57,25 @@ export default {
     return {
       tabPanes,
       tabActiveKey: 'disco',
-      keyword: ''
+      discoKeyword: '',
+      swapKeyword: ''
     };
-  },
-  computed: {
-    discoKeyword() {
-      return this.tabActiveKey === 'disco' ? this.keyword : undefined;
-    },
-    swapKeyword() {
-      return this.tabActiveKey === 'swap' ? this.keyword : undefined;
-    }
   },
   methods: {
     onTabsChange(key) {
-      this.keyword = '';
+      this.discoKeyword = '';
+      this.swapKeyword = '';
       this.tabActiveKey = key;
     },
     onKeywordSearch(value) {
-      console.log('keyword: ', value);
-      this.keyword = value;
+      switch (this.tabActiveKey) {
+        case 'disco':
+          this.discoKeyword = value;
+          break;
+        case 'swap':
+          this.swapKeyword = value;
+          break;
+      }
     }
   }
 };

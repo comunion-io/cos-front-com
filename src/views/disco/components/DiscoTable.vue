@@ -7,14 +7,14 @@
     @on-change="onTableChange"
     @on-pagination-change="onPaginationChange"
   >
-    <template #name="{ record }">
+    <template #startup="{ text }">
       <router-link class="link" to="/">
-        <div class="logo" :style="`background-image: url(${record.url || ''});`" />
-        <span class="title">{{ record.name }}</span>
+        <div class="logo" :style="`background-image: url(${text.logo || ''});`" />
+        <span class="title">{{ text.name }}</span>
       </router-link>
     </template>
     <template #status="{ record }">
-      <c-badge :color="getStatusColor(record.status)" :text="record.statusText" />
+      <c-badge :color="getStateColor(record.state)" :text="getStateText(record.state)" />
     </template>
   </c-table>
 </template>
@@ -28,63 +28,47 @@ import services from '@/services';
 const tableColumns = [
   {
     title: 'Startup',
-    dataIndex: 'name',
+    dataIndex: 'startup',
     sorter: true,
-    scopedSlots: { customRender: 'name' },
+    scopedSlots: { customRender: 'startup' },
     width: 160,
     ellipsis: true
   },
   {
     title: 'ShareToken',
-    dataIndex: 'age',
+    dataIndex: 'shareToken',
     width: 120,
     ellipsis: true
   },
   {
     title: 'Foud-RaaisingETH(min)',
-    dataIndex: 'address',
+    dataIndex: 'minFundRaising',
     width: 200,
     ellipsis: true
   },
   {
     title: 'InvestmentReward',
-    dataIndex: 'address1',
+    dataIndex: 'investmentReward',
     sorter: true,
     width: 160,
     ellipsis: true
   },
   {
     title: 'Liquidity Pool',
-    dataIndex: 'address2',
+    dataIndex: 'addLiquidityPool',
     sorter: true,
     width: 160,
     ellipsis: true
   },
   {
     title: 'Status',
-    dataIndex: 'status',
+    dataIndex: 'state',
     align: 'center',
-    scopedSlots: { customRender: 'status' },
+    scopedSlots: { customRender: 'state' },
     width: 160,
     ellipsis: true
   }
 ];
-
-// TODO: 待数据接入
-const data = [];
-for (let i = 0; i < 20; i++) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-    age: 32,
-    url: require('@/assets/images/guide/logo.png'),
-    address: `London, Park Lane no. ${i}`,
-    address1: `London, Park Lane no. ${i}`,
-    address2: `London, Park Lane no. ${i}`,
-    status: i % 2 === 0 ? 'waiting' : 'inprogress',
-    statusText: i % 2 === 0 ? 'Waiting for start' : 'Inprogress'
-  });
-}
 
 export default {
   components: {
@@ -97,7 +81,7 @@ export default {
   },
   data() {
     return {
-      dataSource: data,
+      dataSource: [],
       offset: 0,
       sortedInfo: {},
       pagination: {},
@@ -115,6 +99,7 @@ export default {
       const { columnKey, order } = this.sortedInfo || {};
       return tableColumns.map(col => ({
         ...col,
+        sortOrder: columnKey === col.dataIndex && order != null ? order : undefined,
         className: columnKey === col.dataIndex && order != null ? 'table-head-selected' : undefined
       }));
     }
@@ -131,13 +116,24 @@ export default {
     onPaginationChange(offset, limit) {
       this.offset = offset;
     },
-    getStatusColor(status) {
-      // TODO
-      switch (status) {
-        case 'waiting':
+    getStateColor(state) {
+      switch (state) {
+        case 1: // 等待开始
           return '#E18D00';
-        case 'inprogress':
+        case 2: // 进行中
           return '#6271D2';
+        default:
+          return '-';
+      }
+    },
+    getStateText(state) {
+      switch (state) {
+        case 1: // 等待开始
+          return 'Waiting for start';
+        case 2: // 进行中
+          return 'Inprogress';
+        default:
+          return '-';
       }
     },
     async loadDiscoData(params, offset = 0) {
@@ -148,14 +144,14 @@ export default {
         return null;
       }
 
-      // TODO test
       this.loading = true;
 
       const { error, data } = await services['cores@disco-列表']({
         limit: 20,
         offset,
         keyword,
-        orderBy: sortedInfo.columnKey,
+        orderBy:
+          sortedInfo.columnKey === 'addLiquidityPool' ? 'liquidityPool' : sortedInfo.columnKey,
         isAsc: sortedInfo.order ? sortedInfo.order === 'ascend' : undefined
       });
 
