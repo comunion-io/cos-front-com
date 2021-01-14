@@ -24,7 +24,7 @@ export interface ServiceRequestAndResponseMap {
   'account@logout': {
     params: {}
     query: {}
-    body: any
+    body: {}
     response: {}
   }
   'account@用户-hunter-更新': {
@@ -42,7 +42,7 @@ export interface ServiceRequestAndResponseMap {
   'account@用户-我的': {
     params: {}
     query: {}
-    body: any
+    body: {}
     response: {
       id: string
       publicKey: string
@@ -62,7 +62,7 @@ export interface ServiceRequestAndResponseMap {
       userId: any;
     }
     query: {}
-    body: any
+    body: {}
     response: {
       id: string
       publicKey: string
@@ -737,7 +737,7 @@ export interface ServiceRequestAndResponseMap {
       limit: any;
       offset: any;
     }
-    body: any
+    body: {}
     response: {
       result: {
         id: string
@@ -779,7 +779,7 @@ export interface ServiceRequestAndResponseMap {
       offset: any;
       keyword: any;
     }
-    body: any
+    body: {}
     response: {
       total?: number
       result?: {
@@ -893,7 +893,7 @@ export interface ServiceRequestAndResponseMap {
       startupId: any;
     }
     query: {}
-    body: any
+    body: {}
     response: {}
   }
   'cores@startup-bounty-列表': {
@@ -905,7 +905,7 @@ export interface ServiceRequestAndResponseMap {
       offset: any;
       keyword: any;
     }
-    body: any
+    body: {}
     response: {
       total?: number
       result?: {
@@ -964,7 +964,7 @@ export interface ServiceRequestAndResponseMap {
       offset: any;
       keyword: any;
     }
-    body: any
+    body: {}
     response: {
       total?: number
       result?: {
@@ -1026,7 +1026,7 @@ export interface ServiceRequestAndResponseMap {
       offset: any;
       keyword: any;
     }
-    body: any
+    body: {}
     response: {
       total?: number
       result?: {
@@ -1081,7 +1081,7 @@ export interface ServiceRequestAndResponseMap {
       offset: any;
       keyword: any;
     }
-    body: any
+    body: {}
     response: {
       total?: number
       result?: {
@@ -1141,7 +1141,7 @@ export interface ServiceRequestAndResponseMap {
       id: any;
     }
     query: {}
-    body: any
+    body: {}
     response: {
       id: string
       startup: {
@@ -1189,7 +1189,7 @@ export interface ServiceRequestAndResponseMap {
       id: any;
     }
     query: {}
-    body: any
+    body: {}
     response: {
       id: string
       startup: {
@@ -1265,13 +1265,13 @@ export interface ServiceRequestAndResponseMap {
        */
       source: any;
     }
-    body: any
+    body: {}
     response: string[]
   }
   'cores@startup-获取prepareid': {
     params: {}
     query: {}
-    body: any
+    body: {}
     response: {
       id: string
     }
@@ -1351,7 +1351,7 @@ false 上链失败或确认中的,
        */
       isInBlock: any;
     }
-    body: any
+    body: {}
     response: {
       result: {
         id: string
@@ -1460,7 +1460,7 @@ false 上链失败或确认中的,
        */
       offset: any;
     }
-    body: any
+    body: {}
     response: {
       result: {
         id: string
@@ -1525,9 +1525,7 @@ false 上链失败或确认中的,
   'cores@文件上传': {
     params: {}
     query: {}
-    body: {
-      image: File
-    }
+    body: FormData
     response: {
       downloadUrl: string
     }
@@ -1542,7 +1540,7 @@ false 上链失败或确认中的,
        */
       source: any;
     }
-    body: any
+    body: {}
     response: {
       result: {
         id: string
@@ -1561,7 +1559,7 @@ false 上链失败或确认中的,
       categoryId: any;
     }
     query: {}
-    body: any
+    body: {}
     response: {
       id?: string
       name?: string
@@ -1575,11 +1573,10 @@ export type ServiceKeys = keyof ServiceRequestAndResponseMap
 
 export type ServiceReturn = {
   [P in ServiceKeys]: (
-    data?: FormData | (
-      ServiceRequestAndResponseMap[P]['body'] &
+    data?: ServiceRequestAndResponseMap[P]['body'] &
       ServiceRequestAndResponseMap[P]['params'] &
       ServiceRequestAndResponseMap[P]['query']
-    ),
+    ,
     body?: ServiceRequestAndResponseMap[P]['body']
   ) => Promise<ServiceFunctionResponse<ServiceRequestAndResponseMap[P]['response']>>
 }
