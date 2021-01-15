@@ -1,11 +1,3 @@
-<!--
- * @Author: your name
- * @Date: 2020-12-20 21:29:09
- * @LastEditTime: 2021-01-14 23:32:15
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \cos-front-com\src\views\startup-management\tabs\DISCOSwap\CreateContract.vue
--->
 <template>
   <!-- 创建 disco  -->
   <div class="create-contract">
@@ -47,7 +39,7 @@
           <template v-slot:label>
             <p class="label">Token Contract</p>
           </template>
-          <p class="text">{{ tokenContract }}</p>
+          <p class="text">{{ tokenAddr }}</p>
         </a-form-item>
         <a-form-item>
           <template v-slot:label>
@@ -186,7 +178,7 @@ import { DiscoTranscation } from '@/utils/contract/disco';
 export default {
   computed: {
     ...mapGetters(['categories', 'account', 'netWorkName']),
-    tokenContract() {
+    tokenAddr() {
       return this.startup?.settings?.tokenAddr || '';
     }
   },
@@ -277,48 +269,65 @@ export default {
       // Can not select days before today and today
       return current && current < moment().endOf('day');
     },
-    // 创建募资合约按钮被点击
+
+    /**
+     * @name: Zehui
+     * @Descripttion: 创建disco
+     * @param {*} e
+     * @return {*}
+     */
     createBtnOnClick(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
+        values.investmentReward = +values.investmentReward;
+        values.shareToken = +values.shareToken;
+        values.rewardDeclineRate = +values.rewardDeclineRate;
+        values.minFundRaising = +values.minFundRaising;
+        values.addLiquidityPool = +values.addLiquidityPool;
+
+        const params = {
+          ...values,
+          fundRaisingStartedAt: values.fundRaisingTime[0].utc().format(),
+          fundRaisingEndedAt: values.fundRaisingTime[1].utc().format(),
+          tokenAddr: this.tokenAddr,
+          totalDepositToken: +this.totalDepositToken
+        };
+        this.$delete(params, 'fundRaisingTime');
         if (!err) {
-          this.createDISCO({
-            ...values,
-            tokenContract: this.tokenContract,
-            totalDepositToken: this.totalDepositToken
-          });
+          this.createDISCO(params);
         }
       });
     },
     async createDISCO(params) {
       this.loading = true;
       // 预先获取一个id
-      const { data: idObj } = await services['cores@startup-获取prepare id']();
-      const id = idObj.id;
-      // 发起上链
-      await this.discoInstance.sendDiscoTransaction(
-        params,
-        id,
-        this.account,
-        this.discoBlockCallBack
-      );
+      const { error, data } = await services['cores@startup-获取prepareid']();
+      if (!error) {
+        const id = data.id;
+        this.discoBlockCallBack('0x123456', id, params);
+        // 发起上链
+        // await this.discoInstance.sendDiscoTransaction(
+        //   params,
+        //   id,
+        //   this.account,
+        //   this.discoBlockCallBack
+        // );
+      }
     },
 
     /**
-     * @description: 上链后的回调
+     * @description 上链后的回调
      * @param {*} txid
      * @return {*}
      */
     async discoBlockCallBack(txid, id, params) {
       if (txid) {
-        let { error } = await services['cores@disco-startup-创建'](
-          { startupId: this.$route.query.startupId },
-          {
-            id,
-            ...params,
-            txid
-          }
-        );
+        let { error } = await services['cores@disco-startup-创建']({
+          startupId: this.startup.id,
+          id,
+          ...params,
+          txid
+        });
 
         if (error) {
           console.error(error);
@@ -347,7 +356,7 @@ export default {
     },
 
     /**
-     * @description: 启用disco
+     * @description 启用disco
      * @param {*}
      * @return {*}
      */
