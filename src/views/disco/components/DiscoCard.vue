@@ -111,7 +111,7 @@ export default {
     flex: 0 0 24%;
   }
 
-  @media screen and (max-width: 1400px) {
+  @media screen and (max-width: 1000px) {
     .card-item {
       flex: 0 0 49%;
 
