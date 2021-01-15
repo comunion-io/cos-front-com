@@ -1,10 +1,3 @@
-<!--
- * @Author       : xiaodong
- * @Date         : 2020-12-20 21:29:09
- * @Descripttion : 创建 Disco 组件
- * @FilePath     : \cos-front-com\src\views\startup-management\tabs\DISCOSwap\CreateContract.vue
--->
-
 <template>
   <!-- 创建 disco  -->
   <div class="create-contract">
@@ -376,11 +369,6 @@ export default {
 
 <style lang="less" scoped>
 .create-contract {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  padding: 30px;
   background-color: #fff;
   .alert {
     width: 100%;

@@ -104,11 +104,12 @@ const routes = [
         children: ['perference', 'settings', 'bounty', 'team', 'operation', 'DISCOSwap'].map(
           key => {
             const upCaseName = key[0].toUpperCase() + key.slice(1);
-            return {
+            let route = {
               path: key,
               name: `startupManagement${upCaseName}`,
               meta: {
                 title: `Start-Up Management ${upCaseName}`,
+                breadcrumb: upCaseName, // 面包屑
                 skipAuth: false
               },
               component: () =>
@@ -116,6 +117,50 @@ const routes = [
                   /* webpackChunkName: 'startManagement' */ `@/views/startup-management/tabs/Tab${upCaseName}.vue`
                 )
             };
+            if (key === 'DISCOSwap') {
+              route.children = [
+                {
+                  path: 'discoForm',
+                  name: 'startupManagementDiscoForm',
+                  meta: {
+                    title: 'Start-Up Management DISCO',
+                    breadcrumb: 'DISCO',
+                    skipAuth: false
+                  },
+                  component: () =>
+                    import(
+                      /* webpackChunkName: 'startManagement' */ `@/views/startup-management/tabs/DISCOSwap/CreateContract.vue`
+                    )
+                },
+                {
+                  path: 'discoDetail',
+                  name: 'startupManagementDiscoDetail',
+                  meta: {
+                    title: 'Start-Up Management DISCO Detail',
+                    breadcrumb: 'DISCO',
+                    skipAuth: false
+                  },
+                  component: () =>
+                    import(
+                      /* webpackChunkName: 'startManagement' */ `@/views/startup-management/tabs/DISCOSwap/DISCODetail.vue`
+                    )
+                },
+                {
+                  path: 'createExchange',
+                  name: 'startupManagementCreateExchange',
+                  meta: {
+                    title: 'Start-Up Management Create Exchange',
+                    breadcrumb: 'Create Exchange',
+                    skipAuth: false
+                  },
+                  component: () =>
+                    import(
+                      /* webpackChunkName: 'startManagement' */ `@/views/startup-management/tabs/DISCOSwap/CreateExchange.vue`
+                    )
+                }
+              ];
+            }
+            return route;
           }
         )
       },

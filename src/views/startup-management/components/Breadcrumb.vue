@@ -14,7 +14,7 @@ export default {
     items() {
       return this.$route.matched.slice(2).map(matched => {
         return {
-          label: matched.meta.title?.replace('Start-Up Management ', ''),
+          label: matched.meta.breadcrumb,
           routeName: matched.name
         };
       });

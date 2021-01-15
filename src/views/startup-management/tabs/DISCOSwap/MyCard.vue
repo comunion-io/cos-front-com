@@ -62,7 +62,9 @@ const statusTextMap = new Map([
   // DISCO提交成功-募资失败
   ['disco_8', 'Failed'],
   // DISCO提交成功，募资进行中
-  ['disco_9', 'In Progress'],
+  ['disco_9', 'In progress'],
+  // DISCO提交成功，募资结束等待结果
+  ['disco_13', 'Waiting for result'],
   // Exchange注入中
   ['exchange_10', 'Inpouring'],
   // exchange注入失败
@@ -108,7 +110,9 @@ export default {
         // DISCO提交后成功，募资等待开始
         (this.status === '6' && this.type === 'disco') ||
         // DISCO提交成功，募资进行中
-        (this.status === '9' && this.type === 'disco')
+        (this.status === '9' && this.type === 'disco') ||
+        // DISCO提交成功，募资结束等待结果
+        (this.status === '13' && this.type === 'disco')
       ) {
         desc =
           'You have enabled DISCO,Exchange will be opened automatically after successful fund-raising！';
@@ -124,6 +128,8 @@ export default {
         (this.status === '6' && this.type === 'disco') ||
         // DISCO提交成功，募资进行中
         (this.status === '9' && this.type === 'disco') ||
+        // DISCO提交成功，募资结束等待结果
+        (this.status === '13' && this.type === 'disco') ||
         // exchange注入成功
         (this.status === '11' && this.type === 'exchange')
       ) {
@@ -144,6 +150,8 @@ export default {
         (this.status === '6' && this.type === 'exchange') ||
         // DISCO提交成功，募资进行中，不可手动开启交易
         (this.status === '9' && this.type === 'exchange') ||
+        // DISCO提交成功，募资结束等待结果，不可手动开启交易
+        (this.status === '13' && this.type === 'exchange') ||
         // Exchange注入中
         this.status === '10' ||
         // exchange注入成功，不可再开启募资
@@ -173,7 +181,9 @@ export default {
         // DISCO提交成功-募资成功
         (this.status === '7' && this.type === 'disco') ||
         // DISCO提交成功，募资进行中
-        (this.status === '9' && this.type === 'disco')
+        (this.status === '9' && this.type === 'disco') ||
+        // DISCO提交成功，募资结束等待结果
+        (this.status === '13' && this.type === 'disco')
       ) {
         type = 'blue';
       } else if (
