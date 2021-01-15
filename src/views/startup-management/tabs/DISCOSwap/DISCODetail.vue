@@ -5,13 +5,13 @@
 </template>
 
 <script>
+import services from '@/services';
 import Descriptions from '@/components/display/Descriptions';
 export default {
   data() {
-    return {};
-  },
-  props: {
-    disco: Object
+    return {
+      disco: null
+    };
   },
   components: {
     Descriptions
@@ -97,16 +97,26 @@ export default {
       return columns;
     }
   },
-  methods: {}
+  mounted() {
+    // 获取disco信息
+    this.getDisco();
+  },
+  methods: {
+    // 获取disco信息
+    async getDisco() {
+      let { error, data } = await services['cores@disco-startup-获取']({
+        startupId: this.$route.params.id
+      });
+      if (!error) {
+        this.disco = data;
+      }
+    }
+  }
 };
 </script>
 
 <style lang="less" scoped>
 .disco-detail {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
   background-color: #fff;
 }
 </style>
