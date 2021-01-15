@@ -16,15 +16,15 @@ import services from '@/services';
 
 const items = [
   {
-    label: 'Fundraising Startup (24h)'
+    label: 'Fund-Raising Start-Up'
+  },
+  {
+    price: 'ETH',
+    label: 'Total Start-Up DISCO'
   },
   {
     price: 'ETH',
     label: 'Exchange Volume (24h)'
-  },
-  {
-    price: 'ETH',
-    label: 'Total Startup DAITO'
   },
   {
     price: 'ETH',
@@ -72,19 +72,19 @@ export default {
         this.cardItems = [
           {
             count: discoEthData && discoEthData.count,
-            label: 'Fundraising Startup (24h)'
+            label: 'Fund-Raising Start-Up'
+          },
+          {
+            price: 'ETH',
+            count: discoTotalData && discoTotalData.count,
+            rate: fmtRate(discoTotalData && discoTotalData.rate),
+            label: 'Total Start-Up DISCO'
           },
           {
             price: 'ETH',
             count: exchangesData && exchangesData.volumes24Hrs,
             rate: fmtRate(exchangesData && exchangesData.volumes24HrsRate),
             label: 'Exchange Volume (24h)'
-          },
-          {
-            price: 'ETH',
-            count: discoTotalData && discoTotalData.count,
-            rate: fmtRate(discoTotalData && discoTotalData.rate),
-            label: 'Total Startup DAITO'
           },
           {
             price: 'ETH',

@@ -27,7 +27,7 @@ import services from '@/services';
 
 const tableColumns = [
   {
-    title: 'Startup',
+    title: 'Start-Up',
     dataIndex: 'startup',
     sorter: true,
     scopedSlots: { customRender: 'startup' },
@@ -41,7 +41,7 @@ const tableColumns = [
     ellipsis: true
   },
   {
-    title: 'Foud-RaaisingETH(min)',
+    title: 'Foud-RaisingETH(min)',
     dataIndex: 'minFundRaising',
     width: 200,
     ellipsis: true

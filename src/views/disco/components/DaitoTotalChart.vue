@@ -1,7 +1,6 @@
 <template>
   <div class="container">
-    <div class="title">DAITO Total</div>
-    <div class="sub-title">Daito</div>
+    <div class="title">DISCO Total</div>
     <div class="chart">
       <line-chart
         renderer="svg"
@@ -102,7 +101,7 @@ export default {
       this.series = [
         {
           ...AREA_SERIE,
-          name: 'daitototal',
+          name: 'discototal',
           data: serieData
         }
       ];
@@ -147,15 +146,7 @@ export default {
   color: #000000;
   line-height: 30px;
   flex-shrink: 0;
-}
-
-.sub-title {
-  font-size: 12px;
-  font-weight: 400;
-  color: #79828b;
-  line-height: 18px;
-  flex-shrink: 0;
-  padding: 6px 0 16px;
+  margin-bottom: 16px;
 }
 
 .chart {
