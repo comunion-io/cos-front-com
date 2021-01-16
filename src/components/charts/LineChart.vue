@@ -77,7 +77,7 @@ export const DEFAULT_TOOLTIP = {
         param =>
           `<div style="display: flex; align-items: center;">${param.marker} <span>${
             param.seriesName
-          }: ${param.value == null ? '' : param.value}</span></div>`
+          }: ${param.value ?? ''}</span></div>`
       )}
     </div>
   `;
