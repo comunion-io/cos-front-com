@@ -54,8 +54,7 @@ export default {
   data() {
     return {
       token: 0,
-      ether: 0,
-      discoInstance: undefined
+      ether: 0
     };
   },
   props: {
