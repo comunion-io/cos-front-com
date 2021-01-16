@@ -1,7 +1,6 @@
 <template>
   <div class="container">
-    <div class="title">DAITO Total</div>
-    <div class="sub-title">Daito</div>
+    <div class="title">DISCO Total</div>
     <div class="chart">
       <line-chart
         renderer="svg"
@@ -22,6 +21,7 @@ import LineChart, {
   AREA_SERIE,
   DEFAULT_GRID
 } from '@/components/charts/LineChart.vue';
+import moment from 'moment';
 
 import services from '@/services';
 
@@ -62,7 +62,16 @@ export default {
   },
   methods: {
     setChartSeriesAndXAxis(data) {
-      // TODO: 待数据接入
+      let xAxisData = [];
+      let serieData = [];
+      (data || []).forEach(item => {
+        const time = moment(item.date).isValid()
+          ? moment(item.date, undefined, 'en').format('MMMDD')
+          : item.date;
+        xAxisData.push(time);
+        serieData.push(item.count);
+      });
+
       this.xAxis = [
         {
           ...DEFAULT_XAXIS,
@@ -86,32 +95,30 @@ export default {
           axisLabel: {
             show: false
           },
-          data: [
-            '11.01',
-            '11.07',
-            '11.13',
-            '11.19',
-            '11.25',
-            '12.01',
-            '12.07',
-            '12.13',
-            '12.19',
-            '12.25'
-          ]
+          data: xAxisData
         }
       ];
       this.series = [
         {
           ...AREA_SERIE,
-          data: [23, 17, 16, 20, 21, 25, 32, 19, 18, 32]
+          name: 'discototal',
+          data: serieData
         }
       ];
     },
     async loadDataAndSetChart() {
       this.loading = true;
 
-      // TODO 联调具体相关接口
-      const { error, data } = await services['cores@disco-列表']({});
+      const { error, data } = await services['cores@disco-增长eth数量统计']({
+        timeFrom: moment()
+          .add(-6, 'month')
+          .startOf('day')
+          .format(),
+        timeTo: moment()
+          .endOf('day')
+          .add(1, 'second')
+          .format()
+      });
 
       this.loading = false;
       if (!error) {
@@ -139,15 +146,7 @@ export default {
   color: #000000;
   line-height: 30px;
   flex-shrink: 0;
-}
-
-.sub-title {
-  font-size: 12px;
-  font-weight: 400;
-  color: #79828b;
-  line-height: 18px;
-  flex-shrink: 0;
-  padding: 6px 0 16px;
+  margin-bottom: 16px;
 }
 
 .chart {

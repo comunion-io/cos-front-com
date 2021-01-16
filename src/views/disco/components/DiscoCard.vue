@@ -14,30 +14,31 @@ import StatusCard from '@/components/cards/StatusCard.vue';
 
 import services from '@/services';
 
-// TODO: 待数据接入
 const items = [
   {
-    price: 'ETH',
-    count: 8889,
-    label: 'Fundraising Startup (24h)'
+    label: 'Fund-Raising Start-Up'
   },
   {
-    count: 63846,
-    rate: 0,
+    price: 'ETH',
+    label: 'Total Start-Up DISCO'
+  },
+  {
+    price: 'ETH',
     label: 'Exchange Volume (24h)'
   },
   {
-    count: 68888,
-    rate: 23.6,
-    label: 'Total Startup DAITO'
-  },
-  {
     price: 'ETH',
-    count: 532.43,
-    rate: -12.3,
     label: 'Total Liquidity'
   }
 ];
+
+function fmtRate(rate) {
+  if (!rate) {
+    return rate;
+  }
+
+  return parseFloat((rate * 100).toFixed(2));
+}
 
 export default {
   components: {
@@ -55,12 +56,43 @@ export default {
   methods: {
     async loadCardData() {
       this.loading = true;
-      // TODO 待实际相关接口联调测试
-      const { error, data } = await services['cores@disco-列表']({});
+
+      const [
+        { error: discoEthError, data: discoEthData },
+        { error: discoTotalError, data: discoTotalData },
+        { error: exchangesError, data: exchangesData }
+      ] = await Promise.all([
+        services['cores@disco-募集的eth总数统计']({}),
+        services['cores@disco-total统计']({}),
+        services['cores@exchanges-统计合计']({})
+      ]);
 
       this.loading = false;
-      if (!error) {
-        console.log('card data: ', data);
+      if (!discoEthError && !discoTotalError && !exchangesError) {
+        this.cardItems = [
+          {
+            count: discoEthData && discoEthData.count,
+            label: 'Fund-Raising Start-Up'
+          },
+          {
+            price: 'ETH',
+            count: discoTotalData && discoTotalData.count,
+            rate: fmtRate(discoTotalData && discoTotalData.rate),
+            label: 'Total Start-Up DISCO'
+          },
+          {
+            price: 'ETH',
+            count: exchangesData && exchangesData.volumes24Hrs,
+            rate: fmtRate(exchangesData && exchangesData.volumes24HrsRate),
+            label: 'Exchange Volume (24h)'
+          },
+          {
+            price: 'ETH',
+            count: exchangesData && exchangesData.liquidities,
+            rate: fmtRate(exchangesData && exchangesData.liquiditiesRate),
+            label: 'Total Liquidity'
+          }
+        ];
       }
     }
   }
@@ -79,7 +111,7 @@ export default {
     flex: 0 0 24%;
   }
 
-  @media screen and (max-width: 1400px) {
+  @media screen and (max-width: 1000px) {
     .card-item {
       flex: 0 0 49%;
 

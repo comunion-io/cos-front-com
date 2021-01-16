@@ -11,13 +11,14 @@
 
 <script>
 import LineChart, { DEFAULT_XAXIS, DEFAULT_SERIE } from '@/components/charts/LineChart.vue';
+import moment from 'moment';
 
 export default {
   components: {
     LineChart
   },
   props: {
-    chartData: [String, Object]
+    chartData: Array
   },
   data() {
     return {
@@ -41,28 +42,27 @@ export default {
   },
   methods: {
     setChartSeriesAndXAxis(next) {
-      // TODO: 待数据接入
+      let xAxisData = [];
+      let serieData = [];
+      (next || []).forEach(item => {
+        const time = moment(item.occuredDay).isValid()
+          ? moment(item.occuredDay, undefined, 'en').format('MMMDD')
+          : item.occuredDay;
+        xAxisData.push(time);
+        serieData.push(item.endPrice);
+      });
+
       this.xAxis = [
         {
           ...DEFAULT_XAXIS,
-          data: [
-            '11.01',
-            '11.07',
-            '11.13',
-            '11.19',
-            '11.25',
-            '12.01',
-            '12.07',
-            '12.13',
-            '12.19',
-            '12.25'
-          ]
+          data: xAxisData
         }
       ];
       this.series = [
         {
           ...DEFAULT_SERIE,
-          data: [23, 17, 16, 20, 21, 25, 32, 19, 18, 32]
+          name: 'price',
+          data: serieData
         }
       ];
     }

@@ -5,7 +5,7 @@
         :columns="columns"
         :data-source="dataSource"
         :pagination="false"
-        @change="onChange"
+        @change="handleChange"
         v-bind="$attrs"
         v-on="$listeners"
       >
@@ -63,7 +63,7 @@ export default {
       this.$emit('on-change', filters, sorter);
     },
     handlePaginationChange(page, pageSize) {
-      const offset = page ? page - 1 * pageSize : 1;
+      const offset = page ? (page - 1) * pageSize : 0;
       this.$emit('on-pagination-change', offset, pageSize);
     }
   }
