@@ -7,13 +7,13 @@
     @on-change="onTableChange"
     @on-pagination-change="onPaginationChange"
   >
-    <template #name="{ record }">
+    <template #startup="{ text }">
       <router-link class="link" to="/">
-        <div class="logo" :style="`background-image: url(${record.url || ''});`" />
-        <span class="title">{{ record.name }}</span>
+        <div class="logo" :style="`background-image: url(${(text && text.logo) || ''});`" />
+        <span class="title">{{ text && text.name }}</span>
       </router-link>
     </template>
-    <template #address2="{ text }">
+    <template #priceChanges="{ text }">
       <div class="chart-container">
         <price-change-chart :chartData="text" />
       </div>
@@ -30,54 +30,40 @@ import services from '@/services';
 const tableColumns = [
   {
     title: 'Start-Up',
-    dataIndex: 'name',
+    dataIndex: 'startup',
     width: 270,
     sorter: true,
-    scopedSlots: { customRender: 'name' },
+    scopedSlots: { customRender: 'startup' },
     ellipsis: true
   },
   {
     title: 'Price (ETH)',
-    dataIndex: 'age',
+    dataIndex: 'price',
     width: 130,
     ellipsis: true
   },
   {
     title: 'Liquidity (ETH)',
-    dataIndex: 'address',
+    dataIndex: 'liquidities',
     width: 180,
     sorter: true,
     ellipsis: true
   },
   {
     title: 'Volume (24h)',
-    dataIndex: 'address1',
+    dataIndex: 'volumes24Hrs',
     width: 180,
     sorter: true,
     ellipsis: true
   },
   {
     title: 'PriceChange',
-    dataIndex: 'address2',
+    dataIndex: 'priceChanges',
     align: 'center',
-    scopedSlots: { customRender: 'address2' },
+    scopedSlots: { customRender: 'priceChanges' },
     width: 200
   }
 ];
-
-// TODO: 待数据接入
-const data = [];
-for (let i = 0; i < 20; i++) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-    age: 32,
-    url: require('@/assets/images/guide/logo.png'),
-    address: `London, Park Lane no. ${i}`,
-    address1: `London, Park Lane no. ${i}`,
-    address2: `London, Park Lane no. ${i}`
-  });
-}
 
 export default {
   components: {
@@ -90,7 +76,7 @@ export default {
   },
   data() {
     return {
-      dataSource: data,
+      dataSource: [],
       pagination: {},
       sortedInfo: {},
       offset: 0,
@@ -131,15 +117,14 @@ export default {
         return null;
       }
 
-      // TODO
       this.loading = true;
 
-      const { error, data } = await services['cores@disco-列表']({
+      const { error, data } = await services['cores@exchanges-列表']({
         limit: 20,
         offset,
         keyword,
         orderBy: sortedInfo.columnKey,
-        isAsc: sortedInfo.order ? sortedInfo.order === 'ascend' : undefined
+        isDesc: sortedInfo.order ? sortedInfo.order === 'descend' : undefined
       });
 
       this.loading = false;
