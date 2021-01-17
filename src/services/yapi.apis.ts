@@ -33,20 +33,14 @@ export const apis: Apis = {
     m: 'POST',
     d: 1
   },
-  'cores@disco-增长eth数量统计': {
-    u: '/cores/discos:statDiscoEthIncrease',
-    m: 'POST',
-    q: ['limit', 'offset', 'keyword', 'orderBy', 'isAsc'],
-    d: 1
-  },
-  'cores@startup-disco和swap状态': {
-    u: '/cores/startups/{startupId}/discoSwapState',
+  'cores@startup-follow-创建': {
+    u: '/cores/startups/{startupId}/follows',
     m: 'POST',
     p: ['startupId'],
-    d: 0
+    d: 1
   },
-  'cores@disco-total统计': {
-    u: '/cores/discos:statDiscoTotal',
+  'cores@disco-增长eth数量统计': {
+    u: '/cores/discos:statDiscoEthIncrease',
     m: 'POST',
     q: ['limit', 'offset', 'keyword', 'orderBy', 'isAsc'],
     d: 1
@@ -57,11 +51,17 @@ export const apis: Apis = {
     q: ['limit', 'offset', 'keyword', 'orderBy', 'isAsc'],
     d: 1
   },
-  'cores@startup-follow-创建': {
-    u: '/cores/startups/{startupId}/follows',
+  'cores@disco-total统计': {
+    u: '/cores/discos:statDiscoTotal',
+    m: 'POST',
+    q: ['limit', 'offset', 'keyword', 'orderBy', 'isAsc'],
+    d: 1
+  },
+  'cores@startup-disco和swap状态': {
+    u: '/cores/startups/{startupId}/discoSwapState',
     m: 'POST',
     p: ['startupId'],
-    d: 1
+    d: 0
   },
   'cores@bounty-closed': {
     u: '/cores/bounties/{bountyId}:closed',
@@ -159,6 +159,11 @@ export const apis: Apis = {
     m: 'GET',
     p: ['exchangeId'],
     d: 1
+  },
+  'cores@swap-pair-created交易对创建事件': {
+    u: '/cores/swap/pairs',
+    m: 'POST',
+    d: 0
   },
   'cores@startups-我的-follow列表': {
     u: '/cores/startups/me/followed',
