@@ -1,12 +1,10 @@
 /*
  * @Author: zehui
  * @Date: 2020-12-13 23:40:00
- * @LastEditTime : 2021-01-16 19:16:05
- * @LastEditors  : Please set LastEditors
  * @Description: disco 上链的函数， 包括disco 合约的创建， 发起上链
  * @FilePath     : \cos-front-com\src\utils\contract\disco.ts
  */
-import { COMUNION_RECEIVER_STARTUP_ACCOUNT, web3 } from '@/libs/web3';
+import { COMUNION_RECEIVER_DOISCO_ACCOUNT, web3 } from '@/libs/web3';
 import axios from 'axios';
 
 /**
@@ -58,14 +56,14 @@ export class DiscoTranscation {
     account: string,
     discoBlockCallBack: Function
   ) {
-    const contractInstance = await this.getDiscoContractInstance(disco, id);
+    const contractInstance = await this.getDiscoContractInstance(disco, id, account);
     if (contractInstance) {
       const codeData = await contractInstance.encodeABI();
       const countAll = await web3.eth.getTransactionCount(account, 'pending');
       const chainId = await web3.eth.getChainId();
       const tx = {
         from: account,
-        to: COMUNION_RECEIVER_STARTUP_ACCOUNT,
+        to: COMUNION_RECEIVER_DOISCO_ACCOUNT,
         data: codeData,
         value: web3.utils.numberToHex(0),
         nonce: web3.utils.numberToHex(countAll),
@@ -99,10 +97,27 @@ export class DiscoTranscation {
    * @param id
    * @returns {*}
    */
-  private async getDiscoContractInstance(disco: Disco, id: string) {
+  private async getDiscoContractInstance(disco: Disco, id: string, account: string) {
     const abi = await this.getAbi();
     this.id = id;
-    this.contractInstance = new web3.eth.Contract(abi, COMUNION_RECEIVER_STARTUP_ACCOUNT);
+    this.contractInstance = new web3.eth.Contract(abi, COMUNION_RECEIVER_DOISCO_ACCOUNT);
+    const res = await this.contractInstance.methods.setCoinBase(account);
+    // 上链 设置 用户的 account
+    const resData = await res.encodeABI();
+    const countAll = await web3.eth.getTransactionCount(account, 'pending');
+    const chainId = await web3.eth.getChainId();
+    const tx = {
+      from: account,
+      to: COMUNION_RECEIVER_DOISCO_ACCOUNT,
+      data: resData,
+      value: web3.utils.numberToHex(0),
+      nonce: web3.utils.numberToHex(countAll),
+      gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
+      gasLimit: web3.utils.numberToHex(183943),
+      chainId: chainId
+    };
+    await res.send(tx);
+
     const {
       walletAddr,
       tokenAddr,

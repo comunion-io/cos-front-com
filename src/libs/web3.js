@@ -9,6 +9,8 @@ export const COMMUNION_SETTING_RECEIVE_ACCOUNT = process.env.VUE_APP_SETTING_REC
 export const COMUNION_BOUNTY_RECEIVE_ACCOUNT = process.env.VUE_APP_BOUNTY_RECEIVER;
 // hunter 向 comunion 转账的地址
 export const COMUNION_RECEIVE_HUNTER_TRANSFER = process.env.VUE_APP_HUNTER_FOR_COMUNION;
+// DISCO 上链地址
+export const COMUNION_RECEIVER_DOISCO_ACCOUNT = process.env.VUE_APP_DISCO_RECEIVER;
 
 // web3示例
 export let web3;
