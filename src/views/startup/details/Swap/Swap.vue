@@ -54,7 +54,11 @@ export default {
   data() {
     return {
       token: 0,
-      ether: 0
+      ether: 0,
+      /** token 的发布地址 */
+      tokenAddr: '',
+      /** 交易池募资地址 */
+      fundRaisingContractAddr: ''
     };
   },
   props: {
@@ -82,17 +86,62 @@ export default {
      * @return {*}
      */
     changedToken(value) {
-      console.log(this.token);
+      const params = this.getParams(0, true, true, this.token);
+      this.swapInstance.swapExactTokensForETH(params, this.swapExactTokensForETHCallback);
     },
 
     /**
      * @name: Zehui
-     * @description ether 兑换 token
+     * @description 获取交易的参数
+     * @param deadline 过期时间
+     * @param isTokenToEther 是否是token兑换ether
+     * @param isMock 是否是真实交易
+     * @return {*}
+     */
+    getParams(deadline, isTokenToEther, isMock, value) {
+      const path = isTokenToEther
+        ? [this.tokenAddr, this.fundRaisingContractAddr]
+        : [this.fundRaisingContractAddr, this.tokenAddr];
+      const params = {
+        amount: value,
+        amountOutMin: 0,
+        path: path,
+        to: this.account,
+        // 只需要获取能兑换的ether, 不需要真是兑换， 交易时间为0， 让交易直接失败, 合约的时间最小但是为秒
+        deadline: isMock ? 0 : 20 * 60
+      };
+      return params;
+    },
+
+    /**
+     * @name: Zehui
+     * @description token 兑换ether后的回调
+     * @param {*} ether
+     * @return {*}
+     */
+    swapExactTokensForETHCallback(ether) {
+      this.ether = ether;
+    },
+
+    /**
+     * @name: Zehui
+     * @description ether 兑换 token后的回调
+     * @param {*} ether
+     * @return {*}
+     */
+    swapExactEthForTokensCallback(token) {
+      this.token = token;
+    },
+
+    /**
+     * @name: Zehui
+     * @description ether 兑换 tokens
      * @param {*} value
      * @return {*}
      */
     changedEther(value) {
-      console.log(this.ether);
+      const params = this.getParams(0, false, true, this.ether);
+      this.swapInstance.swapExactETHForTokens(params, this.swapExactEthForTokensCallback);
     },
 
     /**
@@ -102,9 +151,8 @@ export default {
      * @return {*}
      */
     swap() {
-      // TODO 上链后获取txid
-      const txid = '0x123455';
-      this.swapCallBack(txid);
+      const params = this.getParams(0, false, false, this.ether);
+      this.swapInstance.swapExactETHForTokens(params, this.swapCallBack);
     },
 
     /**

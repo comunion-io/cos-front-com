@@ -77,7 +77,7 @@ export default {
   methods: {
     // 获取disco swap状态
     async getDiscoSwapState() {
-      let { error, data } = await services['cores@startup-disco和swap 状态']({
+      let { error, data } = await services['cores@startup-disco和swap状态']({
         startupId: this.startup.id
       });
       if (!error) {
