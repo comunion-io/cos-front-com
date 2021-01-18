@@ -58,7 +58,6 @@ export default {
 
 <style lang="less" scoped>
 .add-liquidity {
-  padding: 40px 30px;
   color: #000;
   .title {
     margin-bottom: 28px;

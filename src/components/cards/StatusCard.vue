@@ -41,7 +41,7 @@ export default {
 
 <style lang="less" scoped>
 .container {
-  width: 280px;
+  width: 240px;
   height: 113px;
   background: #ffffff;
   box-shadow: 0px 4px 60px 0px rgba(208, 208, 208, 0.5);
