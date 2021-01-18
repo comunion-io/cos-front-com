@@ -776,6 +776,36 @@ export interface ServiceRequestAndResponseMap {
       status: number
     }
   }
+  'cores@swap-mint增加流动性事件': {
+    params: {}
+    query: {}
+    body: {
+      txId: string
+      startupId: string
+      /**
+       * @description 发送钱包地址
+       */
+      sender: string
+      /**
+       * @description token1数量
+       */
+      amount0: number
+      /**
+       * @description token2数量，通常是eth
+       */
+      amount1: number
+    }
+    response: {
+      /**
+       * @description exchange_transaction_id
+       */
+      id: string
+      /**
+       * @description 0 待确认，1 已完成，2 未完成
+       */
+      status: number
+    }
+  }
   'cores@startups-我的-follow列表': {
     params: {}
     query: {

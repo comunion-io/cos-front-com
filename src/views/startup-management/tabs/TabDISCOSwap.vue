@@ -130,14 +130,19 @@ export default {
       }
     },
     discoOnClick() {
-      if (this.status === '0' || this.status === '3' || this.status === '12') {
-        // 当第一次进入 或者 创建募资合约失败 或者 exchange注入失败时
-        // 显示创建合约页面
-        this.$router.push({ name: 'startupManagementDiscoForm' });
-      } else if (this.status === '2') {
-        // 当状态为创建合约成功，等待开启时
-        // 显示开启页面
-        this.showEnableDiscoView();
+      console.log(this.status);
+      if (
+        this.status === '0' ||
+        this.status === '3' ||
+        this.status === '12' ||
+        this.status === '2'
+      ) {
+        // 当第一次进入 或者 创建募资合约失败 或者 exchange注入失败 或者 创建合约成功，等待开启时
+        // 显示合约表单页面
+        this.$router.push({
+          name: 'startupManagementDiscoForm',
+          params: { status: this.status }
+        });
       } else if (
         this.status === '6' ||
         this.status === '7' ||
@@ -165,10 +170,6 @@ export default {
         // 跳转到对应startup的swap页面
         this.gotoStartupSwapView();
       }
-    },
-    // 显示开启DISCO的页面
-    showEnableDiscoView() {
-      // TODO...
     },
     // 跳转到对应startup的swap页面
     gotoStartupSwapView() {
