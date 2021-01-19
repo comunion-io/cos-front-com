@@ -165,6 +165,11 @@ export const apis: Apis = {
     m: 'POST',
     d: 0
   },
+  'cores@swap-mint增加流动性事件': {
+    u: '/cores/swap/mints',
+    m: 'POST',
+    d: 0
+  },
   'cores@startups-我的-follow列表': {
     u: '/cores/startups/me/followed',
     m: 'GET',
