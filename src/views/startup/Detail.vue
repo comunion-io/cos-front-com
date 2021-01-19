@@ -30,6 +30,9 @@ export default {
     }
   },
   mounted() {
+    if (this.$route.query?.tabName) {
+      this.selectedTab = this.$route.query.tabName;
+    }
     this.getStartupDetail();
   },
   render(h) {
