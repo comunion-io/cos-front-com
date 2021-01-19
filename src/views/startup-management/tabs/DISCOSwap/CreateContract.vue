@@ -7,7 +7,7 @@
 <template>
   <!-- 创建 disco  -->
   <div class="create-contract">
-    <div class="alert">
+    <div class="alert" v-if="!createFundFaisingContractSucceed">
       <a-icon type="exclamation-circle" theme="filled" style="color: #faad14; margin-right: 12px" />
       <span>
         Before opening DISCO , you need to set the properties of the fund-raising contract
@@ -17,7 +17,7 @@
       <a-form layout="vertical" :form="form" hideRequiredMark @submit="createBtnOnClick">
         <!-- Fund-Raising Contract Address: 募资的地址 -->
         <!-- TODO zehui 上链接口调通以后， 这里需要注释 -->
-        <a-form-item v-if="false">
+        <a-form-item v-if="createFundFaisingContractSucceed">
           <template v-slot:label>
             <p class="label">Fund-Raising Contract Address</p>
           </template>
@@ -25,7 +25,8 @@
             class="input"
             placeholder="Please input receiving fund raising wallet address"
             autocomplete="off"
-            :value="txid"
+            :value="disco ? disco.txid : ''"
+            :disabled="createFundFaisingContractSucceed"
           />
         </a-form-item>
         <!-- start up 的钱包地址 -->
@@ -38,6 +39,7 @@
             placeholder="Please input receiving fund raising wallet address"
             autocomplete="off"
             v-decorator="['walletAddr', walletAddrConfig]"
+            :disabled="createFundFaisingContractSucceed"
           />
         </a-form-item>
         <!-- start up token 的钱包地址 -->
@@ -57,6 +59,7 @@
             style="height: 54px"
             autocomplete="off"
             v-decorator="['description', descriptionConfig]"
+            :disabled="createFundFaisingContractSucceed"
           />
           <div class="tip">
             No description,<a href="https://bbs.comunion.io/" target="_blank">Go to Post</a>
@@ -71,6 +74,7 @@
             :disabled-date="disabledDate"
             format="YYYY-MM-DD"
             v-decorator="['fundRaisingTime', rangeConfig]"
+            :disabled="createFundFaisingContractSucceed"
           />
         </a-form-item>
         <a-form-item>
@@ -84,6 +88,7 @@
             addon-after="%"
             v-decorator="['investmentReward', investmentRewardConfig]"
             @change="updateTotalDepositToken"
+            :disabled="createFundFaisingContractSucceed"
           />
         </a-form-item>
         <a-form-item>
@@ -96,6 +101,7 @@
             autocomplete="off"
             addon-after="%"
             v-decorator="['rewardDeclineRate', number0to100Config]"
+            :disabled="createFundFaisingContractSucceed"
           />
         </a-form-item>
         <a-form-item>
@@ -109,6 +115,7 @@
             addon-after="Token"
             v-decorator="['shareToken', positiveIntegerConfig]"
             @change="updateTotalDepositToken"
+            :disabled="createFundFaisingContractSucceed"
           />
         </a-form-item>
         <a-form-item>
@@ -121,6 +128,7 @@
             autocomplete="off"
             addon-after="ETH"
             v-decorator="['minFundRaising', positiveIntegerConfig]"
+            :disabled="createFundFaisingContractSucceed"
           />
         </a-form-item>
         <a-form-item>
@@ -134,6 +142,7 @@
             addon-after="%"
             v-decorator="['addLiquidityPool', number0to100Config]"
             @change="updateTotalDepositToken"
+            :disabled="createFundFaisingContractSucceed"
           />
         </a-form-item>
         <a-form-item>
@@ -151,7 +160,7 @@
         </a-form-item>
         <a-form-item>
           <a-button
-            v-if="!fundraisingSuccess"
+            v-if="!createFundFaisingContractSucceed"
             type="primary"
             class="btn"
             html-type="submit"
@@ -160,7 +169,7 @@
             Create Fund-Faising Contract
           </a-button>
           <a-button
-            v-if="fundraisingSuccess"
+            v-if="createFundFaisingContractSucceed"
             @click.prevent="enablDisco()"
             type="primary"
             class="btn"
@@ -169,6 +178,13 @@
           >
             Enable DISCO
           </a-button>
+          <div class="footer" v-if="createFundFaisingContractSucceed">
+            <div class="balance">
+              <span style="font-weight:bold;">Balance: </span>
+              <span>0.56 ETH + 3000000 Token</span>
+            </div>
+            <div class="recreate-btn" @click="recreateBtnOnClick">Recreate contract</div>
+          </div>
         </a-form-item>
       </a-form>
     </div>
@@ -186,10 +202,17 @@ export default {
     ...mapGetters(['categories', 'account', 'netWorkName']),
     tokenAddr() {
       return this.startup?.settings?.tokenAddr || '';
+    },
+    // 创建募资合约成功
+    createFundFaisingContractSucceed() {
+      return this.$route.params.status === '2' && !this.isRecreate;
     }
   },
   data() {
     return {
+      disco: null,
+      // 是否是重建合约
+      isRecreate: false,
       // TODO
       /** txid 上链后的合约地址 */
       txid: '',
@@ -268,8 +291,30 @@ export default {
   },
   mounted() {
     this.discoInstance = DiscoTranscation.getInstance();
+    // 获取disco
+    this.getDisco();
   },
   methods: {
+    // 获取disco信息
+    async getDisco() {
+      let { error, data } = await services['cores@disco-startup-获取']({
+        startupId: this.startup.id
+      });
+      if (!error) {
+        this.disco = data;
+        this.totalDepositToken = data.totalDepositToken;
+        this.form.setFieldsValue({
+          walletAddr: data.walletAddr,
+          description: data.description,
+          fundRaisingTime: [moment(data.fundRaisingStartedAt), moment(data.fundRaisingEndedAt)],
+          investmentReward: data.investmentReward,
+          rewardDeclineRate: data.rewardDeclineRate,
+          shareToken: data.shareToken,
+          minFundRaising: data.minFundRaising,
+          addLiquidityPool: data.addLiquidityPool
+        });
+      }
+    },
     disabledDate(current) {
       // Can not select days before today and today
       return current && current < moment().endOf('day');
@@ -366,6 +411,13 @@ export default {
      */
     enablDisco() {
       this.discoInstance.enableDisco(this.id);
+    },
+
+    // 重新创建合约按钮被点击
+    recreateBtnOnClick() {
+      this.isRecreate = true;
+      this.form.resetFields();
+      this.totalDepositToken = '';
     }
   }
 };
@@ -437,6 +489,20 @@ export default {
       height: 54px;
       width: 100%;
       font-size: 18px;
+    }
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    color: #bfbfbf;
+    margin-top: 8px;
+    .recreate-btn {
+      cursor: pointer;
+      color: #5e70ff;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }
