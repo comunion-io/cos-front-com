@@ -45,14 +45,14 @@ jobs:
           key: ${{ secrets.DEV_KEY }}
           script: ${{ secrets.DEV_RESTART_SCRIPT }}
       - name: Notification
-        uses: erguotou520/instant-access-action@master
+        uses: erguotou520/instant-access-action@0.0.4
         if: ${{ success() }}
         with:
           channel: '3fa27c0affa54c069e428af95f0f98fa'
           head: '{{branchName}}部署完成'
           body: '{{author}} commit "{{commitMessage}}" on {{repositoryName}}#{{branchName}} branch at {{commitTime}}'
       - name: Notification
-        uses: erguotou520/instant-access-action@master
+        uses: erguotou520/instant-access-action@0.0.4
         if: ${{ failure() }}
         with:
           channel: '3fa27c0affa54c069e428af95f0f98fa'

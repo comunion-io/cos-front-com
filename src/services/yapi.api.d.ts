@@ -87,6 +87,14 @@ export interface ServiceRequestAndResponseMap {
       nonce: string
     }
   }
+  'cores@startup-follow-创建': {
+    params: {
+      startupId: any;
+    }
+    query: {}
+    body: {}
+    response: {}
+  }
   'cores@disco-增长eth数量统计': {
     params: {}
     query: {
@@ -111,21 +119,24 @@ export interface ServiceRequestAndResponseMap {
       count: number
     }[]
   }
-  'cores@startup-disco和swap状态': {
-    params: {
-      startupId: any;
+  'cores@disco-募集的eth总数统计': {
+    params: {}
+    query: {
+      limit: any;
+      offset: any;
+      keyword: any;
+      /**
+       * @description createdAt、startup、investmentReward、liquidityPool
+       */
+      orderBy: any;
+      /**
+       * @description true、false 默认为false
+       */
+      isAsc: any;
     }
-    query: {}
     body: {}
     response: {
-      /**
-       * @description -1 未开启，0 创建中，1 等待开启（创建成功），2 创建失败，3 开启中，4 等待募资开始（数据库为4，时间未开始），5 募资成功，6 募资失败，7 募资中（数据库为4，时间进行中），8 募资结束（数据库为4，时间已结束）
-       */
-      discoState?: number
-      /**
-       * @description -1 未开启，0 待确认，1 已完成，2 未完成
-       */
-      swapState?: number
+      count: number
     }
   }
   'cores@disco-total统计': {
@@ -149,33 +160,22 @@ export interface ServiceRequestAndResponseMap {
       rate: string
     }
   }
-  'cores@disco-募集的eth总数统计': {
-    params: {}
-    query: {
-      limit: any;
-      offset: any;
-      keyword: any;
-      /**
-       * @description createdAt、startup、investmentReward、liquidityPool
-       */
-      orderBy: any;
-      /**
-       * @description true、false 默认为false
-       */
-      isAsc: any;
-    }
-    body: {}
-    response: {
-      count: number
-    }
-  }
-  'cores@startup-follow-创建': {
+  'cores@startup-disco和swap状态': {
     params: {
       startupId: any;
     }
     query: {}
     body: {}
-    response: {}
+    response: {
+      /**
+       * @description -1 未开启，0 创建中，1 等待开启（创建成功），2 创建失败，3 开启中，4 等待募资开始（数据库为4，时间未开始），5 募资成功，6 募资失败，7 募资中（数据库为4，时间进行中），8 募资结束（数据库为4，时间已结束）
+       */
+      discoState?: number
+      /**
+       * @description -1 未开启，0 待确认，1 已完成，2 未完成
+       */
+      swapState?: number
+    }
   }
   'cores@bounty-closed': {
     params: {
@@ -514,11 +514,15 @@ export interface ServiceRequestAndResponseMap {
     body: {
       txId: string
       /**
-       * @description 客户钱包地址
+       * @description 发送钱包地址
        */
-      account: string
+      sender: string
       /**
-       * @description 1 增加流动性，2 删除流动性，3 兑换
+       * @description 接收钱包地址
+       */
+      to?: string
+      /**
+       * @description 1：增加流动性，2：删除流动性，3：1兑换2，4：2兑换1
        */
       type: number
       /**
@@ -571,11 +575,15 @@ export interface ServiceRequestAndResponseMap {
        */
       exchangeId: string
       /**
-       * @description 客户钱包地址
+       * @description 发送钱包地址
        */
-      account: string
+      sender: string
       /**
-       * @description 1 增加流动性，2 删除流动性，3 兑换
+       * @description 接收钱包地址
+       */
+      to: string
+      /**
+       * @description 1：增加流动性，2：删除流动性，3：1兑换2，4：2兑换1
        */
       type: number
       name: string
@@ -729,6 +737,73 @@ export interface ServiceRequestAndResponseMap {
         occuredDay: string
         endPrice: number
       }
+    }
+  }
+  'cores@swap-pair-created交易对创建事件': {
+    params: {}
+    query: {}
+    body: {
+      txId: string
+      startupId: string
+      pairAddress: string
+      /**
+       * @description startup token
+       */
+      token0: {
+        name: string
+        symbol: string
+        decimals: number
+        address: string
+      }
+      /**
+       * @description eth
+       */
+      token1: {
+        name: string
+        symbol: string
+        decimals: number
+        address: string
+      }
+    }
+    response: {
+      /**
+       * @description exchange_id
+       */
+      id: string
+      /**
+       * @description 0 待确认，1 已完成，2 未完成
+       */
+      status: number
+    }
+  }
+  'cores@swap-mint增加流动性事件': {
+    params: {}
+    query: {}
+    body: {
+      txId: string
+      startupId: string
+      /**
+       * @description 发送钱包地址
+       */
+      sender: string
+      /**
+       * @description token1数量
+       */
+      amount0: number
+      /**
+       * @description token2数量，通常是eth
+       */
+      amount1: number
+    }
+    response: {
+      /**
+       * @description exchange_transaction_id
+       */
+      id: string
+      /**
+       * @description 0 待确认，1 已完成，2 未完成
+       */
+      status: number
     }
   }
   'cores@startups-我的-follow列表': {
