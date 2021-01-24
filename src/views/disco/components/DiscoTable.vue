@@ -1,9 +1,11 @@
 <template>
   <c-table
     key="disco-table"
+    rowKey="id"
     :loading="loading"
     :columns="columns"
     :data-source="dataSource"
+    :pagination="pagination"
     @on-change="onTableChange"
     @on-pagination-change="onPaginationChange"
   >
@@ -113,7 +115,7 @@ export default {
     onTableChange(filters, sorter) {
       this.sortedInfo = sorter;
     },
-    onPaginationChange(offset, limit) {
+    onPaginationChange(offset) {
       this.offset = offset;
     },
     getStateColor(state) {

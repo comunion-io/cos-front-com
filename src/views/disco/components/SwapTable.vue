@@ -1,9 +1,11 @@
 <template>
   <c-table
     key="swap-table"
+    rowKey="id"
     :loading="loading"
     :columns="columns"
     :data-source="dataSource"
+    :pagination="pagination"
     @on-change="onTableChange"
     @on-pagination-change="onPaginationChange"
   >
@@ -107,7 +109,7 @@ export default {
     onTableChange(filters, sorter) {
       this.sortedInfo = sorter;
     },
-    onPaginationChange(offset, limit) {
+    onPaginationChange(offset) {
       this.offset = offset;
     },
     async loadSwapData(params, offset = 0) {
