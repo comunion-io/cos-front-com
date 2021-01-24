@@ -1,14 +1,16 @@
 <template>
   <c-table
     key="swap-table"
+    rowKey="id"
     :loading="loading"
     :columns="columns"
     :data-source="dataSource"
+    :pagination="pagination"
     @on-change="onTableChange"
     @on-pagination-change="onPaginationChange"
   >
-    <template #startup="{ text }">
-      <router-link class="link" to="/">
+    <template #startup="{ text, record }">
+      <router-link class="link" :to="`/startup/${record.id}?tabName=Swap`">
         <div class="logo" :style="`background-image: url(${(text && text.logo) || ''});`" />
         <span class="title">{{ text && text.name }}</span>
       </router-link>
@@ -107,7 +109,7 @@ export default {
     onTableChange(filters, sorter) {
       this.sortedInfo = sorter;
     },
-    onPaginationChange(offset, limit) {
+    onPaginationChange(offset) {
       this.offset = offset;
     },
     async loadSwapData(params, offset = 0) {

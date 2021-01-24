@@ -15,7 +15,7 @@
       </a-table>
     </div>
     <div v-show="showPagination" class="c-table-pagination">
-      <pagination v-bind="pagination" @change="handlePaginationChange" />
+      <pagination v-bind="pagination" @update:offset="handlePaginationChange" />
     </div>
   </div>
 </template>
@@ -33,7 +33,7 @@ export default {
       default: function() {
         return {
           limit: 20,
-          offset: 1,
+          offset: 0,
           total: 0
         };
       }
@@ -55,16 +55,15 @@ export default {
   },
   computed: {
     showPagination() {
-      return this.enablePagination && (this.dataSource?.length > 0 || this.pagination?.total > 0);
+      return this.enablePagination && this.pagination?.total > this.pagination?.limit;
     }
   },
   methods: {
     handleChange(pagination, filters, sorter) {
       this.$emit('on-change', filters, sorter);
     },
-    handlePaginationChange(page, pageSize) {
-      const offset = page ? (page - 1) * pageSize : 0;
-      this.$emit('on-pagination-change', offset, pageSize);
+    handlePaginationChange(offset) {
+      this.$emit('on-pagination-change', offset);
     }
   }
 };
