@@ -410,7 +410,7 @@ export default {
      * @return {*}
      */
     enablDisco() {
-      this.discoInstance.enableDisco(this.id);
+      this.discoInstance.enableDisco(this.id, this.account);
     },
 
     // 重新创建合约按钮被点击

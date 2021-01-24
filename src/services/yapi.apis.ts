@@ -59,9 +59,9 @@ export const apis: Apis = {
   },
   'cores@startup-disco和swap状态': {
     u: '/cores/startups/{startupId}/discoSwapState',
-    m: 'POST',
+    m: 'GET',
     p: ['startupId'],
-    d: 0
+    d: 1
   },
   'cores@bounty-closed': {
     u: '/cores/bounties/{bountyId}:closed',
@@ -89,7 +89,7 @@ export const apis: Apis = {
     d: 1
   },
   'cores@disco-startup-获取': {
-    u: '/cores/startups/{startupId}/disco',
+    u: '/cores/startups/{startupId}/discos',
     m: 'GET',
     p: ['startupId'],
     d: 1
@@ -107,19 +107,19 @@ export const apis: Apis = {
     d: 1
   },
   'cores@exchange-获取': {
-    u: '/cores/exchanges/{exchangeId}',
+    u: '/exchanges/{exchangeId}',
     m: 'GET',
     p: ['exchangeId'],
     d: 1
   },
   'cores@exchange-startup-获取': {
-    u: '/cores/startups/{startupId}/exchange',
+    u: '/startups/{startupId}/exchange',
     m: 'GET',
     p: ['startupId'],
     d: 1
   },
   'cores@exchanges-列表': {
-    u: '/cores/exchanges',
+    u: '/exchanges',
     m: 'GET',
     q: ['limit', 'offset', 'keyword', 'orderBy', 'isDesc'],
     d: 1
@@ -160,13 +160,28 @@ export const apis: Apis = {
     p: ['exchangeId'],
     d: 1
   },
-  'cores@swap-pair-created交易对创建事件': {
-    u: '/cores/swap/pairs',
+  'cores@swap-pairCreated交易对创建事件': {
+    u: '/swap/pairs',
     m: 'POST',
     d: 0
   },
   'cores@swap-mint增加流动性事件': {
     u: '/cores/swap/mints',
+    m: 'POST',
+    d: 0
+  },
+  'cores@swap-burn删除流动性事件': {
+    u: '/cores/swap/burns',
+    m: 'POST',
+    d: 0
+  },
+  'cores@swap-swap兑换事件': {
+    u: '/cores/swap/swaps',
+    m: 'POST',
+    d: 0
+  },
+  'cores@swap-sync同步事件': {
+    u: '/cores/swap/syncs',
     m: 'POST',
     d: 0
   },

@@ -1,12 +1,10 @@
 /*
  * @Author: zehui
  * @Date: 2020-12-13 23:40:00
- * @LastEditTime : 2021-01-16 19:16:05
- * @LastEditors  : Please set LastEditors
  * @Description: disco 上链的函数， 包括disco 合约的创建， 发起上链
  * @FilePath     : \cos-front-com\src\utils\contract\disco.ts
  */
-import { COMUNION_RECEIVER_STARTUP_ACCOUNT, web3 } from '@/libs/web3';
+import { COMUNION_RECEIVER_DOISCO_ACCOUNT, web3 } from '@/libs/web3';
 import axios from 'axios';
 
 /**
@@ -58,14 +56,14 @@ export class DiscoTranscation {
     account: string,
     discoBlockCallBack: Function
   ) {
-    const contractInstance = await this.getDiscoContractInstance(disco, id);
+    const contractInstance = await this.getDiscoContractInstance(disco, id, account);
     if (contractInstance) {
       const codeData = await contractInstance.encodeABI();
       const countAll = await web3.eth.getTransactionCount(account, 'pending');
       const chainId = await web3.eth.getChainId();
       const tx = {
         from: account,
-        to: COMUNION_RECEIVER_STARTUP_ACCOUNT,
+        to: COMUNION_RECEIVER_DOISCO_ACCOUNT,
         data: codeData,
         value: web3.utils.numberToHex(0),
         nonce: web3.utils.numberToHex(countAll),
@@ -99,10 +97,31 @@ export class DiscoTranscation {
    * @param id
    * @returns {*}
    */
-  private async getDiscoContractInstance(disco: Disco, id: string) {
+  private async getDiscoContractInstance(disco: Disco, id: string, account: string) {
     const abi = await this.getAbi();
     this.id = id;
-    this.contractInstance = new web3.eth.Contract(abi, COMUNION_RECEIVER_STARTUP_ACCOUNT);
+    this.contractInstance = new web3.eth.Contract(abi, COMUNION_RECEIVER_DOISCO_ACCOUNT);
+    const res = await this.contractInstance.methods.setCoinBase(account);
+
+    // 上链 设置 用户的 account
+    const result = await Promise.all([
+      res.encodeABI(),
+      web3.eth.getTransactionCount(account, 'pending'),
+      web3.eth.getChainId()
+    ]);
+
+    const tx = {
+      from: account,
+      to: COMUNION_RECEIVER_DOISCO_ACCOUNT,
+      data: result[0],
+      value: web3.utils.numberToHex(0),
+      nonce: web3.utils.numberToHex(result[1]),
+      gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
+      gasLimit: web3.utils.numberToHex(183943),
+      chainId: result[2]
+    };
+    await res.send(tx);
+
     const {
       walletAddr,
       tokenAddr,
@@ -122,9 +141,9 @@ export class DiscoTranscation {
       walletAddr,
       tokenAddr,
       description,
-      // 合约的时间是数字， 这里要转换成毫秒数
-      +new Date(fundRaisingStartedAt),
-      +new Date(fundRaisingEndedAt),
+      // 合约的时间是数字， 这里要转换成秒数(合约是的时间最小单位是秒)
+      +new Date(fundRaisingStartedAt) / 1000,
+      +new Date(fundRaisingEndedAt) / 1000,
       investmentReward,
       rewardDeclineRate,
       shareToken,
@@ -155,9 +174,26 @@ export class DiscoTranscation {
    * @author Ze Hui
    * @date 23/12/2020
    */
-  public enableDisco() {
+  public async enableDisco(id: string, account: string) {
     if (this.contractInstance) {
-      this.contractInstance.methods.enableDisco();
+      const enabledDisco = await this.contractInstance.methods.enableDisco(id);
+      const blockParams = await Promise.all([
+        enabledDisco.encodeABI(),
+        web3.eth.getTransactionCount(account, 'pending'),
+        web3.eth.getChainId()
+      ]);
+
+      const tx = {
+        from: account,
+        to: COMUNION_RECEIVER_DOISCO_ACCOUNT,
+        data: blockParams[0],
+        value: web3.utils.numberToHex(0),
+        nonce: web3.utils.numberToHex(blockParams[1]),
+        gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
+        gasLimit: web3.utils.numberToHex(183943),
+        chainId: blockParams[2]
+      };
+      enabledDisco.send(tx);
     }
   }
 }
