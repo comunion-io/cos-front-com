@@ -20,7 +20,11 @@ export default {
   },
   props: {
     id: String,
-    noBtn: Boolean
+    noBtn: Boolean,
+    tokenSymbol: {
+      type: String,
+      default: 'Token'
+    }
   },
   data() {
     return {
@@ -84,7 +88,7 @@ export default {
             {
               label: 'Sharte Token',
               value: 'shareToken',
-              render: v => `${v} Token`
+              render: v => `${v} ${this.tokenSymbol}`
             },
             {
               label: 'Fund-Raising ETH (min)',
@@ -99,7 +103,7 @@ export default {
             {
               label: 'Total Deposit Token',
               value: 'totalDepositToken',
-              render: v => `${v} Token`
+              render: v => `${v} ${this.tokenSymbol}`
             },
             {
               label: 'Status',
@@ -233,8 +237,8 @@ export default {
               <div className="mt-16 t-grey">
                 Initial Price Find:{' '}
                 <span class="t-primary">
-                  {Math.floor((this.detail.totalDepositToken / this.totalETH) * 1000) / 1000} Token
-                  per ETH
+                  {Math.floor((this.detail.shareToken / this.totalETH) * 1000) / 1000}{' '}
+                  {this.tokenSymbol} per ETH
                 </span>
               </div>
             )}
