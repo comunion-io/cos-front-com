@@ -107,19 +107,19 @@ export const apis: Apis = {
     d: 1
   },
   'cores@exchange-获取': {
-    u: '/exchanges/{exchangeId}',
+    u: '/cores/exchanges/{exchangeId}',
     m: 'GET',
     p: ['exchangeId'],
     d: 1
   },
   'cores@exchange-startup-获取': {
-    u: '/startups/{startupId}/exchange',
+    u: '/cores/startups/{startupId}/exchange',
     m: 'GET',
     p: ['startupId'],
     d: 1
   },
   'cores@exchanges-列表': {
-    u: '/exchanges',
+    u: '/cores/exchanges',
     m: 'GET',
     q: ['limit', 'offset', 'keyword', 'orderBy', 'isDesc'],
     d: 1
@@ -161,29 +161,29 @@ export const apis: Apis = {
     d: 1
   },
   'cores@swap-pairCreated交易对创建事件': {
-    u: '/swap/pairs',
+    u: '/cores/swap/pairs',
     m: 'POST',
-    d: 0
+    d: 1
   },
   'cores@swap-mint增加流动性事件': {
     u: '/cores/swap/mints',
     m: 'POST',
-    d: 0
+    d: 1
   },
   'cores@swap-burn删除流动性事件': {
     u: '/cores/swap/burns',
     m: 'POST',
-    d: 0
+    d: 1
   },
   'cores@swap-swap兑换事件': {
     u: '/cores/swap/swaps',
     m: 'POST',
-    d: 0
+    d: 1
   },
   'cores@swap-sync同步事件': {
     u: '/cores/swap/syncs',
     m: 'POST',
-    d: 0
+    d: 1
   },
   'cores@startups-我的-follow列表': {
     u: '/cores/startups/me/followed',

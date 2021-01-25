@@ -7,7 +7,7 @@ export default {
     TabPerference,
     TabBounty: () => import('./details/Bounty'),
     TabExchange: () => import('./details/Exchange'),
-    TabDisco: () => import('./details/Dosci.vue'),
+    TabDisco: () => import('./details/Disco.vue'),
     TabSwap: () => import('./details/Swap/index.vue'),
     TabIRO: () => import('./details/IRO'),
     TabVote: () => import('./details/Vote'),

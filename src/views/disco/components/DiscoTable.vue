@@ -10,7 +10,18 @@
     @on-pagination-change="onPaginationChange"
   >
     <template #startup="{ text }">
-      <router-link class="link" to="/">
+      <router-link
+        class="link"
+        :to="{
+          name: 'startupDetail',
+          params: {
+            id: text.id
+          },
+          query: {
+            tabName: 'Disco'
+          }
+        }"
+      >
         <div class="logo" :style="`background-image: url(${text.logo || ''});`" />
         <span class="title">{{ text.name }}</span>
       </router-link>

@@ -1,6 +1,6 @@
 <template>
   <div class="disco-swap">
-    <router-view v-if="$route.matched.length > 3" :startup="startup" />
+    <router-view v-if="$route.matched.length > 3" :id="id" :startup="startup" />
 
     <template v-else>
       <MyCard :status="status" type="disco" @onClick="discoOnClick" />
@@ -62,6 +62,7 @@ export default {
     };
   },
   props: {
+    id: String,
     startup: {
       type: Object,
       default: () => ({})

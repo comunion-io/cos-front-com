@@ -6,9 +6,7 @@ export default {
     startup: Object
   },
   render(h) {
-    return (
-      <DiscoDetail id={this.id} tokenSymbol={this.startup?.settings?.tokenSymbol ?? ''} no-btn />
-    );
+    return <DiscoDetail id={this.id} tokenSymbol={this.startup?.settings?.tokenSymbol ?? ''} />;
   }
 };
 </script>

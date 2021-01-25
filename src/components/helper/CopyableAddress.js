@@ -27,7 +27,7 @@ export default {
         </a>
         <a-icon
           type="copy"
-          style="margin-left:50px;font-size:12px"
+          style="margin-left:32px;font-size:12px"
           onClick={() => {
             copy(address);
             message.success('Copied!');

@@ -204,6 +204,10 @@ export interface ServiceRequestAndResponseMap {
       addLiquidityPool: number
       totalDepositToken: number
       txId: string
+      /**
+       * @description 非必须， 由后端接收到创建disco成功后的事件时更新
+       */
+      fundRaisingAddr: string
     }
     response: {}
   }
@@ -518,7 +522,7 @@ export interface ServiceRequestAndResponseMap {
        */
       sender: string
       /**
-       * @description 接收钱包地址
+       * @description 接收钱包地址，除增加流动性外必需
        */
       to?: string
       /**
@@ -794,6 +798,10 @@ export interface ServiceRequestAndResponseMap {
        * @description token2数量，通常是eth
        */
       amount1: string
+      /**
+       * @description 发生时间，yyyy-mm-dd hh24:mi:ss
+       */
+      occuredAt: string
     }
     response: {
       /**
@@ -828,6 +836,10 @@ export interface ServiceRequestAndResponseMap {
        * @description 接收钱包地址
        */
       to: string
+      /**
+       * @description 发生时间，yyyy-mm-dd hh24:mi:ss
+       */
+      occuredAt: string
     }
     response: {
       /**
@@ -870,6 +882,10 @@ export interface ServiceRequestAndResponseMap {
        * @description 接收钱包地址
        */
       to: string
+      /**
+       * @description 发生时间，yyyy-mm-dd hh24:mi:ss
+       */
+      occuredAt: string
     }
     response: {
       /**
