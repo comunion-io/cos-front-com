@@ -67,7 +67,7 @@ export default {
           </a-tabs>
         </a-card>
         {this.loading ? (
-          <a-spin />
+          <loading />
         ) : (
           <a-card class="flex-1">
             <Breadcrumb startupName={this.startupDetail.name} />
