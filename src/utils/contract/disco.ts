@@ -34,6 +34,7 @@ export class DiscoTranscation {
   /* 合约实例 */
   private contractInstance = undefined;
   private id = '';
+  private shadowWindow = window as any;
 
   static getInstance() {
     if (this.instance === undefined) {
@@ -71,12 +72,12 @@ export class DiscoTranscation {
         gasLimit: web3.utils.numberToHex(183943),
         chainId: chainId
       };
-      const shadowWindow = window as any;
-      shadowWindow.ethereum.sendAsync(
+
+      this.shadowWindow.ethereum.sendAsync(
         {
           method: 'eth_sendTransaction',
           params: [tx],
-          from: shadowWindow.ethereum.selectedAddress
+          from: this.shadowWindow.ethereum.selectedAddress
         },
         (err, result) => {
           if (err) {
@@ -194,6 +195,49 @@ export class DiscoTranscation {
         chainId: blockParams[2]
       };
       enabledDisco.send(tx);
+    }
+  }
+
+  /**
+   * @description 给 disco 投钱
+   * @author Ze Hui
+   * @date 24/01/2021
+   */
+  public async invest(id: string, investAddress: string, account: string) {
+    if (this.contractInstance) {
+      const now = new Date().getTime() / 1000;
+      const investDisco = await this.contractInstance.methods.invest(id, investAddress, now);
+      const blockParams = await Promise.all([
+        investDisco.encodeABI(),
+        web3.eth.getTransactionCount(account, 'pending'),
+        web3.eth.getChainId()
+      ]);
+
+      const tx = {
+        from: account,
+        to: COMUNION_RECEIVER_DOISCO_ACCOUNT,
+        data: blockParams[0],
+        // TODO 暂时先投0.1ether
+        value: web3.utils.numberToHex(Math.pow(10, 17)),
+        nonce: web3.utils.numberToHex(blockParams[1]),
+        gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
+        gasLimit: web3.utils.numberToHex(183943),
+        chainId: blockParams[2]
+      };
+
+      this.shadowWindow.ethereum.sendAsync(
+        {
+          method: 'eth_sendTransaction',
+          params: [tx],
+          from: this.shadowWindow.ethereum.selectedAddress
+        },
+        (err, result) => {
+          if (err) {
+            return console.error(err);
+          }
+          const txid = result.result;
+        }
+      );
     }
   }
 }

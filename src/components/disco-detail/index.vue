@@ -3,6 +3,8 @@ import Descriptions from '@/components/display/Descriptions';
 import services from '@/services';
 import moment from 'moment';
 import Investors from './investors';
+import { mapGetters } from 'vuex';
+import { DiscoTranscation } from '@/utils/contract/disco';
 
 // 0 默认状态，1 等待开始，2 进行中，3 失败，4 成功
 const stateBadgeStatusMap = {
@@ -33,6 +35,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(['account']),
     modules() {
       return [
         {
@@ -151,6 +154,9 @@ export default {
       }
     }
   },
+  mounted() {
+    this.discoInstance = DiscoTranscation.getInstance();
+  },
   methods: {
     getStatusNode(status) {
       switch (status) {
@@ -178,7 +184,9 @@ export default {
       this.$set(this.detail, 'tokenRaised', totalETH);
     },
     doInvest() {
-      console.log('invest');
+      const discoId = this.detail.id;
+      const investAddress = this.detail.fundRaisingAddr;
+      this.discoInstance.invest(discoId, investAddress, this.account);
     }
   },
   render(h) {
