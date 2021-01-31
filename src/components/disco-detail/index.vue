@@ -183,10 +183,10 @@ export default {
     updateInvestorsHandler(totalETH) {
       this.$set(this.detail, 'tokenRaised', totalETH);
     },
-    doInvest() {
+    async doInvest() {
       const discoId = this.detail.id;
       const investAddress = this.detail.fundRaisingAddr;
-      this.discoInstance.invest(discoId, investAddress, this.account);
+      await this.discoInstance.invest(discoId, investAddress, this.account);
     }
   },
   render(h) {
@@ -232,7 +232,6 @@ export default {
               <a-button
                 class="invest-btn"
                 disabled={status !== 3}
-                onClick={this.invest}
                 type="primary"
                 size="large"
                 block
