@@ -4,7 +4,7 @@
  * @Descripttion : ether 与 token 互换， 交易流动性的增加删除
  * @FilePath     : \cos-front-com\src\utils\contract\swap.ts
  */
-import { COMUNION_RECEIVER_STARTUP_ACCOUNT, web3 } from '@/libs/web3';
+import { COMUNION_RECEIVER_SWAP_ACCOUNT, web3 } from '@/libs/web3';
 import axios from 'axios';
 
 /**
@@ -31,11 +31,17 @@ export interface ISwap {
 
 export class SwapTranscation {
   static instance: SwapTranscation | undefined = undefined;
-  contractInstance: undefined;
+  public contractInstance: undefined;
+  private shadowWindow = window as any;
 
   static getInstance() {
     if (this.instance === undefined) {
       this.instance = new SwapTranscation();
+      console.log(
+        '%c 🥦 this.instance: ',
+        'font-size:20px;background-color: #FCA650;color:#fff;',
+        this.instance
+      );
     }
     return this.instance;
   }
@@ -52,7 +58,12 @@ export class SwapTranscation {
    */
   async getSwapContractInstance() {
     const abi = await this.getAbi();
-    this.contractInstance = new web3.eth.Contract(abi, COMUNION_RECEIVER_STARTUP_ACCOUNT);
+    this.contractInstance = new web3.eth.Contract(abi, COMUNION_RECEIVER_SWAP_ACCOUNT);
+    console.log(
+      '%c 🍲 this.contractInstance: ',
+      'font-size:20px;background-color: #ED9EC7;color:#fff;',
+      this.contractInstance
+    );
   }
 
   /**
@@ -81,15 +92,38 @@ export class SwapTranscation {
     swapExactTokensForETHCallback: (ether: number) => void
   ) {
     if (this.contractInstance) {
-      const { amount: amountIn, amountOutMin, path, to, deadline } = params;
-      const data: number[] = await this.contractInstance.methods.swapExactTokensForETH(
+      const { amount: amountIn, amountOutMin, path, to: account, deadline } = params;
+      const res = await this.contractInstance.methods.swapExactTokensForETH(
         amountIn,
         amountOutMin,
         path,
-        to,
+        account,
         deadline
       );
-      swapExactTokensForETHCallback(data[0]);
+      if (res) {
+        // 上链 设置 用户的 account
+        const result = await Promise.all([
+          res.encodeABI(),
+          web3.eth.getTransactionCount(account, 'pending'),
+          web3.eth.getChainId()
+        ]);
+
+        const tx = {
+          from: account,
+          to: COMUNION_RECEIVER_SWAP_ACCOUNT,
+          data: result[0],
+          value: web3.utils.numberToHex(0),
+          nonce: web3.utils.numberToHex(result[1]),
+          gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
+          gasLimit: web3.utils.numberToHex(183943),
+          chainId: result[2]
+        };
+
+        const value = await res.send(tx);
+        console.log('%c 🍵 value: ', 'font-size:20px;background-color: #B03734;color:#fff;', value);
+      }
+
+      // swapExactTokensForETHCallback(data[0]);
     }
   }
 
@@ -103,13 +137,45 @@ export class SwapTranscation {
     params: ISwap,
     swapExactEthForTokensCallback: (ether: number) => void
   ) {
-    const { amount: amountOut, amountOutMin, path, to, deadline } = params;
+    const { amount: amountOut, amountOutMin, path, to: account, deadline } = params;
+    console.log(
+      '%c 🥩 amountOut: ',
+      'font-size:20px;background-color: #42b983;color:#fff;',
+      amountOut
+    );
     const data = await this.contractInstance.methods.swapExactETHForTokens(
       amountOutMin,
-      path,
-      to,
+      // path,
+      ['0xa74433ad2bafe833ea9620e5ab1f0a1bf7d13344', '0x2872EDbd154ADf0FDc8bA6CD2f87427AaD093C43'],
+      account,
       deadline
     );
+
+    if (data) {
+      // 上链 设置 用户的 account
+      const result = await Promise.all([
+        data.encodeABI(),
+        web3.eth.getTransactionCount(account, 'pending'),
+        web3.eth.getChainId()
+      ]);
+
+      const tx = {
+        from: account,
+        to: COMUNION_RECEIVER_SWAP_ACCOUNT,
+        data: result[0],
+        value: web3.utils.numberToHex(0),
+        nonce: web3.utils.numberToHex(result[1]),
+        gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
+        gasLimit: web3.utils.numberToHex(183943),
+        chainId: result[2]
+      };
+
+      console.log('%c 🥡 tx: ', 'font-size:20px;background-color: #33A5FF;color:#fff;', tx);
+      debugger;
+      const value = await data.send(tx);
+      console.log('%c 🍵 value: ', 'font-size:20px;background-color: #B03734;color:#fff;', value);
+    }
+
     const isMock = deadline === 0;
     if (isMock) {
       swapExactEthForTokensCallback(data[0]);

@@ -81,7 +81,7 @@ export default {
   methods: {
     /**
      * @name: Zehui
-     * @description token 兑换ether
+     * @description token 兑换 ether
      * @param {*} value
      * @return {*}
      */
@@ -98,7 +98,7 @@ export default {
      * @param isMock 是否是真实交易
      * @return {*}
      */
-    getParams(deadline, isTokenToEther, isMock, value) {
+    getParams(isTokenToEther, isMock, value) {
       const path = isTokenToEther
         ? [this.tokenAddr, this.fundRaisingContractAddr]
         : [this.fundRaisingContractAddr, this.tokenAddr];
@@ -140,7 +140,7 @@ export default {
      * @return {*}
      */
     changedEther(value) {
-      const params = this.getParams(0, false, true, this.ether);
+      const params = this.getParams(false, true, this.ether);
       this.swapInstance.swapExactETHForTokens(params, this.swapExactEthForTokensCallback);
     },
 
@@ -151,7 +151,7 @@ export default {
      * @return {*}
      */
     swap() {
-      const params = this.getParams(0, false, false, this.ether);
+      const params = this.getParams(false, false, this.ether);
       this.swapInstance.swapExactETHForTokens(params, this.swapCallBack);
     },
 

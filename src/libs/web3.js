@@ -11,6 +11,8 @@ export const COMUNION_BOUNTY_RECEIVE_ACCOUNT = process.env.VUE_APP_BOUNTY_RECEIV
 export const COMUNION_RECEIVE_HUNTER_TRANSFER = process.env.VUE_APP_HUNTER_FOR_COMUNION;
 // DISCO 上链地址
 export const COMUNION_RECEIVER_DOISCO_ACCOUNT = process.env.VUE_APP_DISCO_RECEIVER;
+// Swap 上链地址
+export const COMUNION_RECEIVER_SWAP_ACCOUNT = process.env.VUE_APP_SWAP_RECEIVER;
 
 // web3示例
 export let web3;
