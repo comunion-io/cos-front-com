@@ -164,7 +164,10 @@ export default {
         // 显示合约表单页面
         this.$router.push({
           name: 'startupManagementDiscoForm',
-          params: { status: this.status }
+          params: { status: this.status },
+          query: {
+            mode: this.status === '0' ? 'create' : 'edit'
+          }
         });
       } else if (
         this.status === '6' ||

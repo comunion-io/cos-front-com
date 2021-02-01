@@ -14,151 +14,126 @@
       </span>
     </div>
     <div class="content">
-      <a-form layout="vertical" :form="form" hideRequiredMark @submit="createBtnOnClick">
+      <a-form-model
+        layout="vertical"
+        ref="form"
+        :model="disco"
+        :rules="rules"
+        @submit.prevent="createBtnOnClick"
+      >
         <!-- Fund-Raising Contract Address: 募资的地址 -->
         <!-- TODO zehui 上链接口调通以后， 这里需要注释 -->
-        <a-form-item v-if="createFundFaisingContractSucceed">
-          <template v-slot:label>
-            <p class="label">Fund-Raising Contract Address</p>
-          </template>
+        <a-form-model-item
+          v-if="createFundFaisingContractSucceed"
+          label="Fund-Raising Contract Address"
+          prop="txid"
+        >
           <a-input
             class="input"
             placeholder="Please input receiving fund raising wallet address"
             autocomplete="off"
-            :value="disco ? disco.txid : ''"
+            v-model="disco.txid"
             :disabled="createFundFaisingContractSucceed"
           />
-        </a-form-item>
+        </a-form-model-item>
         <!-- start up 的钱包地址 -->
-        <a-form-item>
-          <template v-slot:label>
-            <p class="label">Start-Up Wallet Address</p>
-          </template>
+        <a-form-model-item label="Start-Up Wallet Address" prop="walletAddr">
           <a-input
             class="input"
             placeholder="Please input receiving fund raising wallet address"
             autocomplete="off"
-            v-decorator="['walletAddr', walletAddrConfig]"
+            v-model="disco.walletAddr"
             :disabled="createFundFaisingContractSucceed"
           />
-        </a-form-item>
+        </a-form-model-item>
         <!-- start up token 的钱包地址 -->
-        <a-form-item style="margin-bottom: 0;">
-          <template v-slot:label>
-            <p class="label">Token Contract</p>
-          </template>
+        <a-form-model-item label="Token Contract" style="margin-bottom: 0;">
           <p class="text">{{ tokenAddr }}</p>
-        </a-form-item>
-        <a-form-item>
-          <template v-slot:label>
-            <p class="label">Description</p>
-          </template>
-          <a-input
-            class="input"
-            placeholder="https://"
-            style="height: 54px"
-            autocomplete="off"
-            v-decorator="['description', descriptionConfig]"
-            :disabled="createFundFaisingContractSucceed"
-          />
-          <div class="tip">
-            No description,<a href="https://bbs.comunion.io/" target="_blank">Go to Post</a>
-          </div>
-        </a-form-item>
-        <a-form-item>
-          <template v-slot:label>
-            <p class="label">Fund-Raising Time</p>
-          </template>
+        </a-form-model-item>
+        <bbs-input
+          prop="description"
+          v-model="disco.description"
+          :disabled="createFundFaisingContractSucceed"
+        />
+        <a-form-model-item label="Fund-Raising Time" prop="fundRaisingTime">
           <a-range-picker
             class="range-picker"
             :disabled-date="disabledDate"
             format="YYYY-MM-DD"
-            v-decorator="['fundRaisingTime', rangeConfig]"
+            v-model="disco.fundRaisingTime"
             :disabled="createFundFaisingContractSucceed"
           />
-        </a-form-item>
-        <a-form-item>
-          <template v-slot:label>
-            <p class="label">Investment Reward</p>
-          </template>
-          <a-input
+        </a-form-model-item>
+        <a-form-model-item label="Investment Reward" prop="investmentReward">
+          <a-input-number
             class="input number-input"
             placeholder=""
             autocomplete="off"
             addon-after="%"
-            v-decorator="['investmentReward', investmentRewardConfig]"
+            :min="0"
+            v-model="disco.investmentReward"
             @change="updateTotalDepositToken"
             :disabled="createFundFaisingContractSucceed"
           />
-        </a-form-item>
-        <a-form-item>
-          <template v-slot:label>
-            <p class="label">Reward Decline Rate (Day)</p>
-          </template>
-          <a-input
+        </a-form-model-item>
+        <a-form-model-item label="Reward Decline Rate (Day)" prop="rewardDeclineRate">
+          <a-input-number
             class="input number-input"
             placeholder=""
             autocomplete="off"
             addon-after="%"
-            v-decorator="['rewardDeclineRate', number0to100Config]"
+            :min="0"
+            :max="100"
+            v-model="disco.rewardDeclineRate"
             :disabled="createFundFaisingContractSucceed"
           />
-        </a-form-item>
-        <a-form-item>
-          <template v-slot:label>
-            <p class="label">Share Token</p>
-          </template>
-          <a-input
+        </a-form-model-item>
+        <a-form-model-item label="Share Token" prop="shareToken">
+          <a-input-number
             class="input number-input"
             placeholder=""
             autocomplete="off"
             addon-after="Token"
-            v-decorator="['shareToken', positiveIntegerConfig]"
+            :min="0"
+            v-model="disco.shareToken"
             @change="updateTotalDepositToken"
             :disabled="createFundFaisingContractSucceed"
           />
-        </a-form-item>
-        <a-form-item>
-          <template v-slot:label>
-            <p class="label">Fund-Raising ETH (min)</p>
-          </template>
-          <a-input
+        </a-form-model-item>
+        <a-form-model-item label="Fund-Raising ETH (min)" prop="minFundRaising">
+          <a-input-number
             class="input number-input"
             placeholder=""
             autocomplete="off"
             addon-after="ETH"
-            v-decorator="['minFundRaising', positiveIntegerConfig]"
+            :min="0"
+            v-model="disco.minFundRaising"
             :disabled="createFundFaisingContractSucceed"
           />
-        </a-form-item>
-        <a-form-item>
-          <template v-slot:label>
-            <p class="label">Add Liquidity Pool</p>
-          </template>
-          <a-input
+        </a-form-model-item>
+        <a-form-model-item label="Add Liquidity Pool" prop="addLiquidityPool">
+          <a-input-number
             class="input number-input"
             placeholder=""
             autocomplete="off"
             addon-after="%"
-            v-decorator="['addLiquidityPool', number0to100Config]"
+            :min="0"
+            v-model="disco.addLiquidityPool"
             @change="updateTotalDepositToken"
             :disabled="createFundFaisingContractSucceed"
           />
-        </a-form-item>
-        <a-form-item>
-          <template v-slot:label>
-            <p class="label">Total Deposit Token</p>
-          </template>
-          <a-input
-            :value="totalDepositToken"
+        </a-form-model-item>
+        <a-form-model-item label="Total Deposit Token" prop="totalDepositToken">
+          <a-input-number
+            :value="disco.totalDepositToken"
             class="input number-input"
             placeholder=""
             autocomplete="off"
             addon-after="Token"
             disabled
           />
-        </a-form-item>
-        <a-form-item>
+        </a-form-model-item>
+        <a-form-model-item>
           <a-button
             v-if="!createFundFaisingContractSucceed"
             type="primary"
@@ -183,10 +158,12 @@
               <span style="font-weight:bold;">Balance: </span>
               <span>0.56 ETH + 3000000 Token</span>
             </div>
-            <div class="recreate-btn" @click="recreateBtnOnClick">Recreate contract</div>
+            <a-button type="link" class="recreate-btn" html-type="submit"
+              >Recreate contract</a-button
+            >
           </div>
-        </a-form-item>
-      </a-form>
+        </a-form-model-item>
+      </a-form-model>
     </div>
   </div>
 </template>
@@ -196,8 +173,14 @@ import moment from 'moment';
 import services from '@/services';
 import { mapGetters } from 'vuex';
 import { DiscoTranscation } from '@/utils/contract/disco';
+import BbsInput from '@/components/form/BbsInput';
+import { merge } from '@/utils/utils';
+import { validateAddress, urlValidator } from '@/utils/validators';
 
 export default {
+  components: {
+    BbsInput
+  },
   computed: {
     ...mapGetters(['categories', 'account', 'netWorkName']),
     tokenAddr() {
@@ -210,7 +193,17 @@ export default {
   },
   data() {
     return {
-      disco: null,
+      disco: {
+        txid: '',
+        walletAddr: '',
+        description: '',
+        fundRaisingTime: [null, null],
+        investmentReward: '',
+        rewardDeclineRate: '',
+        shareToken: '',
+        minFundRaising: '',
+        addLiquidityPool: ''
+      },
       // 是否是重建合约
       isRecreate: false,
       discoId: '',
@@ -221,61 +214,15 @@ export default {
       fundraisingSuccess: false,
       loading: false,
       totalDepositToken: '',
-      walletAddrConfig: {
-        trigger: 'blur',
-        rules: [
-          {
-            required: true,
-            pattern: /^0[xX]([a-z]|[A-Z]|[0-9]){40}$/,
-            message:
-              'Please input the correct address(40 chareacters starting with 0X including letters and numbers)'
-          }
-        ]
-      },
-      descriptionConfig: {
-        trigger: 'blur',
-        rules: [
-          {
-            required: true,
-            pattern: /^(http|https):\/\//,
-            message: 'Please input correct description url'
-          }
-        ]
-      },
-      rangeConfig: {
-        rules: [{ type: 'array', required: true, message: 'Please select time!' }]
-      },
-      investmentRewardConfig: {
-        trigger: 'change',
-        rules: [
-          {
-            required: true,
-            pattern: /^[1-9]\d*\.?\d*$|^0\.\d*$/,
-            message: 'Please input the correct number'
-          }
-        ]
-      },
-      // 0 - 100的验证
-      number0to100Config: {
-        trigger: 'change',
-        rules: [
-          {
-            required: true,
-            pattern: /^[1-9]\d?\.\d*$|^[1-9]\d?$|^100$|^0$|^0\.\d*$/,
-            message: 'Please enter a number not less than 0 and not more than 100'
-          }
-        ]
-      },
-      // 正整数验证
-      positiveIntegerConfig: {
-        trigger: 'change',
-        rules: [
-          {
-            required: true,
-            pattern: /^[1-9]\d*$/,
-            message: 'Please enter a positive integer greater than 0'
-          }
-        ]
+      rules: {
+        walletAddr: [{ required: true, validator: validateAddress }],
+        description: [{ required: true, validator: urlValidator }],
+        fundRaisingTime: [{ type: 'array', required: true, message: 'Please select time!' }],
+        investmentReward: [{ required: true }],
+        rewardDeclineRate: [{ required: true }],
+        shareToken: [{ required: true }],
+        minFundRaising: [{ required: true }],
+        addLiquidityPool: [{ required: true }]
       }
     };
   },
@@ -290,14 +237,10 @@ export default {
       type: Number
     }
   },
-  beforeCreate() {
-    this.form = this.$form.createForm(this, {});
-  },
   mounted() {
     this.discoInstance = DiscoTranscation.getInstance();
-    // 当募资合约生成成功后才获取disco
-    if (this.discoState === 1) {
-      // 获取disco
+    // 获取disco
+    if (this.$route.query.mode !== 'create') {
       this.getDisco();
     }
   },
@@ -308,10 +251,9 @@ export default {
         startupId: this.startup.id
       });
       if (!error) {
-        this.disco = data;
         this.totalDepositToken = data.totalDepositToken;
         this.discoId = data.id;
-        this.form.setFieldsValue({
+        merge(this.disco, {
           walletAddr: data.walletAddr,
           description: data.description,
           fundRaisingTime: [moment(data.fundRaisingStartedAt), moment(data.fundRaisingEndedAt)],
@@ -338,29 +280,21 @@ export default {
      * @return {*}
      */
     createBtnOnClick(e) {
-      e.preventDefault();
-      this.form.validateFields((err, values) => {
-        values.investmentReward = +values.investmentReward;
-        values.shareToken = +values.shareToken;
-        values.rewardDeclineRate = +values.rewardDeclineRate;
-        values.minFundRaising = +values.minFundRaising;
-        values.addLiquidityPool = +values.addLiquidityPool;
-
-        const params = {
-          ...values,
-          fundRaisingStartedAt: values.fundRaisingTime[0]
-            .utc()
-            .startOf('day')
-            .format(),
-          fundRaisingEndedAt: values.fundRaisingTime[1]
-            .utc()
-            .endOf('day')
-            .format(),
-          tokenAddr: this.tokenAddr,
-          totalDepositToken: +this.totalDepositToken
-        };
-        this.$delete(params, 'fundRaisingTime');
-        if (!err) {
+      this.$refs.form.vaidate(valid => {
+        if (valid) {
+          // values.investmentReward = +values.investmentReward;
+          // values.shareToken = +values.shareToken;
+          // values.rewardDeclineRate = +values.rewardDeclineRate;
+          // values.minFundRaising = +values.minFundRaising;
+          // values.addLiquidityPool = +values.addLiquidityPool;
+          const params = {
+            ...this.disco,
+            fundRaisingStartedAt: this.disco.fundRaisingTime[0].utc().format(),
+            fundRaisingEndedAt: this.disco.fundRaisingTime[1].utc().format(),
+            tokenAddr: this.tokenAddr,
+            totalDepositToken: +this.totalDepositToken
+          };
+          delete params.fundRaisingTime;
           this.createDISCO(params);
         }
       });
@@ -419,12 +353,11 @@ export default {
 
     updateTotalDepositToken() {
       this.$nextTick(() => {
-        let values = this.form.getFieldsValue();
-        let { shareToken, investmentReward, addLiquidityPool } = values;
+        let { shareToken, investmentReward, addLiquidityPool } = this.disco;
         console.log(shareToken, investmentReward, addLiquidityPool);
-        shareToken = Number(shareToken);
-        investmentReward = Number(investmentReward);
-        addLiquidityPool = Number(addLiquidityPool);
+        // shareToken = Number(shareToken);
+        // investmentReward = Number(investmentReward);
+        // addLiquidityPool = Number(addLiquidityPool);
         if (!isNaN(shareToken) && !isNaN(investmentReward) && !isNaN(addLiquidityPool)) {
           this.totalDepositToken = (
             shareToken *
@@ -448,7 +381,7 @@ export default {
     // 重新创建合约按钮被点击
     recreateBtnOnClick() {
       this.isRecreate = true;
-      this.form.resetFields();
+      this.$refs.form.resetFields();
       this.totalDepositToken = '';
     }
   }
@@ -490,12 +423,8 @@ export default {
       font-size: 16px;
     }
     .number-input {
-      max-width: 400px;
-      & /deep/ .ant-input-group-addon {
-        height: 54px;
-        width: 152px;
-      }
-      & /deep/ .ant-input {
+      width: 400px;
+      /deep/ .ant-input-number-input {
         height: 54px;
       }
     }
@@ -529,13 +458,6 @@ export default {
     justify-content: space-between;
     color: #bfbfbf;
     margin-top: 8px;
-    .recreate-btn {
-      cursor: pointer;
-      color: #5e70ff;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
   }
 }
 </style>
