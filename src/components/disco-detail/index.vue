@@ -192,11 +192,7 @@ export default {
   render(h) {
     switch (this.status) {
       case null:
-        return (
-          <div class="flex ai-center jc-center py-32">
-            <a-spin />
-          </div>
-        );
+        return <loading />;
       case -1:
         return (
           <div class="not-enabled flex ai-center jc-center">
