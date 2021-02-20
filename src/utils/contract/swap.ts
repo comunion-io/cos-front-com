@@ -4,7 +4,8 @@
  * @Descripttion : ether 与 token 互换， 交易流动性的增加删除
  * @FilePath     : \cos-front-com\src\utils\contract\swap.ts
  */
-import { COMUNION_RECEIVER_SWAP_ACCOUNT, web3 } from '@/libs/web3';
+import { COMUNION_RECEIVER_SWAP_ACCOUNT } from '@/configs/app';
+import { web3 } from '@/libs/web3';
 import axios from 'axios';
 
 /**

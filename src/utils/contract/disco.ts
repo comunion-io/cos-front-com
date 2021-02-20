@@ -4,7 +4,8 @@
  * @Description: disco 上链的函数， 包括disco 合约的创建， 发起上链
  * @FilePath     : \cos-front-com\src\utils\contract\disco.ts
  */
-import { COMUNION_RECEIVER_DOISCO_ACCOUNT, web3 } from '@/libs/web3';
+import { COMUNION_RECEIVER_DOISCO_ACCOUNT } from '@/configs/app';
+import { web3 } from '@/libs/web3';
 import axios from 'axios';
 
 /**
