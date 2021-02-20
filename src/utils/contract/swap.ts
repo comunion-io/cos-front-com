@@ -104,42 +104,13 @@ export class SwapTranscation {
    * @param {*}
    * @return {*}
    */
-  async swapExactTokensForETH(
-    params: ISwap,
-    swapExactTokensForETHCallback: (ether: number) => void
-  ) {
+  async swapExactTokensForETH(params: ISwap) {
     if (this.contractInstance) {
       const { amount: amountIn, amountOutMin, path, to: account, deadline } = params;
-      const res = await this.contractInstance.methods.swapExactTokensForETH(
-        amountIn,
-        amountOutMin,
-        path,
-        account,
-        deadline
-      );
-      if (res) {
-        // 上链 设置 用户的 account
-        const result = await Promise.all([
-          res.encodeABI(),
-          web3.eth.getTransactionCount(account, 'pending'),
-          web3.eth.getChainId()
-        ]);
-
-        const tx = {
-          from: account,
-          to: COMUNION_RECEIVER_SWAP_ACCOUNT,
-          data: result[0],
-          value: web3.utils.numberToHex(0),
-          nonce: web3.utils.numberToHex(result[1]),
-          gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
-          gasLimit: web3.utils.numberToHex(183943),
-          chainId: result[2]
-        };
-
-        const value = await res.send(tx);
-      }
-
-      // swapExactTokensForETHCallback(data[0]);
+      const res = await this.contractInstance.methods
+        .swapExactTokensForETH(amountIn, amountOutMin, path, account, deadline)
+        .call();
+      return res;
     }
   }
 

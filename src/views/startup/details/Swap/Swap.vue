@@ -15,7 +15,7 @@
         <div class="body">
           <div class="name">ETH</div>
           <div class="input-wrap">
-            <input class="input" v-model="token" @change="changedToken($event)" type="text" />
+            <input class="input" v-model="token" @change="changedToken()" type="text" />
           </div>
         </div>
       </div>
@@ -85,9 +85,10 @@ export default {
      * @param {*} value
      * @return {*}
      */
-    changedToken(value) {
+    async changedToken() {
       const params = this.getParams(0, true, true, this.token);
-      this.swapInstance.swapExactTokensForETH(params, this.swapExactTokensForETHCallback);
+      const res = await this.swapInstance.swapExactTokensForETH(params);
+      this.swapExactTokensForETHCallback(res);
     },
 
     /**
