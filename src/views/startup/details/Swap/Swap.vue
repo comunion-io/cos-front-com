@@ -86,16 +86,16 @@ export default {
      * @return {*}
      */
     async changedToken() {
-      const params = this.getParams(0, true, true, this.token);
+      const params = this.getParams(true, true, this.token);
       const res = await this.swapInstance.swapExactTokensForETH(params);
-      this.swapExactTokensForETHCallback(res);
+      [this.token, this.ether] = res;
     },
 
     /**
      * @name: Zehui
      * @description 获取交易的参数
-     * @param deadline 过期时间
-     * @param isTokenToEther 是否是token兑换ether
+     * @param isTokenToEther 是否是 token 兑换ether
+     * @param value 兑换的值
      * @param isMock 是否是真实交易
      * @return {*}
      */
@@ -116,33 +116,14 @@ export default {
 
     /**
      * @name: Zehui
-     * @description token 兑换ether后的回调
-     * @param {*} ether
-     * @return {*}
-     */
-    swapExactTokensForETHCallback(ether) {
-      this.ether = ether;
-    },
-
-    /**
-     * @name: Zehui
-     * @description ether 兑换 token后的回调
-     * @param {*} ether
-     * @return {*}
-     */
-    swapExactEthForTokensCallback(token) {
-      this.token = token;
-    },
-
-    /**
-     * @name: Zehui
      * @description ether 兑换 tokens
      * @param {*} value
      * @return {*}
      */
-    changedEther(value) {
+    async changedEther() {
       const params = this.getParams(false, true, this.ether);
-      this.swapInstance.swapExactETHForTokens(params, this.swapExactEthForTokensCallback);
+      const res = await this.swapInstance.swapExactETHForTokens(params);
+      [this.ether, this.token] = res;
     },
 
     /**
@@ -151,9 +132,12 @@ export default {
      * @param {*}
      * @return {*}
      */
-    swap() {
+    async swap() {
+      // TODO @xiaodong 当前前端界面支持 ether 兑换 token
       const params = this.getParams(false, false, this.ether);
-      this.swapInstance.swapExactETHForTokens(params, this.swapCallBack);
+      const res = await this.swapInstance.swapExactETHForTokens(params);
+      [this.token, this.ether] = res;
+      this.swapCallBack();
     },
 
     /**
@@ -162,11 +146,11 @@ export default {
      * @param {*} txid
      * @return {*}
      */
-    async swapCallBack(txid) {
+    async swapCallBack() {
       if (this.exchangeId) {
         const params = {
           exchangeId: this.exchangeId,
-          txid,
+          // txid,
           type: 3,
           account: this.account,
           tokenAmount1: this.token,

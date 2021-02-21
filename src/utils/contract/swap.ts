@@ -20,7 +20,8 @@ export interface ISwap {
   /** 用户希望兑换的最小值， 当前是0 */
   amountOutMin: number;
   /**
-   *  地址数组， 两个值， 第一个是token（ether） 的发布地址，
+   *  地址数组， 两个值，
+   *  第一个是token（ether） 的发布地址，
    *  第二个是ethet(token) 的募资地址（disco 上链成功后的募资地址）
    */
   path: string[];
@@ -120,48 +121,12 @@ export class SwapTranscation {
    * @param {*}
    * @return {*}
    */
-  async swapExactETHForTokens(
-    params: ISwap,
-    swapExactEthForTokensCallback: (ether: number) => void
-  ) {
+  async swapExactETHForTokens(params: ISwap) {
     const { amount: amountOut, amountOutMin, path, to: account, deadline } = params;
-    const data = await this.contractInstance.methods.swapExactETHForTokens(
-      amountOutMin,
-      // path,
-      ['0xa74433ad2bafe833ea9620e5ab1f0a1bf7d13344', '0x2872EDbd154ADf0FDc8bA6CD2f87427AaD093C43'],
-      account,
-      deadline
-    );
-
-    if (data) {
-      // 上链 设置 用户的 account
-      const result = await Promise.all([
-        data.encodeABI(),
-        web3.eth.getTransactionCount(account, 'pending'),
-        web3.eth.getChainId()
-      ]);
-
-      const tx = {
-        from: account,
-        to: COMUNION_RECEIVER_SWAP_ACCOUNT,
-        data: result[0],
-        value: web3.utils.numberToHex(0),
-        nonce: web3.utils.numberToHex(result[1]),
-        gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
-        gasLimit: web3.utils.numberToHex(183943),
-        chainId: result[2]
-      };
-
-      const value = await data.send(tx);
-    }
-
-    const isMock = deadline === 0;
-    if (isMock) {
-      swapExactEthForTokensCallback(data[0]);
-    } else {
-      const { txid } = data;
-      swapExactEthForTokensCallback(txid);
-    }
+    const res = await this.contractInstance.methods
+      .swapExactETHForTokens(amountOutMin, path, account, deadline)
+      .call();
+    return res;
   }
 
   /**
@@ -169,9 +134,8 @@ export class SwapTranscation {
    * @author Ze Hui
    * @date 02/02/2021
    * @param params
-   * @param addLiquidityCallback 增加流动性后的回调
    */
-  async addLiquidity(params: IFundsPool, addLiquidityCallback: Function) {
+  async addLiquidity(params: IFundsPool) {
     const {
       tokenA,
       tokenB,
@@ -182,38 +146,19 @@ export class SwapTranscation {
       to,
       deadline
     } = params;
-    const data = await this.contractInstance.methods.addLiquidity(
-      tokenA,
-      tokenB,
-      amountADesired,
-      amountBDesired,
-      amountAMin,
-      amountBMin,
-      to,
-      deadline
-    );
-    if (data) {
-      // 上链 设置 用户的 account
-      const result = await Promise.all([
-        data.encodeABI(),
-        web3.eth.getTransactionCount(to, 'pending'),
-        web3.eth.getChainId()
-      ]);
-
-      const tx = {
-        from: to,
-        to: COMUNION_RECEIVER_SWAP_ACCOUNT,
-        data: result[0],
-        value: web3.utils.numberToHex(0),
-        nonce: web3.utils.numberToHex(result[1]),
-        gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
-        gasLimit: web3.utils.numberToHex(183943),
-        chainId: result[2]
-      };
-
-      const value = await data.send(tx);
-      addLiquidityCallback(value);
-    }
+    const data = await this.contractInstance.methods
+      .addLiquidity(
+        tokenA,
+        tokenB,
+        amountADesired,
+        amountBDesired,
+        amountAMin,
+        amountBMin,
+        to,
+        deadline
+      )
+      .call();
+    return data;
   }
 
   /**
@@ -221,9 +166,8 @@ export class SwapTranscation {
    * @author Ze Hui
    * @date 02/02/2021
    * @param params
-   * @param deleteLiquidityCallback  删除流动性后的回调
    */
-  async deleteLiquidity(params: IFundsPool, deleteLiquidityCallback: Function) {
+  async removeLiquidity(params: IFundsPool) {
     const {
       tokenA,
       tokenB,
@@ -234,37 +178,18 @@ export class SwapTranscation {
       to,
       deadline
     } = params;
-    const data = await this.contractInstance.methods.removeLiquidity(
-      tokenA,
-      tokenB,
-      amountADesired,
-      amountBDesired,
-      amountAMin,
-      amountBMin,
-      to,
-      deadline
-    );
-    if (data) {
-      // 上链 设置 用户的 account
-      const result = await Promise.all([
-        data.encodeABI(),
-        web3.eth.getTransactionCount(to, 'pending'),
-        web3.eth.getChainId()
-      ]);
-
-      const tx = {
-        from: to,
-        to: COMUNION_RECEIVER_SWAP_ACCOUNT,
-        data: result[0],
-        value: web3.utils.numberToHex(0),
-        nonce: web3.utils.numberToHex(result[1]),
-        gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
-        gasLimit: web3.utils.numberToHex(183943),
-        chainId: result[2]
-      };
-
-      const value = await data.send(tx);
-      deleteLiquidityCallback(value);
-    }
+    const res = await this.contractInstance.methods
+      .removeLiquidity(
+        tokenA,
+        tokenB,
+        amountADesired,
+        amountBDesired,
+        amountAMin,
+        amountBMin,
+        to,
+        deadline
+      )
+      .call();
+    return res;
   }
 }

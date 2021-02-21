@@ -85,7 +85,7 @@
         <p class="text">exchange rate: --</p>
         <p class="text">The current size of the pool of funds: --</p>
         <p class="text">Your fund pool share(%): --</p>
-        <a-button class="btn" @click="deleteLiquidity" type="primary">
+        <a-button class="btn" @click="removeLiquidity" type="primary">
           Delete - Liquidity
         </a-button>
       </template>
@@ -152,7 +152,8 @@ export default {
         to: this.account,
         deadline: 20 * 60 * 60
       };
-      this.swapInstance.addLiquidity(params, this.addLiquidityCallBack);
+      await this.swapInstance.addLiquidity(params);
+      this.addLiquidityCallBack();
     },
 
     /**
@@ -161,10 +162,10 @@ export default {
      * @param {txid} 上链后的交易hash
      * @return {*}
      */
-    async addLiquidityCallBack(txid) {
+    async addLiquidityCallBack() {
       if (this.exchangeId) {
         const params = {
-          txid,
+          // txid,
           exchangeId: this.exchangeId,
           account: this.account,
           type: 1,
@@ -184,7 +185,7 @@ export default {
      * @param {*}
      * @return {*}
      */
-    async deleteLiquidity() {
+    async removeLiquidity() {
       const params = {
         tokenA: this.fundRaisingContractAddr,
         tokenB: this.tokenAddr,
@@ -195,7 +196,8 @@ export default {
         to: this.account,
         deadline: 20 * 60 * 60
       };
-      this.swapInstance.deleteLiquidity(params, this.deleteLiquidityCallBack);
+      this.swapInstance.removeLiquidity(params);
+      this.removeLiquidityCallBack();
     },
 
     /**
@@ -204,9 +206,9 @@ export default {
      * @param {txid} 上链后的交易hash
      * @return {*}
      */
-    async deleteLiquidityCallBack(txid) {
+    async removeLiquidityCallBack() {
       const params = {
-        txid,
+        // txid,
         account: this.account,
         type: 2,
         exchangeId: this.exchangeId,
