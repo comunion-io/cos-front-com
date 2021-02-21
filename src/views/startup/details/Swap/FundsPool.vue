@@ -39,7 +39,7 @@
               <span class="balance">Balance 1000ETH</span>
             </div>
             <div class="body">
-              <div class="name">ETH</div>
+              <div class="name">Token</div>
               <div class="input-wrap">
                 <input class="input" v-model="addedToken" type="text" />
               </div>
@@ -85,7 +85,7 @@
         <p class="text">exchange rate: --</p>
         <p class="text">The current size of the pool of funds: --</p>
         <p class="text">Your fund pool share(%): --</p>
-        <a-button class="btn" @click="deleteLiquidity" type="primary">
+        <a-button class="btn" @click="removeLiquidity" type="primary">
           Delete - Liquidity
         </a-button>
       </template>
@@ -96,6 +96,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import services from '@/services';
+import { SwapTranscation } from '@/utils/contract/swap';
 
 export default {
   computed: {
@@ -109,6 +110,9 @@ export default {
       }
     }
   },
+  mounted() {
+    this.swapInstance = SwapTranscation.getInstance();
+  },
   data() {
     return {
       tabs: ['Add Liquidity', 'Delete Liquidity'],
@@ -120,7 +124,11 @@ export default {
       /** 删除流动性的ether */
       deleteEther: 0,
       /** 删除流动性的token */
-      deleteToken: 0
+      deleteToken: 0,
+      /** token 的发布地址 */
+      tokenAddr: '',
+      /** 交易池募资地址 */
+      fundRaisingContractAddr: ''
     };
   },
   methods: {
@@ -134,9 +142,18 @@ export default {
      * @return {*}
      */
     async addLiquidity() {
-      // TODO 上链后，返回txid
-      const txid = '0x123456987';
-      await this.addLiquidityCallBack(txid);
+      const params = {
+        tokenA: this.fundRaisingContractAddr,
+        tokenB: this.tokenAddr,
+        amountADesired: this.addedEther,
+        amountBDesired: this.addedToken,
+        amountAMin: 0,
+        amountBMin: 0,
+        to: this.account,
+        deadline: 20 * 60 * 60
+      };
+      await this.swapInstance.addLiquidity(params);
+      this.addLiquidityCallBack();
     },
 
     /**
@@ -145,10 +162,10 @@ export default {
      * @param {txid} 上链后的交易hash
      * @return {*}
      */
-    async addLiquidityCallBack(txid) {
+    async addLiquidityCallBack() {
       if (this.exchangeId) {
         const params = {
-          txid,
+          // txid,
           exchangeId: this.exchangeId,
           account: this.account,
           type: 1,
@@ -168,10 +185,19 @@ export default {
      * @param {*}
      * @return {*}
      */
-    async deleteLiquidity() {
-      // TODO 上链后，返回txid
-      const txid = '0x123456987';
-      await this.deleteLiquidityCallBack(txid);
+    async removeLiquidity() {
+      const params = {
+        tokenA: this.fundRaisingContractAddr,
+        tokenB: this.tokenAddr,
+        amountADesired: this.deleteEther,
+        amountBDesired: this.deleteToken,
+        amountAMin: 0,
+        amountBMin: 0,
+        to: this.account,
+        deadline: 20 * 60 * 60
+      };
+      this.swapInstance.removeLiquidity(params);
+      this.removeLiquidityCallBack();
     },
 
     /**
@@ -180,9 +206,9 @@ export default {
      * @param {txid} 上链后的交易hash
      * @return {*}
      */
-    async deleteLiquidityCallBack(txid) {
+    async removeLiquidityCallBack() {
       const params = {
-        txid,
+        // txid,
         account: this.account,
         type: 2,
         exchangeId: this.exchangeId,

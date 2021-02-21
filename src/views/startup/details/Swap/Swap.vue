@@ -15,7 +15,7 @@
         <div class="body">
           <div class="name">ETH</div>
           <div class="input-wrap">
-            <input class="input" v-model="token" @change="changedToken($event)" type="text" />
+            <input class="input" v-model="token" @change="changedToken()" type="text" />
           </div>
         </div>
       </div>
@@ -81,24 +81,25 @@ export default {
   methods: {
     /**
      * @name: Zehui
-     * @description token 兑换ether
+     * @description token 兑换 ether
      * @param {*} value
      * @return {*}
      */
-    changedToken(value) {
-      const params = this.getParams(0, true, true, this.token);
-      this.swapInstance.swapExactTokensForETH(params, this.swapExactTokensForETHCallback);
+    async changedToken() {
+      const params = this.getParams(true, true, this.token);
+      const res = await this.swapInstance.swapExactTokensForETH(params);
+      [this.token, this.ether] = res;
     },
 
     /**
      * @name: Zehui
      * @description 获取交易的参数
-     * @param deadline 过期时间
-     * @param isTokenToEther 是否是token兑换ether
+     * @param isTokenToEther 是否是 token 兑换ether
+     * @param value 兑换的值
      * @param isMock 是否是真实交易
      * @return {*}
      */
-    getParams(deadline, isTokenToEther, isMock, value) {
+    getParams(isTokenToEther, isMock, value) {
       const path = isTokenToEther
         ? [this.tokenAddr, this.fundRaisingContractAddr]
         : [this.fundRaisingContractAddr, this.tokenAddr];
@@ -115,33 +116,14 @@ export default {
 
     /**
      * @name: Zehui
-     * @description token 兑换ether后的回调
-     * @param {*} ether
-     * @return {*}
-     */
-    swapExactTokensForETHCallback(ether) {
-      this.ether = ether;
-    },
-
-    /**
-     * @name: Zehui
-     * @description ether 兑换 token后的回调
-     * @param {*} ether
-     * @return {*}
-     */
-    swapExactEthForTokensCallback(token) {
-      this.token = token;
-    },
-
-    /**
-     * @name: Zehui
      * @description ether 兑换 tokens
      * @param {*} value
      * @return {*}
      */
-    changedEther(value) {
-      const params = this.getParams(0, false, true, this.ether);
-      this.swapInstance.swapExactETHForTokens(params, this.swapExactEthForTokensCallback);
+    async changedEther() {
+      const params = this.getParams(false, true, this.ether);
+      const res = await this.swapInstance.swapExactETHForTokens(params);
+      [this.ether, this.token] = res;
     },
 
     /**
@@ -150,9 +132,12 @@ export default {
      * @param {*}
      * @return {*}
      */
-    swap() {
-      const params = this.getParams(0, false, false, this.ether);
-      this.swapInstance.swapExactETHForTokens(params, this.swapCallBack);
+    async swap() {
+      // TODO @xiaodong 当前前端界面支持 ether 兑换 token
+      const params = this.getParams(false, false, this.ether);
+      const res = await this.swapInstance.swapExactETHForTokens(params);
+      [this.token, this.ether] = res;
+      this.swapCallBack();
     },
 
     /**
@@ -161,11 +146,11 @@ export default {
      * @param {*} txid
      * @return {*}
      */
-    async swapCallBack(txid) {
+    async swapCallBack() {
       if (this.exchangeId) {
         const params = {
           exchangeId: this.exchangeId,
-          txid,
+          // txid,
           type: 3,
           account: this.account,
           tokenAmount1: this.token,
