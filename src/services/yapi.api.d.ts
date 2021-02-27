@@ -204,6 +204,10 @@ export interface ServiceRequestAndResponseMap {
       addLiquidityPool: number
       totalDepositToken: number
       txId: string
+      /**
+       * @description 非必须， 由后端接收到创建disco成功后的事件时更新
+       */
+      fundRaisingAddr: string
     }
     response: {}
   }
@@ -518,7 +522,7 @@ export interface ServiceRequestAndResponseMap {
        */
       sender: string
       /**
-       * @description 接收钱包地址
+       * @description 接收钱包地址，除增加流动性外必需
        */
       to?: string
       /**
@@ -739,7 +743,7 @@ export interface ServiceRequestAndResponseMap {
       }
     }
   }
-  'cores@swap-pair-created交易对创建事件': {
+  'cores@swap-pairCreated交易对创建事件': {
     params: {}
     query: {}
     body: {
@@ -789,11 +793,128 @@ export interface ServiceRequestAndResponseMap {
       /**
        * @description token1数量
        */
-      amount0: number
+      amount0: string
       /**
        * @description token2数量，通常是eth
        */
-      amount1: number
+      amount1: string
+      /**
+       * @description 发生时间，yyyy-mm-dd hh24:mi:ss
+       */
+      occuredAt: string
+    }
+    response: {
+      /**
+       * @description exchange_transaction_id
+       */
+      id: string
+      /**
+       * @description 0 待确认，1 已完成，2 未完成
+       */
+      status: number
+    }
+  }
+  'cores@swap-burn删除流动性事件': {
+    params: {}
+    query: {}
+    body: {
+      txId: string
+      startupId: string
+      /**
+       * @description 发送钱包地址
+       */
+      sender: string
+      /**
+       * @description token1数量
+       */
+      amount0: string
+      /**
+       * @description token2数量，通常是eth
+       */
+      amount1: string
+      /**
+       * @description 接收钱包地址
+       */
+      to: string
+      /**
+       * @description 发生时间，yyyy-mm-dd hh24:mi:ss
+       */
+      occuredAt: string
+    }
+    response: {
+      /**
+       * @description exchange_transaction_id
+       */
+      id: string
+      /**
+       * @description 0 待确认，1 已完成，2 未完成
+       */
+      status: number
+    }
+  }
+  'cores@swap-swap兑换事件': {
+    params: {}
+    query: {}
+    body: {
+      txId: string
+      startupId: string
+      /**
+       * @description 发送钱包地址
+       */
+      sender: string
+      /**
+       * @description token1换入数量，"0"表示无
+       */
+      amount0In: string
+      /**
+       * @description token2换入数量，通常是eth，"0"表示无
+       */
+      amount1In: string
+      /**
+       * @description token1换出数量，"0"表示无
+       */
+      amount0Out: string
+      /**
+       * @description token2换出数量，通常是eth，"0"表示无
+       */
+      amount1Out: string
+      /**
+       * @description 接收钱包地址
+       */
+      to: string
+      /**
+       * @description 发生时间，yyyy-mm-dd hh24:mi:ss
+       */
+      occuredAt: string
+    }
+    response: {
+      /**
+       * @description exchange_transaction_id
+       */
+      id: string
+      /**
+       * @description 0 待确认，1 已完成，2 未完成
+       */
+      status: number
+    }
+  }
+  'cores@swap-sync同步事件': {
+    params: {}
+    query: {}
+    body: {
+      startupId: string
+      /**
+       * @description token1余额数量
+       */
+      reserve0: string
+      /**
+       * @description token2余额数量，通常是eth
+       */
+      reserve1: string
+      /**
+       * @description 发生时间，yyyy-mm-dd hh24:mi:ss
+       */
+      occuredAt: string
     }
     response: {
       /**

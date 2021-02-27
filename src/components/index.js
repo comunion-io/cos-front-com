@@ -7,7 +7,8 @@ const components = {
   ComPagination: () => import('./list/Pagination'),
   Creating: () => import('./setup/Creating'),
   Success: () => import('./setup/Success.vue'),
-  CopyableAddress: () => import('./helper/CopyableAddress')
+  CopyableAddress: () => import('./helper/CopyableAddress'),
+  Loading: () => import('./loading')
 };
 
 Object.keys(components).forEach(key => {

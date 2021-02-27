@@ -1,10 +1,13 @@
 <template>
   <div class="disco-swap">
-    <router-view v-if="$route.matched.length > 3" :startup="startup" />
+    <router-view v-if="$route.matched.length > 3" :id="id" :startup="startup" />
 
     <template v-else>
-      <MyCard :status="status" type="disco" @onClick="discoOnClick" />
-      <MyCard :status="status" type="exchange" @onClick="exchangeOnClick" />
+      <loading v-if="!ready" />
+      <template v-else>
+        <MyCard :status="status" type="disco" @onClick="discoOnClick" />
+        <MyCard :status="status" type="exchange" @onClick="exchangeOnClick" />
+      </template>
     </template>
     <!-- 第一次进入 -->
     <!-- <MyCard status="0" type="disco" />
@@ -58,10 +61,12 @@ export default {
   data() {
     return {
       // 自定义的DISCO&Swap的状态指
-      status: '0'
+      status: '0',
+      ready: false
     };
   },
   props: {
+    id: String,
     startup: {
       type: Object,
       default: () => ({})
@@ -70,21 +75,18 @@ export default {
   components: {
     MyCard
   },
-  mounted() {
+  async mounted() {
     // 获取DISCO&Swap状态
-    this.getDiscoSwapState();
+    let { error, data } = await services['cores@startup-disco和swap状态']({
+      startupId: this.startup.id
+    });
+    if (!error) {
+      const { discoState, swapState } = data;
+      this.updateStatus(discoState, swapState);
+    }
+    this.ready = true;
   },
   methods: {
-    // 获取disco swap状态
-    async getDiscoSwapState() {
-      let { error, data } = await services['cores@startup-disco和swap状态']({
-        startupId: this.startup.id
-      });
-      if (!error) {
-        const { discoState, swapState } = data;
-        this.updateStatus(discoState, swapState);
-      }
-    },
     // 更新status的值
     updateStatus(discoState, swapState) {
       // let status = '0';
