@@ -213,8 +213,9 @@ export default {
       disco: null,
       // 是否是重建合约
       isRecreate: false,
+      discoId: '',
       // TODO
-      /** txid 上链后的合约地址 */
+      /** txid 上链后的合约hash */
       txid: '',
       /** 募资成功的状态 */
       fundraisingSuccess: false,
@@ -303,6 +304,7 @@ export default {
       if (!error) {
         this.disco = data;
         this.totalDepositToken = data.totalDepositToken;
+        this.discoId = data.id;
         this.form.setFieldsValue({
           walletAddr: data.walletAddr,
           description: data.description,
@@ -410,7 +412,7 @@ export default {
      * @return {*}
      */
     enablDisco() {
-      this.discoInstance.enableDisco(this.id, this.account);
+      this.discoInstance.enableDisco(this.discoId, this.account);
     },
 
     // 重新创建合约按钮被点击
