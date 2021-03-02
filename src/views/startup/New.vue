@@ -311,9 +311,10 @@ export default {
       const { error, data } = await services['cores@startup-我的-获取']({
         startupId: this.$route.query.id
       });
-      const startup = error ? {} : data;
-      merge(this.form, startup);
-      this.form.categoryId = startup.category.id;
+      if (!error) {
+        merge(this.form, data);
+        this.form.categoryId = data.category.id;
+      }
     }
   }
 };
