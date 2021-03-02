@@ -214,7 +214,7 @@
 import { Slider } from 'ant-design-vue';
 import { positiveInteger, validateAddress } from '@/utils/validators';
 import mixins from '../../../startup/steps/mixins';
-import { getMyStartupDetail } from '@/services';
+import services from '@/services';
 
 export default {
   name: 'governance',
@@ -298,7 +298,8 @@ export default {
     }
   },
   async mounted() {
-    const startup = await getMyStartupDetail(this.id);
+    const { error, data } = await services['cores@startup-我的-获取']({ startupId: this.id });
+    const startup = error ? {} : data;
     const { settings } = startup;
     // 后端返回数据转化为前端格式
     const voteMinDurationDays = Math.floor(settings.voteMinDurationHours / 24);

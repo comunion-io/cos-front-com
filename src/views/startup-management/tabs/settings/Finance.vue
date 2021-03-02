@@ -113,7 +113,7 @@
 <script>
 import mixins from '../../../startup/steps/mixins';
 import { validateName, validateAddress } from '@/utils/validators';
-import { getMyStartupDetail } from '@/services';
+import services from '@/services';
 
 export default {
   mixins: [mixins],
@@ -165,7 +165,8 @@ export default {
     }
   },
   async mounted() {
-    const startup = await getMyStartupDetail(this.id);
+    const { error, data } = await services['cores@startup-我的-获取']({ startupId: this.id });
+    const startup = error ? {} : data;
     const { settings } = startup;
     const finance = {
       blockChainAddr: startup.transaction.blockAddr,

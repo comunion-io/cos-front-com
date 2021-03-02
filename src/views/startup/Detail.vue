@@ -1,7 +1,7 @@
 <script>
 import TabPerference from './details/Perference';
 import StartupInfo from './details/blocks/StartupInfo';
-import { getStartupDetail } from '@/services';
+import services from '@/services';
 export default {
   components: {
     TabPerference,
@@ -25,7 +25,10 @@ export default {
     // 获取startup详情数据
     async getStartupDetail() {
       this.loading = true;
-      this.startup = await getStartupDetail(this.$route.params.id);
+      const { error, data } = await services['cores@startup-获取']({
+        startupId: this.$route.params.id
+      });
+      this.startup = error ? {} : data;
       this.loading = false;
     }
   },

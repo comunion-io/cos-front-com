@@ -97,7 +97,7 @@
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
 import { mapGetters } from 'vuex';
-import { getMyStartupDetail } from '@/services/startup.services';
+import services from '@/services';
 import { merge } from '@/utils';
 
 export default {
@@ -133,7 +133,10 @@ export default {
   methods: {
     async getStartup() {
       try {
-        this.startup = await getMyStartupDetail(this.$route.params.id);
+        const { error, data } = await services['cores@startup-我的-获取']({
+          startupId: this.$route.params.id
+        });
+        this.startup = error ? {} : data;
         // this.patchValue();
         merge(this.form, this.startup);
         this.form.categoryId = this.startup.category.id;

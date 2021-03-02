@@ -60,7 +60,7 @@ import { settingAbi } from '@/libs/abis/setting';
 import { web3 } from '@/libs/web3';
 import { COMMUNION_SETTING_RECEIVE_ACCOUNT } from '@/configs/app';
 import { STARTUP_SETTING_STORE_KEY } from '@/configs/storage';
-import services, { getMyStartupDetail } from '@/services';
+import services from '@/services';
 import { merge } from '@/utils';
 import Finance from './steps/Finance';
 import Governance from './steps/Governance';
@@ -261,7 +261,10 @@ export default {
     if (settingState != null && settingState <= 1) {
       this.ready = true;
     } else {
-      const { settings } = await getMyStartupDetail(this.$route.params.id);
+      const { error, data } = await services['cores@startup-我的-获取']({
+        startupId: this.$route.params.id
+      });
+      const { settings } = error ? {} : data;
       this.ready = true;
       if (settings) {
         // 后端返回数据转化为前端格式
