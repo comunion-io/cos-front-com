@@ -192,9 +192,8 @@ export default {
           try {
             this.createState = 'creating';
             const { error, data } = await services['cores@startup-获取prepareid']();
-            const startupId = error ? {} : data;
-            if (startupId) {
-              const id = startupId.id;
+            if (!error) {
+              const id = data.id;
               this.ethSendTransaction(this.form, id);
             }
           } catch (e) {
@@ -276,13 +275,12 @@ export default {
           }
         } else {
           // 后端创建startup
-          const { error, data } = await services['cores@startup-创建']({
+          const { error } = await services['cores@startup-创建']({
             ...formData,
             txid,
             id: startupId
           });
-          const startUp = error ? {} : data;
-          if (startUp) {
+          if (!error) {
             this.createState = 'successed';
           }
         }
