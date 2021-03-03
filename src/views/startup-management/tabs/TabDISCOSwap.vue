@@ -75,18 +75,31 @@ export default {
   components: {
     MyCard
   },
+  watch: {
+    $route(newRoute) {
+      /** 判断是否刷新状态 */
+      if (newRoute.params.refreshState) {
+        this.getDiscoAndSwapStatus();
+      }
+    }
+  },
   async mounted() {
     // 获取DISCO&Swap状态
-    let { error, data } = await services['cores@startup-disco和swap状态']({
-      startupId: this.startup.id
-    });
-    if (!error) {
-      const { discoState, swapState } = data;
-      this.updateStatus(discoState, swapState);
-    }
-    this.ready = true;
+    this.getDiscoAndSwapStatus();
   },
   methods: {
+    // 获取DISCO和Swap的状态
+    async getDiscoAndSwapStatus() {
+      this.ready = false;
+      let { error, data } = await services['cores@startup-disco和swap状态']({
+        startupId: this.startup.id
+      });
+      if (!error) {
+        const { discoState, swapState } = data;
+        this.updateStatus(discoState, swapState);
+      }
+      this.ready = true;
+    },
     // 更新status的值
     updateStatus(discoState, swapState) {
       // let status = '0';
