@@ -37,6 +37,10 @@ export class DiscoTranscation {
   private id = '';
   private shadowWindow = window as any;
 
+  constructor() {
+    this.createContractInstance();
+  }
+
   static getInstance() {
     if (this.instance === undefined) {
       this.instance = new DiscoTranscation();
@@ -93,8 +97,7 @@ export class DiscoTranscation {
 
   async createContractInstance(contractAddr = COMUNION_RECEIVER_DOISCO_ACCOUNT) {
     const abi = await this.getAbi();
-    const contractInstance = new web3.eth.Contract(abi, contractAddr);
-    return contractInstance;
+    this.contractInstance = new web3.eth.Contract(abi, contractAddr);
   }
 
   /**
@@ -107,7 +110,6 @@ export class DiscoTranscation {
    */
   private async getDiscoContractInstance(disco: Disco, id: string, account: string) {
     this.id = id;
-    this.contractInstance = await this.createContractInstance();
     const coinBase = await this.contractInstance.methods.setCoinBase(account);
     await this.setCoinbase(coinBase, account);
 
@@ -201,7 +203,6 @@ export class DiscoTranscation {
 
       const tx = {
         from: account,
-        to: COMUNION_RECEIVER_DOISCO_ACCOUNT,
         data: blockParams[0],
         value: web3.utils.numberToHex(0),
         nonce: web3.utils.numberToHex(blockParams[1]),
@@ -220,7 +221,7 @@ export class DiscoTranscation {
    */
   public async invest(id: string, investAddress: string, account: string) {
     if (!this.contractInstance) {
-      this.contractInstance = await this.createContractInstance();
+      // this.contractInstance = await this.createContractInstance();
       const coinBase = await this.contractInstance.methods.setCoinBase(account);
       await this.setCoinbase(coinBase, account);
     }

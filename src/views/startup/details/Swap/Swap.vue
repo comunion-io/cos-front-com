@@ -10,27 +10,31 @@
       <div class="input-item">
         <div class="header">
           <span class="label">You Pay</span>
-          <span class="balance">Balance 1000ETH</span>
+          <span class="balance">Balance {{ payTokenBalance }} {{ payTokenSymbol }}</span>
         </div>
         <div class="body">
-          <div class="name">ETH</div>
+          <div class="name">{{ payTokenSymbol }}</div>
           <div class="input-wrap">
-            <input class="input" v-model="token" @change="changedToken()" type="text" />
+            <input class="input" v-model="payToken" @input="changedPayToken()" type="text" />
           </div>
         </div>
       </div>
       <div class="symbol">
-        <ExchangeSVG class="icon" />
+        <div @click="onReverse">
+          <ExchangeSVG class="icon" />
+        </div>
       </div>
-      <div class="input-item">
+      <div class="input-item input-item-disabled">
         <div class="header">
           <span class="label">You Receive</span>
-          <span class="balance">Price 10 UVU per ETH</span>
+          <span class="balance"
+            >Price {{ exchangeRatio }} {{ receiveTokenSymbol }} per {{ payTokenSymbol }}</span
+          >
         </div>
         <div class="body">
-          <div class="name">UVU</div>
+          <div class="name">{{ receiveTokenSymbol }}</div>
           <div class="input-wrap">
-            <input class="input" v-model="ether" @change="changedEther($event)" type="text" />
+            <input class="input" disabled :value="receiveToken" type="text" />
           </div>
         </div>
       </div>
@@ -53,8 +57,16 @@ import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
+      /** eth兑token是否反向 */
+      reversed: false,
+      /** 需要支付的货币数值 */
+      payToken: 0,
       token: 0,
+      /** token余额 */
+      tokenBalance: 0,
       ether: 0,
+      /** eth余额 */
+      etherBalance: 0,
       /** token 的发布地址 */
       tokenAddr: '',
       /** 交易池募资地址 */
@@ -62,6 +74,10 @@ export default {
     };
   },
   props: {
+    startup: {
+      type: Object,
+      default: () => {}
+    },
     exchangeId: {
       type: String,
       default() {
@@ -70,7 +86,31 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['account'])
+    ...mapGetters(['account']),
+    tokenSymbol() {
+      return this.startup.settings.tokenSymbol;
+    },
+    /** 需要支付的货币的symbol */
+    payTokenSymbol() {
+      return this.reversed ? this.tokenSymbol : 'ETH';
+    },
+    /** 需要支付的货币的余额 */
+    payTokenBalance() {
+      return this.reversed ? this.tokenBalance : this.etherBalance;
+    },
+    /** 收到的货币的symbol */
+    receiveTokenSymbol() {
+      return this.reversed ? 'ETH' : this.tokenSymbol;
+    },
+    /** 收到的货币数值 */
+    receiveToken() {
+      return this.reversed ? this.ether : this.token;
+    },
+    /** 兑换比例 */
+    exchangeRatio() {
+      let ratio = this.reversed ? this.ether / this.token : this.token / this.ether;
+      return isNaN(ratio) ? 0 : Math.floor(ratio * 1000) / 1000;
+    }
   },
   components: {
     ExchangeSVG
@@ -79,6 +119,16 @@ export default {
     this.swapInstance = SwapTranscation.getInstance();
   },
   methods: {
+    onReverse() {
+      this.reversed = !this.reversed;
+    },
+    /**
+     * @description 需要支付的货币数值发生变化
+     * @return {void}
+     */
+    changedPayToken() {
+      this.reversed ? this.changedToken() : this.changedEther();
+    },
     /**
      * @name: Zehui
      * @description token 兑换 ether
@@ -86,7 +136,7 @@ export default {
      * @return {*}
      */
     async changedToken() {
-      const params = this.getParams(true, true, this.token);
+      const params = this.getParams(true, true, this.payToken);
       const res = await this.swapInstance.swapExactTokensForETH(params);
       [this.token, this.ether] = res;
     },
@@ -121,7 +171,7 @@ export default {
      * @return {*}
      */
     async changedEther() {
-      const params = this.getParams(false, true, this.ether);
+      const params = this.getParams(false, true, this.payToken);
       const res = await this.swapInstance.swapExactETHForTokens(params);
       [this.ether, this.token] = res;
     },
