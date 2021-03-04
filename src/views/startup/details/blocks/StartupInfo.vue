@@ -1,6 +1,6 @@
 <script>
 import { mapGetters } from 'vuex';
-import { followStartup, cancelFollowStartup, getStartupIsFollowed } from '@/services';
+import services from '@/services';
 export default {
   props: {
     id: String,
@@ -50,18 +50,17 @@ export default {
         return;
       }
       this.followBtnLoading = true;
-      let requestSuccess;
       // 判断是否已经followed
       if (this.isFollowed) {
-        requestSuccess = await cancelFollowStartup(this.id);
-        if (requestSuccess) {
-          requestSuccess && this.followCount--;
+        const { error } = await services['cores@startup-follow-取消']({ startupId: this.id });
+        if (!error) {
+          this.followCount--;
           this.isFollowed = false;
         }
       } else {
-        requestSuccess = await followStartup(this.id);
-        if (requestSuccess) {
-          requestSuccess && this.followCount++;
+        const { error } = await services['cores@startup-follow-创建']({ startupId: this.id });
+        if (!error) {
+          this.followCount++;
           this.isFollowed = true;
         }
       }
@@ -69,7 +68,8 @@ export default {
     },
     // 获取startup是否被followed
     async getStartupIsFollowed() {
-      this.isFollowed = await getStartupIsFollowed(this.id);
+      const { error, data } = await services['cores@startup-是否被follow']({ startupId: this.id });
+      this.isFollowed = !error && data.hasFollowed;
     }
   },
   render(h) {

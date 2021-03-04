@@ -132,7 +132,7 @@ import { urlValidator, validateBountyTitle, validateBountyIntro } from '@/utils/
 import BbsInput from '@/components/form/BbsInput';
 import Skills from '@/components/form/Skills';
 import SubmitBalance from '@/components/form/SubmitBalance';
-import services, { getMyStartups } from '@/services';
+import services from '@/services';
 import { web3 } from '@/libs/web3';
 import { COMUNION_BOUNTY_RECEIVE_ACCOUNT } from '@/configs/app';
 import { bountyAbi } from '@/libs/abis/bounty';
@@ -367,9 +367,10 @@ export default {
     async getMeStartups() {
       try {
         this.startupLoading = true;
-        const [data] = await getMyStartups();
+        const { error, data } = await services['cores@startups-我的-列表']();
+        const { result = [] } = error ? {} : data;
         this.startupLoading = false;
-        this.startups = data.filter(item => item.state === 2);
+        this.startups = result.filter(item => item.state === 2);
         const targetStartup = this.startups.find(item => item.id === this.$route.query.startupId);
         if (targetStartup) {
           this.form.startupId = targetStartup.id;

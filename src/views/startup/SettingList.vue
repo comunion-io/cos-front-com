@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { getMyStartups, getFollowStartups } from '@/services';
+import services from '@/services';
 // import { startupState } from '@/filters';
 import HelpCenter from '@/components/help/HelpCenter';
 import StartupItem from './components/StartupItem';
@@ -154,8 +154,9 @@ export default {
     // 刷新startup列表
     async refreshStartups() {
       this.clearTimeout();
-      const [data, total] = await getMyStartups(this.search);
-      this.startups = data;
+      const { error, data } = await services['cores@startups-我的-列表'](this.search);
+      const { result = [], total = 0 } = error ? {} : data;
+      this.startups = result;
       this.total = total;
       // 15秒刷新一次数据
       this.loopTimeout = setTimeout(this.refreshStartups, INTERVAL_TIME);
@@ -191,8 +192,11 @@ export default {
     // 获取follow startup列表
     async getFollowStartups() {
       this.followStartupLoading = true;
-      const [data, total] = await getFollowStartups(this.followStartupSearch);
-      this.followStartups = data;
+      const { error, data } = await services['cores@startups-我的-follow列表'](
+        this.followStartupSearch
+      );
+      const { result = [], total = 0 } = error ? {} : data;
+      this.followStartups = result;
       this.followStartupTotal = total;
       this.followStartupLoading = false;
     }
