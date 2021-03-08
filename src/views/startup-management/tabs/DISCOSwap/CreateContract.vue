@@ -342,8 +342,14 @@ export default {
 
         const params = {
           ...values,
-          fundRaisingStartedAt: values.fundRaisingTime[0].utc().format(),
-          fundRaisingEndedAt: values.fundRaisingTime[1].utc().format(),
+          fundRaisingStartedAt: values.fundRaisingTime[0]
+            .utc()
+            .startOf('day')
+            .format(),
+          fundRaisingEndedAt: values.fundRaisingTime[1]
+            .utc()
+            .endOf('day')
+            .format(),
           tokenAddr: this.tokenAddr,
           totalDepositToken: +this.totalDepositToken
         };
