@@ -319,7 +319,10 @@ export default {
     },
     disabledDate(current) {
       // Can not select days before today and today
-      return current && current < moment().endOf('day');
+      let beforeDay = moment()
+        .subtract(1, 'days')
+        .endOf('day');
+      return current && current < beforeDay;
     },
 
     /**
