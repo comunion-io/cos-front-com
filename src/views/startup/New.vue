@@ -115,13 +115,7 @@ import { web3 } from '@/libs/web3';
 import { COMUNION_RECEIVER_STARTUP_ACCOUNT } from '@/configs/app';
 import { urlValidator } from '@/utils/validators';
 import { startupAbi } from '@/libs/abis/startup';
-import {
-  createStartup,
-  updateStartup,
-  restoreStartUp,
-  getPrepareStartupId,
-  getMyStartupDetail
-} from '@/services';
+import services from '@/services';
 import { merge } from '@/utils';
 import BbsInput from '@/components/form/BbsInput';
 
@@ -176,7 +170,8 @@ export default {
         cancelText: 'Remove and quit',
         okText: 'Keep',
         onCancel: async () => {
-          if (await restoreStartUp(this.$route.query.id)) {
+          const { error } = await services['cores@startup-回退']({ id: this.$route.query.id });
+          if (!error) {
             this.$router.go(-1);
           }
         },
@@ -196,9 +191,9 @@ export default {
         if (valid) {
           try {
             this.createState = 'creating';
-            const startupId = await getPrepareStartupId();
-            if (startupId) {
-              const id = startupId.id;
+            const { error, data } = await services['cores@startup-获取prepareid']();
+            if (!error) {
+              const id = data.id;
               this.ethSendTransaction(this.form, id);
             }
           } catch (e) {
@@ -270,14 +265,22 @@ export default {
       try {
         if (this.isEdit) {
           // 更新
-          const startUp = await updateStartup(this.$router.query.id, { ...formData, txid });
-          if (startUp) {
+          const { error } = await services['cores@startup-更新']({
+            ...formData,
+            txid,
+            startupId: this.$router.query.id
+          });
+          if (!error) {
             this.createState = 'successed';
           }
         } else {
           // 后端创建startup
-          const startUp = await createStartup({ ...formData, txid, id: startupId });
-          if (startUp) {
+          const { error } = await services['cores@startup-创建']({
+            ...formData,
+            txid,
+            id: startupId
+          });
+          if (!error) {
             this.createState = 'successed';
           }
         }
@@ -305,9 +308,13 @@ export default {
   async mounted() {
     this.getBalance();
     if (this.isEdit) {
-      const startup = await getMyStartupDetail(this.$route.query.id);
-      merge(this.form, startup);
-      this.form.categoryId = startup.category.id;
+      const { error, data } = await services['cores@startup-我的-获取']({
+        startupId: this.$route.query.id
+      });
+      if (!error) {
+        merge(this.form, data);
+        this.form.categoryId = data.category.id;
+      }
     }
   }
 };

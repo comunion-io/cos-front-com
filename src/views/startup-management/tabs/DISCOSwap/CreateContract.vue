@@ -357,12 +357,18 @@ export default {
       if (!error) {
         const id = data.id;
         // 发起上链
-        await this.discoInstance.sendDiscoTransaction(
-          params,
-          id,
-          this.account,
-          this.discoBlockCallBack
-        );
+        try {
+          await this.discoInstance.sendDiscoTransaction(
+            params,
+            id,
+            this.account,
+            this.discoBlockCallBack
+          );
+        } catch (error) {
+          console.error(error);
+          this.loading = false;
+          this.$message.error(error.message || 'Error');
+        }
       }
     },
 
@@ -380,7 +386,16 @@ export default {
           txid
         });
 
-        if (error) {
+        if (!error) {
+          // 返回DISCO & Swap页面
+          this.$router.push({
+            name: 'startupManagementDISCOSwap',
+            params: {
+              // 需要刷新状态
+              refreshState: true
+            }
+          });
+        } else {
           console.error(error);
         }
       }
