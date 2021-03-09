@@ -127,7 +127,7 @@ export class DiscoTranscation {
     } = disco;
     const totalDepositToken = +(+disco.totalDepositToken).toFixed(0);
 
-    const contractDisco = await this.contractInstance.methods.newDisco(
+    const contractDisco = await this.contractInstance.methods.newDisco([
       id,
       walletAddr,
       tokenAddr,
@@ -141,7 +141,7 @@ export class DiscoTranscation {
       minFundRaising,
       addLiquidityPool,
       totalDepositToken
-    );
+    ]);
     return contractDisco;
   }
 
@@ -203,14 +203,15 @@ export class DiscoTranscation {
 
       const tx = {
         from: account,
+        to: COMUNION_RECEIVER_DOISCO_ACCOUNT,
         data: blockParams[0],
         value: web3.utils.numberToHex(0),
         nonce: web3.utils.numberToHex(blockParams[1]),
-        gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
+        gasPrice: web3.utils.numberToHex(Math.pow(10, 12)),
         gasLimit: web3.utils.numberToHex(183943),
         chainId: blockParams[2]
       };
-      enabledDisco.send(tx);
+      await enabledDisco.send(tx);
     }
   }
 
