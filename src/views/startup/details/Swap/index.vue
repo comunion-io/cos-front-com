@@ -78,12 +78,28 @@ export default {
     Chart
   },
   mounted() {
-    // 获取exchange
-    this.getExchange();
+    // 获取状态
+    this.getDiscoSwapState();
   },
   methods: {
     tabOnChange(tab) {
       this.activeTab = tab;
+    },
+    // 获取disco和swap状态
+    async getDiscoSwapState() {
+      this.loading = true;
+      let { error, data } = await services['cores@startup-disco和swap状态']({
+        startupId: this.startup.id
+      });
+      this.loading = false;
+      if (!error) {
+        const { discoState, swapState } = data;
+        // disco募资成功 或者 create exchange完成
+        if (discoState === 5 || swapState === 1) {
+          // 获取exchange
+          this.getExchange();
+        }
+      }
     },
     // 获取exchange
     async getExchange() {
