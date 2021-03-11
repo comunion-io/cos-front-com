@@ -319,7 +319,10 @@ export default {
     },
     disabledDate(current) {
       // Can not select days before today and today
-      return current && current < moment().endOf('day');
+      let beforeDay = moment()
+        .subtract(1, 'days')
+        .endOf('day');
+      return current && current < beforeDay;
     },
 
     /**
@@ -339,8 +342,14 @@ export default {
 
         const params = {
           ...values,
-          fundRaisingStartedAt: values.fundRaisingTime[0].utc().format(),
-          fundRaisingEndedAt: values.fundRaisingTime[1].utc().format(),
+          fundRaisingStartedAt: values.fundRaisingTime[0]
+            .utc()
+            .startOf('day')
+            .format(),
+          fundRaisingEndedAt: values.fundRaisingTime[1]
+            .utc()
+            .endOf('day')
+            .format(),
           tokenAddr: this.tokenAddr,
           totalDepositToken: +this.totalDepositToken
         };
