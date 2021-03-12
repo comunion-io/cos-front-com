@@ -215,7 +215,7 @@ export default {
       /** 募资成功的状态 */
       fundraisingSuccess: false,
       loading: false,
-      totalDepositToken: '',
+      totalDepositToken: null,
       rules: {
         walletAddr: [{ required: true, validator: validateAddress }],
         description: [{ required: true, validator: urlValidator }],
@@ -234,9 +234,6 @@ export default {
       default() {
         return {};
       }
-    },
-    discoState: {
-      type: Number
     }
   },
   mounted() {
@@ -362,7 +359,7 @@ export default {
             Math.round(shareToken * (1 + investmentReward / 100 + addLiquidityPool / 100) * 100) /
             100;
         } else {
-          this.totalDepositToken = '';
+          this.totalDepositToken = null;
         }
       });
     },
@@ -380,7 +377,7 @@ export default {
     recreateBtnOnClick() {
       this.isRecreate = true;
       this.$refs.form.resetFields();
-      this.totalDepositToken = '';
+      this.totalDepositToken = null;
     }
   }
 };

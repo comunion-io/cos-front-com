@@ -1,11 +1,6 @@
 <template>
   <div class="disco-swap">
-    <router-view
-      v-if="$route.matched.length > 3"
-      :id="id"
-      :startup="startup"
-      :discoState="discoState"
-    />
+    <router-view v-if="$route.matched.length > 3" :id="id" :startup="startup" />
 
     <template v-else>
       <loading v-if="!ready" />
@@ -67,8 +62,6 @@ export default {
     return {
       // 自定义的DISCO&Swap的状态指
       status: '0',
-      // disco的状态码，默认为-1未开启
-      discoState: -1,
       ready: false
     };
   },
@@ -103,7 +96,6 @@ export default {
       });
       if (!error) {
         const { discoState, swapState } = data;
-        this.discoState = discoState;
         this.updateStatus(discoState, swapState);
       }
       this.ready = true;
@@ -199,7 +191,11 @@ export default {
     },
     // 跳转到对应startup的swap页面
     gotoStartupSwapView() {
-      // TODO...
+      this.$router.push({
+        name: 'startupDetail',
+        params: { id: this.startup.id },
+        query: { tabName: 'Swap' }
+      });
     },
     // 创建exchange按钮被点击
     createExchangeOnClick() {
