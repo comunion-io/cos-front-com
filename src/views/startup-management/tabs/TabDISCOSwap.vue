@@ -1,6 +1,11 @@
 <template>
   <div class="disco-swap">
-    <router-view v-if="$route.matched.length > 3" :id="id" :startup="startup" />
+    <router-view
+      v-if="$route.matched.length > 3"
+      :id="id"
+      :startup="startup"
+      :discoState="discoState"
+    />
 
     <template v-else>
       <loading v-if="!ready" />
@@ -62,6 +67,8 @@ export default {
     return {
       // 自定义的DISCO&Swap的状态指
       status: '0',
+      // disco的状态码，默认为-1未开启
+      discoState: -1,
       ready: false
     };
   },
@@ -96,6 +103,7 @@ export default {
       });
       if (!error) {
         const { discoState, swapState } = data;
+        this.discoState = discoState;
         this.updateStatus(discoState, swapState);
       }
       this.ready = true;

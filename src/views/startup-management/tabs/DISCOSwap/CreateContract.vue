@@ -285,6 +285,9 @@ export default {
       default() {
         return {};
       }
+    },
+    discoState: {
+      type: Number
     }
   },
   beforeCreate() {
@@ -292,8 +295,11 @@ export default {
   },
   mounted() {
     this.discoInstance = DiscoTranscation.getInstance();
-    // 获取disco
-    this.getDisco();
+    // 当募资合约生成成功后才获取disco
+    if (this.discoState === 1) {
+      // 获取disco
+      this.getDisco();
+    }
   },
   methods: {
     // 获取disco信息
