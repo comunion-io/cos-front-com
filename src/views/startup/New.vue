@@ -8,7 +8,7 @@
           ref="ruleForm"
           :model="form"
           :rules="rules"
-          :layout="'horizontal'"
+          layout="horizontal"
           @submit.prevent="onSubmit"
         >
           <a-row :gutter="20">
