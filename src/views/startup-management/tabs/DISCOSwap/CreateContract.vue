@@ -71,6 +71,7 @@
             autocomplete="off"
             addon-after="%"
             :min="0"
+            :max="100"
             v-model="disco.investmentReward"
             @change="updateTotalDepositToken"
             :disabled="createFundFaisingContractSucceed"
@@ -118,6 +119,7 @@
             autocomplete="off"
             addon-after="%"
             :min="0"
+            :max="100"
             v-model="disco.addLiquidityPool"
             @change="updateTotalDepositToken"
             :disabled="createFundFaisingContractSucceed"
@@ -125,7 +127,7 @@
         </a-form-model-item>
         <a-form-model-item label="Total Deposit Token" prop="totalDepositToken">
           <a-input-number
-            :value="disco.totalDepositToken"
+            :value="totalDepositToken"
             class="input number-input"
             placeholder=""
             autocomplete="off"
@@ -266,10 +268,8 @@ export default {
       }
     },
     disabledDate(current) {
-      // Can not select days before today and today
-      let beforeDay = moment()
-        .subtract(1, 'days')
-        .endOf('day');
+      // Can not select days before today
+      let beforeDay = moment().startOf('day');
       return current && current < beforeDay;
     },
 
@@ -280,7 +280,7 @@ export default {
      * @return {*}
      */
     createBtnOnClick(e) {
-      this.$refs.form.vaidate(valid => {
+      this.$refs.form.validate(valid => {
         if (valid) {
           // values.investmentReward = +values.investmentReward;
           // values.shareToken = +values.shareToken;
@@ -292,7 +292,7 @@ export default {
             fundRaisingStartedAt: this.disco.fundRaisingTime[0].utc().format(),
             fundRaisingEndedAt: this.disco.fundRaisingTime[1].utc().format(),
             tokenAddr: this.tokenAddr,
-            totalDepositToken: +this.totalDepositToken
+            totalDepositToken: this.totalDepositToken
           };
           delete params.fundRaisingTime;
           this.createDISCO(params);
@@ -315,10 +315,10 @@ export default {
           );
         } catch (error) {
           console.error(error);
-          this.loading = false;
           this.$message.error(error.message || 'Error');
         }
       }
+      this.loading = false;
     },
 
     /**
@@ -348,7 +348,6 @@ export default {
           console.error(error);
         }
       }
-      this.loading = false;
     },
 
     updateTotalDepositToken() {
@@ -359,10 +358,9 @@ export default {
         // investmentReward = Number(investmentReward);
         // addLiquidityPool = Number(addLiquidityPool);
         if (!isNaN(shareToken) && !isNaN(investmentReward) && !isNaN(addLiquidityPool)) {
-          this.totalDepositToken = (
-            shareToken *
-            (1 + investmentReward / 100 + addLiquidityPool / 100)
-          ).toFixed(2);
+          this.totalDepositToken =
+            Math.round(shareToken * (1 + investmentReward / 100 + addLiquidityPool / 100) * 100) /
+            100;
         } else {
           this.totalDepositToken = '';
         }
