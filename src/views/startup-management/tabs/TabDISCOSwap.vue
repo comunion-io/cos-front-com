@@ -156,7 +156,10 @@ export default {
         // 显示合约表单页面
         this.$router.push({
           name: 'startupManagementDiscoForm',
-          params: { status: this.status }
+          params: { status: this.status },
+          query: {
+            mode: this.status === '0' ? 'create' : 'edit'
+          }
         });
       } else if (
         this.status === '6' ||
@@ -188,7 +191,11 @@ export default {
     },
     // 跳转到对应startup的swap页面
     gotoStartupSwapView() {
-      // TODO...
+      this.$router.push({
+        name: 'startupDetail',
+        params: { id: this.startup.id },
+        query: { tabName: 'Swap' }
+      });
     },
     // 创建exchange按钮被点击
     createExchangeOnClick() {
