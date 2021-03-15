@@ -371,6 +371,8 @@ export default {
      */
     enablDisco() {
       this.discoInstance.enableDisco(this.discoId, this.account);
+      // 返回DISCO & Swap页面
+      this.$router.push({ name: 'startupManagementDISCOSwap' });
     },
 
     // 重新创建合约按钮被点击
