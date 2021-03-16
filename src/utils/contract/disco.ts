@@ -133,8 +133,8 @@ export class DiscoTranscation {
       tokenAddr,
       description,
       // 合约的时间是数字， 这里要转换成秒数(合约是的时间最小单位是秒)
-      +new Date(fundRaisingStartedAt) / 1000,
-      +new Date(fundRaisingEndedAt) / 1000,
+      new Date(fundRaisingStartedAt).getTime() / 1000,
+      new Date(fundRaisingEndedAt).getTime() / 1000,
       investmentReward,
       rewardDeclineRate,
       shareToken,
