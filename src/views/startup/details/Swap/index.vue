@@ -1,7 +1,7 @@
 <template>
   <a-spin size="large" :spinning="loading">
     <!-- 已开启DISCO -->
-    <div v-if="exchange.status === 1">
+    <div v-if="exchange.status !== 1">
       <div class="blocks">
         <CountBlock
           v-for="item in statistics"
