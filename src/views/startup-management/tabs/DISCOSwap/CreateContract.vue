@@ -335,11 +335,7 @@ export default {
         if (!error) {
           // 返回DISCO & Swap页面
           this.$router.push({
-            name: 'startupManagementDISCOSwap',
-            params: {
-              // 需要刷新状态
-              refreshState: true
-            }
+            name: 'startupManagementDISCOSwap'
           });
         } else {
           console.error(error);

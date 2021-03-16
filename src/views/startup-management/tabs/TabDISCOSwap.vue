@@ -76,21 +76,44 @@ export default {
     MyCard
   },
   watch: {
-    $route(newRoute) {
-      /** 判断是否刷新状态 */
-      if (newRoute.params.refreshState) {
-        this.getDiscoAndSwapStatus();
-      }
+    $route() {
+      this.pollingStatus();
     }
   },
   async mounted() {
     // 获取DISCO&Swap状态
-    this.getDiscoAndSwapStatus();
+    this.ready = false;
+    await this.pollingStatus();
+    this.ready = true;
+  },
+  beforeDestroy() {
+    this.removePolling();
   },
   methods: {
+    // 轮训状态
+    pollingStatus() {
+      // 进入子页面关闭轮询，
+      // 成功类状态关闭轮询
+      if (
+        this.$route.matched.length > 3 ||
+        ['3', '4', '5', '6', '7', '8', '11'].includes(this.status)
+      ) {
+        this.removePolling();
+      } else {
+        this.pollingTimout = setTimeout(() => {
+          this.getDiscoAndSwapStatus().then(this.pollingStatus);
+        }, 3000);
+      }
+    },
+    // 消除timeout
+    removePolling() {
+      if (this.pollingTimout) {
+        clearTimeout(this.pollingTimout);
+        this.pollingTimout = null;
+      }
+    },
     // 获取DISCO和Swap的状态
     async getDiscoAndSwapStatus() {
-      this.ready = false;
       let { error, data } = await services['cores@startup-disco和swap状态']({
         startupId: this.startup.id
       });
@@ -98,7 +121,6 @@ export default {
         const { discoState, swapState } = data;
         this.updateStatus(discoState, swapState);
       }
-      this.ready = true;
     },
     // 更新status的值
     updateStatus(discoState, swapState) {
