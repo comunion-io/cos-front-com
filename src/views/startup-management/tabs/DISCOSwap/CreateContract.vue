@@ -367,6 +367,7 @@ export default {
      */
     enablDisco() {
       this.discoInstance.enableDisco(this.discoId, this.account);
+      this.$message.success('Enabling, please waiting.');
       // 返回DISCO & Swap页面
       this.$router.push({ name: 'startupManagementDISCOSwap' });
     },
