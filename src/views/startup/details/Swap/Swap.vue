@@ -38,6 +38,9 @@
           </div>
         </div>
       </div>
+
+      <!-- Transaction Settings -->
+      <TransactionSettings class="transaction-settings" />
     </div>
     <p class="text">Minimum received: 99.74 UVU</p>
     <p class="text">Price Impact：1.34%</p>
@@ -53,6 +56,7 @@ import ExchangeSVG from './exchange.svg';
 import { SwapTranscation } from '@/utils/contract/swap';
 import services from '@/services';
 import { mapGetters } from 'vuex';
+import TransactionSettings from './TransactionSettings';
 
 export default {
   data() {
@@ -113,7 +117,8 @@ export default {
     }
   },
   components: {
-    ExchangeSVG
+    ExchangeSVG,
+    TransactionSettings
   },
   mounted() {
     this.swapInstance = SwapTranscation.getInstance();
@@ -220,6 +225,8 @@ export default {
 <style lang="less" scoped>
 @import '~./common.less';
 .wrap {
+  position: relative;
+
   .symbol {
     &:before,
     &:after {
@@ -234,6 +241,12 @@ export default {
       transform: translateX(-50%) rotate(90deg);
       cursor: pointer;
     }
+  }
+
+  .transaction-settings {
+    position: absolute;
+    top: 4px;
+    right: 8px;
   }
 }
 </style>
