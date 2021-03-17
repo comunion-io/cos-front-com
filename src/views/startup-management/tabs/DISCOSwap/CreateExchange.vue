@@ -59,6 +59,9 @@ export default {
       this.loading = true;
       // TODO
       this.loading = false;
+      this.$router.push({
+        name: 'startupManagementDISCOSwap'
+      });
     }
   }
 };

@@ -1,5 +1,5 @@
 <template>
-  <div>operation</div>
+  <div>Governance</div>
 </template>
 
 <script>
