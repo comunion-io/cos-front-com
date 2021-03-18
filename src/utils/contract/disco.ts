@@ -28,6 +28,7 @@ export interface Disco {
   txId: string;
   fundRaisingStartedAt: string;
   fundRaisingEndedAt: string;
+  fundRaisingAddr: string;
 }
 
 export class DiscoTranscation {
@@ -187,6 +188,58 @@ export class DiscoTranscation {
     }
   }
 
+  private sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  private async waitTransaction(txHash: string) {
+    let tx = null;
+    while (tx == null) {
+      tx = await web3.eth.getTransactionReceipt(txHash);
+      await this.sleep(1000);
+    }
+    console.log(`ransaction ${txHash} was mined`);
+    return tx.status;
+  }
+  /**
+   * @description approve the 1inch dex aggregator smart contract to spend our token
+   * you can see the detial at url: https://ethereumdev.io/swap-tokens-with-1inch-exchange-in-javascript-dex-and-arbitrage-part-2/
+   * @author Ze Hui
+   * @date 17/03/2021
+   * @private
+   * @param {string} address: token的地址
+   * @param {string} id： 当前disco 的id
+   * @param {string} fromAddress: 我的钱包地址
+   * @return {*}
+   */
+  public async approval(disco: Disco, fromAddress: string): Promise<false | undefined> {
+    console.log('%c 🎂 disco: ', 'font-size:20px;background-color: #6EC1C2;color:#fff;', disco);
+    if (!disco) {
+      return;
+    }
+    // 募资地址
+    const receiver = disco.fundRaisingAddr;
+    // 募资提供的token
+    const amount = disco.shareToken;
+    const tokenABI = await axios.get('/static/Erc20ABI.json');
+    // 創建token的合约实例
+    const tokenInstance = new web3.eth.Contract(tokenABI.data.abi, disco.tokenAddr);
+    try {
+      const txHash = await tokenInstance.methods
+        .approve(receiver, amount)
+        .send({ from: fromAddress });
+      const status = await this.waitTransaction(txHash.transactionHash);
+      if (!status) {
+        console.log('Approval transaction failed.');
+        return;
+      }
+      this.enableDisco(disco.id, fromAddress);
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
   /**
    * @description 启用 disco， 开启募资
    * @author Ze Hui
@@ -205,7 +258,7 @@ export class DiscoTranscation {
         from: account,
         to: COMUNION_RECEIVER_DOISCO_ACCOUNT,
         data: blockParams[0],
-        value: web3.utils.numberToHex(0),
+        value: web3.utils.numberToHex(Math.pow(10, 17)),
         nonce: web3.utils.numberToHex(blockParams[1]),
         gasPrice: web3.utils.numberToHex(Math.pow(10, 12)),
         gasLimit: web3.utils.numberToHex(183943),

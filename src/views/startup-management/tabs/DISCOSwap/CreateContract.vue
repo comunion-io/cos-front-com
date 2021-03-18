@@ -436,7 +436,7 @@ export default {
      * @return {*}
      */
     enablDisco() {
-      this.discoInstance.enableDisco(this.discoId, this.account);
+      this.discoInstance.approval(this.disco, this.account);
     },
 
     // 重新创建合约按钮被点击
