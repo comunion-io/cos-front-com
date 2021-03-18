@@ -125,8 +125,8 @@ export default {
         limit: 20,
         offset,
         keyword,
-        orderBy: sortedInfo.columnKey,
-        isDesc: sortedInfo.order ? sortedInfo.order === 'descend' : undefined
+        orderBy: sortedInfo.columnKey || 'createdAt',
+        isDesc: sortedInfo.order ? sortedInfo.order === 'descend' : false
       });
 
       this.loading = false;

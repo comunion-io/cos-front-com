@@ -335,11 +335,7 @@ export default {
         if (!error) {
           // 返回DISCO & Swap页面
           this.$router.push({
-            name: 'startupManagementDISCOSwap',
-            params: {
-              // 需要刷新状态
-              refreshState: true
-            }
+            name: 'startupManagementDISCOSwap'
           });
         } else {
           console.error(error);
@@ -371,6 +367,9 @@ export default {
      */
     enablDisco() {
       this.discoInstance.enableDisco(this.discoId, this.account);
+      this.$message.success('Enabling, please waiting.');
+      // 返回DISCO & Swap页面
+      this.$router.push({ name: 'startupManagementDISCOSwap' });
     },
 
     // 重新创建合约按钮被点击

@@ -26,7 +26,7 @@
         <span class="title">{{ text.name }}</span>
       </router-link>
     </template>
-    <template #status="{ record }">
+    <template #state="{ record }">
       <c-badge :color="getStateColor(record.state)" :text="getStateText(record.state)" />
     </template>
   </c-table>
@@ -164,8 +164,10 @@ export default {
         offset,
         keyword,
         orderBy:
-          sortedInfo.columnKey === 'addLiquidityPool' ? 'liquidityPool' : sortedInfo.columnKey,
-        isAsc: sortedInfo.order ? sortedInfo.order === 'ascend' : undefined
+          sortedInfo.columnKey === 'addLiquidityPool'
+            ? 'liquidityPool'
+            : sortedInfo.columnKey || 'createdAt',
+        isAsc: sortedInfo.order ? sortedInfo.order === 'ascend' : false
       });
 
       this.loading = false;

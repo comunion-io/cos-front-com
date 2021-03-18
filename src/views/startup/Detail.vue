@@ -6,17 +6,14 @@ export default {
   components: {
     TabPerference,
     TabBounty: () => import('./details/Bounty'),
-    TabExchange: () => import('./details/Exchange'),
     TabDisco: () => import('./details/Disco.vue'),
     TabSwap: () => import('./details/Swap/index.vue'),
-    TabIRO: () => import('./details/IRO'),
-    TabVote: () => import('./details/Vote'),
-    TabProposals: () => import('./details/Proposals')
+    TabGovernance: () => import('./details/Governance')
   },
   data() {
     return {
       selectedTab: 'Perference',
-      tabs: ['Perference', 'Bounty', 'Disco', 'Swap', 'Exchange', 'IRO', 'Vote', 'Proposals'],
+      tabs: ['Perference', 'Bounty', 'Disco', 'Swap', 'Governance'],
       loading: false,
       startup: {}
     };
