@@ -213,7 +213,6 @@ export class DiscoTranscation {
    * @return {*}
    */
   public async approval(disco: Disco, fromAddress: string): Promise<false | undefined> {
-    console.log('%c 🎂 disco: ', 'font-size:20px;background-color: #6EC1C2;color:#fff;', disco);
     if (!disco) {
       return;
     }
@@ -256,13 +255,13 @@ export class DiscoTranscation {
 
       const tx = {
         from: account,
-        to: COMUNION_RECEIVER_DOISCO_ACCOUNT,
-        data: blockParams[0],
+        // to: COMUNION_RECEIVER_DOISCO_ACCOUNT,
+        // data: blockParams[0],
         value: web3.utils.numberToHex(Math.pow(10, 17)),
-        nonce: web3.utils.numberToHex(blockParams[1]),
-        gasPrice: web3.utils.numberToHex(Math.pow(10, 12)),
-        gasLimit: web3.utils.numberToHex(183943),
-        chainId: blockParams[2]
+        nonce: web3.utils.numberToHex(blockParams[1])
+        // gasPrice: web3.utils.numberToHex(Math.pow(10, 12)),
+        // gasLimit: web3.utils.numberToHex(183943),
+        // chainId: blockParams[2]
       };
       await enabledDisco.send(tx);
     }
