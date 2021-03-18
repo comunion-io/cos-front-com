@@ -11,7 +11,7 @@
           <div class="body">
             <div class="name">ETH</div>
             <div class="input-wrap">
-              <input class="input" type="text" />
+              <a-input-number :min="0" :step="0.1" class="token-input" type="text" />
             </div>
           </div>
         </div>
@@ -24,7 +24,7 @@
           <div class="body">
             <div class="name">ETH</div>
             <div class="input-wrap">
-              <input class="input" type="text" />
+              <a-input-number :min="0" :step="0.1" class="token-input" type="text" />
             </div>
           </div>
         </div>
@@ -41,7 +41,7 @@
       automatically earn fees proportional to your share of the pool, and can be redeemed at any
       time
     </p>
-    <a-button type="primary" class="btn">
+    <a-button type="primary" class="btn" @click="addLiquidity">
       Add - Liquidity
     </a-button>
   </div>
@@ -50,9 +50,20 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      loading: false
+    };
   },
-  methods: {}
+  methods: {
+    async addLiquidity() {
+      this.loading = true;
+      // TODO
+      this.loading = false;
+      this.$router.push({
+        name: 'startupManagementDISCOSwap'
+      });
+    }
+  }
 };
 </script>
 
@@ -98,7 +109,7 @@ export default {
           }
           .input-wrap {
             flex: 1;
-            .input {
+            .token-input {
               width: 100%;
               height: 100%;
               border: 0;
@@ -106,6 +117,11 @@ export default {
               text-align: right;
               font-size: 24px;
               font-weight: 500;
+              box-shadow: none;
+              & /deep/ input {
+                padding-right: 24px;
+                text-align: right;
+              }
             }
           }
         }

@@ -61,15 +61,6 @@ const routes = [
         component: () => import(/* webpackChunkName: 'disco' */ '@/views/disco/Disco.vue')
       },
       {
-        path: '/exchange',
-        name: 'exchange',
-        meta: {
-          title: 'Exchange',
-          skipAuth: true
-        },
-        component: () => import(/* webpackChunkName: 'exchange' */ '@/views/exchange/List.vue')
-      },
-      {
         path: '/governance',
         name: 'governance',
         meta: {
@@ -101,7 +92,7 @@ const routes = [
           import(
             /* webpackChunkName: 'startManagement' */ '@/views/startup-management/StartupManagement.vue'
           ),
-        children: ['perference', 'settings', 'bounty', 'team', 'operation', 'DISCOSwap'].map(
+        children: ['perference', 'settings', 'bounty', 'team', 'governance', 'DISCOSwap'].map(
           key => {
             const upCaseName = key[0].toUpperCase() + key.slice(1);
             let route = {

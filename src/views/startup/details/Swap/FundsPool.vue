@@ -45,6 +45,9 @@
               </div>
             </div>
           </div>
+
+          <!-- Transaction Settings -->
+          <TransactionSettings class="transaction-settings" />
         </div>
         <p class="text">exchange rate: 10 UVU per ETH</p>
         <p class="text">The current size of the pool of funds: 100ETH / 1000UVU</p>
@@ -81,6 +84,9 @@
               </div>
             </div>
           </div>
+
+          <!-- Transaction Settings -->
+          <TransactionSettings class="transaction-settings" />
         </div>
         <p class="text">exchange rate: --</p>
         <p class="text">The current size of the pool of funds: --</p>
@@ -97,6 +103,7 @@
 import { mapGetters } from 'vuex';
 import services from '@/services';
 import { SwapTranscation } from '@/utils/contract/swap';
+import TransactionSettings from './TransactionSettings';
 
 export default {
   computed: {
@@ -109,6 +116,9 @@ export default {
         return '';
       }
     }
+  },
+  components: {
+    TransactionSettings
   },
   mounted() {
     this.swapInstance = SwapTranscation.getInstance();

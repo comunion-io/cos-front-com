@@ -218,7 +218,7 @@ export default {
             })}
             <a
               href="https://bbs.comunion.io/d/287-what-is-the-disco"
-              href="_blank"
+              target="_blank"
               class="disco-help-link"
             >
               What is DISCO

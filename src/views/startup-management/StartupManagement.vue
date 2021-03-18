@@ -8,7 +8,7 @@ const tabs = [
   'Settings',
   'Bounty',
   'Team',
-  'Operation',
+  'Governance',
   { name: 'DISCO & Swap', route: 'DISCOSwap' }
 ].map(item => {
   const _isString = isString(item);
@@ -19,14 +19,6 @@ const tabs = [
 });
 
 export default {
-  // components: {
-  //   TabPerference: () => import('./components/TabPerference'),
-  //   TabSettings: () => import('./components/TabSettings'),
-  //   TabBounty: () => import('./components/TabBounty'),
-  //   TabTeam: () => 'Team',
-  //   TabOperation: () => 'Operation',
-  //   TabDISCOSwap: () => import('./components/TabDISCOSwap')
-  // },
   data() {
     return {
       loading: true,
