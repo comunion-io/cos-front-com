@@ -204,7 +204,10 @@ export default {
         rewardDeclineRate: '',
         shareToken: '',
         minFundRaising: '',
-        addLiquidityPool: ''
+        addLiquidityPool: '',
+        fundRaisingAddr: '',
+        tokenAddr: '',
+        id: ''
       },
       // 是否是重建合约
       isRecreate: false,
@@ -260,7 +263,10 @@ export default {
           rewardDeclineRate: data.rewardDeclineRate,
           shareToken: data.shareToken,
           minFundRaising: data.minFundRaising,
-          addLiquidityPool: data.addLiquidityPool
+          addLiquidityPool: data.addLiquidityPool,
+          fundRaisingAddr: data.fundRaisingAddr,
+          tokenAddr: data.tokenAddr,
+          id: data.id
         });
       }
     },
@@ -366,10 +372,10 @@ export default {
      * @return {*}
      */
     enablDisco() {
-      this.discoInstance.enableDisco(this.discoId, this.account);
-      this.$message.success('Enabling, please waiting.');
+      this.discoInstance.approval(this.disco, this.account);
+      // this.$message.success('Enabling, please waiting.');
       // 返回DISCO & Swap页面
-      this.$router.push({ name: 'startupManagementDISCOSwap' });
+      // this.$router.push({ name: 'startupManagementDISCOSwap' });
     },
 
     // 重新创建合约按钮被点击
