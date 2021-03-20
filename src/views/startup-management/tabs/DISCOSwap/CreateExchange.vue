@@ -11,7 +11,13 @@
           <div class="body">
             <div class="name">ETH</div>
             <div class="input-wrap">
-              <a-input-number :min="0" :step="0.1" class="token-input" type="text" />
+              <a-input-number
+                :min="0"
+                :step="0.1"
+                v-model="tokenAmount"
+                class="token-input"
+                type="text"
+              />
             </div>
           </div>
         </div>
@@ -24,7 +30,13 @@
           <div class="body">
             <div class="name">ETH</div>
             <div class="input-wrap">
-              <a-input-number :min="0" :step="0.1" class="token-input" type="text" />
+              <a-input-number
+                :min="0"
+                :step="0.1"
+                v-model="tokenBAmount"
+                class="token-input"
+                type="text"
+              />
             </div>
           </div>
         </div>
@@ -48,16 +60,45 @@
 </template>
 
 <script>
+import { SwapTranscation } from '@/utils/contract/swap';
+import services from '@/services';
+import { mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
-      loading: false
+      loading: false,
+      tokenAmount: 0,
+      tokenBAmount: 0
     };
+  },
+  computed: {
+    ...mapGetters(['account'])
+  },
+  mounted() {
+    this.swapInstance = SwapTranscation.getInstance();
   },
   methods: {
     async addLiquidity() {
       this.loading = true;
-      // TODO
+      const { error, data: settingInfo } = await services['cores@startup-我的-获取']({
+        startupId: this.$route.params.id
+      });
+      if (!error) {
+        console.error(error);
+      }
+      const params = {
+        // TODO ether的地址， 开发时，ether的地址是我的钱包地址
+        tokenA: this.account,
+        tokenB: settingInfo.settings.tokenAddr,
+        amountADesired: this.tokenAmount,
+        amountBDesired: this.tokenBAmount,
+        amountAMin: this.tokenAmount,
+        amountBMin: this.tokenBAmount,
+        to: settingInfo.settings.walletAddrs[0].addr,
+        deadline: 20 * 60 * 60
+      };
+      await this.swapInstance.addLiquidity(params, this.account);
       this.loading = false;
       this.$router.push({
         name: 'startupManagementDISCOSwap'
