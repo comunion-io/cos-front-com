@@ -4,7 +4,7 @@
  * @Descripttion : ether 与 token 互换， 交易流动性的增加删除
  * @FilePath     : \cos-front-com\src\utils\contract\swap.ts
  */
-import { COMUNION_RECEIVER_SWAP_ACCOUNT } from '@/configs/app';
+import { COMUNION_VUE_APP_UNISWAPV2ROUTER01 } from '@/configs/app';
 import { web3 } from '@/libs/web3';
 import axios from 'axios';
 
@@ -81,7 +81,7 @@ export class SwapTranscation {
    */
   async getSwapContractInstance() {
     const abi = await this.getAbi();
-    this.contractInstance = new web3.eth.Contract(abi, COMUNION_RECEIVER_SWAP_ACCOUNT);
+    this.contractInstance = new web3.eth.Contract(abi, COMUNION_VUE_APP_UNISWAPV2ROUTER01);
   }
 
   /**
@@ -135,7 +135,7 @@ export class SwapTranscation {
    * @date 02/02/2021
    * @param params
    */
-  async addLiquidity(params: IFundsPool) {
+  async addLiquidity(params: IFundsPool, myWalletAddress: string) {
     const {
       tokenA,
       tokenB,
@@ -157,7 +157,7 @@ export class SwapTranscation {
         to,
         deadline
       )
-      .call();
+      .send({ from: myWalletAddress });
     return data;
   }
 
