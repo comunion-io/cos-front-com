@@ -207,7 +207,8 @@ export default {
         addLiquidityPool: '',
         fundRaisingAddr: '',
         tokenAddr: '',
-        id: ''
+        id: '',
+        totalDepositToken: ''
       },
       // 是否是重建合约
       isRecreate: false,
@@ -266,7 +267,8 @@ export default {
           addLiquidityPool: data.addLiquidityPool,
           fundRaisingAddr: data.fundRaisingAddr,
           tokenAddr: data.tokenAddr,
-          id: data.id
+          id: data.id,
+          totalDepositToken: data.totalDepositToken
         });
       }
     },
@@ -307,14 +309,13 @@ export default {
       // 预先获取一个id
       const { error, data } = await services['cores@startup-获取prepareid']();
       if (!error) {
-        const id = data.id;
+        params.id = data.id;
         // 发起上链
         try {
           await this.discoInstance.sendDiscoTransaction(
             params,
-            id,
             this.account,
-            this.discoBlockCallBack
+            this.discoBlockCallBack.bind(this)
           );
         } catch (error) {
           console.error(error);
@@ -329,11 +330,10 @@ export default {
      * @param {*} txid
      * @return {*}
      */
-    async discoBlockCallBack(txid, id, params) {
+    async discoBlockCallBack(txid, params) {
       if (txid) {
         let { error } = await services['cores@disco-startup-创建']({
           startupId: this.startup.id,
-          id,
           ...params,
           txid
         });

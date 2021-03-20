@@ -6022,10 +6022,16 @@
       "links": {},
       "address": "0xDf5f46b224dfe33372043a4A32CD38e0F0A1403a",
       "transactionHash": "0x672af799ac4cf3b83fe9a16874bcf94faae85a67935f4b67c81c038d02a42200"
+    },
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0xE4086d20227e8252d3A060a222e64aCdCc262102",
+      "transactionHash": "0xab6e08868cb2d4bf6a259a3b8a792f94c4e1c46191839cc60432b8089e74a316"
     }
   },
   "schemaVersion": "3.3.4",
-  "updatedAt": "2021-03-17T15:17:39.833Z",
+  "updatedAt": "2021-03-19T14:23:31.563Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
