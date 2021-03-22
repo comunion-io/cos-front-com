@@ -28,6 +28,7 @@ export interface Disco {
   txId: string;
   fundRaisingStartedAt: string;
   fundRaisingEndedAt: string;
+  fundRaisingAddr: string;
 }
 
 export class DiscoTranscation {
@@ -56,13 +57,8 @@ export class DiscoTranscation {
    * @param id
    * @param account
    */
-  public async sendDiscoTransaction(
-    disco: Disco,
-    id: string,
-    account: string,
-    discoBlockCallBack: Function
-  ) {
-    const contractInstance = await this.getDiscoContractInstance(disco, id, account);
+  public async sendDiscoTransaction(disco: Disco, account: string, discoBlockCallBack: Function) {
+    const contractInstance = await this.getDiscoContractInstance(disco, account);
     if (contractInstance) {
       const codeData = await contractInstance.encodeABI();
       const countAll = await web3.eth.getTransactionCount(account, 'pending');
@@ -89,7 +85,7 @@ export class DiscoTranscation {
             return console.error(err);
           }
           const txid = result.result;
-          discoBlockCallBack(txid, id, disco);
+          discoBlockCallBack(txid, disco);
         }
       );
     }
@@ -108,8 +104,8 @@ export class DiscoTranscation {
    * @param id
    * @returns {*}
    */
-  private async getDiscoContractInstance(disco: Disco, id: string, account: string) {
-    this.id = id;
+  private async getDiscoContractInstance(disco: Disco, account: string) {
+    this.id = disco.id;
     const coinBase = await this.contractInstance.methods.setCoinBase(account);
     await this.setCoinbase(coinBase, account);
 
@@ -128,7 +124,7 @@ export class DiscoTranscation {
     const totalDepositToken = +(+disco.totalDepositToken).toFixed(0);
 
     const contractDisco = await this.contractInstance.methods.newDisco([
-      id,
+      disco.id,
       walletAddr,
       tokenAddr,
       description,
@@ -187,6 +183,57 @@ export class DiscoTranscation {
     }
   }
 
+  private sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  private async waitTransaction(txHash: string) {
+    let tx = null;
+    while (tx == null) {
+      tx = await web3.eth.getTransactionReceipt(txHash);
+      await this.sleep(1000);
+    }
+    console.log(`ransaction ${txHash} was mined`);
+    return tx.status;
+  }
+  /**
+   * @description approve the 1inch dex aggregator smart contract to spend our token
+   * you can see the detial at url: https://ethereumdev.io/swap-tokens-with-1inch-exchange-in-javascript-dex-and-arbitrage-part-2/
+   * @author Ze Hui
+   * @date 17/03/2021
+   * @private
+   * @param {string} address: token的地址
+   * @param {string} id： 当前disco 的id
+   * @param {string} fromAddress: 我的钱包地址
+   * @return {*}
+   */
+  public async approval(disco: Disco, fromAddress: string): Promise<false | undefined> {
+    if (!disco) {
+      return;
+    }
+    // 募资地址
+    const receiver = disco.fundRaisingAddr;
+    // 募资提供的token
+    const amount = disco.totalDepositToken;
+    const tokenABI = await axios.get('/static/Erc20ABI.json');
+    // 創建token的合约实例
+    const tokenInstance = new web3.eth.Contract(tokenABI.data.abi, disco.tokenAddr);
+    try {
+      const txHash = await tokenInstance.methods
+        .approve(receiver, web3.utils.numberToHex(amount * Math.pow(10, 18)))
+        .send({ from: fromAddress });
+      const status = await this.waitTransaction(txHash.transactionHash);
+      if (!status) {
+        console.log('Approval transaction failed.');
+        return;
+      }
+      this.enableDisco(disco.id, fromAddress);
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
   /**
    * @description 启用 disco， 开启募资
    * @author Ze Hui
@@ -194,24 +241,9 @@ export class DiscoTranscation {
    */
   public async enableDisco(id: string, account: string) {
     if (this.contractInstance) {
-      const enabledDisco = await this.contractInstance.methods.enableDisco(id);
-      const blockParams = await Promise.all([
-        enabledDisco.encodeABI(),
-        web3.eth.getTransactionCount(account, 'pending'),
-        web3.eth.getChainId()
-      ]);
-
-      const tx = {
-        from: account,
-        to: COMUNION_RECEIVER_DOISCO_ACCOUNT,
-        data: blockParams[0],
-        value: web3.utils.numberToHex(0),
-        nonce: web3.utils.numberToHex(blockParams[1]),
-        gasPrice: web3.utils.numberToHex(Math.pow(10, 12)),
-        gasLimit: web3.utils.numberToHex(183943),
-        chainId: blockParams[2]
-      };
-      await enabledDisco.send(tx);
+      await this.contractInstance.methods
+        .enableDisco(id)
+        .send({ from: account, value: web3.utils.numberToHex(Math.pow(10, 17)) });
     }
   }
 
