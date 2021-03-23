@@ -174,7 +174,7 @@
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 1394,
-        "sourceUnit": 1882,
+        "sourceUnit": 4730,
         "src": "53:34:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -185,7 +185,7 @@
         "id": 3,
         "nodeType": "ImportDirective",
         "scope": 1394,
-        "sourceUnit": 1786,
+        "sourceUnit": 4634,
         "src": "89:45:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -196,7 +196,7 @@
         "id": 4,
         "nodeType": "ImportDirective",
         "scope": 1394,
-        "sourceUnit": 1478,
+        "sourceUnit": 4326,
         "src": "136:33:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -286,10 +286,10 @@
               "id": 10,
               "name": "SafeMath",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1881,
+              "referencedDeclaration": 4729,
               "src": "305:8:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_SafeMath_$1881",
+                "typeIdentifier": "t_contract$_SafeMath_$4729",
                 "typeString": "library SafeMath"
               }
             },
@@ -316,7 +316,7 @@
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+              "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
               "typeString": "contract IUniswapV2Router01"
             },
             "typeName": {
@@ -324,10 +324,10 @@
               "id": 13,
               "name": "IUniswapV2Router01",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1785,
+              "referencedDeclaration": 4633,
               "src": "332:18:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                 "typeString": "contract IUniswapV2Router01"
               }
             },
@@ -932,7 +932,7 @@
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_contract$_IERC20_$1477",
+                  "typeIdentifier": "t_contract$_IERC20_$4325",
                   "typeString": "contract IERC20"
                 },
                 "typeName": {
@@ -940,10 +940,10 @@
                   "id": 60,
                   "name": "IERC20",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 1477,
+                  "referencedDeclaration": 4325,
                   "src": "1589:6:0",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_IERC20_$1477",
+                    "typeIdentifier": "t_contract$_IERC20_$4325",
                     "typeString": "contract IERC20"
                   }
                 },
@@ -1691,7 +1691,7 @@
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1896,
+                            "referencedDeclaration": 4744,
                             "src": "2958:3:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -1767,10 +1767,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1900,
+                      "referencedDeclaration": 4748,
                       "src": "2950:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -2152,10 +2152,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1899,
+                      "referencedDeclaration": 4747,
                       "src": "3224:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -2279,10 +2279,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1900,
+                      "referencedDeclaration": 4748,
                       "src": "3292:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -2406,10 +2406,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1900,
+                      "referencedDeclaration": 4748,
                       "src": "3414:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -2518,7 +2518,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1896,
+                        "referencedDeclaration": 4744,
                         "src": "3592:3:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -2726,7 +2726,7 @@
                       "referencedDeclaration": 14,
                       "src": "3800:7:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                        "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                         "typeString": "contract IUniswapV2Router01"
                       }
                     },
@@ -2760,10 +2760,10 @@
                         "name": "IUniswapV2Router01",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1785,
+                        "referencedDeclaration": 4633,
                         "src": "3810:18:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_IUniswapV2Router01_$1785_$",
+                          "typeIdentifier": "t_type$_t_contract$_IUniswapV2Router01_$4633_$",
                           "typeString": "type(contract IUniswapV2Router01)"
                         }
                       },
@@ -2777,13 +2777,13 @@
                       "nodeType": "FunctionCall",
                       "src": "3810:28:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                        "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                         "typeString": "contract IUniswapV2Router01"
                       }
                     },
                     "src": "3800:38:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                      "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                       "typeString": "contract IUniswapV2Router01"
                     }
                   },
@@ -3272,7 +3272,7 @@
                     "name": "now",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 1898,
+                    "referencedDeclaration": 4746,
                     "src": "4211:3:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
@@ -3480,10 +3480,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1899,
+                      "referencedDeclaration": 4747,
                       "src": "4364:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -4033,10 +4033,10 @@
                           "name": "IERC20",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1477,
+                          "referencedDeclaration": 4325,
                           "src": "4845:6:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_type$_t_contract$_IERC20_$1477_$",
+                            "typeIdentifier": "t_type$_t_contract$_IERC20_$4325_$",
                             "typeString": "type(contract IERC20)"
                           }
                         },
@@ -4050,7 +4050,7 @@
                         "nodeType": "FunctionCall",
                         "src": "4845:19:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_IERC20_$1477",
+                          "typeIdentifier": "t_contract$_IERC20_$4325",
                           "typeString": "contract IERC20"
                         }
                       },
@@ -4172,7 +4172,7 @@
                           "typeString": "contract DiscoAddr"
                         },
                         {
-                          "typeIdentifier": "t_contract$_IERC20_$1477",
+                          "typeIdentifier": "t_contract$_IERC20_$4325",
                           "typeString": "contract IERC20"
                         },
                         {
@@ -4547,7 +4547,7 @@
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1896,
+                            "referencedDeclaration": 4744,
                             "src": "5248:3:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -4623,10 +4623,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1900,
+                      "referencedDeclaration": 4748,
                       "src": "5240:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -4956,10 +4956,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1900,
+                      "referencedDeclaration": 4748,
                       "src": "5671:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -5247,7 +5247,7 @@
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_IERC20_$1477",
+                        "typeIdentifier": "t_contract$_IERC20_$4325",
                         "typeString": "contract IERC20"
                       },
                       "typeName": {
@@ -5255,10 +5255,10 @@
                         "id": 397,
                         "name": "IERC20",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 1477,
+                        "referencedDeclaration": 4325,
                         "src": "5916:6:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_IERC20_$1477",
+                          "typeIdentifier": "t_contract$_IERC20_$4325",
                           "typeString": "contract IERC20"
                         }
                       },
@@ -5292,7 +5292,7 @@
                     "referencedDeclaration": 61,
                     "src": "5931:16:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_IERC20_$1477",
+                      "typeIdentifier": "t_contract$_IERC20_$4325",
                       "typeString": "contract IERC20"
                     }
                   },
@@ -5311,7 +5311,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1896,
+                          "referencedDeclaration": 4744,
                           "src": "5977:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -5432,7 +5432,7 @@
                         "referencedDeclaration": 398,
                         "src": "5958:5:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_IERC20_$1477",
+                          "typeIdentifier": "t_contract$_IERC20_$4325",
                           "typeString": "contract IERC20"
                         }
                       },
@@ -5443,7 +5443,7 @@
                       "lValueRequested": false,
                       "memberName": "transferFrom",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1476,
+                      "referencedDeclaration": 4324,
                       "src": "5958:18:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$_t_bool_$",
@@ -5655,7 +5655,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1896,
+                        "referencedDeclaration": 4744,
                         "src": "6147:3:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -6142,10 +6142,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1899,
+                      "referencedDeclaration": 4747,
                       "src": "6608:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -8385,7 +8385,7 @@
                           "lValueRequested": false,
                           "memberName": "mul",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 1859,
+                          "referencedDeclaration": 4707,
                           "src": "8290:13:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -8413,7 +8413,7 @@
                       "lValueRequested": false,
                       "memberName": "div",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1880,
+                      "referencedDeclaration": 4728,
                       "src": "8290:20:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -9681,7 +9681,7 @@
                                 "lValueRequested": false,
                                 "memberName": "sub",
                                 "nodeType": "MemberAccess",
-                                "referencedDeclaration": 1831,
+                                "referencedDeclaration": 4679,
                                 "src": "9333:30:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -9709,7 +9709,7 @@
                             "lValueRequested": false,
                             "memberName": "div",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 1880,
+                            "referencedDeclaration": 4728,
                             "src": "9333:49:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -9826,7 +9826,7 @@
                             "lValueRequested": false,
                             "memberName": "sub",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 1831,
+                            "referencedDeclaration": 4679,
                             "src": "9433:27:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -10078,7 +10078,7 @@
                                     "lValueRequested": false,
                                     "memberName": "add",
                                     "nodeType": "MemberAccess",
-                                    "referencedDeclaration": 1809,
+                                    "referencedDeclaration": 4657,
                                     "src": "9714:15:0",
                                     "typeDescriptions": {
                                       "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -10183,7 +10183,7 @@
                                     "lValueRequested": false,
                                     "memberName": "mul",
                                     "nodeType": "MemberAccess",
-                                    "referencedDeclaration": 1859,
+                                    "referencedDeclaration": 4707,
                                     "src": "9665:18:0",
                                     "typeDescriptions": {
                                       "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -10211,7 +10211,7 @@
                                 "lValueRequested": false,
                                 "memberName": "mul",
                                 "nodeType": "MemberAccess",
-                                "referencedDeclaration": 1859,
+                                "referencedDeclaration": 4707,
                                 "src": "9665:48:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -10239,7 +10239,7 @@
                             "lValueRequested": false,
                             "memberName": "div",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 1880,
+                            "referencedDeclaration": 4728,
                             "src": "9665:72:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -10292,7 +10292,7 @@
                               "referencedDeclaration": 61,
                               "src": "9787:16:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_IERC20_$1477",
+                                "typeIdentifier": "t_contract$_IERC20_$4325",
                                 "typeString": "contract IERC20"
                               }
                             },
@@ -10342,7 +10342,7 @@
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_IERC20_$1477",
+                                "typeIdentifier": "t_contract$_IERC20_$4325",
                                 "typeString": "contract IERC20"
                               },
                               {
@@ -10393,7 +10393,7 @@
                             "referencedDeclaration": 1378,
                             "src": "9757:29:0",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_external_nonpayable$_t_contract$_IERC20_$1477_$_t_address_$_t_uint256_$returns$__$",
+                              "typeIdentifier": "t_function_external_nonpayable$_t_contract$_IERC20_$4325_$_t_address_$_t_uint256_$returns$__$",
                               "typeString": "function (contract IERC20,address,uint256) external"
                             }
                           },
@@ -10482,7 +10482,7 @@
                               "lValueRequested": false,
                               "memberName": "add",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 1809,
+                              "referencedDeclaration": 4657,
                               "src": "9859:12:0",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -10854,7 +10854,7 @@
                               "referencedDeclaration": 61,
                               "src": "10104:16:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_IERC20_$1477",
+                                "typeIdentifier": "t_contract$_IERC20_$4325",
                                 "typeString": "contract IERC20"
                               }
                             },
@@ -10904,7 +10904,7 @@
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_IERC20_$1477",
+                                "typeIdentifier": "t_contract$_IERC20_$4325",
                                 "typeString": "contract IERC20"
                               },
                               {
@@ -10955,7 +10955,7 @@
                             "referencedDeclaration": 1378,
                             "src": "10074:29:0",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_external_nonpayable$_t_contract$_IERC20_$1477_$_t_address_$_t_uint256_$returns$__$",
+                              "typeIdentifier": "t_function_external_nonpayable$_t_contract$_IERC20_$4325_$_t_address_$_t_uint256_$returns$__$",
                               "typeString": "function (contract IERC20,address,uint256) external"
                             }
                           },
@@ -11515,7 +11515,7 @@
                         "referencedDeclaration": 61,
                         "src": "10590:16:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_IERC20_$1477",
+                          "typeIdentifier": "t_contract$_IERC20_$4325",
                           "typeString": "contract IERC20"
                         }
                       },
@@ -11528,7 +11528,7 @@
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1916,
+                            "referencedDeclaration": 4764,
                             "src": "10616:4:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_contract$_Disco_$1304",
@@ -11603,7 +11603,7 @@
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_contract$_IERC20_$1477",
+                          "typeIdentifier": "t_contract$_IERC20_$4325",
                           "typeString": "contract IERC20"
                         },
                         {
@@ -11638,7 +11638,7 @@
                       "referencedDeclaration": 1378,
                       "src": "10571:18:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_external_nonpayable$_t_contract$_IERC20_$1477_$_t_address_$_t_uint256_$returns$__$",
+                        "typeIdentifier": "t_function_external_nonpayable$_t_contract$_IERC20_$4325_$_t_address_$_t_uint256_$returns$__$",
                         "typeString": "function (contract IERC20,address,uint256) external"
                       }
                     },
@@ -11676,7 +11676,7 @@
                             "referencedDeclaration": 14,
                             "src": "10684:7:0",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                               "typeString": "contract IUniswapV2Router01"
                             }
                           }
@@ -11684,7 +11684,7 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                               "typeString": "contract IUniswapV2Router01"
                             }
                           ],
@@ -11781,7 +11781,7 @@
                         "referencedDeclaration": 61,
                         "src": "10651:16:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_IERC20_$1477",
+                          "typeIdentifier": "t_contract$_IERC20_$4325",
                           "typeString": "contract IERC20"
                         }
                       },
@@ -11792,7 +11792,7 @@
                       "lValueRequested": false,
                       "memberName": "approve",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1456,
+                      "referencedDeclaration": 4304,
                       "src": "10651:24:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
@@ -11939,7 +11939,7 @@
                           "lValueRequested": false,
                           "memberName": "mul",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 1859,
+                          "referencedDeclaration": 4707,
                           "src": "10769:13:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -11967,7 +11967,7 @@
                       "lValueRequested": false,
                       "memberName": "div",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1880,
+                      "referencedDeclaration": 4728,
                       "src": "10769:41:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -12013,7 +12013,7 @@
                                     "referencedDeclaration": 14,
                                     "src": "10872:7:0",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                                      "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                                       "typeString": "contract IUniswapV2Router01"
                                     }
                                   }
@@ -12021,7 +12021,7 @@
                                 "expression": {
                                   "argumentTypes": [
                                     {
-                                      "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                                      "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                                       "typeString": "contract IUniswapV2Router01"
                                     }
                                   ],
@@ -12517,7 +12517,7 @@
                             "referencedDeclaration": 14,
                             "src": "10970:7:0",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                               "typeString": "contract IUniswapV2Router01"
                             }
                           },
@@ -12528,7 +12528,7 @@
                           "lValueRequested": false,
                           "memberName": "addLiquidityETH",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 1535,
+                          "referencedDeclaration": 4383,
                           "src": "10970:23:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_payable$_t_address_$_t_uint256_$_t_uint256_$_t_uint256_$_t_address_$_t_uint256_$returns$_t_uint256_$_t_uint256_$_t_uint256_$",
@@ -12926,7 +12926,7 @@
                               "referencedDeclaration": 14,
                               "src": "11438:7:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                                "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                                 "typeString": "contract IUniswapV2Router01"
                               }
                             }
@@ -12934,7 +12934,7 @@
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                                "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                                 "typeString": "contract IUniswapV2Router01"
                               }
                             ],
@@ -13063,10 +13063,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1900,
+                      "referencedDeclaration": 4748,
                       "src": "11422:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -13184,7 +13184,7 @@
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1896,
+                              "referencedDeclaration": 4744,
                               "src": "11601:3:0",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
@@ -13214,7 +13214,7 @@
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1916,
+                                "referencedDeclaration": 4764,
                                 "src": "11621:4:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_contract$_Disco_$1304",
@@ -13310,7 +13310,7 @@
                             "referencedDeclaration": 61,
                             "src": "11571:16:0",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_IERC20_$1477",
+                              "typeIdentifier": "t_contract$_IERC20_$4325",
                               "typeString": "contract IERC20"
                             }
                           },
@@ -13321,7 +13321,7 @@
                           "lValueRequested": false,
                           "memberName": "transferFrom",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 1476,
+                          "referencedDeclaration": 4324,
                           "src": "11571:29:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$_t_bool_$",
@@ -13354,10 +13354,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1899,
+                      "referencedDeclaration": 4747,
                       "src": "11563:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -13476,7 +13476,7 @@
                             "referencedDeclaration": 14,
                             "src": "11725:7:0",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                               "typeString": "contract IUniswapV2Router01"
                             }
                           }
@@ -13484,7 +13484,7 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                               "typeString": "contract IUniswapV2Router01"
                             }
                           ],
@@ -13565,7 +13565,7 @@
                         "referencedDeclaration": 61,
                         "src": "11692:16:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_IERC20_$1477",
+                          "typeIdentifier": "t_contract$_IERC20_$4325",
                           "typeString": "contract IERC20"
                         }
                       },
@@ -13576,7 +13576,7 @@
                       "lValueRequested": false,
                       "memberName": "approve",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1456,
+                      "referencedDeclaration": 4304,
                       "src": "11692:24:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
@@ -13867,7 +13867,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1896,
+                          "referencedDeclaration": 4744,
                           "src": "11925:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -13962,7 +13962,7 @@
                             "referencedDeclaration": 14,
                             "src": "11860:7:0",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                               "typeString": "contract IUniswapV2Router01"
                             }
                           },
@@ -13973,7 +13973,7 @@
                           "lValueRequested": false,
                           "memberName": "addLiquidityETH",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 1535,
+                          "referencedDeclaration": 4383,
                           "src": "11860:23:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_payable$_t_address_$_t_uint256_$_t_uint256_$_t_uint256_$_t_address_$_t_uint256_$returns$_t_uint256_$_t_uint256_$_t_uint256_$",
@@ -14305,7 +14305,7 @@
                               "referencedDeclaration": 14,
                               "src": "12152:7:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                                "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                                 "typeString": "contract IUniswapV2Router01"
                               }
                             }
@@ -14313,7 +14313,7 @@
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                                "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                                 "typeString": "contract IUniswapV2Router01"
                               }
                             ],
@@ -14442,10 +14442,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1900,
+                      "referencedDeclaration": 4748,
                       "src": "12136:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -14564,7 +14564,7 @@
                             "referencedDeclaration": 14,
                             "src": "12310:7:0",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                               "typeString": "contract IUniswapV2Router01"
                             }
                           }
@@ -14572,7 +14572,7 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                               "typeString": "contract IUniswapV2Router01"
                             }
                           ],
@@ -14653,7 +14653,7 @@
                         "referencedDeclaration": 61,
                         "src": "12277:16:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_IERC20_$1477",
+                          "typeIdentifier": "t_contract$_IERC20_$4325",
                           "typeString": "contract IERC20"
                         }
                       },
@@ -14664,7 +14664,7 @@
                       "lValueRequested": false,
                       "memberName": "approve",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1456,
+                      "referencedDeclaration": 4304,
                       "src": "12277:24:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
@@ -15006,7 +15006,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1896,
+                          "referencedDeclaration": 4744,
                           "src": "12529:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -15077,7 +15077,7 @@
                         "referencedDeclaration": 14,
                         "src": "12472:7:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                          "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                           "typeString": "contract IUniswapV2Router01"
                         }
                       },
@@ -15088,7 +15088,7 @@
                       "lValueRequested": false,
                       "memberName": "removeLiquidityETH",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1575,
+                      "referencedDeclaration": 4423,
                       "src": "12472:26:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$_t_uint256_$_t_uint256_$_t_address_$_t_uint256_$returns$_t_uint256_$_t_uint256_$",
@@ -15420,10 +15420,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1899,
+                      "referencedDeclaration": 4747,
                       "src": "12775:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -15746,10 +15746,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1899,
+                      "referencedDeclaration": 4747,
                       "src": "12932:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -15894,10 +15894,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1899,
+                      "referencedDeclaration": 4747,
                       "src": "12993:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -16494,7 +16494,7 @@
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_IERC20_$1477",
+                        "typeIdentifier": "t_contract$_IERC20_$4325",
                         "typeString": "contract IERC20"
                       },
                       "typeName": {
@@ -16502,10 +16502,10 @@
                         "id": 1229,
                         "name": "IERC20",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 1477,
+                        "referencedDeclaration": 4325,
                         "src": "13492:6:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_IERC20_$1477",
+                          "typeIdentifier": "t_contract$_IERC20_$4325",
                           "typeString": "contract IERC20"
                         }
                       },
@@ -16539,7 +16539,7 @@
                     "referencedDeclaration": 61,
                     "src": "13507:16:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_IERC20_$1477",
+                      "typeIdentifier": "t_contract$_IERC20_$4325",
                       "typeString": "contract IERC20"
                     }
                   },
@@ -16629,7 +16629,7 @@
                         "referencedDeclaration": 1230,
                         "src": "13534:5:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_IERC20_$1477",
+                          "typeIdentifier": "t_contract$_IERC20_$4325",
                           "typeString": "contract IERC20"
                         }
                       },
@@ -16640,7 +16640,7 @@
                       "lValueRequested": false,
                       "memberName": "transfer",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1465,
+                      "referencedDeclaration": 4313,
                       "src": "13534:14:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
@@ -16829,10 +16829,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1899,
+                      "referencedDeclaration": 4747,
                       "src": "13774:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -16916,7 +16916,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1896,
+                          "referencedDeclaration": 4744,
                           "src": "13891:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -17122,7 +17122,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1896,
+                          "referencedDeclaration": 4744,
                           "src": "14160:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -17364,7 +17364,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1896,
+                          "referencedDeclaration": 4744,
                           "src": "14244:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -18021,7 +18021,7 @@
                             "referencedDeclaration": 1344,
                             "src": "14894:5:0",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_IERC20_$1477",
+                              "typeIdentifier": "t_contract$_IERC20_$4325",
                               "typeString": "contract IERC20"
                             }
                           },
@@ -18032,7 +18032,7 @@
                           "lValueRequested": false,
                           "memberName": "approve",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 1456,
+                          "referencedDeclaration": 4304,
                           "src": "14894:13:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
@@ -18065,10 +18065,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1899,
+                      "referencedDeclaration": 4747,
                       "src": "14886:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -18116,7 +18116,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_IERC20_$1477",
+                    "typeIdentifier": "t_contract$_IERC20_$4325",
                     "typeString": "contract IERC20"
                   },
                   "typeName": {
@@ -18124,10 +18124,10 @@
                     "id": 1343,
                     "name": "IERC20",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 1477,
+                    "referencedDeclaration": 4325,
                     "src": "14824:6:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_IERC20_$1477",
+                      "typeIdentifier": "t_contract$_IERC20_$4325",
                       "typeString": "contract IERC20"
                     }
                   },
@@ -18262,7 +18262,7 @@
                             "referencedDeclaration": 1362,
                             "src": "15024:5:0",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_IERC20_$1477",
+                              "typeIdentifier": "t_contract$_IERC20_$4325",
                               "typeString": "contract IERC20"
                             }
                           },
@@ -18273,7 +18273,7 @@
                           "lValueRequested": false,
                           "memberName": "transfer",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 1465,
+                          "referencedDeclaration": 4313,
                           "src": "15024:14:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
@@ -18306,10 +18306,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1899,
-                        1900
+                        4747,
+                        4748
                       ],
-                      "referencedDeclaration": 1899,
+                      "referencedDeclaration": 4747,
                       "src": "15016:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -18357,7 +18357,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_IERC20_$1477",
+                    "typeIdentifier": "t_contract$_IERC20_$4325",
                     "typeString": "contract IERC20"
                   },
                   "typeName": {
@@ -18365,10 +18365,10 @@
                     "id": 1361,
                     "name": "IERC20",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 1477,
+                    "referencedDeclaration": 4325,
                     "src": "14954:6:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_IERC20_$1477",
+                      "typeIdentifier": "t_contract$_IERC20_$4325",
                       "typeString": "contract IERC20"
                     }
                   },
@@ -18465,7 +18465,7 @@
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1918,
+                                "referencedDeclaration": 4766,
                                 "src": "15166:4:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_contract$_DiscoAddr_$1393",
@@ -18675,7 +18675,7 @@
       },
       {
         "attributes": {
-          "SourceUnit": 1882,
+          "SourceUnit": 4730,
           "absolutePath": "/D/comunion/cos-contract-com/contracts/libraries/SafeMath.sol",
           "file": "./libraries/SafeMath.sol",
           "scope": 1394,
@@ -18690,7 +18690,7 @@
       },
       {
         "attributes": {
-          "SourceUnit": 1786,
+          "SourceUnit": 4634,
           "absolutePath": "/D/comunion/cos-contract-com/contracts/interfaces/IUniswapV2Router01.sol",
           "file": "./interfaces/IUniswapV2Router01.sol",
           "scope": 1394,
@@ -18705,7 +18705,7 @@
       },
       {
         "attributes": {
-          "SourceUnit": 1478,
+          "SourceUnit": 4326,
           "absolutePath": "/D/comunion/cos-contract-com/contracts/interfaces/IErc20.sol",
           "file": "./interfaces/IErc20.sol",
           "scope": 1394,
@@ -18807,7 +18807,7 @@
                 "attributes": {
                   "contractScope": null,
                   "name": "SafeMath",
-                  "referencedDeclaration": 1881,
+                  "referencedDeclaration": 4729,
                   "type": "library SafeMath"
                 },
                 "id": 10,
@@ -18844,7 +18844,7 @@
                 "attributes": {
                   "contractScope": null,
                   "name": "IUniswapV2Router01",
-                  "referencedDeclaration": 1785,
+                  "referencedDeclaration": 4633,
                   "type": "contract IUniswapV2Router01"
                 },
                 "id": 13,
@@ -19470,7 +19470,7 @@
                     "attributes": {
                       "contractScope": null,
                       "name": "IERC20",
-                      "referencedDeclaration": 1477,
+                      "referencedDeclaration": 4325,
                       "type": "contract IERC20"
                     },
                     "id": 60,
@@ -20279,10 +20279,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1900,
+                              "referencedDeclaration": 4748,
                               "type": "function (bool,string memory) pure",
                               "value": "require"
                             },
@@ -20323,7 +20323,7 @@
                                       "overloadedDeclarations": [
                                         null
                                       ],
-                                      "referencedDeclaration": 1896,
+                                      "referencedDeclaration": 4744,
                                       "type": "msg",
                                       "value": "msg"
                                     },
@@ -20708,10 +20708,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1899,
+                              "referencedDeclaration": 4747,
                               "type": "function (bool) pure",
                               "value": "require"
                             },
@@ -20858,10 +20858,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1900,
+                              "referencedDeclaration": 4748,
                               "type": "function (bool,string memory) pure",
                               "value": "require"
                             },
@@ -20991,10 +20991,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1900,
+                              "referencedDeclaration": 4748,
                               "type": "function (bool,string memory) pure",
                               "value": "require"
                             },
@@ -21194,7 +21194,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1896,
+                                  "referencedDeclaration": 4744,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -21509,7 +21509,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1785,
+                                  "referencedDeclaration": 4633,
                                   "type": "type(contract IUniswapV2Router01)",
                                   "value": "IUniswapV2Router01"
                                 },
@@ -22065,7 +22065,7 @@
                           "overloadedDeclarations": [
                             null
                           ],
-                          "referencedDeclaration": 1898,
+                          "referencedDeclaration": 4746,
                           "type": "uint256",
                           "value": "now"
                         },
@@ -22178,10 +22178,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1899,
+                              "referencedDeclaration": 4747,
                               "type": "function (bool) pure",
                               "value": "require"
                             },
@@ -22835,7 +22835,7 @@
                                   "typeString": "contract DiscoAddr"
                                 },
                                 {
-                                  "typeIdentifier": "t_contract$_IERC20_$1477",
+                                  "typeIdentifier": "t_contract$_IERC20_$4325",
                                   "typeString": "contract IERC20"
                                 },
                                 {
@@ -22906,7 +22906,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1477,
+                                  "referencedDeclaration": 4325,
                                   "type": "type(contract IERC20)",
                                   "value": "IERC20"
                                 },
@@ -23438,10 +23438,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1900,
+                              "referencedDeclaration": 4748,
                               "type": "function (bool,string memory) pure",
                               "value": "require"
                             },
@@ -23482,7 +23482,7 @@
                                       "overloadedDeclarations": [
                                         null
                                       ],
-                                      "referencedDeclaration": 1896,
+                                      "referencedDeclaration": 4744,
                                       "type": "msg",
                                       "value": "msg"
                                     },
@@ -23814,10 +23814,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1900,
+                              "referencedDeclaration": 4748,
                               "type": "function (bool,string memory) pure",
                               "value": "require"
                             },
@@ -24196,7 +24196,7 @@
                             "attributes": {
                               "contractScope": null,
                               "name": "IERC20",
-                              "referencedDeclaration": 1477,
+                              "referencedDeclaration": 4325,
                               "type": "contract IERC20"
                             },
                             "id": 397,
@@ -24282,7 +24282,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "transferFrom",
-                              "referencedDeclaration": 1476,
+                              "referencedDeclaration": 4324,
                               "type": "function (address,address,uint256) external returns (bool)"
                             },
                             "children": [
@@ -24323,7 +24323,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1896,
+                                  "referencedDeclaration": 4744,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -24646,7 +24646,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1896,
+                                  "referencedDeclaration": 4744,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -25087,10 +25087,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1899,
+                              "referencedDeclaration": 4747,
                               "type": "function (bool) pure",
                               "value": "require"
                             },
@@ -27583,7 +27583,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "div",
-                              "referencedDeclaration": 1880,
+                              "referencedDeclaration": 4728,
                               "type": "function (uint256,uint256) pure returns (uint256)"
                             },
                             "children": [
@@ -27615,7 +27615,7 @@
                                       "isPure": false,
                                       "lValueRequested": false,
                                       "member_name": "mul",
-                                      "referencedDeclaration": 1859,
+                                      "referencedDeclaration": 4707,
                                       "type": "function (uint256,uint256) pure returns (uint256)"
                                     },
                                     "children": [
@@ -28989,7 +28989,7 @@
                                       "isPure": false,
                                       "lValueRequested": false,
                                       "member_name": "div",
-                                      "referencedDeclaration": 1880,
+                                      "referencedDeclaration": 4728,
                                       "type": "function (uint256,uint256) pure returns (uint256)"
                                     },
                                     "children": [
@@ -29021,7 +29021,7 @@
                                               "isPure": false,
                                               "lValueRequested": false,
                                               "member_name": "sub",
-                                              "referencedDeclaration": 1831,
+                                              "referencedDeclaration": 4679,
                                               "type": "function (uint256,uint256) pure returns (uint256)"
                                             },
                                             "children": [
@@ -29264,7 +29264,7 @@
                                       "isPure": false,
                                       "lValueRequested": false,
                                       "member_name": "sub",
-                                      "referencedDeclaration": 1831,
+                                      "referencedDeclaration": 4679,
                                       "type": "function (uint256,uint256) pure returns (uint256)"
                                     },
                                     "children": [
@@ -29511,7 +29511,7 @@
                                       "isPure": false,
                                       "lValueRequested": false,
                                       "member_name": "div",
-                                      "referencedDeclaration": 1880,
+                                      "referencedDeclaration": 4728,
                                       "type": "function (uint256,uint256) pure returns (uint256)"
                                     },
                                     "children": [
@@ -29543,7 +29543,7 @@
                                               "isPure": false,
                                               "lValueRequested": false,
                                               "member_name": "mul",
-                                              "referencedDeclaration": 1859,
+                                              "referencedDeclaration": 4707,
                                               "type": "function (uint256,uint256) pure returns (uint256)"
                                             },
                                             "children": [
@@ -29575,7 +29575,7 @@
                                                       "isPure": false,
                                                       "lValueRequested": false,
                                                       "member_name": "mul",
-                                                      "referencedDeclaration": 1859,
+                                                      "referencedDeclaration": 4707,
                                                       "type": "function (uint256,uint256) pure returns (uint256)"
                                                     },
                                                     "children": [
@@ -29684,7 +29684,7 @@
                                                   "isPure": false,
                                                   "lValueRequested": false,
                                                   "member_name": "add",
-                                                  "referencedDeclaration": 1809,
+                                                  "referencedDeclaration": 4657,
                                                   "type": "function (uint256,uint256) pure returns (uint256)"
                                                 },
                                                 "children": [
@@ -29787,7 +29787,7 @@
                                     "attributes": {
                                       "argumentTypes": [
                                         {
-                                          "typeIdentifier": "t_contract$_IERC20_$1477",
+                                          "typeIdentifier": "t_contract$_IERC20_$4325",
                                           "typeString": "contract IERC20"
                                         },
                                         {
@@ -29985,7 +29985,7 @@
                                           "isPure": false,
                                           "lValueRequested": false,
                                           "member_name": "add",
-                                          "referencedDeclaration": 1809,
+                                          "referencedDeclaration": 4657,
                                           "type": "function (uint256,uint256) pure returns (uint256)"
                                         },
                                         "children": [
@@ -30229,7 +30229,7 @@
                                     "attributes": {
                                       "argumentTypes": [
                                         {
-                                          "typeIdentifier": "t_contract$_IERC20_$1477",
+                                          "typeIdentifier": "t_contract$_IERC20_$4325",
                                           "typeString": "contract IERC20"
                                         },
                                         {
@@ -30922,7 +30922,7 @@
                             "attributes": {
                               "argumentTypes": [
                                 {
-                                  "typeIdentifier": "t_contract$_IERC20_$1477",
+                                  "typeIdentifier": "t_contract$_IERC20_$4325",
                                   "typeString": "contract IERC20"
                                 },
                                 {
@@ -31033,7 +31033,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1916,
+                                  "referencedDeclaration": 4764,
                                   "type": "contract Disco",
                                   "value": "this"
                                 },
@@ -31121,7 +31121,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "approve",
-                              "referencedDeclaration": 1456,
+                              "referencedDeclaration": 4304,
                               "type": "function (address,uint256) external returns (bool)"
                             },
                             "children": [
@@ -31180,7 +31180,7 @@
                                 "attributes": {
                                   "argumentTypes": [
                                     {
-                                      "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                                      "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                                       "typeString": "contract IUniswapV2Router01"
                                     }
                                   ],
@@ -31316,7 +31316,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "div",
-                              "referencedDeclaration": 1880,
+                              "referencedDeclaration": 4728,
                               "type": "function (uint256,uint256) pure returns (uint256)"
                             },
                             "children": [
@@ -31348,7 +31348,7 @@
                                       "isPure": false,
                                       "lValueRequested": false,
                                       "member_name": "mul",
-                                      "referencedDeclaration": 1859,
+                                      "referencedDeclaration": 4707,
                                       "type": "function (uint256,uint256) pure returns (uint256)"
                                     },
                                     "children": [
@@ -31583,7 +31583,7 @@
                                         "attributes": {
                                           "argumentTypes": [
                                             {
-                                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                                              "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                                               "typeString": "contract IUniswapV2Router01"
                                             }
                                           ],
@@ -31818,7 +31818,7 @@
                                       "isPure": false,
                                       "lValueRequested": false,
                                       "member_name": "addLiquidityETH",
-                                      "referencedDeclaration": 1535,
+                                      "referencedDeclaration": 4383,
                                       "type": "function (address,uint256,uint256,uint256,address,uint256) payable external returns (uint256,uint256,uint256)"
                                     },
                                     "children": [
@@ -32567,10 +32567,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1900,
+                              "referencedDeclaration": 4748,
                               "type": "function (bool,string memory) pure",
                               "value": "require"
                             },
@@ -32612,7 +32612,7 @@
                                     "attributes": {
                                       "argumentTypes": [
                                         {
-                                          "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                                          "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                                           "typeString": "contract IUniswapV2Router01"
                                         }
                                       ],
@@ -32843,10 +32843,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1899,
+                              "referencedDeclaration": 4747,
                               "type": "function (bool) pure",
                               "value": "require"
                             },
@@ -32890,7 +32890,7 @@
                                   "isPure": false,
                                   "lValueRequested": false,
                                   "member_name": "transferFrom",
-                                  "referencedDeclaration": 1476,
+                                  "referencedDeclaration": 4324,
                                   "type": "function (address,address,uint256) external returns (bool)"
                                 },
                                 "children": [
@@ -32948,7 +32948,7 @@
                                       "overloadedDeclarations": [
                                         null
                                       ],
-                                      "referencedDeclaration": 1896,
+                                      "referencedDeclaration": 4744,
                                       "type": "msg",
                                       "value": "msg"
                                     },
@@ -33001,7 +33001,7 @@
                                       "overloadedDeclarations": [
                                         null
                                       ],
-                                      "referencedDeclaration": 1916,
+                                      "referencedDeclaration": 4764,
                                       "type": "contract Disco",
                                       "value": "this"
                                     },
@@ -33160,7 +33160,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "approve",
-                              "referencedDeclaration": 1456,
+                              "referencedDeclaration": 4304,
                               "type": "function (address,uint256) external returns (bool)"
                             },
                             "children": [
@@ -33219,7 +33219,7 @@
                                 "attributes": {
                                   "argumentTypes": [
                                     {
-                                      "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                                      "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                                       "typeString": "contract IUniswapV2Router01"
                                     }
                                   ],
@@ -33538,7 +33538,7 @@
                                       "isPure": false,
                                       "lValueRequested": false,
                                       "member_name": "addLiquidityETH",
-                                      "referencedDeclaration": 1535,
+                                      "referencedDeclaration": 4383,
                                       "type": "function (address,uint256,uint256,uint256,address,uint256) payable external returns (uint256,uint256,uint256)"
                                     },
                                     "children": [
@@ -33682,7 +33682,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1896,
+                                  "referencedDeclaration": 4744,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -33963,10 +33963,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1900,
+                              "referencedDeclaration": 4748,
                               "type": "function (bool,string memory) pure",
                               "value": "require"
                             },
@@ -34008,7 +34008,7 @@
                                     "attributes": {
                                       "argumentTypes": [
                                         {
-                                          "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                                          "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                                           "typeString": "contract IUniswapV2Router01"
                                         }
                                       ],
@@ -34247,7 +34247,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "approve",
-                              "referencedDeclaration": 1456,
+                              "referencedDeclaration": 4304,
                               "type": "function (address,uint256) external returns (bool)"
                             },
                             "children": [
@@ -34306,7 +34306,7 @@
                                 "attributes": {
                                   "argumentTypes": [
                                     {
-                                      "typeIdentifier": "t_contract$_IUniswapV2Router01_$1785",
+                                      "typeIdentifier": "t_contract$_IUniswapV2Router01_$4633",
                                       "typeString": "contract IUniswapV2Router01"
                                     }
                                   ],
@@ -34649,7 +34649,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "removeLiquidityETH",
-                              "referencedDeclaration": 1575,
+                              "referencedDeclaration": 4423,
                               "type": "function (address,uint256,uint256,uint256,address,uint256) external returns (uint256,uint256)"
                             },
                             "children": [
@@ -34769,7 +34769,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1896,
+                                  "referencedDeclaration": 4744,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -34958,10 +34958,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1899,
+                              "referencedDeclaration": 4747,
                               "type": "function (bool) pure",
                               "value": "require"
                             },
@@ -35266,10 +35266,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1899,
+                              "referencedDeclaration": 4747,
                               "type": "function (bool) pure",
                               "value": "require"
                             },
@@ -35462,10 +35462,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1899,
+                              "referencedDeclaration": 4747,
                               "type": "function (bool) pure",
                               "value": "require"
                             },
@@ -36216,7 +36216,7 @@
                             "attributes": {
                               "contractScope": null,
                               "name": "IERC20",
-                              "referencedDeclaration": 1477,
+                              "referencedDeclaration": 4325,
                               "type": "contract IERC20"
                             },
                             "id": 1229,
@@ -36298,7 +36298,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "transfer",
-                              "referencedDeclaration": 1465,
+                              "referencedDeclaration": 4313,
                               "type": "function (address,uint256) external returns (bool)"
                             },
                             "children": [
@@ -36549,10 +36549,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1899,
+                              "referencedDeclaration": 4747,
                               "type": "function (bool) pure",
                               "value": "require"
                             },
@@ -36773,7 +36773,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1896,
+                                  "referencedDeclaration": 4744,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -37040,7 +37040,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1896,
+                                  "referencedDeclaration": 4744,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -37259,7 +37259,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1896,
+                                  "referencedDeclaration": 4744,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -37824,7 +37824,7 @@
                         "attributes": {
                           "contractScope": null,
                           "name": "IERC20",
-                          "referencedDeclaration": 1477,
+                          "referencedDeclaration": 4325,
                           "type": "contract IERC20"
                         },
                         "id": 1343,
@@ -37933,10 +37933,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1899,
+                              "referencedDeclaration": 4747,
                               "type": "function (bool) pure",
                               "value": "require"
                             },
@@ -37976,7 +37976,7 @@
                                   "isPure": false,
                                   "lValueRequested": false,
                                   "member_name": "approve",
-                                  "referencedDeclaration": 1456,
+                                  "referencedDeclaration": 4304,
                                   "type": "function (address,uint256) external returns (bool)"
                                 },
                                 "children": [
@@ -38086,7 +38086,7 @@
                         "attributes": {
                           "contractScope": null,
                           "name": "IERC20",
-                          "referencedDeclaration": 1477,
+                          "referencedDeclaration": 4325,
                           "type": "contract IERC20"
                         },
                         "id": 1361,
@@ -38195,10 +38195,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                1899,
-                                1900
+                                4747,
+                                4748
                               ],
-                              "referencedDeclaration": 1899,
+                              "referencedDeclaration": 4747,
                               "type": "function (bool) pure",
                               "value": "require"
                             },
@@ -38238,7 +38238,7 @@
                                   "isPure": false,
                                   "lValueRequested": false,
                                   "member_name": "transfer",
-                                  "referencedDeclaration": 1465,
+                                  "referencedDeclaration": 4313,
                                   "type": "function (address,uint256) external returns (bool)"
                                 },
                                 "children": [
@@ -38490,7 +38490,7 @@
                                       "overloadedDeclarations": [
                                         null
                                       ],
-                                      "referencedDeclaration": 1918,
+                                      "referencedDeclaration": 4766,
                                       "type": "contract DiscoAddr",
                                       "value": "this"
                                     },
@@ -38544,7 +38544,7 @@
   },
   "networks": {},
   "schemaVersion": "3.3.4",
-  "updatedAt": "2021-03-19T14:18:53.176Z",
+  "updatedAt": "2021-03-22T14:38:26.811Z",
   "devdoc": {
     "methods": {}
   },
