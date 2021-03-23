@@ -146,6 +146,8 @@ export class SwapTranscation {
       to,
       deadline
     } = params;
+    const countAll = await web3.eth.getTransactionCount(myWalletAddress, 'pending');
+    const chainId = await web3.eth.getChainId();
     const data = await this.contractInstance.methods
       .addLiquidity(
         tokenA,
@@ -157,7 +159,14 @@ export class SwapTranscation {
         to,
         deadline
       )
-      .send({ from: myWalletAddress });
+      .send({
+        from: myWalletAddress,
+        value: web3.utils.numberToHex(0),
+        nonce: web3.utils.numberToHex(countAll),
+        gasPrice: web3.utils.numberToHex(Math.pow(10, 11)),
+        gasLimit: web3.utils.numberToHex(183943),
+        chainId: chainId
+      });
     return data;
   }
 
