@@ -25,10 +25,10 @@
         <div class="input-item">
           <div class="header">
             <span class="label">Input</span>
-            <span class="balance">Balance {{ myTokenAmount }} {{ myTokenName }}</span>
+            <span class="balance">Balance {{ myTokenAmount }} {{ tokenSymbol }}</span>
           </div>
           <div class="body">
-            <div class="name">ETH</div>
+            <div class="name">{{ tokenSymbol }}</div>
             <div class="input-wrap">
               <a-input-number
                 :min="0"
@@ -43,8 +43,8 @@
       </div>
       <div class="info">
         <span style="font-weight: bold">Initial prices and pool share：</span>
-        <span>1 (UVU per ETH)</span>
-        <span>1 (ETH per UVU)</span>
+        <span>1 ({{ tokenSymbol }} per ETH)</span>
+        <span>1 (ETH per {{ tokenSymbol }})</span>
         <span>100% (Share of Pool)</span>
       </div>
     </div>
@@ -61,7 +61,7 @@
 
 <script>
 import { SwapTranscation } from '@/utils/contract/swap';
-import services from '@/services';
+// import services from '@/services';
 import { mapGetters } from 'vuex';
 import { COMUNION_VUE_APP_UNISWAPV2ROUTER01 } from '@/configs/app';
 import axios from 'axios';
@@ -73,12 +73,22 @@ export default {
       loading: false,
       tokenAmount: 0,
       tokenBAmount: 0,
-      myTokenAmount: 0,
-      myTokenName: ''
+      myTokenAmount: 0
     };
   },
+  props: {
+    startup: {
+      type: Object,
+      default: () => ({
+        settings: {}
+      })
+    }
+  },
   computed: {
-    ...mapGetters(['account'])
+    ...mapGetters(['account']),
+    tokenSymbol() {
+      return this.startup?.settings?.tokenSymbol || '';
+    }
   },
   mounted() {
     this.swapInstance = SwapTranscation.getInstance();
@@ -86,24 +96,16 @@ export default {
   methods: {
     async addLiquidity() {
       this.loading = true;
-      const { error, data: settingInfo } = await services['cores@startup-我的-获取']({
-        startupId: this.$route.params.id
-      });
-      this.myTokenName = settingInfo.settings.tokenName;
-      await this.approval(settingInfo);
-
-      if (!error) {
-        console.error(error);
-      }
+      await this.approval(this.startup);
       const params = {
         // TODO ether的地址， 开发时，ether的地址是我的钱包地址
         tokenA: this.account,
-        tokenB: settingInfo.settings.tokenAddr,
+        tokenB: this.startup.settings.tokenAddr,
         amountADesired: this.tokenAmount,
         amountBDesired: this.tokenBAmount,
         amountAMin: this.tokenAmount,
         amountBMin: this.tokenBAmount,
-        to: settingInfo.settings.walletAddrs[0].addr,
+        to: this.startup.settings.walletAddrs[0].addr,
         deadline: 30 * 60
       };
       await this.swapInstance.addLiquidity(params, this.account);
