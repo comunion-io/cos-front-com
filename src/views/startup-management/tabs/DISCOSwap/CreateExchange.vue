@@ -25,7 +25,7 @@
         <div class="input-item">
           <div class="header">
             <span class="label">Input</span>
-            <span class="balance">Balance 1000 ETH</span>
+            <span class="balance">Balance {{ myTokenAmount }} {{ myTokenName }}</span>
           </div>
           <div class="body">
             <div class="name">ETH</div>
@@ -63,13 +63,18 @@
 import { SwapTranscation } from '@/utils/contract/swap';
 import services from '@/services';
 import { mapGetters } from 'vuex';
+import { COMUNION_VUE_APP_UNISWAPV2ROUTER01 } from '@/configs/app';
+import axios from 'axios';
+import { web3 } from '@/libs/web3';
 
 export default {
   data() {
     return {
       loading: false,
       tokenAmount: 0,
-      tokenBAmount: 0
+      tokenBAmount: 0,
+      myTokenAmount: 0,
+      myTokenName: ''
     };
   },
   computed: {
@@ -84,6 +89,9 @@ export default {
       const { error, data: settingInfo } = await services['cores@startup-我的-获取']({
         startupId: this.$route.params.id
       });
+      this.myTokenName = settingInfo.settings.tokenName;
+      await this.approval(settingInfo);
+
       if (!error) {
         console.error(error);
       }
@@ -96,13 +104,28 @@ export default {
         amountAMin: this.tokenAmount,
         amountBMin: this.tokenBAmount,
         to: settingInfo.settings.walletAddrs[0].addr,
-        deadline: 20 * 60 * 60
+        deadline: 30 * 60
       };
       await this.swapInstance.addLiquidity(params, this.account);
       this.loading = false;
       this.$router.push({
         name: 'startupManagementDISCOSwap'
       });
+    },
+    async approval(settingInfo) {
+      // 募资提供的token
+      const amount = this.tokenAmount;
+      const tokenABI = await axios.get('/static/Erc20ABI.json');
+      const tokenAddr = settingInfo.settings.tokenAddr;
+      const tokenInstance = new web3.eth.Contract(tokenABI.data.abi, tokenAddr);
+
+      this.myTokenAmount = await tokenInstance.methods.balanceOf(this.account).call();
+      await tokenInstance.methods
+        .approve(
+          COMUNION_VUE_APP_UNISWAPV2ROUTER01,
+          web3.utils.numberToHex(amount * Math.pow(10, 18))
+        )
+        .send({ from: this.account });
     }
   }
 };
