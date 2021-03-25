@@ -136,7 +136,7 @@ export class DiscoTranscation {
       shareToken,
       minFundRaising,
       addLiquidityPool,
-      totalDepositToken
+      totalDepositToken * Math.pow(10, 18)
     ]);
     return contractDisco;
   }
@@ -211,16 +211,18 @@ export class DiscoTranscation {
     if (!disco) {
       return;
     }
-    // 募资地址
-    const receiver = disco.fundRaisingAddr;
     // 募资提供的token
     const amount = disco.totalDepositToken;
     const tokenABI = await axios.get('/static/Erc20ABI.json');
     // 創建token的合约实例
     const tokenInstance = new web3.eth.Contract(tokenABI.data.abi, disco.tokenAddr);
     try {
+      // token 要 approval 给disco的主合约地址， 而不是目的地址
       const txHash = await tokenInstance.methods
-        .approve(receiver, web3.utils.numberToHex(amount * Math.pow(10, 18)))
+        .approve(
+          COMUNION_RECEIVER_DOISCO_ACCOUNT,
+          web3.utils.numberToHex(amount * Math.pow(10, 18))
+        )
         .send({ from: fromAddress });
       const status = await this.waitTransaction(txHash.transactionHash);
       if (!status) {
@@ -241,9 +243,19 @@ export class DiscoTranscation {
    */
   public async enableDisco(id: string, account: string) {
     if (this.contractInstance) {
-      await this.contractInstance.methods
-        .enableDisco(id)
-        .send({ from: account, value: web3.utils.numberToHex(Math.pow(10, 17)) });
+      const countAll = await web3.eth.getTransactionCount(account, 'pending');
+      const chainId = await web3.eth.getChainId();
+      const tx = {
+        from: account,
+        // to: COMUNION_RECEIVER_DOISCO_ACCOUNT,
+        value: web3.utils.numberToHex(Math.pow(10, 17)),
+        nonce: web3.utils.numberToHex(countAll),
+        gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
+        gasLimit: web3.utils.numberToHex(183943),
+        chainId: chainId
+      };
+
+      await this.contractInstance.methods.enableDisco(id).send(tx);
     }
   }
 
