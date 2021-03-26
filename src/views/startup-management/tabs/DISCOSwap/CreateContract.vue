@@ -7,12 +7,7 @@
 <template>
   <!-- 创建 disco  -->
   <div class="create-contract">
-    <div class="alert" v-if="!createFundFaisingContractSucceed">
-      <a-icon type="exclamation-circle" theme="filled" style="color: #faad14; margin-right: 12px" />
-      <span>
-        Before opening DISCO , you need to set the properties of the fund-raising contract
-      </span>
-    </div>
+    <DISCOSteps :step="createFundFaisingContractSucceed ? 2 : 1" />
     <div class="content">
       <a-form-model
         layout="vertical"
@@ -32,7 +27,7 @@
             class="input"
             placeholder="Please input receiving fund raising wallet address"
             autocomplete="off"
-            v-model="disco.txid"
+            v-model="disco.fundRaisingAddr"
             :disabled="createFundFaisingContractSucceed"
           />
         </a-form-model-item>
@@ -178,10 +173,12 @@ import { DiscoTranscation } from '@/utils/contract/disco';
 import BbsInput from '@/components/form/BbsInput';
 import { merge } from '@/utils/utils';
 import { validateAddress, urlValidator } from '@/utils/validators';
+import DISCOSteps from './DISCOSteps';
 
 export default {
   components: {
-    BbsInput
+    BbsInput,
+    DISCOSteps
   },
   computed: {
     ...mapGetters(['categories', 'account', 'netWorkName']),
@@ -391,16 +388,6 @@ export default {
 <style lang="less" scoped>
 .create-contract {
   background-color: #fff;
-  .alert {
-    width: 100%;
-    background-color: #fef6e9;
-    color: #999;
-    line-height: 22px;
-    padding: 16px;
-    font-size: 16px;
-    text-align: center;
-    margin-bottom: 16px;
-  }
   .content {
     max-width: 590px;
     margin: auto;

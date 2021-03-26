@@ -6,7 +6,7 @@ import store from '@/store';
 // const dev = 'https://dev.comunion.io/api/';
 import { FILE_URL_PREFIX } from '@/configs/app';
 
-export const baseURL = `/api`;
+export const baseURL = process.env.VUE_APP_API_URL || `/api`;
 // 让ajax携带cookie
 axios.defaults.withCredentials = true;
 const instance = axios.create({

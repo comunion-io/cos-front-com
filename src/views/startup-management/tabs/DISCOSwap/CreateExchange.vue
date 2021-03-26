@@ -25,10 +25,10 @@
         <div class="input-item">
           <div class="header">
             <span class="label">Input</span>
-            <span class="balance">Balance {{ myTokenAmount }} {{ myTokenName }}</span>
+            <span class="balance">Balance {{ myTokenAmount }} {{ tokenSymbol }}</span>
           </div>
           <div class="body">
-            <div class="name">{{ myTokenName }}</div>
+            <div class="name">{{ tokenSymbol }}</div>
             <div class="input-wrap">
               <a-input-number
                 :min="0"
@@ -43,8 +43,8 @@
       </div>
       <div class="info">
         <span style="font-weight: bold">Initial prices and pool share：</span>
-        <span>1 ({{ myTokenName }} per ETH)</span>
-        <span>1 (ETH per {{ myTokenName }})</span>
+        <span>1 ({{ tokenSymbol }} per ETH)</span>
+        <span>1 (ETH per {{ tokenSymbol }})</span>
         <span>100% (Share of Pool)</span>
       </div>
     </div>
@@ -74,13 +74,23 @@ export default {
       tokenAmount: 0,
       tokenBAmount: 0,
       myTokenAmount: 0,
-      myTokenName: '',
       etherAmount: 0,
       settingInfo: {}
     };
   },
+  props: {
+    startup: {
+      type: Object,
+      default: () => ({
+        settings: {}
+      })
+    }
+  },
   computed: {
-    ...mapGetters(['account'])
+    ...mapGetters(['account']),
+    tokenSymbol() {
+      return this.startup?.settings?.tokenSymbol || '';
+    }
   },
   async mounted() {
     this.swapInstance = SwapTranscation.getInstance();
@@ -104,7 +114,6 @@ export default {
      * @description: get my balance of ether and token
      */
     async getMyBalance() {
-      this.myTokenName = this.settingInfo.settings.tokenName;
       this.etherAmount = await getEtherBalance(this.account);
       this.myTokenAmount = await getTokenBalance(this.settingInfo.settings.tokenAddr, this.account);
     },
@@ -122,8 +131,8 @@ export default {
         tokenB: this.settingInfo.settings.tokenAddr,
         amountADesired: web3.utils.numberToHex(this.tokenAmount * Math.pow(10, 18)),
         amountBDesired: web3.utils.numberToHex(this.tokenBAmount * Math.pow(10, 18)),
-        amountAMin: web3.utils.numberToHex(this.tokenAmount * Math.pow(10, 18)),
-        amountBMin: web3.utils.numberToHex(this.tokenBAmount * Math.pow(10, 18)),
+        amountAMin: web3.utils.numberToHex(0),
+        amountBMin: web3.utils.numberToHex(0),
         to: this.settingInfo.settings.walletAddrs[0].addr,
         deadline: 20 * 60
       };

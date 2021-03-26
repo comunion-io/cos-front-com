@@ -14,7 +14,7 @@ export async function commonList(url, query) {
  */
 export async function getEtherBalance(account) {
   const balance = await web3.eth.getBalance(account);
-  return Number((balance / Math.pow(10, 18)).toFixed(4));
+  return Math.round((balance / Math.pow(10, 18)) * 10000) / 10000;
 }
 
 /**
@@ -25,7 +25,7 @@ export async function getEtherBalance(account) {
 export async function getTokenBalance(tokenAddr, account) {
   const tokenContract = await getTokenContract(tokenAddr);
   const tokenAmount = await tokenContract.methods.balanceOf(account).call();
-  return Number((tokenAmount / Math.pow(10, 18)).toFixed(4));
+  return Math.round((tokenAmount / Math.pow(10, 18)) * 10000) / 10000;
 }
 
 export async function getTokenContract(tokenAddr) {
