@@ -27,7 +27,7 @@
             class="input"
             placeholder="Please input receiving fund raising wallet address"
             autocomplete="off"
-            v-model="disco.txid"
+            v-model="disco.fundRaisingAddr"
             :disabled="createFundFaisingContractSucceed"
           />
         </a-form-model-item>
