@@ -31,7 +31,7 @@ jobs:
       - name: Sync with personal repo
         run: |
           git fetch --unshallow origin
-          git remote add vercel https://erguotou520:$GITHUB_TOKEN@github.com/erguotou520/cos-front-com
+          git remote add vercel https://erguotou520:$VERCEL_TOKEN@github.com/erguotou520/cos-front-com
           git push --all -f vercel
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
