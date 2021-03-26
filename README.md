@@ -1,38 +1,40 @@
 # cos-front-com
 
 ## VS Code plugins
+
 `Vetur` `EsLint` `Prettier` are required, `npm Intellisense` `Path Intellisense` `EditorConfig for VS Code` `Version Lens` are recommanded.
 
 ## Project setup
+
 ```shell
-yarn install
+yarn
 ```
 
 ## Compiles and hot-reloads for development
 
 ```shell
-yarn run serve
+yarn serve
 ```
 
 ## Compiles and minifies for production
 
 ```shell
 # for develop environment
-yarn run build
+yarn build
 # for production environment
-yarn run build:prod
+yarn build:prod
 ```
 
 ## Run your tests
 
 ```shell
-yarn run test
+yarn test
 ```
 
 ## Lints and fixes files
 
 ```shell
-yarn run lint
+yarn lint
 ```
 
 ## Git branches
