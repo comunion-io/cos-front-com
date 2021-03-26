@@ -28,6 +28,12 @@ jobs:
         run: yarn install
       - name: Eslint
         run: yarn lint
+      - name: Sync with personal repo
+        run: |
+          git remote add vercel https://erguotou520:$GITHUB_TOKEN@github.com/erguotou520/cos-front-com
+          git push --all -f vercel
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and deploy
         uses: docker/build-push-action@v1
         with:
