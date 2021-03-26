@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     // 轮训状态
-    pollingStatus() {
+    async pollingStatus() {
       // 进入子页面关闭轮询，
       // 成功类状态关闭轮询
       if (
@@ -100,8 +100,9 @@ export default {
       ) {
         this.removePolling();
       } else {
+        await this.getDiscoAndSwapStatus();
         this.pollingTimout = setTimeout(() => {
-          this.getDiscoAndSwapStatus().then(this.pollingStatus);
+          this.pollingStatus();
         }, 3000);
       }
     },
