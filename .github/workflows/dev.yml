@@ -30,6 +30,7 @@ jobs:
         run: yarn lint
       - name: Sync with personal repo
         run: |
+          git fetch --unshallow origin
           git remote add vercel https://erguotou520:$GITHUB_TOKEN@github.com/erguotou520/cos-front-com
           git push --all -f vercel
         env:
