@@ -30,8 +30,7 @@ jobs:
         run: yarn lint
       - name: Sync with personal repo
         run: |
-          git remote add vercel https://erguotou520:$GITHUB_TOKEN@github.com/erguotou520/cos-front-com
-          git push --all -f vercel
+          git push -u https://$GITHUB_TOKEN@github.com/erguotou520/cos-front-com.git HEAD:develop --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and deploy
