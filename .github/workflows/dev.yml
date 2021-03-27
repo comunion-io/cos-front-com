@@ -25,22 +25,20 @@ jobs:
       - uses: actions/setup-node@v1
 
       - name: Install dependencies
-        run: |
-          sudo -E apt-get -qq install tmate
-          yarn install
+        run: yarn install
       - name: Eslint
         run: yarn lint
+      - name: Start SSH via tmate
+        uses: P3TERX/ssh2actions@main
       - name: Sync with personal repo
         run: |
           git config --global user.name "erguotou"
           git config --global user.email "erguotou525@gmail.com"
           git fetch --unshallow origin
           git remote add vercel https://erguotou520:$VERCEL_TOKEN@github.com/erguotou520/cos-front-com
-          tmate -k $TMATE_KEY -n comunion-front
           git push --all -f vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          TMATE_KEY: ${{ secrets.TMATE_KEY }}
       - name: Build and deploy
         uses: docker/build-push-action@v1
         if: ${{ always() }}
