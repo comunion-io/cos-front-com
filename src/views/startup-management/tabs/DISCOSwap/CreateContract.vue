@@ -64,61 +64,61 @@
             class="input number-input"
             placeholder=""
             autocomplete="off"
-            addon-after="%"
             :min="0"
             :max="100"
             v-model="disco.investmentReward"
             @change="updateTotalDepositToken"
             :disabled="createFundFaisingContractSucceed"
           />
+          <span class="input-after">%</span>
         </a-form-model-item>
         <a-form-model-item label="Reward Decline Rate (Day)" prop="rewardDeclineRate">
           <a-input-number
             class="input number-input"
             placeholder=""
             autocomplete="off"
-            addon-after="%"
             :min="0"
             :max="100"
             v-model="disco.rewardDeclineRate"
             :disabled="createFundFaisingContractSucceed"
           />
+          <span class="input-after">%</span>
         </a-form-model-item>
         <a-form-model-item label="Share Token" prop="shareToken">
           <a-input-number
             class="input number-input"
             placeholder=""
             autocomplete="off"
-            addon-after="Token"
             :min="0"
             v-model="disco.shareToken"
             @change="updateTotalDepositToken"
             :disabled="createFundFaisingContractSucceed"
           />
+          <span class="input-after">Token</span>
         </a-form-model-item>
         <a-form-model-item label="Fund-Raising ETH (min)" prop="minFundRaising">
           <a-input-number
             class="input number-input"
             placeholder=""
             autocomplete="off"
-            addon-after="ETH"
             :min="0"
             v-model="disco.minFundRaising"
             :disabled="createFundFaisingContractSucceed"
           />
+          <span class="input-after">ETH</span>
         </a-form-model-item>
         <a-form-model-item label="Add Liquidity Pool" prop="addLiquidityPool">
           <a-input-number
             class="input number-input"
             placeholder=""
             autocomplete="off"
-            addon-after="%"
             :min="0"
             :max="100"
             v-model="disco.addLiquidityPool"
             @change="updateTotalDepositToken"
             :disabled="createFundFaisingContractSucceed"
           />
+          <span class="input-after">%</span>
         </a-form-model-item>
         <a-form-model-item label="Total Deposit Token" prop="totalDepositToken">
           <a-input-number
@@ -126,9 +126,9 @@
             class="input number-input"
             placeholder=""
             autocomplete="off"
-            addon-after="Token"
             disabled
           />
+          <span class="input-after">Token</span>
         </a-form-model-item>
         <a-form-model-item>
           <a-button
@@ -413,7 +413,22 @@ export default {
       width: 400px;
       /deep/ .ant-input-number-input {
         height: 54px;
+        padding-right: 164px;
       }
+      /deep/ .ant-input-number-handler-wrap {
+        right: 152px;
+      }
+    }
+    .input-after {
+      position: relative;
+      display: inline-block;
+      width: 152px;
+      height: 54px;
+      line-height: 54px;
+      margin-left: -152px;
+      text-align: center;
+      border-left: 1px solid #d9d9d9;
+      z-index: 10;
     }
     .text {
       font-size: 16px;

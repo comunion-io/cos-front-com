@@ -70,6 +70,34 @@ const routes = [
         component: () => import(/* webpackChunkName: 'governance' */ '@/views/governance/List.vue')
       },
       {
+        path: '/startup/new',
+        name: 'newStartup',
+        meta: {
+          title: 'New Start-Up',
+          skipAuth: false
+        },
+        component: () => import(/* webpackChunkName: 'newStartup' */ '@/views/startup/New.vue')
+      },
+      {
+        path: '/startup/setting',
+        name: 'startupSetting',
+        meta: {
+          title: 'Setting Start-Up'
+        },
+        component: () =>
+          import(/* webpackChunkName: 'newStartup' */ '@/views/startup/SettingList.vue')
+      },
+      {
+        path: '/startup/setting/:id',
+        name: 'startupSettingDetail',
+        meta: {
+          title: 'Start-Up Setting'
+        },
+        component: () =>
+          import(/* webpackChunkName: 'startupSetting' */ '@/views/startup/SettingDetail.vue')
+      },
+
+      {
         path: '/startup/:id',
         name: 'startupDetail',
         meta: {
@@ -154,33 +182,6 @@ const routes = [
             return route;
           }
         )
-      },
-      {
-        path: '/startup/new',
-        name: 'newStartup',
-        meta: {
-          title: 'New Start-Up',
-          skipAuth: false
-        },
-        component: () => import(/* webpackChunkName: 'newStartup' */ '@/views/startup/New.vue')
-      },
-      {
-        path: '/startup/setting',
-        name: 'startupSetting',
-        meta: {
-          title: 'Setting Start-Up'
-        },
-        component: () =>
-          import(/* webpackChunkName: 'newStartup' */ '@/views/startup/SettingList.vue')
-      },
-      {
-        path: '/startup/setting/:id',
-        name: 'startupSettingDetail',
-        meta: {
-          title: 'Start-Up Setting'
-        },
-        component: () =>
-          import(/* webpackChunkName: 'startupSetting' */ '@/views/startup/SettingDetail.vue')
       },
       // welcome 页面， 未登录metamas情况下，点击new startup 进入欢迎页
       {
