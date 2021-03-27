@@ -61,7 +61,7 @@
 
 <script>
 import { SwapTranscation } from '@/utils/contract/swap';
-import services from '@/services';
+// import services from '@/services';
 import { mapGetters } from 'vuex';
 import { COMUNION_VUE_APP_UNISWAPV2ROUTER01 } from '@/configs/app';
 import { web3 } from '@/libs/web3';
@@ -74,8 +74,7 @@ export default {
       tokenAmount: 0,
       tokenBAmount: 0,
       myTokenAmount: 0,
-      etherAmount: 0,
-      settingInfo: {}
+      etherAmount: 0
     };
   },
   props: {
@@ -94,28 +93,15 @@ export default {
   },
   async mounted() {
     this.swapInstance = SwapTranscation.getInstance();
-    await this.getMystartUp();
     await this.getMyBalance();
   },
   methods: {
-    /**
-     * @description: get current startup info
-     */
-    async getMystartUp() {
-      const { error, data } = await services['cores@startup-我的-获取']({
-        startupId: this.$route.params.id
-      });
-      if (!error) {
-        this.settingInfo = data;
-      }
-    },
-
     /**
      * @description: get my balance of ether and token
      */
     async getMyBalance() {
       this.etherAmount = await getEtherBalance(this.account);
-      this.myTokenAmount = await getTokenBalance(this.settingInfo.settings.tokenAddr, this.account);
+      this.myTokenAmount = await getTokenBalance(this.startup.settings.tokenAddr, this.account);
     },
 
     /**
@@ -128,12 +114,12 @@ export default {
       const params = {
         // TODO ether的地址， 开发时，ether的地址是我的钱包地址
         tokenA: this.account,
-        tokenB: this.settingInfo.settings.tokenAddr,
+        tokenB: this.startup.settings.tokenAddr,
         amountADesired: web3.utils.numberToHex(this.tokenAmount * Math.pow(10, 18)),
         amountBDesired: web3.utils.numberToHex(this.tokenBAmount * Math.pow(10, 18)),
         amountAMin: web3.utils.numberToHex(0),
         amountBMin: web3.utils.numberToHex(0),
-        to: this.settingInfo.settings.walletAddrs[0].addr,
+        to: this.startup.settings.walletAddrs[0].addr,
         deadline: 20 * 60
       };
       await this.swapInstance.addLiquidity(params, this.account);
