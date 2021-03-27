@@ -17,7 +17,6 @@
         @submit.prevent="createBtnOnClick"
       >
         <!-- Fund-Raising Contract Address: 募资的地址 -->
-        <!-- TODO zehui 上链接口调通以后， 这里需要注释 -->
         <a-form-model-item
           v-if="createFundFaisingContractSucceed"
           label="Fund-Raising Contract Address"
@@ -41,7 +40,7 @@
             :disabled="createFundFaisingContractSucceed"
           />
         </a-form-model-item>
-        <!-- start up token 的钱包地址 -->
+        <!-- start up token 的合约地址 -->
         <a-form-model-item label="Token Contract" style="margin-bottom: 0;">
           <p class="text">{{ tokenAddr }}</p>
         </a-form-model-item>

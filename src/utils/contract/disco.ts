@@ -136,7 +136,7 @@ export class DiscoTranscation {
       shareToken,
       minFundRaising,
       addLiquidityPool,
-      totalDepositToken * Math.pow(10, 18)
+      BigInt(totalDepositToken * Math.pow(10, 18))
     ]);
     return contractDisco;
   }
