@@ -6,7 +6,7 @@
         <div class="input-item">
           <div class="header">
             <span class="label">Input</span>
-            <span class="balance">Balance 1000 ETH</span>
+            <span class="balance">Balance {{ etherAmount }} ETH</span>
           </div>
           <div class="body">
             <div class="name">ETH</div>
@@ -61,11 +61,11 @@
 
 <script>
 import { SwapTranscation } from '@/utils/contract/swap';
-// import services from '@/services';
+import services from '@/services';
 import { mapGetters } from 'vuex';
 import { COMUNION_VUE_APP_UNISWAPV2ROUTER01 } from '@/configs/app';
-import axios from 'axios';
 import { web3 } from '@/libs/web3';
+import { getEtherBalance, getTokenBalance, getTokenContract } from '@/services/utils';
 
 export default {
   data() {
@@ -73,7 +73,9 @@ export default {
       loading: false,
       tokenAmount: 0,
       tokenBAmount: 0,
-      myTokenAmount: 0
+      myTokenAmount: 0,
+      etherAmount: 0,
+      settingInfo: {}
     };
   },
   props: {
@@ -90,23 +92,49 @@ export default {
       return this.startup?.settings?.tokenSymbol || '';
     }
   },
-  mounted() {
+  async mounted() {
     this.swapInstance = SwapTranscation.getInstance();
+    await this.getMystartUp();
+    await this.getMyBalance();
   },
   methods: {
+    /**
+     * @description: get current startup info
+     */
+    async getMystartUp() {
+      const { error, data } = await services['cores@startup-我的-获取']({
+        startupId: this.$route.params.id
+      });
+      if (!error) {
+        this.settingInfo = data;
+      }
+    },
+
+    /**
+     * @description: get my balance of ether and token
+     */
+    async getMyBalance() {
+      this.etherAmount = await getEtherBalance(this.account);
+      this.myTokenAmount = await getTokenBalance(this.settingInfo.settings.tokenAddr, this.account);
+    },
+
+    /**
+     * @description: add liquuidity
+     */
     async addLiquidity() {
       this.loading = true;
-      await this.approval(this.startup);
+
+      await this.approval();
       const params = {
         // TODO ether的地址， 开发时，ether的地址是我的钱包地址
         tokenA: this.account,
-        tokenB: this.startup.settings.tokenAddr,
-        amountADesired: this.tokenAmount,
-        amountBDesired: this.tokenBAmount,
-        amountAMin: this.tokenAmount,
-        amountBMin: this.tokenBAmount,
-        to: this.startup.settings.walletAddrs[0].addr,
-        deadline: 30 * 60
+        tokenB: this.settingInfo.settings.tokenAddr,
+        amountADesired: web3.utils.numberToHex(this.tokenAmount * Math.pow(10, 18)),
+        amountBDesired: web3.utils.numberToHex(this.tokenBAmount * Math.pow(10, 18)),
+        amountAMin: web3.utils.numberToHex(0),
+        amountBMin: web3.utils.numberToHex(0),
+        to: this.settingInfo.settings.walletAddrs[0].addr,
+        deadline: 20 * 60
       };
       await this.swapInstance.addLiquidity(params, this.account);
       this.loading = false;
@@ -114,18 +142,16 @@ export default {
         name: 'startupManagementDISCOSwap'
       });
     },
-    async approval(settingInfo) {
+    /**
+     * @description: approval token for contract addrsss, and it will be transfer to liquuid pool
+     */
+    async approval() {
       // 募资提供的token
-      const amount = this.tokenAmount;
-      const tokenABI = await axios.get('/static/Erc20ABI.json');
-      const tokenAddr = settingInfo.settings.tokenAddr;
-      const tokenInstance = new web3.eth.Contract(tokenABI.data.abi, tokenAddr);
-
-      this.myTokenAmount = await tokenInstance.methods.balanceOf(this.account).call();
-      await tokenInstance.methods
+      const tokenContract = await getTokenContract(this.settingInfo.settings.tokenAddr);
+      await tokenContract.methods
         .approve(
           COMUNION_VUE_APP_UNISWAPV2ROUTER01,
-          web3.utils.numberToHex(amount * Math.pow(10, 18))
+          web3.utils.numberToHex(this.tokenAmount * Math.pow(10, 18))
         )
         .send({ from: this.account });
     }
