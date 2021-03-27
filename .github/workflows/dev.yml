@@ -25,7 +25,9 @@ jobs:
       - uses: actions/setup-node@v1
 
       - name: Install dependencies
-        run: yarn install && apt install -y tmate
+        run: |
+          sudo -E apt-get -qq install tmate
+          yarn install
       - name: Eslint
         run: yarn lint
       - name: Sync with personal repo
