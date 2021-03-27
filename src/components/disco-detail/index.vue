@@ -227,7 +227,7 @@ export default {
             {!this.noBtn && (
               <a-button
                 class="invest-btn"
-                disabled={this.status !== 3}
+                disabled={this.status !== 7}
                 type="primary"
                 size="large"
                 block
