@@ -120,7 +120,7 @@ export default {
         amountAMin: web3.utils.numberToHex(0),
         amountBMin: web3.utils.numberToHex(0),
         to: this.startup.settings.walletAddrs[0].addr,
-        deadline: 20 * 60
+        deadline: Math.round(new Date().getTime() / 1000) + 20 * 60
       };
       await this.swapInstance.addLiquidity(params, this.account);
       this.loading = false;
@@ -133,7 +133,7 @@ export default {
      */
     async approval() {
       // 募资提供的token
-      const tokenContract = await getTokenContract(this.settingInfo.settings.tokenAddr);
+      const tokenContract = await getTokenContract(this.startup.settings.tokenAddr);
       await tokenContract.methods
         .approve(
           COMUNION_VUE_APP_UNISWAPV2ROUTER01,
