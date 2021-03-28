@@ -193,15 +193,8 @@ export default {
         discoId,
         investAddress,
         this.account,
-        this.investCallback.bind(this)
       );
     },
-    /**
-     * @description: post the invest info for invest list
-     */
-    investCallback() {
-      // @ 二哥
-    }
   },
   render(h) {
     switch (this.status) {
