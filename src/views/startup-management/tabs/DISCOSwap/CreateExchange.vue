@@ -78,12 +78,7 @@ export default {
     };
   },
   props: {
-    startup: {
-      type: Object,
-      default: () => ({
-        settings: {}
-      })
-    }
+    startup: Object
   },
   computed: {
     ...mapGetters(['account']),

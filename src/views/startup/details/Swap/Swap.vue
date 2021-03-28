@@ -52,11 +52,12 @@
 </template>
 
 <script>
-import ExchangeSVG from './exchange.svg';
+import { mapGetters } from 'vuex';
 import { SwapTranscation } from '@/utils/contract/swap';
 import services from '@/services';
-import { mapGetters } from 'vuex';
+import { getEtherBalance, getTokenBalance } from '@/services/utils';
 import TransactionSettings from './TransactionSettings';
+import ExchangeSVG from './exchange.svg';
 
 export default {
   data() {
@@ -67,10 +68,10 @@ export default {
       payToken: 0,
       token: 0,
       /** token余额 */
-      tokenBalance: 0,
+      tokenBalance: undefined,
       ether: 0,
       /** eth余额 */
-      etherBalance: 0,
+      etherBalance: undefined,
       /** token 的发布地址 */
       tokenAddr: '',
       /** 交易池募资地址 */
@@ -120,8 +121,10 @@ export default {
     ExchangeSVG,
     TransactionSettings
   },
-  mounted() {
+  async mounted() {
     this.swapInstance = SwapTranscation.getInstance();
+    this.etherBalance = await getEtherBalance(this.account);
+    this.tokenBalance = await getTokenBalance(this.tokenAddr, this.account);
   },
   methods: {
     onReverse() {

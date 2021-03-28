@@ -118,6 +118,7 @@ import { startupAbi } from '@/libs/abis/startup';
 import services from '@/services';
 import { merge } from '@/utils';
 import BbsInput from '@/components/form/BbsInput';
+import { getEtherBalance } from '@/services/utils';
 
 export default {
   name: 'NewStartup',
@@ -147,7 +148,7 @@ export default {
         ]
       },
       createState: 'beforeCreate',
-      balance: 0.1
+      balance: undefined
     };
   },
   computed: {
@@ -201,15 +202,6 @@ export default {
           }
         }
       });
-    },
-
-    /**
-     * @description 获取钱包余额
-     * @returns {Promise<void>}
-     */
-    async getBalance() {
-      const balance = await web3.eth.getBalance(this.account);
-      this.balance = +(balance / Math.pow(10, 18)).toFixed(4);
     },
 
     /**
@@ -306,7 +298,7 @@ export default {
     }
   },
   async mounted() {
-    this.getBalance();
+    this.balance = await getEtherBalance(this.account);
     if (this.isEdit) {
       const { error, data } = await services['cores@startup-我的-获取']({
         startupId: this.$route.query.id

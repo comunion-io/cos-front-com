@@ -93,7 +93,7 @@
             @change="updateTotalDepositToken"
             :disabled="createFundFaisingContractSucceed"
           />
-          <span class="input-after">Token</span>
+          <span class="input-after">{{ tokenSymbol }}</span>
         </a-form-model-item>
         <a-form-model-item label="Fund-Raising ETH (min)" prop="minFundRaising">
           <a-input-number
@@ -127,7 +127,7 @@
             autocomplete="off"
             disabled
           />
-          <span class="input-after">Token</span>
+          <span class="input-after">{{ tokenSymbol }}</span>
         </a-form-model-item>
         <a-form-model-item>
           <a-button
@@ -152,7 +152,7 @@
           <div class="footer" v-if="createFundFaisingContractSucceed">
             <div class="balance">
               <span style="font-weight:bold;">Balance: </span>
-              <span>0.56 ETH + 3000000 Token</span>
+              <span>{{ balance.eth }}ETH + {{ balance.token }} {{ tokenSymbol }}</span>
             </div>
             <a-button type="link" class="recreate-btn" html-type="submit"
               >Recreate contract</a-button
@@ -166,12 +166,13 @@
 
 <script>
 import moment from 'moment';
-import services from '@/services';
 import { mapGetters } from 'vuex';
+import services from '@/services';
 import { DiscoTranscation } from '@/utils/contract/disco';
 import BbsInput from '@/components/form/BbsInput';
 import { merge } from '@/utils/utils';
 import { validateAddress, urlValidator } from '@/utils/validators';
+import { getEtherBalance, getTokenBalance } from '@/services/utils';
 import DISCOSteps from './DISCOSteps';
 
 export default {
@@ -179,15 +180,8 @@ export default {
     BbsInput,
     DISCOSteps
   },
-  computed: {
-    ...mapGetters(['categories', 'account', 'netWorkName']),
-    tokenAddr() {
-      return this.startup?.settings?.tokenAddr || '';
-    },
-    // 创建募资合约成功
-    createFundFaisingContractSucceed() {
-      return this.$route.params.status === '2' && !this.isRecreate;
-    }
+  props: {
+    startup: Object
   },
   data() {
     return {
@@ -209,7 +203,6 @@ export default {
       // 是否是重建合约
       isRecreate: false,
       discoId: '',
-      // TODO
       /** txid 上链后的合约hash */
       txid: '',
       /** 募资成功的状态 */
@@ -225,23 +218,35 @@ export default {
         shareToken: [{ required: true }],
         minFundRaising: [{ required: true }],
         addLiquidityPool: [{ required: true }]
+      },
+      // 余额
+      balance: {
+        eth: undefined,
+        token: undefined
       }
     };
   },
-  props: {
-    startup: {
-      type: Object,
-      default() {
-        return {};
-      }
+  computed: {
+    ...mapGetters(['account']),
+    tokenSymbol() {
+      return this.startup?.settings?.tokenSymbol || '';
+    },
+    tokenAddr() {
+      return this.startup?.settings?.tokenAddr || '';
+    },
+    // 创建募资合约成功
+    createFundFaisingContractSucceed() {
+      return this.$route.params.status === '2' && !this.isRecreate;
     }
   },
-  mounted() {
+  async mounted() {
     this.discoInstance = DiscoTranscation.getInstance();
     // 获取disco
     if (this.$route.query.mode !== 'create') {
       this.getDisco();
     }
+    this.balance.eth = await getEtherBalance(this.account);
+    this.balance.token = await getTokenBalance(this.tokenAddr, this.account);
   },
   methods: {
     // 获取disco信息
