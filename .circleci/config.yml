@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  sync:
+  build:
     branches:
       only: develop
     docker:
