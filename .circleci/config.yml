@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    branches:
+      only: develop
+    docker:
+      - image: circleci/node:12.21.0
+    steps:
+      - checkout
+      - run:
+          command: |
+            git config --global user.name "erguotou"
+            git config --global user.email "erguotou525@gmail.com"
+            git fetch --unshallow origin
+            git remote add vercel https://erguotou520:$VERCEL_TOKEN@github.com/erguotou520/cos-front-com
+            git push --all -f vercel
