@@ -216,12 +216,8 @@ export default {
     async doInvest() {
       const discoId = this.detail.id;
       const investAddress = this.detail.fundRaisingAddr;
-      await this.discoInstance.invest(
-        discoId,
-        investAddress,
-        this.account,
-      );
-    },
+      await this.discoInstance.invest(discoId, investAddress, this.account);
+    }
   },
   render(h) {
     switch (this.status) {
