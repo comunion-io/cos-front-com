@@ -1,6 +1,8 @@
 version: 2
 jobs:
   build:
+    branches:
+      only: develop
     docker:
       - image: circleci/node:12.21.0
     steps:
@@ -12,12 +14,3 @@ jobs:
             git fetch --unshallow origin
             git remote add vercel https://erguotou520:$VERCEL_TOKEN@github.com/erguotou520/cos-front-com
             git push --all -f vercel
-
-workflows:
-  version: 2
-  sync:
-    jobs:
-      - build:
-          filters:
-            branches:
-              only: master
