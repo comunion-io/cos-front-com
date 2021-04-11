@@ -265,6 +265,7 @@ export class DiscoTranscation {
    * @date 24/01/2021
    */
   public async invest(id: string, investAddress: string, account: string) {
+    console.log('%c 🥝 id: ', 'font-size:20px;background-color: #465975;color:#fff;', id);
     if (!this.contractInstance) {
       const coinBase = await this.contractInstance.methods.setCoinBase(account);
       await this.setCoinbase(coinBase, account);
@@ -272,39 +273,9 @@ export class DiscoTranscation {
 
     if (this.contractInstance) {
       const now = Math.round(new Date().getTime() / 1000); // ms -> s
-      const investDisco = await this.contractInstance.methods.investor(id, now);
-      const blockParams = await Promise.all([
-        investDisco.encodeABI(),
-        web3.eth.getTransactionCount(account, 'pending'),
-        web3.eth.getChainId()
-      ]);
-
-      const tx = {
-        from: account,
-        to: investAddress,
-        data: blockParams[0],
-        // TODO  now invest 0.1， Ui will redesign in v4
-        value: web3.utils.numberToHex(Math.pow(10, 17)),
-        nonce: web3.utils.numberToHex(blockParams[1]),
-        gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
-        gasLimit: web3.utils.numberToHex(183943),
-        chainId: blockParams[2]
-      };
-
-      this.shadowWindow.ethereum.sendAsync(
-        {
-          method: 'eth_sendTransaction',
-          params: [tx],
-          from: this.shadowWindow.ethereum.selectedAddress
-        },
-        (err, result) => {
-          if (err) {
-            return console.error(err);
-          }
-          const txid = result.result;
-          console.log('%c 🍟 txid: ', 'font-size:20px;background-color: #F5CE50;color:#fff;', txid);
-        }
-      );
+      this.contractInstance.methods
+        .investor(id, now)
+        .send({ from: account, value: web3.utils.numberToHex(Math.pow(10, 17)) });
     }
   }
 }
