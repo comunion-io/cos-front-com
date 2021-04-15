@@ -17,7 +17,6 @@
         @submit.prevent="createBtnOnClick"
       >
         <!-- Fund-Raising Contract Address: 募资的地址 -->
-        <!-- TODO zehui 上链接口调通以后， 这里需要注释 -->
         <a-form-model-item
           v-if="createFundFaisingContractSucceed"
           label="Fund-Raising Contract Address"
@@ -27,7 +26,7 @@
             class="input"
             placeholder="Please input receiving fund raising wallet address"
             autocomplete="off"
-            v-model="disco.txid"
+            v-model="disco.fundRaisingAddr"
             :disabled="createFundFaisingContractSucceed"
           />
         </a-form-model-item>
@@ -41,7 +40,7 @@
             :disabled="createFundFaisingContractSucceed"
           />
         </a-form-model-item>
-        <!-- start up token 的钱包地址 -->
+        <!-- start up token 的合约地址 -->
         <a-form-model-item label="Token Contract" style="margin-bottom: 0;">
           <p class="text">{{ tokenAddr }}</p>
         </a-form-model-item>
@@ -64,61 +63,61 @@
             class="input number-input"
             placeholder=""
             autocomplete="off"
-            addon-after="%"
             :min="0"
             :max="100"
             v-model="disco.investmentReward"
             @change="updateTotalDepositToken"
             :disabled="createFundFaisingContractSucceed"
           />
+          <span class="input-after">%</span>
         </a-form-model-item>
         <a-form-model-item label="Reward Decline Rate (Day)" prop="rewardDeclineRate">
           <a-input-number
             class="input number-input"
             placeholder=""
             autocomplete="off"
-            addon-after="%"
             :min="0"
             :max="100"
             v-model="disco.rewardDeclineRate"
             :disabled="createFundFaisingContractSucceed"
           />
+          <span class="input-after">%</span>
         </a-form-model-item>
         <a-form-model-item label="Share Token" prop="shareToken">
           <a-input-number
             class="input number-input"
             placeholder=""
             autocomplete="off"
-            addon-after="Token"
             :min="0"
             v-model="disco.shareToken"
             @change="updateTotalDepositToken"
             :disabled="createFundFaisingContractSucceed"
           />
+          <span class="input-after">{{ tokenSymbol }}</span>
         </a-form-model-item>
         <a-form-model-item label="Fund-Raising ETH (min)" prop="minFundRaising">
           <a-input-number
             class="input number-input"
             placeholder=""
             autocomplete="off"
-            addon-after="ETH"
             :min="0"
             v-model="disco.minFundRaising"
             :disabled="createFundFaisingContractSucceed"
           />
+          <span class="input-after">ETH</span>
         </a-form-model-item>
         <a-form-model-item label="Add Liquidity Pool" prop="addLiquidityPool">
           <a-input-number
             class="input number-input"
             placeholder=""
             autocomplete="off"
-            addon-after="%"
             :min="0"
             :max="100"
             v-model="disco.addLiquidityPool"
             @change="updateTotalDepositToken"
             :disabled="createFundFaisingContractSucceed"
           />
+          <span class="input-after">%</span>
         </a-form-model-item>
         <a-form-model-item label="Total Deposit Token" prop="totalDepositToken">
           <a-input-number
@@ -126,9 +125,9 @@
             class="input number-input"
             placeholder=""
             autocomplete="off"
-            addon-after="Token"
             disabled
           />
+          <span class="input-after">{{ tokenSymbol }}</span>
         </a-form-model-item>
         <a-form-model-item>
           <a-button
@@ -153,7 +152,7 @@
           <div class="footer" v-if="createFundFaisingContractSucceed">
             <div class="balance">
               <span style="font-weight:bold;">Balance: </span>
-              <span>0.56 ETH + 3000000 Token</span>
+              <span>{{ balance.eth }}ETH + {{ balance.token }} {{ tokenSymbol }}</span>
             </div>
             <a-button type="link" class="recreate-btn" html-type="submit"
               >Recreate contract</a-button
@@ -167,12 +166,13 @@
 
 <script>
 import moment from 'moment';
-import services from '@/services';
 import { mapGetters } from 'vuex';
+import services from '@/services';
 import { DiscoTranscation } from '@/utils/contract/disco';
 import BbsInput from '@/components/form/BbsInput';
 import { merge } from '@/utils/utils';
 import { validateAddress, urlValidator } from '@/utils/validators';
+import { getEtherBalance, getTokenBalance } from '@/services/utils';
 import DISCOSteps from './DISCOSteps';
 
 export default {
@@ -180,15 +180,8 @@ export default {
     BbsInput,
     DISCOSteps
   },
-  computed: {
-    ...mapGetters(['categories', 'account', 'netWorkName']),
-    tokenAddr() {
-      return this.startup?.settings?.tokenAddr || '';
-    },
-    // 创建募资合约成功
-    createFundFaisingContractSucceed() {
-      return this.$route.params.status === '2' && !this.isRecreate;
-    }
+  props: {
+    startup: Object
   },
   data() {
     return {
@@ -210,7 +203,6 @@ export default {
       // 是否是重建合约
       isRecreate: false,
       discoId: '',
-      // TODO
       /** txid 上链后的合约hash */
       txid: '',
       /** 募资成功的状态 */
@@ -226,23 +218,35 @@ export default {
         shareToken: [{ required: true }],
         minFundRaising: [{ required: true }],
         addLiquidityPool: [{ required: true }]
+      },
+      // 余额
+      balance: {
+        eth: undefined,
+        token: undefined
       }
     };
   },
-  props: {
-    startup: {
-      type: Object,
-      default() {
-        return {};
-      }
+  computed: {
+    ...mapGetters(['account']),
+    tokenSymbol() {
+      return this.startup?.settings?.tokenSymbol || '';
+    },
+    tokenAddr() {
+      return this.startup?.settings?.tokenAddr || '';
+    },
+    // 创建募资合约成功
+    createFundFaisingContractSucceed() {
+      return this.$route.params.status === '2' && !this.isRecreate;
     }
   },
-  mounted() {
+  async mounted() {
     this.discoInstance = DiscoTranscation.getInstance();
     // 获取disco
     if (this.$route.query.mode !== 'create') {
       this.getDisco();
     }
+    this.balance.eth = await getEtherBalance(this.account);
+    this.balance.token = await getTokenBalance(this.tokenAddr, this.account);
   },
   methods: {
     // 获取disco信息
@@ -413,7 +417,22 @@ export default {
       width: 400px;
       /deep/ .ant-input-number-input {
         height: 54px;
+        padding-right: 164px;
       }
+      /deep/ .ant-input-number-handler-wrap {
+        right: 152px;
+      }
+    }
+    .input-after {
+      position: relative;
+      display: inline-block;
+      width: 152px;
+      height: 54px;
+      line-height: 54px;
+      margin-left: -152px;
+      text-align: center;
+      border-left: 1px solid #d9d9d9;
+      z-index: 10;
     }
     .text {
       font-size: 16px;

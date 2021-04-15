@@ -37,8 +37,8 @@
 
 <script>
 import mixin from './mixins';
-import { web3 } from '@/libs/web3';
 import { mapGetters } from 'vuex';
+import { getEtherBalance } from '@/services/utils';
 export default {
   mixins: [mixin],
   data() {
@@ -67,7 +67,7 @@ export default {
           desc: 'List team members,improve transparency and public trust'
         }
       ],
-      balance: 0.1
+      balance: undefined
     };
   },
   computed: {
@@ -80,18 +80,10 @@ export default {
     launch() {
       this.loading = true;
       this.$emit('submit');
-    },
-    /**
-     * @description 获取钱包余额
-     * @returns {Promise<void>}
-     */
-    async getBalance() {
-      const balance = await web3.eth.getBalance(this.account);
-      this.balance = +(balance / Math.pow(10, 18)).toFixed(4);
     }
   },
-  mounted() {
-    this.getBalance();
+  async mounted() {
+    this.balance = await getEtherBalance(this.account);
   }
 };
 </script>

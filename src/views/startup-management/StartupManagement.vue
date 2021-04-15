@@ -40,7 +40,7 @@ export default {
     if (tab && tabs.find(tab => tab.name === tab)) {
       this.selectedTab = tab;
     }
-    const { error, data } = await services['cores@startup-获取']({
+    const { error, data } = await services['cores@startup-我的-获取']({
       startupId: this.$route.params.id
     });
     this.loading = false;

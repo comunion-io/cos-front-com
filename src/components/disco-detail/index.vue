@@ -6,13 +6,26 @@ import Investors from './investors';
 import { mapGetters } from 'vuex';
 import { DiscoTranscation } from '@/utils/contract/disco';
 
-// 0 默认状态，1 等待开始，2 进行中，3 失败，4 成功
+// -1 未开启
+// 0 创建中
+// 1 等待开启（创建成功）
+// 2 创建失败
+// 3 开启中
+// 4 等待募资开始（数据库为4，时间未开始）
+// 5 募资成功
+// 6 募资失败
+// 7 募资中（数据库为4，时间进行中）
+// 8 募资结束（数据库为4，时间已结束）
 const stateBadgeStatusMap = {
   0: 'default',
-  1: 'warning',
-  2: 'processing',
-  3: 'error',
-  4: 'success'
+  1: 'default',
+  2: 'error',
+  3: 'processing',
+  4: 'processing',
+  5: 'success',
+  6: 'error',
+  7: 'processing',
+  8: 'success'
 };
 
 export default {
@@ -159,30 +172,47 @@ export default {
   },
   methods: {
     getStatusNode(status) {
+      // -1 未开启
+      // 0 创建中
+      // 1 等待开启（创建成功）
+      // 2 创建失败
+      // 3 开启中
+      // 4 等待募资开始（数据库为4，时间未开始）
+      // 5 募资成功
+      // 6 募资失败
+      // 7 募资中（数据库为4，时间进行中）
+      // 8 募资结束（数据库为4，时间已结束）
+      const text = {
+        1: 'Waiting to start',
+        2: 'Failed',
+        3: 'Enabling',
+        4: 'Waiting for time',
+        7: 'In progress',
+        8: 'Waiting for settle'
+      }[status];
       switch (status) {
-        case 1:
-          return <span class="t-primary">Waitting for start</span>;
-        case 2:
-          return <span class="t-primary">In Progress</span>;
-        case 3:
-          return (
-            <span class="t-grey">
-              End <span class="t-error">（Failed）</span>
-            </span>
-          );
-        case 4:
+        case 5:
           return (
             <span class="t-grey">
               End <span class="t-primary">（Succeed）</span>
             </span>
           );
+        case 6:
+          return (
+            <span class="t-grey">
+              End <span class="t-error">（Failed）</span>
+            </span>
+          );
         default:
-          return null;
+          return <span class="t-primary">{text}</span>;
       }
     },
     updateInvestorsHandler(totalETH) {
       this.$set(this.detail, 'tokenRaised', totalETH);
     },
+    /**
+     * @description: invest this  disco
+     */
     async doInvest() {
       const discoId = this.detail.id;
       const investAddress = this.detail.fundRaisingAddr;
@@ -227,7 +257,7 @@ export default {
             {!this.noBtn && (
               <a-button
                 class="invest-btn"
-                disabled={status !== 3}
+                disabled={this.status !== 7 && this.status !== 4}
                 type="primary"
                 size="large"
                 block

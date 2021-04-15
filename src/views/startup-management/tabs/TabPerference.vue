@@ -5,15 +5,7 @@
       <div class="item">
         <div class="title">BlockChainAddress</div>
         <div class="value-wrap">
-          <div class="value-text">{{ form.blockChainAddress }}</div>
-          <a-tooltip>
-            <template slot="title">
-              <span>copy</span>
-            </template>
-            <div class="copy-btn" @click="copyBtnOnClick">
-              <a-icon type="copy" />
-            </div>
-          </a-tooltip>
+          <CopyableAddress :address="form.blockChainAddress" />
         </div>
       </div>
       <div class="item">
@@ -94,70 +86,40 @@
 </template>
 
 <script>
-// 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
-// 例如：import 《组件名称》 from '《组件路径》';
 import { mapGetters } from 'vuex';
-import services from '@/services';
-import { merge } from '@/utils';
 
 export default {
-  // import引入的组件需要注入到对象中才能使用
-  components: {},
+  props: {
+    startup: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     // 这里存放数据
     return {
-      startup: undefined,
       isEditing: false, // 是否正在编辑
       form: {
-        blockChainAddress: '',
-        name: '',
-        categoryId: '',
-        logo: '',
-        mission: '',
-        descriptionAddr: ''
+        blockChainAddress: this.startup.transaction.blockAddr,
+        name: this.startup.name,
+        categoryId: this.startup.category.id,
+        logo: this.startup.logo,
+        mission: this.startup.mission,
+        descriptionAddr: this.startup.descriptionAddr
       }
     };
   },
   // 监听属性 类似于data概念
   computed: {
-    ...mapGetters(['categories', 'account', 'netWorkName']),
+    ...mapGetters(['categories']),
     // type
     type() {
       let type = this.categories.find(item => item.id === this.form.categoryId);
       return type ? type.name : '';
     }
   },
-  // 监控data中的数据变化
-  watch: {},
   // 方法集合
   methods: {
-    async getStartup() {
-      try {
-        const { error, data } = await services['cores@startup-我的-获取']({
-          startupId: this.$route.params.id
-        });
-        this.startup = error ? {} : data;
-        // this.patchValue();
-        merge(this.form, this.startup);
-        this.form.categoryId = this.startup.category.id;
-        this.form.blockChainAddress = this.startup.transaction.blockAddr;
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    // 复制按钮被点击
-    copyBtnOnClick() {
-      const input = document.createElement('input');
-      input.setAttribute('readonly', 'readonly');
-      input.setAttribute('value', this.form.blockChainAddress);
-      document.body.appendChild(input);
-      input.select();
-      input.setSelectionRange(0, input.value.length);
-      if (document.execCommand('copy')) {
-        document.execCommand('copy');
-      }
-      document.body.removeChild(input);
-    },
     // 按钮被点击
     onHandle() {
       if (this.isEditing) {
@@ -170,20 +132,7 @@ export default {
     onSubmit() {
       //
     }
-  },
-  // 生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
-  // 生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {
-    this.getStartup();
-  },
-  beforeCreate() {}, // 生命周期 - 创建之前
-  beforeMount() {}, // 生命周期 - 挂载之前
-  beforeUpdate() {}, // 生命周期 - 更新之前
-  updated() {}, // 生命周期 - 更新之后
-  beforeDestroy() {}, // 生命周期 - 销毁之前
-  destroyed() {}, // 生命周期 - 销毁完成
-  activated() {} // 如果页面有keep-alive缓存功能，这个函数会触发
+  }
 };
 </script>
 <style lang="less" scoped>

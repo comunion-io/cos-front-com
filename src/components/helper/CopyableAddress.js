@@ -21,8 +21,8 @@ export default {
     const { address } = context.props;
     if (!address) return null;
     return (
-      <div class="flex-inline ai-center">
-        <a href={`https://cn.etherscan.com/tx/${address}`} target="_etherscan">
+      <div class="flex-inline ai-center" style="max-width:100%">
+        <a class="t-trunc" href={`https://cn.etherscan.com/tx/${address}`} target="_etherscan">
           {address}
         </a>
         <a-icon
