@@ -9,7 +9,61 @@
       :rules="rules"
       @submit.prevent="handleSubmit"
     >
-      <a-form-model-item label="Governance" prop="governance">
+      <a-form-model-item label="Governance Proposer" prop="governanceProposer">
+        <a-select size="large" v-model="form.governanceProposer">
+          <a-select-option value="FounderAssign">Founder Assign</a-select-option>
+          <a-select-option value="pos">POS</a-select-option>
+          <a-select-option value="all">ALL</a-select-option>
+        </a-select>
+      </a-form-model-item>
+      <template v-if="form.governanceProposer === 'FounderAssign'">
+        <a-form-model-item
+          v-for="(address, index) in form.proposerAssignAddrs"
+          :key="'proposer.' + index"
+          :label="index ? '' : 'Assign Address'"
+          :prop="`proposerAssignAddrs.${index}`"
+          :rules="{ required: true, validator: validateEthAddress }"
+        >
+          <a-input
+            size="large"
+            v-model="form.proposerAssignAddrs[index]"
+            placeholder="Please enter ethereum address"
+            style="width: 60%"
+            :max-length="42"
+          />
+          <a-button
+            v-if="form.proposerAssignAddrs.length !== 1"
+            size="large"
+            class="ml-16"
+            style="width:10%"
+            @click="removeAddress(index, 'proposer')"
+          >
+            <a-icon type="delete" />
+          </a-button>
+          <a-button
+            v-if="index === form.proposerAssignAddrs.length - 1"
+            size="large"
+            type="primary"
+            class="ml-16"
+            @click="addAddress('proposer')"
+            style="width:20%"
+          >
+            <a-icon type="plus" />Add
+          </a-button>
+        </a-form-model-item>
+      </template>
+      <a-form-model-item v-if="form.governanceProposer === 'pos'" prop="proposerTokenLimit">
+        <label slot="label">Token Balance</label>
+        <a-input-number
+          class="w-100p"
+          size="large"
+          v-model="form.proposerTokenLimit"
+          placeholder="Please set minimum token balance"
+          :min="0"
+        />
+      </a-form-model-item>
+
+      <a-form-model-item label="Governance Voter" prop="governance">
         <a-select size="large" v-model="form.voteType">
           <a-select-option value="FounderAssign">Founder Assign</a-select-option>
           <a-select-option value="pos">POS</a-select-option>
@@ -30,7 +84,7 @@
           <a-input
             size="large"
             v-model="form.voteAssignAddrs[index]"
-            placeholder="Ethereum Address"
+            placeholder="Please enter ethereum address"
             style="width: 60%"
             :max-length="42"
           />
@@ -57,15 +111,14 @@
       </template>
       <a-form-model-item v-if="form.voteType === 'pos'" prop="voteTokenLimit">
         <label slot="label"
-          >TokenBalance<span class="ml-16 t-grey"
-            >设置最小持币量，满足的地址可以参与投票</span
-          ></label
-        >
+          >Token Balance
+          <!-- <span class="ml-16 t-grey">设置最小持币量，满足的地址可以参与投票</span> -->
+        </label>
         <a-input-number
           class="w-100p"
           size="large"
           v-model="form.voteTokenLimit"
-          placeholder="Token Balance"
+          placeholder="Please set minimum token balance"
           :min="0"
         />
       </a-form-model-item>
@@ -182,8 +235,24 @@
 
 <script>
 import { Slider } from 'ant-design-vue';
-import { positiveInteger, validateAddress } from '@/utils/validators';
+import { positiveInteger } from '@/utils/validators';
 import mixins from './mixins';
+
+const tokenLimitRule = {
+  type: 'number',
+  required: true,
+  message: 'Please set minimum token balance.'
+};
+const validateAddress = (rule, value, callback) => {
+  var regExp = /^0x[a-fA-F0-9]{40}$/;
+  if (value === '') {
+    callback(new Error('Please enter ethereum address'));
+  } else if (!regExp.test(value)) {
+    callback(new Error('请输入正确的地址(OX开头的字母数字长度为40的字符串)'));
+  } else {
+    callback();
+  }
+};
 
 export default {
   name: 'governance',
@@ -197,6 +266,9 @@ export default {
 
       form: {
         ...{
+          governanceProposer: 'FounderAssign',
+          proposerAssignAddrs: [''],
+          proposerTokenLimit: '',
           voteType: 'FounderAssign',
           voteAssignAddrs: [''],
           voteTokenLimit: '',
@@ -223,14 +295,8 @@ export default {
         //   //   callback();
         //   // }
         // },
-        voteTokenLimit: {
-          type: 'number',
-          required: true,
-          message: 'Please input the vote token limit.'
-          // validator: (rule, value, callback) => {
-          //   callback();
-          // }
-        },
+        voteTokenLimit: tokenLimitRule,
+        proposerTokenLimit: tokenLimitRule,
         'maxDuration.days': {
           type: 'number',
           trigger: 'change',
@@ -249,11 +315,19 @@ export default {
   methods: {
     positiveInteger,
     // add assign address
-    addAddress() {
-      this.form.voteAssignAddrs.push('');
+    addAddress(type) {
+      if (type === 'proposer') {
+        this.form.proposerAssignAddrs.push('');
+      } else {
+        this.form.voteAssignAddrs.push('');
+      }
     },
-    removeAddress(index) {
-      this.form.voteAssignAddrs.splice(index, 1);
+    removeAddress(index, type) {
+      if (type === 'proposer') {
+        this.form.proposerAssignAddrs.splice(index, 1);
+      } else {
+        this.form.voteAssignAddrs.splice(index, 1);
+      }
     }
   }
 };
