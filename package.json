@@ -15,12 +15,6 @@
     "fmt-codes": "npx prettier --write ./src/**",
     "postinstall": "husky install"
   },
-  "lint-staged": {
-    "*.{js,vue,ts,tsx}": [
-      "vue-cli-service lint",
-      "git add"
-    ]
-  },
   "postcss": {
     "plugins": {
       "autoprefixer": {}
