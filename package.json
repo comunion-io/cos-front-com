@@ -1,7 +1,7 @@
 {
   "name": "cos-front-com",
   "version": "0.0.1",
-  "private": true,
+  "license": "GPL-3.0-or-later",
   "scripts": {
     "start": "yarn serve",
     "serve": "node scripts/load-env.js -c dev vue-cli-service serve --mode development",
@@ -10,9 +10,15 @@
     "build-notify": "npm run build && ./scripts/notify.js 1 || ./scripts/notify.js 0",
     "build:prod-notify": "npm run build:prod && ./scripts/notify.js 1 || ./scripts/notify.js 0",
     "lint": "vue-cli-service lint",
-    "commit": "git-cz",
+    "commit": "git add . -A && git-cz",
     "update:api": "y2s update -y",
-    "fmt-codes": "npx prettier --write ./src/**"
+    "fmt-codes": "npx prettier --write ./src/**",
+    "postinstall": "husky install"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
   },
   "dependencies": {
     "ant-design-vue": "^1.5.6",
@@ -30,8 +36,8 @@
     "web3": "^1.2.9"
   },
   "devDependencies": {
-    "@commitlint/cli": "^11.0.0",
-    "@commitlint/config-conventional": "^11.0.0",
+    "@commitlint/cli": "^12.1.1",
+    "@commitlint/config-conventional": "^12.1.1",
     "@metamask/eslint-config": "^2.0.0",
     "@types/echarts": "^4.9.2",
     "@typescript-eslint/eslint-plugin": "^4.7.0",
@@ -47,12 +53,12 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "commitizen": "^4.2.1",
     "cz-conventional-changelog": "^3.3.0",
-    "devmoji": "^2.1.9",
+    "devmoji": "^2.2.0",
     "eslint": "^7.17.0",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-vue": "^5.2.3",
     "eth-lib": "0.2.7",
-    "husky": "^4.3.0",
+    "husky": "^6.0.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "lint-staged": "^9.5.0",
@@ -63,24 +69,5 @@
     "vue-svg-loader": "0.8.0",
     "vue-template-compiler": "^2.6.10",
     "y2s": "^0.4.2"
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.{js,vue,ts,tsx}": [
-      "vue-cli-service lint",
-      "git add"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   }
 }
