@@ -140,13 +140,21 @@ export default {
       }
     },
     getStateText(state) {
+      const text = {
+        1: 'Waiting for enable',
+        2: 'Failed',
+        3: 'Enabling',
+        4: 'Waiting for start',
+        7: 'In progress',
+        8: 'Waiting for settle'
+      }[status];
       switch (state) {
-        case 1: // 等待开始
-          return 'Waiting for start';
-        case 2: // 进行中
-          return 'Inprogress';
+        case 5:
+          return 'End（Succeed）';
+        case 6:
+          return 'End（Failed）';
         default:
-          return '-';
+          return text;
       }
     },
     async loadDiscoData(params, offset = 0) {
