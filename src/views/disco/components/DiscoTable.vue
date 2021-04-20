@@ -147,7 +147,7 @@ export default {
         4: 'Waiting for start',
         7: 'In progress',
         8: 'Waiting for settle'
-      }[status];
+      }[state];
       switch (state) {
         case 5:
           return 'End（Succeed）';
