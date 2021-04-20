@@ -106,8 +106,8 @@ export class DiscoTranscation {
    */
   private async getDiscoContractInstance(disco: Disco, account: string) {
     this.id = disco.id;
-    const coinBase = await this.contractInstance.methods.setCoinBase(account);
-    await this.setCoinbase(coinBase, account);
+    // const coinBase = await this.contractInstance.methods.setCoinBase(account);
+    // await this.setCoinbase(coinBase, account);
 
     const {
       walletAddr,
@@ -264,12 +264,11 @@ export class DiscoTranscation {
    * @author Ze Hui
    * @date 24/01/2021
    */
-  public async invest(id: string, investAddress: string, account: string) {
-    console.log('%c 🥝 id: ', 'font-size:20px;background-color: #465975;color:#fff;', id);
-    if (!this.contractInstance) {
-      const coinBase = await this.contractInstance.methods.setCoinBase(account);
-      await this.setCoinbase(coinBase, account);
-    }
+  public async invest(id: string, account: string) {
+    // if (!this.contractInstance) {
+    //   const coinBase = await this.contractInstance.methods.setCoinBase(account);
+    //   await this.setCoinbase(coinBase, account);
+    // }
 
     if (this.contractInstance) {
       const now = Math.round(new Date().getTime() / 1000); // ms -> s
