@@ -26,10 +26,8 @@ export default {
       <Breadcrumb class="startup-management-breadcrumb">
         <BreadcrumbItem>
           <Icon type="environment" theme="filled" class="t-primary" />
-        </BreadcrumbItem>
-        <BreadcrumbItem>
           <router-link
-            class=".startup-management-breadcrumb_name t-trunc"
+            class="startup-management-breadcrumb_name t-trunc"
             to={{ name: 'startupManagement', id: this.$route.params.id }}
           >
             {this.startupName}
@@ -57,6 +55,7 @@ export default {
   height: 54px;
   background: #fcfcfc;
   &_name {
+    margin-left: 8px;
     max-width: 120px;
   }
 }

@@ -1,6 +1,6 @@
-<!-- startup manage -> perference 子页面  -->
+<!-- startup manage -> preference 子页面  -->
 <template>
-  <section class="startup-manage_perference">
+  <section class="startup-manage_preference">
     <div class="container">
       <div class="item">
         <div class="title">BlockChainAddress</div>
