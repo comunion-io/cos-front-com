@@ -1,19 +1,19 @@
 <script>
-import TabPerference from './details/Perference';
+import TabPreference from './details/Preference';
 import StartupInfo from './details/blocks/StartupInfo';
 import services from '@/services';
 export default {
   components: {
-    TabPerference,
+    TabPreference,
     TabBounty: () => import('./details/Bounty'),
-    TabDisco: () => import('./details/Disco.vue'),
+    TabDISCO: () => import('./details/DISCO.vue'),
     TabSwap: () => import('./details/Swap/index.vue'),
     TabGovernance: () => import('./details/Governance')
   },
   data() {
     return {
-      selectedTab: 'Perference',
-      tabs: ['Perference', 'Bounty', 'Disco', 'Swap', 'Governance'],
+      selectedTab: 'Preference',
+      tabs: ['Preference', 'Bounty', 'DISCO', 'Swap', 'Governance'],
       loading: false,
       startup: {}
     };
