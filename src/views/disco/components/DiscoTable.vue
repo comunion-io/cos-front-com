@@ -19,7 +19,7 @@
             id: text.id
           },
           query: {
-            tabName: 'Disco'
+            tabName: 'DISCO'
           }
         }"
       >
