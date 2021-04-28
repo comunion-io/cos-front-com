@@ -4,7 +4,7 @@ import Breadcrumb from './components/Breadcrumb';
 import services from '@/services';
 
 const tabs = [
-  'Perference',
+  'Preference',
   'Settings',
   'Bounty',
   'Team',

@@ -23,6 +23,8 @@
 <script>
 import Pagination from '@/components/list/Pagination.vue';
 
+export const DEFAULT_LIMIT = 10;
+
 export default {
   components: {
     Pagination
@@ -32,7 +34,7 @@ export default {
       type: Object,
       default: function() {
         return {
-          limit: 20,
+          limit: DEFAULT_LIMIT,
           offset: 0,
           total: 0
         };

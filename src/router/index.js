@@ -115,12 +115,12 @@ const routes = [
           title: 'Start-Up Management',
           skipAuth: false
         },
-        redirect: '/startup/:id/management/perference',
+        redirect: '/startup/:id/management/preference',
         component: () =>
           import(
             /* webpackChunkName: 'startManagement' */ '@/views/startup-management/StartupManagement.vue'
           ),
-        children: ['perference', 'settings', 'bounty', 'team', 'governance', 'DISCOSwap'].map(
+        children: ['preference', 'settings', 'bounty', 'team', 'governance', 'DISCOSwap'].map(
           key => {
             const upCaseName = key[0].toUpperCase() + key.slice(1);
             let route = {
