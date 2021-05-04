@@ -11,12 +11,12 @@
     >
       <a-form-model-item label="Governance Proposer" prop="governanceProposer">
         <a-select size="large" v-model="form.governanceProposer">
-          <a-select-option value="FounderAssign">Founder Assign</a-select-option>
-          <a-select-option value="pos">POS</a-select-option>
-          <a-select-option value="all">ALL</a-select-option>
+          <a-select-option value="2">Founder Assign</a-select-option>
+          <a-select-option value="3">POS</a-select-option>
+          <a-select-option value="1">ALL</a-select-option>
         </a-select>
       </a-form-model-item>
-      <template v-if="form.governanceProposer === 'FounderAssign'">
+      <template v-if="form.governanceProposer === '2'">
         <a-form-model-item
           v-for="(address, index) in form.proposerAssignAddrs"
           :key="'proposer.' + index"
@@ -52,7 +52,7 @@
           </a-button>
         </a-form-model-item>
       </template>
-      <a-form-model-item v-if="form.governanceProposer === 'pos'" prop="proposerTokenLimit">
+      <a-form-model-item v-if="form.governanceProposer === '3'" prop="proposerTokenLimit">
         <label slot="label">Token Balance</label>
         <a-input-number
           class="w-100p"
@@ -65,12 +65,12 @@
 
       <a-form-model-item label="Governance Voter" prop="governance">
         <a-select size="large" v-model="form.voteType">
-          <a-select-option value="FounderAssign">Founder Assign</a-select-option>
-          <a-select-option value="pos">POS</a-select-option>
-          <a-select-option value="all">ALL</a-select-option>
+          <a-select-option value="2">Founder Assign</a-select-option>
+          <a-select-option value="3">POS</a-select-option>
+          <a-select-option value="1">ALL</a-select-option>
         </a-select>
       </a-form-model-item>
-      <template v-if="form.voteType === 'FounderAssign'">
+      <template v-if="form.voteType === '2'">
         <a-form-model-item
           v-for="(address, index) in form.voteAssignAddrs"
           :key="index"
@@ -109,7 +109,7 @@
           </a-button>
         </a-form-model-item>
       </template>
-      <a-form-model-item v-if="form.voteType === 'pos'" prop="voteTokenLimit">
+      <a-form-model-item v-if="form.voteType === '3'" prop="voteTokenLimit">
         <label slot="label"
           >Token Balance
           <!-- <span class="ml-16 t-grey">设置最小持币量，满足的地址可以参与投票</span> -->
@@ -266,10 +266,10 @@ export default {
 
       form: {
         ...{
-          governanceProposer: 'FounderAssign',
+          governanceProposer: '2', // 提案发起者类型 1.ALL 2.FounderAssign 3.Pos
           proposerAssignAddrs: [''],
           proposerTokenLimit: '',
-          voteType: 'FounderAssign',
+          voteType: '2', // 提案投票者类型 1.ALL 2.FounderAssign 3.Pos
           voteAssignAddrs: [''],
           voteTokenLimit: '',
           voteSupportPercent: 100,
