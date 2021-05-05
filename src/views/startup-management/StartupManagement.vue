@@ -7,7 +7,6 @@ const tabs = [
   'Preference',
   'Settings',
   'Bounty',
-  'Team',
   'Governance',
   { name: 'DISCO & Swap', route: 'DISCOSwap' }
 ].map(item => {
