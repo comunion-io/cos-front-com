@@ -102,7 +102,7 @@ export default {
               render: v => `${v} %`
             },
             {
-              label: 'Sharte Token',
+              label: 'Share Token',
               value: 'shareToken',
               render: v => `${v} ${this.tokenSymbol}`
             },
