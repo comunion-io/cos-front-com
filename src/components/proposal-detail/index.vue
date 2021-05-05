@@ -6,6 +6,7 @@ import services from '@/services';
 import { getProposalLeftDays } from '@/utils';
 import Descriptions from '@/components/display/Descriptions';
 import Progress from './progress';
+import Terms from './terms';
 export default {
   props: {
     id: String
@@ -34,24 +35,30 @@ export default {
           render: v => (
             <span>
               <a-icon type="user" />
-              <span class="t-primary"> {v}</span>
+              <span class="t-primary ml-4">{v}</span>
             </span>
           )
         },
         {
           label: 'Proposer Contact',
-          value: 'contract',
+          value: 'contact',
           render: v => (
             <span>
-              <a-icon type="mail" />` `
-              <a href={`mailto:${v}`} />
+              <a-icon type="mail" />
+              <a class="ml-4" href={`mailto:${v}`}>
+                {v}
+              </a>
             </span>
           )
         },
         {
           label: 'Description',
           value: 'description',
-          render: v => <a href={v} target="_blank" />
+          render: v => (
+            <a href={v} target="_blank">
+              {v}
+            </a>
+          )
         },
         {
           label: 'Vote Duration',
@@ -65,7 +72,8 @@ export default {
         },
         {
           label: 'Payment Address',
-          value: 'paymentAddr'
+          value: 'paymentAddr',
+          copyable: true
         },
         {
           label: 'Payments',
@@ -87,27 +95,28 @@ export default {
         {
           label: 'Payment Amount',
           value: 'paymentAmount',
-          render: (v, proposal) => `${v} ${proposal.tokenSymbol}`
+          render: (v, proposal) => `${v} ${proposal.startup.tokenSymbol}`
         },
         {
           label: 'Payment Terms',
-          value: 'terms'
+          value: 'terms',
+          render: (v, proposal) => <Terms symbol={proposal.startup.tokenSymbol} terms={v} />
         },
         {
           label: 'Total Amount',
           value: 'totalPaymentAmount',
-          render: (v, proposal) => `${v} ${proposal.tokenSymbol}`
+          render: (v, proposal) => `${v} ${proposal.startup.tokenSymbol}`
         },
         {
           label: 'Vote',
           render: (v, proposal) => (
             <div>
-              <a-button type="primary">
-                <a-icon type="like" />
+              <a-button type="primary" size="large" style="width:164px">
+                <a-icon type="like" class="mr-4" />
                 Vote YES
               </a-button>
-              <a-button class="ml-16">
-                <a-icon type="dislike" />
+              <a-button type="green" size="large" class="ml-16" style="width:164px">
+                <a-icon type="dislike" class="mr-4" />
                 Vote NO
               </a-button>
             </div>
@@ -128,32 +137,35 @@ export default {
       <div>
         {this.fetched ? (
           <div>
-            <div class="header-cards">
-              <div class="header-card">
-                <div class="status">{proposalStatusTxtMap[this.proposal.status]}</div>
-                <div className="desc">
-                  <a-icon type="clock-circle" />
+            <div class="proposal-header-cards flex">
+              <div class="proposal-header-card flex-1 flex-column ai-center jc-center">
+                <div class="f-24 t-primary">{proposalStatusTxtMap[this.proposal.status]}</div>
+                <div class="mt-20 t-error f-14">
+                  <a-icon type="clock-circle" class="mr-4" />
                   {getProposalLeftDays(this.proposal)}
                 </div>
               </div>
-              <div class="header-card">
-                <Progress progress={48} target={this.proposal.supportPercent} />
-                <div className="desc">
+              <div class="proposal-header-card flex-1 flex-column ai-center jc-center ml-16">
+                <Progress percent={48} target={this.proposal.supportPercent} />
+                <div class="mt-20 f-14 t-error">
                   48%
-                  <span class="text-gray">({this.proposal.supportPercent}% support needed)</span>
+                  <span class="t-grey">({this.proposal.supportPercent}% support needed)</span>
                 </div>
               </div>
-              <div class="header-card">
-                <Progress progress={48} target={this.proposal.minApprovalPercent} />
-                <div className="desc">
+              <div class="proposal-header-card flex-1 flex-column ai-center jc-center ml-16">
+                <Progress percent={48} target={this.proposal.minApprovalPercent} />
+                <div class="mt-20 f-14 t-error">
                   48%
-                  <span class="text-gray">
-                    ({this.proposal.minApprovalPercent}% approval needed)
-                  </span>
+                  <span class="t-grey">({this.proposal.minApprovalPercent}% approval needed)</span>
                 </div>
               </div>
             </div>
-            <Descriptions columns={this.detailFields} labelWidth={276} dataSource={this.proposal} />
+            <Descriptions
+              class="mt-36"
+              columns={this.detailFields}
+              labelWidth={276}
+              dataSource={this.proposal}
+            />
           </div>
         ) : (
           <Loading />
@@ -164,4 +176,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="less">
+.proposal-header-card {
+  height: 144px;
+  background: #fff;
+  box-shadow: 0px 4px 60px 0px rgba(208, 208, 208, 0.5);
+}
+</style>
