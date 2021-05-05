@@ -198,6 +198,19 @@ const routes = [
           if (key === 'governance') {
             route.children = [
               {
+                path: 'newProposal',
+                name: 'newProposal',
+                meta: {
+                  title: 'New Proposal',
+                  breadcrumb: 'New Proposal',
+                  skipAuth: false
+                },
+                component: () =>
+                  import(
+                    /* webpackChunkName: 'newProposal' */ `@/views/startup/tabs/governance/NewProposal.vue`
+                  )
+              },
+              {
                 path: ':proposalId/',
                 name: 'proposalDetail',
                 meta: {
