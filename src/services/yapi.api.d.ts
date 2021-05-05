@@ -87,6 +87,257 @@ export interface ServiceRequestAndResponseMap {
       nonce: string
     }
   }
+  'cores@proposal-获取': {
+    params: {
+      id: any;
+    }
+    query: {}
+    body: {}
+    response: {
+      /**
+       * @description ID
+       */
+      id: string
+      /**
+       * @description StartUp
+       */
+      startup: {
+        id: string
+        name: string
+        logo: string
+        tokenSymbol: string
+      }
+      /**
+       * @description 用户
+       */
+      comer?: {
+        /**
+         * @description ID
+         */
+        id: string
+        /**
+         * @description Comer名称
+         */
+        name: string
+      }
+      /**
+       * @description 钱包地址
+       */
+      walletAddr: string
+      /**
+       * @description 合约地址
+       */
+      contractAddr: string
+      /**
+       * @description 创建时间
+       */
+      createdAt: string
+      /**
+       * @description 更新时间
+       */
+      updatedAt: string
+      /**
+       * @description 状态 1.未开始 2.进行中 3.已结束 4.未成案 5.提案被拒绝 6.提案被通过
+       */
+      status: number
+      /**
+       * @description 标题
+       */
+      title: string
+      /**
+       * @description 提案类型 1.Finance 2.Governance 3.Strategy 4.Product 5.Media 6.Community 7.Node
+       */
+      type: number
+      /**
+       * @description 联系方式
+       */
+      contract: string
+      /**
+       * @description 描述
+       */
+      description: string
+      /**
+       * @description 提案投票者类型 1.ALL 2.FounderAssign 3.Pos
+       */
+      voterType: string
+      /**
+       * @description 最少成案比例
+       */
+      supportPercent: number
+      /**
+       * @description 最少通过比例
+       */
+      minApprovalPercent: number
+      /**
+       * @description 投票天数
+       */
+      duration: number
+      /**
+       * @description 是否有支付
+       */
+      hasPayment: boolean
+      /**
+       * @description 支付地址
+       */
+      paymentAddr?: string
+      /**
+       * @description 支付类型 1.一次性支付 2.按月支付
+       */
+      paymentType?: number
+      /**
+       * @description 支付月数
+       */
+      paymentMonthes?: number
+      /**
+       * @description 支付日期
+       */
+      paymentDate?: string
+      /**
+       * @description 单笔支付数量
+       */
+      paymentAmount?: number
+      /**
+       * @description 支付总数量
+       */
+      totalPaymentAmount?: number
+      /**
+       * @description 投票列表
+       */
+      votes: {
+        /**
+         * @description 票数
+         */
+        amount: number
+        /**
+         * @description 是否赞成
+         */
+        isApproved: boolean
+        /**
+         * @description 钱包地址
+         */
+        walletAddr: string
+        /**
+         * @description 创建时间
+         */
+        createdAt: string
+      }[]
+      /**
+       * @description 协议
+       */
+      terms: {
+        /**
+         * @description 数量
+         */
+        amount: number
+        /**
+         * @description 内容
+         */
+        content: string
+      }[]
+    }
+  }
+  'cores@proposal-列表': {
+    params: {}
+    query: {
+      /**
+       * @description 最大数量
+       * @example { limit: 10 }
+       */
+      limit: any;
+      /**
+       * @description 偏移量
+       * @example { offset: 0 }
+       */
+      offset: any;
+      /**
+       * @description 关键词
+       */
+      keyword?: any;
+      /**
+       * @description 列表类型
+       * @example { type: all }
+       */
+      type: any;
+    }
+    body: {}
+    response: {
+      /**
+       * @description 总数
+       */
+      total: number
+      /**
+       * @description 列表
+       */
+      result: {
+        /**
+         * @description Id
+         */
+        id: number
+        /**
+         * @description StartUp
+         */
+        startup: {
+          /**
+           * @description ID
+           */
+          id: number
+          /**
+           * @description 名称
+           */
+          name: string
+          /**
+           * @description Logo
+           */
+          logo: string
+          /**
+           * @description Token Symbol
+           */
+          tokenSymbol: string
+        }
+        /**
+         * @description Comer
+         */
+        comer?: {
+          /**
+           * @description ID
+           */
+          id: string
+          /**
+           * @description Comer 名称
+           */
+          name: string
+        }
+        /**
+         * @description 标题
+         */
+        title: string
+        /**
+         * @description 状态 1.未开始 2.进行中 3.已结束 4.未成案 5.提案被拒绝 6.提案被通过
+         */
+        status: number
+        /**
+         * @description 是否有支付
+         */
+        hasPayment: boolean
+        /**
+         * @description 支付总数量
+         */
+        totalPaymentAmount?: string
+        /**
+         * @description 创建时间
+         */
+        createdAt: string
+        /**
+         * @description 更新时间
+         */
+        updatedAt: string
+        /**
+         * @description 投票天数
+         */
+        duration: number
+      }[]
+    }
+  }
   'cores@startup-follow-创建': {
     params: {
       startupId: any;
@@ -271,9 +522,21 @@ export interface ServiceRequestAndResponseMap {
       result?: {
         id?: string
         startup?: {
+          /**
+           * @description ID
+           */
           id?: string
+          /**
+           * @description 名称
+           */
           name?: string
+          /**
+           * @description Logo
+           */
           logo?: string
+          /**
+           * @description Token Symbol
+           */
           tokenSymbol?: string
         }
         investmentReward?: number
@@ -748,7 +1011,9 @@ export interface ServiceRequestAndResponseMap {
     query: {}
     body: {
       txId: string
-      startupId: string
+      /**
+       * @description 交易对合约地址
+       */
       pairAddress: string
       /**
        * @description startup token
@@ -785,7 +1050,10 @@ export interface ServiceRequestAndResponseMap {
     query: {}
     body: {
       txId: string
-      startupId: string
+      /**
+       * @description 交易对合约地址
+       */
+      pairAddress: string
       /**
        * @description 发送钱包地址
        */
@@ -819,7 +1087,10 @@ export interface ServiceRequestAndResponseMap {
     query: {}
     body: {
       txId: string
-      startupId: string
+      /**
+       * @description 交易对合约地址
+       */
+      pairAddress: string
       /**
        * @description 发送钱包地址
        */
@@ -857,7 +1128,10 @@ export interface ServiceRequestAndResponseMap {
     query: {}
     body: {
       txId: string
-      startupId: string
+      /**
+       * @description 交易对合约地址
+       */
+      pairAddress: string
       /**
        * @description 发送钱包地址
        */
@@ -902,7 +1176,10 @@ export interface ServiceRequestAndResponseMap {
     params: {}
     query: {}
     body: {
-      startupId: string
+      /**
+       * @description 交易对合约地址
+       */
+      pairAddress: string
       /**
        * @description token1余额数量
        */
@@ -1427,7 +1704,7 @@ export interface ServiceRequestAndResponseMap {
   }
   'cores@bounty-创建': {
     params: {
-      id: any;
+      startupId: any;
     }
     query: {}
     body: {
@@ -1505,13 +1782,46 @@ export interface ServiceRequestAndResponseMap {
           addr?: string
           name?: string
         }[]
-        type?: string
-        voteTokenLimit?: string
-        voteAssignAddrs?: string[]
-        voteSupportPercent?: number
-        voteMinApprovalPercent?: number
-        voteMinDurationHours?: string
-        voteMaxDurationHours?: string
+        /**
+         * @description 提案发起者类型 1.ALL 2.FounderAssign 3.Pos
+         */
+        proposerType: number
+        /**
+         * @description Pos发起提案最低Token数量
+         */
+        proposerTokenLimit?: number
+        /**
+         * @description 指定提案发起者列表
+         */
+        assignedProposers?: string[]
+        /**
+         * @description 提案投票者类型 1.ALL 2.FounderAssign 3.Pos
+         */
+        voterType: number
+        /**
+         * @description Pos提案投票最低Token数量
+         */
+        voterTokenLimit?: number
+        /**
+         * @description 指定提案投票者列表
+         */
+        assignedVoters?: string[]
+        /**
+         * @description 提案最少成案比例
+         */
+        proposalSupportPercent: number
+        /**
+         * @description 提案最少通过比例
+         */
+        proposalMinApprovalPercent: number
+        /**
+         * @description 提案最少投票天数
+         */
+        proposalMinDuration: number
+        /**
+         * @description 提案最多投票天数
+         */
+        proposalMaxDuration: number
       }
       transaction?: {
         txId?: string
@@ -1696,23 +2006,47 @@ false 上链失败或确认中的,
         name: string
         addr: string
       }[]
-      /**
-       * @description FounderAssign;POS;ALL
-       */
-      voteType: string
-      /**
-       * @description 允许投票token数量限制，type=FounderAssign是不能为空
-       */
-      voteTokenLimit?: number
-      /**
-       * @description 允许投票的地址，type=POS时不能为空
-       */
-      voteAssignAddrs?: string[]
-      voteSupportPercent: number
-      voteMinApprovalPercent: number
-      voteMinDurationHours: number
-      voteMaxDurationHours: number
       txId: string
+      /**
+       * @description 提案发起者类型 1.ALL 2.FounderAssign 3.Pos
+       */
+      proposerType: number
+      /**
+       * @description Pos发起提案最低Token数量
+       */
+      proposerTokenLimit?: number
+      /**
+       * @description 指定提案发起者列表
+       */
+      assignedProposers?: string[]
+      /**
+       * @description 提案投票者类型 1.ALL 2.FounderAssign 3.Pos
+       */
+      voterType: number
+      /**
+       * @description Pos提案投票最低Token数量
+       */
+      voterTokenLimit?: number
+      /**
+       * @description 指定提案投票者列表
+       */
+      assignedVoters?: string[]
+      /**
+       * @description 提案最少成案比例
+       */
+      proposalSupportPercent: number
+      /**
+       * @description 提案最少通过比例
+       */
+      proposalMinApprovalPercent: number
+      /**
+       * @description 提案最少投票天数
+       */
+      proposalMinDuration: number
+      /**
+       * @description 提案最多投票天数
+       */
+      proposalMaxDuration: number
     }
     response: {
       id: string

@@ -1,6 +1,7 @@
 <script>
 import CopyableAddress from '@/components/helper/CopyableAddress';
 import Descriptions from '@/components/display/Descriptions';
+import StartupInfo from './blocks/StartupInfo';
 
 export default {
   props: {
@@ -153,6 +154,7 @@ export default {
     const { modules } = this;
     return (
       <div>
+        <StartupInfo id={this.id} startup={this.startup} />
         {modules.map(_module => {
           const { title, icon, fields } = _module;
           return (

@@ -43,10 +43,10 @@
 
 <script>
 import services from '@/services';
-import CountBlock from './CountBlock';
-import Swap from './Swap';
-import FundsPool from './FundsPool';
-import Chart from './Chart';
+import CountBlock from './Swap/CountBlock';
+import Swap from './Swap/Swap';
+import FundsPool from './Swap/FundsPool';
+import Chart from './Swap/Chart';
 
 export default {
   data() {
