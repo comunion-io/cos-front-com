@@ -130,15 +130,33 @@ export default {
       // save data
       const body = {
         ...this.form.finance,
-        ...{ ...this.form.governance }
+        // 提案发起者类型
+        proposerType: Number(this.form.governance.governanceProposer),
+        // 提案投票者类型
+        voterType: Number(this.form.governance.voteType),
+        // 提案最少成案比例
+        proposalSupportPercent: this.form.governance.voteSupportPercent,
+        // 提案最少通过比例
+        proposalMinApprovalPercent: this.form.governance.voteMinApprovalPercent,
+        // 提案最少投票天数
+        proposalMinDuration: this.form.governance.minDuration.days,
+        // 提案最多投票天数
+        proposalMaxDuration: this.form.governance.maxDuration.days
       };
-      // 时间转小时
-      body.voteMinDurationHours = body.minDuration.days * 24 + body.minDuration.hours;
-      body.voteMaxDurationHours = body.maxDuration.days * 24 + body.maxDuration.hours;
-      delete body.maxDuration;
-      delete body.minDuration;
-
-      body.voteTokenLimit = body.voteTokenLimit ? body.voteTokenLimit : -1;
+      if (body.proposerType === 2) {
+        // 指定提案发起者列表
+        body.assignedProposers = this.form.governance.proposerAssignAddrs;
+      } else if (body.proposerType === 3) {
+        // 发起提案最低Token数量
+        body.proposerTokenLimit = this.form.governance.proposerTokenLimit;
+      }
+      if (body.voterType === 2) {
+        // 指定提案发起者列表
+        body.assignedVoters = this.form.governance.voteAssignAddrs;
+      } else if (body.voterType === 3) {
+        // 提案投票最低Token数量
+        body.voterTokenLimit = this.form.governance.voteTokenLimit;
+      }
 
       const id = this.$route.params.id;
       this.ethSendTransaction(body, id);
@@ -192,10 +210,18 @@ export default {
       const data = JSON.parse(JSON.stringify(formData));
       const contract = new web3.eth.Contract(settingAbi, COMMUNION_SETTING_RECEIVE_ACCOUNT);
       const walletAddrs = data.walletAddrs.map(item => item.addr);
-      let voteAssignAddrs = [];
-      data.voteAssignAddrs.forEach(item => {
-        voteAssignAddrs.push(item || '0x0000000000000000000000000000000000000000');
-      });
+      let assignedVoters = [];
+      if (data.assignedVoters) {
+        data.assignedVoters.forEach(item => {
+          assignedVoters.push(item || '0x0000000000000000000000000000000000000000');
+        });
+      }
+      let assignedProposers = [];
+      if (data.assignedProposers) {
+        data.assignedProposers.forEach(item => {
+          assignedProposers.push(item || '0x0000000000000000000000000000000000000000');
+        });
+      }
       /** 发起合约 */
       const contractSetting = await contract.methods.newSetting(
         id,
@@ -203,15 +229,18 @@ export default {
         data.tokenSymbol,
         data.tokenAddr,
         walletAddrs,
+        data.proposerType,
+        data.proposerTokenLimit ? data.proposerTokenLimit.toString() : '',
+        assignedProposers,
         data.voteType,
         // POS
-        data.voteTokenLimit.toString(),
+        data.voterTokenLimit ? data.voterTokenLimit.toString() : '',
         // Founder assign
-        voteAssignAddrs,
-        data.voteSupportPercent.toString(),
-        data.voteMinApprovalPercent.toString(),
-        data.voteMinDurationHours.toString(),
-        data.voteMaxDurationHours.toString()
+        assignedVoters,
+        data.proposalSupportPercent.toString(),
+        data.proposalMinApprovalPercent.toString(),
+        data.proposalMinDuration.toString(),
+        data.proposalMaxDuration.toString()
       );
       return contractSetting;
     },

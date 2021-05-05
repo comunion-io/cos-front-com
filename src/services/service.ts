@@ -1,7 +1,6 @@
-import axios from 'axios';
 import { request } from './request';
 import { Method, RequestBody, RequestQuery } from './yapi.api';
-import { createServices } from './yapi.services';
+import { createServices, ExtraParams } from './yapi.services';
 
 export const services = createServices(
   async (
@@ -9,7 +8,7 @@ export const services = createServices(
     method: Method,
     query: RequestQuery,
     body: RequestBody,
-    extraParams,
+    extraParams: ExtraParams,
     done = true
   ) => {
     const ret = await request(
