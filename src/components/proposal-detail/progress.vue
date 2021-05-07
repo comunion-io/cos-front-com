@@ -16,12 +16,12 @@ export default {
   computed: {
     barStyle() {
       return {
-        width: `${this.percent * 100}%`
+        width: `${this.percent}%`
       };
     },
     lineStyle() {
       return {
-        left: `${this.target * 100}%`
+        left: `${this.target}%`
       };
     }
   }
@@ -33,8 +33,9 @@ export default {
 .progress {
   position: relative;
   display: flex;
+  max-width: 240px;
+  width: 80%;
   height: 28px;
-  overflow: hidden;
   line-height: 0;
   background-color: #e9ecef;
   border-radius: 14px;
@@ -57,20 +58,22 @@ export default {
     transparent
   );
   background-size: 14px 14px;
-  animation: 1s linear infinite progress-bar-stripes;
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
+  animation: 2s linear infinite progress-bar-stripes;
 }
 @keyframes progress-bar-stripes {
   from {
-    background-position: 28px 0;
+    background-position: 0 0;
   }
   to {
-    background-position: 0 0;
+    background-position: 28px 0;
   }
 }
 .target-line {
   position: absolute;
-  top: -11px;
-  bottom: -11px;
+  top: -10px;
+  bottom: -10px;
   width: 0;
   border-left: 1px dashed @primary-color;
 }
