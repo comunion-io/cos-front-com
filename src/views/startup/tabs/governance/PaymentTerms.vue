@@ -2,7 +2,13 @@
   <div class="payment-terms">
     <div class="item" v-for="(item, index) in list" :key="index">
       <div class="row">
-        <a-input size="large" v-model="item.number" :addon-after="tokenSymbol" @change="onChange" />
+        <number-input
+          size="large"
+          :min="0"
+          v-model="item.number"
+          :addon-after="tokenSymbol"
+          @change="onChange"
+        />
         <a-button
           v-if="index === 0"
           class="btn"
@@ -35,6 +41,8 @@
 </template>
 
 <script>
+import NumberInput from '@/components/form/NumberInput';
+
 export default {
   data() {
     return {
@@ -50,6 +58,9 @@ export default {
     tokenSymbol: {
       type: String
     }
+  },
+  components: {
+    NumberInput
   },
   methods: {
     onAdd() {

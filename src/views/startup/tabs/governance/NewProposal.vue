@@ -91,11 +91,13 @@
           prop="totalMonths"
           class="form-item"
         >
-          <a-input
+          <number-input
             size="large"
             v-model="form.totalMonths"
+            :min="0"
             placeholder="Please enter total months"
             addon-after="Month"
+            @change="totalMonthsOnChange"
           />
         </a-form-model-item>
         <!-- Payment Date -->
@@ -108,11 +110,13 @@
         </a-form-model-item>
         <!-- Payment Amount -->
         <a-form-model-item label="Payment Amount" prop="paymentAmount" class="form-item">
-          <a-input
+          <number-input
             size="large"
             v-model="form.paymentAmount"
             placeholder="Please enter payment amount"
             :addon-after="form.tokenSymbol"
+            :min="0"
+            @change="paymentAmountOnChange"
           />
         </a-form-model-item>
         <!-- Payment Terms -->
@@ -126,11 +130,13 @@
         </a-form-model-item>
         <!-- Total Payment Amount -->
         <a-form-model-item label="Total Payment Amount" prop="totalPaymentAmount" class="form-item">
-          <a-input
+          <number-input
             size="large"
             v-model="form.totalPaymentAmount"
             placeholder="Please enter total payment amount"
             :addon-after="form.tokenSymbol"
+            :min="0"
+            @change="totalPaymentAmountOnChange"
           />
         </a-form-model-item>
       </template>
@@ -153,8 +159,18 @@
 <script>
 import { Slider } from 'ant-design-vue';
 import BbsInput from '@/components/form/BbsInput';
+import NumberInput from '@/components/form/NumberInput';
 import { proposalTypeTxtMap } from '@/constants/proposal';
 import paymentTerms from './PaymentTerms';
+
+// 正数验证器
+function positiveNumberValidator(rule, value, callback) {
+  if (isNaN(Number(value)) || value <= 0) {
+    let err = new Error('');
+    callback(err);
+  }
+  callback();
+}
 
 export default {
   data() {
@@ -183,7 +199,7 @@ export default {
         payment: false,
         paymentAddress: '',
         payments: 2, // 支付形式，1：One Time Pay，2：Monthly Pay 默认为2（按月支付）
-        totalMonths: '',
+        totalMonths: 0,
         paymentDate: '',
         tokenSymbol: '*TOKEN*',
         paymentAmount: '',
@@ -226,15 +242,25 @@ export default {
             required: true,
             pattern: /^[1-9][0-9]*$/,
             trigger: 'blur',
-            message: 'Please enter total months'
+            message: 'Please enter total months(Integer greater than 0)'
           }
         ],
         paymentDate: [{ required: true, trigger: 'blur', message: 'Please enter payment date' }],
         paymentAmount: [
-          { required: true, trigger: 'blur', message: 'Please enter payment amount' }
+          {
+            required: true,
+            trigger: 'blur',
+            validator: positiveNumberValidator,
+            message: 'Please enter payment amount'
+          }
         ],
         totalPaymentAmount: [
-          { required: true, trigger: 'blur', message: 'Please enter total payment amount' }
+          {
+            required: true,
+            trigger: 'blur',
+            validator: positiveNumberValidator,
+            message: 'Please enter total payment amount'
+          }
         ]
       }
     };
@@ -246,6 +272,7 @@ export default {
   },
   components: {
     BbsInput,
+    NumberInput,
     paymentTerms,
     [Slider.name]: Slider
   },
@@ -256,6 +283,15 @@ export default {
     this.form.minApprovalPercent = this.startup?.settings?.voteMinApprovalPercent;
   },
   methods: {
+    totalMonthsOnChange(value) {
+      this.$refs.ruleForm.validateField('totalMonths');
+    },
+    paymentAmountOnChange(value) {
+      this.$refs.ruleForm.validateField('paymentAmount');
+    },
+    totalPaymentAmountOnChange(value) {
+      this.$refs.ruleForm.validateField('totalPaymentAmount');
+    },
     onSubmit() {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
@@ -290,6 +326,7 @@ export default {
     },
     // 合约上链
     makeContract(params) {
+      console.log(params);
       this.loading = true;
       // todo...
       setTimeout(() => {
