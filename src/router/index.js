@@ -188,7 +188,7 @@ const routes = [
             meta: {
               title: `Start-Up Detail - ${upCaseName}`,
               breadcrumb: upCaseName, // 面包屑
-              skipAuth: false
+              skipAuth: true
             },
             component: () =>
               import(
