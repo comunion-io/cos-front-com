@@ -1,7 +1,7 @@
 <!--
  * @Author       : xiaodong
  * @Date         : 2020-12-20 21:29:09
- * @Descripttion : 创建 Disco 组件
+ * @Descripttion : 创建 DISCO 组件
  * @FilePath     : \cos-front-com\src\views\startup-management\tabs\DISCOSwap\CreateContract.vue
 -->
 <template>

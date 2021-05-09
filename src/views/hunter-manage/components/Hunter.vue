@@ -182,8 +182,7 @@ export default {
 
 <style lang="less" scoped>
 .hunter {
-  max-width: 590px;
   margin: 0 auto;
-  padding: 40px 0;
+  padding: 16px 5%;
 }
 </style>

@@ -6,6 +6,7 @@
     :columns="columns"
     :data-source="dataSource"
     :pagination="pagination"
+    :enablePagination="true"
     @on-change="onTableChange"
     @on-pagination-change="onPaginationChange"
   >
@@ -18,7 +19,7 @@
             id: text.id
           },
           query: {
-            tabName: 'Disco'
+            tabName: 'DISCO'
           }
         }"
       >
@@ -33,7 +34,7 @@
 </template>
 
 <script>
-import CTable from '@/components/table/CTable.vue';
+import CTable, { DEFAULT_LIMIT } from '@/components/table/CTable.vue';
 import CBadge from '@/components/badge/CBadge.vue';
 
 import services from '@/services';
@@ -140,13 +141,21 @@ export default {
       }
     },
     getStateText(state) {
+      const text = {
+        1: 'Waiting for enable',
+        2: 'Failed',
+        3: 'Enabling',
+        4: 'Waiting for start',
+        7: 'In progress',
+        8: 'Waiting for settle'
+      }[state];
       switch (state) {
-        case 1: // 等待开始
-          return 'Waiting for start';
-        case 2: // 进行中
-          return 'Inprogress';
+        case 5:
+          return 'End（Succeed）';
+        case 6:
+          return 'End（Failed）';
         default:
-          return '-';
+          return text;
       }
     },
     async loadDiscoData(params, offset = 0) {
@@ -160,7 +169,7 @@ export default {
       this.loading = true;
 
       const { error, data } = await services['cores@disco-列表']({
-        limit: 20,
+        limit: DEFAULT_LIMIT,
         offset,
         keyword,
         orderBy:
@@ -173,7 +182,7 @@ export default {
       this.loading = false;
       if (!error) {
         const { result, ...p } = data || {};
-        this.pagination = p;
+        this.pagination = { ...p, limit: DEFAULT_LIMIT };
         this.dataSource = result || [];
       }
     },

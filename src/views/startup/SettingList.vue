@@ -85,7 +85,7 @@ export default {
       // 搜索条件
       search: {
         offset: 0,
-        limit: 10
+        limit: 5
       },
       total: 0,
       // 加载中

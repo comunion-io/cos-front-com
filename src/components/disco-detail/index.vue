@@ -102,7 +102,7 @@ export default {
               render: v => `${v} %`
             },
             {
-              label: 'Sharte Token',
+              label: 'Share Token',
               value: 'shareToken',
               render: v => `${v} ${this.tokenSymbol}`
             },
@@ -183,10 +183,10 @@ export default {
       // 7 募资中（数据库为4，时间进行中）
       // 8 募资结束（数据库为4，时间已结束）
       const text = {
-        1: 'Waiting to start',
+        1: 'Waiting for enable',
         2: 'Failed',
         3: 'Enabling',
-        4: 'Waiting for time',
+        4: 'Waiting for start',
         7: 'In progress',
         8: 'Waiting for settle'
       }[status];

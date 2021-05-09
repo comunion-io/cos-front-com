@@ -1,7 +1,7 @@
 <template>
   <a href @click.prevent="openDialog">
     {{ total }} &gt;&gt;
-    <a-modal title="Investors List" :width="720" v-model="dialogVisible">
+    <a-modal title="Investors List" :width="720" v-model="dialogVisible" :footer="null">
       <div class="mb-16 flex ai-center">
         <span
           >Investors: <span class="t-bold">{{ total }}</span></span
@@ -52,7 +52,7 @@ export default {
         },
         {
           dataIndex: 'ethCount',
-          customRender: v => `${v} ETH`
+          customRender: v => `${v / 10 ** 17} ETH`
         },
         {
           dataIndex: 'createdAt',

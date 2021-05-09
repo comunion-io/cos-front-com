@@ -1,55 +1,64 @@
 <script>
-import TabPerference from './details/Perference';
-import StartupInfo from './details/blocks/StartupInfo';
+import Breadcrumb from './components/Breadcrumb';
 import services from '@/services';
+const tabs = ['Preference', 'Bounty', 'DISCO', 'Swap', 'Governance'].map(item => {
+  return {
+    name: item,
+    route: `startupDetail${item}`
+  };
+});
 export default {
-  components: {
-    TabPerference,
-    TabBounty: () => import('./details/Bounty'),
-    TabDisco: () => import('./details/Disco.vue'),
-    TabSwap: () => import('./details/Swap/index.vue'),
-    TabGovernance: () => import('./details/Governance')
-  },
   data() {
     return {
-      selectedTab: 'Perference',
-      tabs: ['Perference', 'Bounty', 'Disco', 'Swap', 'Governance'],
       loading: false,
       startup: {}
     };
   },
-  methods: {
-    // 获取startup详情数据
-    async getStartupDetail() {
-      this.loading = true;
-      const { error, data } = await services['cores@startup-获取']({
-        startupId: this.$route.params.id
-      });
-      this.startup = error ? {} : data;
-      this.loading = false;
+  computed: {
+    selectedTab: {
+      get() {
+        return this.$route.name;
+      },
+      set(v) {
+        this.$router.push({ name: v, params: { id: this.$route.params.id } });
+      }
     }
   },
-  mounted() {
-    if (this.$route.query?.tabName) {
-      this.selectedTab = this.$route.query.tabName;
+  async mounted() {
+    const tab = this.$route.query.tab;
+    if (tab && tabs.find(tab => tab.name === tab)) {
+      this.selectedTab = tab;
     }
-    this.getStartupDetail();
+    this.loading = true;
+    const { error, data } = await services['cores@startup-获取'](
+      {
+        startupId: this.$route.params.id
+      },
+      { keepWhenNavigate: true }
+    );
+    this.startup = error ? {} : data;
+    this.loading = false;
   },
   render(h) {
-    const TabComponent = 'Tab' + this.selectedTab;
     return (
       <div class="flex" style="padding: 16px 50px">
         <a-card title="Menu" class="mr-20 startup-menus">
           <a-tabs vModel={this.selectedTab} tab-position="left">
-            {this.tabs.map(tab => (
-              <a-tab-pane key={tab} tab={tab}></a-tab-pane>
+            {tabs.map(tab => (
+              <a-tab-pane key={tab.route} tab={tab.name}></a-tab-pane>
             ))}
           </a-tabs>
         </a-card>
-        <a-card class="flex-1">
-          <StartupInfo id={this.$route.params.id} startup={this.startup} />
-          <TabComponent id={this.$route.params.id} startup={this.startup} />
-        </a-card>
+        {this.loading ? (
+          <loading />
+        ) : (
+          <a-card class="flex-1">
+            {this.selectedTab !== 'startupDetailPreference' && (
+              <Breadcrumb startupName={this.startup.name} />
+            )}
+            <router-view id={this.$route.params.id} startup={this.startup} />
+          </a-card>
+        )}
       </div>
     );
   }

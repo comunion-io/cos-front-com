@@ -96,7 +96,80 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: 'startupSetting' */ '@/views/startup/SettingDetail.vue')
       },
-
+      // 'startupManagement'
+      {
+        path: '/startup/management/:id',
+        name: 'startupManagement',
+        meta: {
+          title: 'Start-Up Management',
+          skipAuth: false
+        },
+        redirect: '/startup/management/:id/preference',
+        component: () =>
+          import(
+            /* webpackChunkName: 'startManagement' */ '@/views/startup-management/StartupManagement.vue'
+          ),
+        children: ['preference', 'settings', 'bounty', 'governance', 'DISCOSwap'].map(key => {
+          const upCaseName = key[0].toUpperCase() + key.slice(1);
+          let route = {
+            path: key,
+            name: `startupManagement${upCaseName}`,
+            meta: {
+              title: `Start-Up Management - ${upCaseName}`,
+              breadcrumb: upCaseName, // 面包屑
+              skipAuth: false
+            },
+            component: () =>
+              import(
+                /* webpackChunkName: 'startManagement' */ `@/views/startup-management/tabs/Tab${upCaseName}.vue`
+              )
+          };
+          if (key === 'DISCOSwap') {
+            route.children = [
+              {
+                path: 'discoForm',
+                name: 'startupManagementDiscoForm',
+                meta: {
+                  title: 'Start-Up Management DISCO',
+                  breadcrumb: 'DISCO',
+                  skipAuth: false
+                },
+                component: () =>
+                  import(
+                    /* webpackChunkName: 'startManagement' */ `@/views/startup-management/tabs/DISCOSwap/CreateContract.vue`
+                  )
+              },
+              {
+                path: 'discoDetail',
+                name: 'startupManagementDiscoDetail',
+                meta: {
+                  title: 'Start-Up Management DISCO Detail',
+                  breadcrumb: 'DISCO',
+                  skipAuth: false
+                },
+                component: () =>
+                  import(
+                    /* webpackChunkName: 'startManagement' */ `@/views/startup-management/tabs/DISCOSwap/DISCODetail.vue`
+                  )
+              },
+              {
+                path: 'createExchange',
+                name: 'startupManagementCreateExchange',
+                meta: {
+                  title: 'Start-Up Management Create Exchange',
+                  breadcrumb: 'Create Exchange',
+                  skipAuth: false
+                },
+                component: () =>
+                  import(
+                    /* webpackChunkName: 'startManagement' */ `@/views/startup-management/tabs/DISCOSwap/CreateExchange.vue`
+                  )
+              }
+            ];
+          }
+          return route;
+        })
+      },
       {
         path: '/startup/:id',
         name: 'startupDetail',
@@ -104,85 +177,58 @@ const routes = [
           title: 'Start-Up Detail',
           skipAuth: true
         },
+        redirect: '/startup/:id/preference',
         component: () =>
-          import(/* webpackChunkName: 'startupDetail' */ '@/views/startup/Detail.vue')
-      },
-      // 'startupManagement'
-      {
-        path: '/startup/:id/management',
-        name: 'startupManagement',
-        meta: {
-          title: 'Start-Up Management',
-          skipAuth: false
-        },
-        redirect: '/startup/:id/management/perference',
-        component: () =>
-          import(
-            /* webpackChunkName: 'startManagement' */ '@/views/startup-management/StartupManagement.vue'
-          ),
-        children: ['perference', 'settings', 'bounty', 'team', 'governance', 'DISCOSwap'].map(
-          key => {
-            const upCaseName = key[0].toUpperCase() + key.slice(1);
-            let route = {
-              path: key,
-              name: `startupManagement${upCaseName}`,
-              meta: {
-                title: `Start-Up Management ${upCaseName}`,
-                breadcrumb: upCaseName, // 面包屑
-                skipAuth: false
+          import(/* webpackChunkName: 'startupDetail' */ '@/views/startup/Detail.vue'),
+        children: ['preference', 'bounty', 'DISCO', 'swap', 'governance'].map(key => {
+          const upCaseName = key[0].toUpperCase() + key.slice(1);
+          let route = {
+            path: key,
+            name: `startupDetail${upCaseName}`,
+            meta: {
+              title: `Start-Up Detail - ${upCaseName}`,
+              breadcrumb: upCaseName, // 面包屑
+              skipAuth: true
+            },
+            component: () =>
+              import(
+                /* webpackChunkName: 'startDetail' */ `@/views/startup/tabs/Tab${upCaseName}.vue`
+              )
+          };
+          if (key === 'governance') {
+            route.children = [
+              {
+                path: 'newProposal',
+                name: 'newProposal',
+                meta: {
+                  title: 'New Proposal',
+                  breadcrumb: 'New Proposal',
+                  skipAuth: false
+                },
+                component: () =>
+                  import(
+                    /* webpackChunkName: 'newProposal' */ `@/views/startup/tabs/governance/NewProposal.vue`
+                  )
               },
-              component: () =>
-                import(
-                  /* webpackChunkName: 'startManagement' */ `@/views/startup-management/tabs/Tab${upCaseName}.vue`
-                )
-            };
-            if (key === 'DISCOSwap') {
-              route.children = [
-                {
-                  path: 'discoForm',
-                  name: 'startupManagementDiscoForm',
-                  meta: {
-                    title: 'Start-Up Management DISCO',
-                    breadcrumb: 'DISCO',
-                    skipAuth: false
-                  },
-                  component: () =>
-                    import(
-                      /* webpackChunkName: 'startManagement' */ `@/views/startup-management/tabs/DISCOSwap/CreateContract.vue`
-                    )
+              {
+                path: ':proposalId/',
+                name: 'proposalDetail',
+                meta: {
+                  title: `Proposal Detail`,
+                  breadcrumb: 'ProposalDetails',
+                  skipAuth: false
                 },
-                {
-                  path: 'discoDetail',
-                  name: 'startupManagementDiscoDetail',
-                  meta: {
-                    title: 'Start-Up Management DISCO Detail',
-                    breadcrumb: 'DISCO',
-                    skipAuth: false
-                  },
-                  component: () =>
-                    import(
-                      /* webpackChunkName: 'startManagement' */ `@/views/startup-management/tabs/DISCOSwap/DISCODetail.vue`
-                    )
-                },
-                {
-                  path: 'createExchange',
-                  name: 'startupManagementCreateExchange',
-                  meta: {
-                    title: 'Start-Up Management Create Exchange',
-                    breadcrumb: 'Create Exchange',
-                    skipAuth: false
-                  },
-                  component: () =>
-                    import(
-                      /* webpackChunkName: 'startManagement' */ `@/views/startup-management/tabs/DISCOSwap/CreateExchange.vue`
-                    )
-                }
-              ];
-            }
-            return route;
+                component: () =>
+                  import(
+                    /* webpackChunkName: 'proposalDetail' */ `@/views/startup/tabs/governance/Proposal.vue`
+                  )
+              }
+            ];
           }
-        )
+          return route;
+        })
       },
+
       // welcome 页面， 未登录metamas情况下，点击new startup 进入欢迎页
       {
         path: '/welcome',

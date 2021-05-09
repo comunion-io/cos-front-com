@@ -23,12 +23,12 @@ export default {
   render(h) {
     const { items } = this;
     return (
-      <Breadcrumb class="startup-management-breadcrumb">
+      <Breadcrumb class="startup-detail-breadcrumb">
         <BreadcrumbItem>
           <Icon type="environment" theme="filled" class="t-primary" />
           <router-link
-            class="startup-management-breadcrumb_name t-trunc"
-            to={{ name: 'startupManagement', id: this.$route.params.id }}
+            class="startup-detail-breadcrumb_name t-trunc"
+            to={{ name: 'startupDetail', id: this.$route.params.id }}
           >
             {this.startupName}
           </router-link>
@@ -47,7 +47,7 @@ export default {
 </script>
 
 <style lang="less">
-.startup-management-breadcrumb {
+.startup-detail-breadcrumb {
   display: flex;
   align-items: center;
   margin: -24px -24px 24px;
