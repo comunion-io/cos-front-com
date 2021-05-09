@@ -102,7 +102,7 @@ export default {
               render: v => `${v} %`
             },
             {
-              label: 'Share Token',
+              label: 'Sharte Token',
               value: 'shareToken',
               render: v => `${v} ${this.tokenSymbol}`
             },
@@ -214,9 +214,7 @@ export default {
      * @description: invest this  disco
      */
     async doInvest() {
-      const discoId = this.detail.id;
-      const investAddress = this.detail.fundRaisingAddr;
-      await this.discoInstance.invest(discoId, investAddress, this.account);
+      await this.discoInstance.invest(this.detail.id, this.account);
     }
   },
   render(h) {
