@@ -21,7 +21,7 @@
 
 <script>
 import ProposalList from '@/views/governance/components/ProposalList.vue';
-import { proposalStatusMap } from '@/constants';
+import { proposalStatusMap, proposalStatusTxtMap } from '@/constants';
 
 const typeOptions = [
   {

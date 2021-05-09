@@ -7,6 +7,14 @@ export const proposalStatusTxtMap = {
   5: 'Rejected',
   6: 'Passed'
 };
+export const proposalStatusColorMap = {
+  1: '#d9d9d9',
+  2: '#1890ff',
+  3: '#52c41a',
+  4: '#faad14',
+  5: '#f5222d',
+  6: '#52c41a'
+};
 
 // 提案状态
 export const proposalStatusMap = {

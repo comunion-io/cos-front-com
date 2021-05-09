@@ -216,7 +216,7 @@ const routes = [
                 meta: {
                   title: `Proposal Detail`,
                   breadcrumb: 'ProposalDetails',
-                  skipAuth: false
+                  skipAuth: true
                 },
                 component: () =>
                   import(
