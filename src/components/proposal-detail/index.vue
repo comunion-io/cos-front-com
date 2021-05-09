@@ -3,7 +3,7 @@ import moment from 'moment';
 import { proposalStatusTxtMap, proposalTypeTxtMap } from '@/constants';
 import Loading from '../loading';
 import services from '@/services';
-import { getProposalLeftDays } from '@/utils';
+import { fmtProposalLeftDays } from '@/utils';
 import Descriptions from '@/components/display/Descriptions';
 import Progress from './progress';
 import Terms from './terms';
@@ -142,7 +142,7 @@ export default {
                 <div class="f-24 t-primary">{proposalStatusTxtMap[this.proposal.status]}</div>
                 <div class="mt-20 t-error f-14">
                   <a-icon type="clock-circle" class="mr-4" />
-                  {getProposalLeftDays(this.proposal)}
+                  {fmtProposalLeftDays(this.proposal?.duration)}
                 </div>
               </div>
               <div class="proposal-header-card flex-1 flex-column ai-center jc-center ml-16">

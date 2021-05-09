@@ -7,6 +7,17 @@ export const proposalStatusTxtMap = {
   5: 'Rejected',
   6: 'Passed'
 };
+
+// 提案状态
+export const proposalStatusMap = {
+  notStarted: 1,
+  voting: 2,
+  finished: 3,
+  noEnoughVote: 4,
+  rejected: 5,
+  passed: 6
+};
+
 // 提案类型
 export const proposalTypeTxtMap = {
   1: 'Finance',
