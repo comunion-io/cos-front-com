@@ -254,7 +254,7 @@ export default {
             // const { id } = await getPrepareBountyId();
 
             const { error, data } = await services['cores@startup-获取prepareid']();
-            const id = error ? '' : data;
+            const id = error ? '' : data.id;
 
             if (id) {
               this.ethSendTranscation(this.form, id);
@@ -307,19 +307,25 @@ export default {
      * @description 创建bounty
      */
     async createBounty(formData, bountyId, txid) {
+      const startupId = this.$route.query.startupId;
       try {
         // 创建 bounty
-        const params = { ...formData, txid, ...{ id: bountyId }, descriptionFileAddr: '-1' }; // descriptionFileAddr等后端删除了， 前端也要删除
+        const params = {
+          ...formData,
+          startupId,
+          id: bountyId,
+          txid,
+          descriptionFileAddr: '-1'
+        }; // descriptionFileAddr等后端删除了， 前端也要删除
         params.duration = +params.duration;
         for (const payment of params.payments) {
           payment.value = +payment.value;
           payment.token = payment.token.toString();
         }
-
-        const startupId = this.$route.query.startupId;
+        console.log(params);
 
         // const bounty = await createBounty(startupId, data);
-        const { error, data } = await services['cores@bounty-创建']({ id: startupId }, params);
+        const { error, data } = await services['cores@bounty-创建'](params);
         const bounty = error ? {} : data;
 
         if (bounty.id) {
@@ -367,7 +373,7 @@ export default {
     async getMeStartups() {
       try {
         this.startupLoading = true;
-        const { error, data } = await services['cores@startups-我的-列表']();
+        const { error, data } = await services['cores@startups-我的-列表']({});
         const { result = [] } = error ? {} : data;
         this.startupLoading = false;
         this.startups = result.filter(item => item.state === 2);

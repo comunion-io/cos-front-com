@@ -84,10 +84,10 @@ export default {
           class="no-shrink"
         />
         <div class="flex-1 mx-24">
-          <h3 class="mb-0 t-bold t-break t-trunc" title={startup.name}>
+          <h3 class="mb-0 t-bold t-trunc" title={startup.name}>
             {startup.name}
           </h3>
-          <p class="mt-16 mb-0 t-break t-grey">{startup.mission}</p>
+          <p class="mt-16 mb-0 t-grey">{startup.mission}</p>
         </div>
         <a-button
           type="primary"
