@@ -187,7 +187,7 @@ export default {
                 <span class="ml-8 t-primary f-15">{detail.hunters?.length || 0}</span>
               </div>
               <a-table
-                row-key="hunterId"
+                row-key="userId"
                 showHeader={false}
                 columns={this.hunterColumns}
                 dataSource={detail.hunters || []}
@@ -316,16 +316,14 @@ export default {
               return console.error(err);
             }
             const txid = result.result;
-
+            console.log(txid);
             // if (await startupWork(this.detail.id, { txid })) {
             //   this.fetchData();
             // }
-            const { error } = await services['cores@bounty-startwork'](
-              {
-                bountyId: this.detail.id
-              },
-              { txid }
-            );
+            const { error } = await services['cores@bounty-startwork']({
+              bountyId: this.detail.id,
+              txid
+            });
             if (!error) {
               this.fetchData();
             }
