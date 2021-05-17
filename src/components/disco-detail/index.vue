@@ -44,6 +44,7 @@ export default {
   data() {
     return {
       status: null,
+      loading: true,
       detail: {}
     };
   },
@@ -152,6 +153,7 @@ export default {
     id: {
       immediate: true,
       async handler(v) {
+        this.loading = true;
         const { error, data } = await services['cores@startup-disco和swap状态']({ startupId: v });
         if (!error) {
           this.status = data.discoState;
@@ -162,7 +164,11 @@ export default {
               // detail里的state 0 默认状态，1 等待开始，2 进行中，3 失败，4 成功
               this.detail = res.data;
             }
+
+            this.loading = false;
           }
+        } else {
+          this.loading = false;
         }
       }
     }
@@ -218,6 +224,7 @@ export default {
     }
   },
   render(h) {
+    if (this.loading) return <loading />;
     switch (this.status) {
       case null:
         return <loading />;

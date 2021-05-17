@@ -61,6 +61,7 @@ export default {
     getStartInfo(bounty) {
       let hunter = bounty.hunters.find(h => this.user.id === h.userId);
       if (hunter) {
+        if (!hunter.startedAt) return '-';
         let date = new Date(hunter.startedAt);
         let year = date.getFullYear();
         let month = date.getMonth() < 9 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
