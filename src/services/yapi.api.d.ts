@@ -151,7 +151,7 @@ export interface ServiceRequestAndResponseMap {
       /**
        * @description 联系方式
        */
-      contract: string
+      contact: string
       /**
        * @description 描述
        */
@@ -254,10 +254,20 @@ export interface ServiceRequestAndResponseMap {
        */
       keyword?: any;
       /**
-       * @description 列表类型
+       * @description 列表类型 all-全部 created-我创建的 voted-我投过的
        * @example { type: all }
        */
       type: any;
+      /**
+       * @description Startup的ID
+       * @example { startupId: 1 }
+       */
+      startupId?: any;
+      /**
+       * @description 状态列表 1.未开始 2.进行中 3.已结束 4.未成案 5.提案被拒绝 6.提案被通过
+       * @example { statuses[]: [1,2] }
+       */
+      statuses[]?: any;
     }
     body: {}
     response: {

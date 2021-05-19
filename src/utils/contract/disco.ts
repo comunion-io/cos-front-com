@@ -269,12 +269,12 @@ export class DiscoTranscation {
     //   const coinBase = await this.contractInstance.methods.setCoinBase(account);
     //   await this.setCoinbase(coinBase, account);
     // }
-
     if (this.contractInstance) {
       const now = Math.round(new Date().getTime() / 1000); // ms -> s
-      this.contractInstance.methods
-        .investor(id, now)
-        .send({ from: account, value: web3.utils.numberToHex(Math.pow(10, 17)) });
+      await this.contractInstance.methods.investor(id, now).send({
+        from: account,
+        value: web3.utils.numberToHex(Math.pow(10, 17))
+      });
     }
   }
 }

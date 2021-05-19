@@ -1,7 +1,7 @@
 <template>
   <div class="progress">
     <div class="progress-bar" :style="barStyle" />
-    <div class="target-line" :style="lineStyle" />
+    <div v-if="target" class="target-line" :style="lineStyle" />
   </div>
 </template>
 

@@ -6,8 +6,8 @@
     <div class="flex">
       <img :src="startup.logo || defaultLogo" alt="" width="46" height="46" class="no-shrink" />
       <div class="flex-1 ml-36">
-        <h3 class="mb-0 t-bold t-break t-trunc" :title="startup.name">{{ startup.name }}</h3>
-        <p class="mt-16 mb-0 t-break t-trunc-2">{{ startup.mission }}</p>
+        <h3 class="mb-0 t-bold t-trunc" :title="startup.name">{{ startup.name }}</h3>
+        <p class="mt-16 mb-0 t-trunc-2">{{ startup.mission }}</p>
       </div>
     </div>
     <div class="flex mt-36">

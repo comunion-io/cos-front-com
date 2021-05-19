@@ -42,7 +42,7 @@ export const apis: Apis = {
   'cores@proposal-列表': {
     u: '/cores/proposals',
     m: 'GET',
-    q: ['limit', 'offset', 'keyword', 'type'],
+    q: ['limit', 'offset', 'keyword', 'type', 'startupId', 'statuses[]'],
     d: 0
   },
   'cores@startup-follow-创建': {

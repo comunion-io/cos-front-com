@@ -188,7 +188,7 @@ const routes = [
             meta: {
               title: `Start-Up Detail - ${upCaseName}`,
               breadcrumb: upCaseName, // 面包屑
-              skipAuth: false
+              skipAuth: true
             },
             component: () =>
               import(
@@ -198,12 +198,25 @@ const routes = [
           if (key === 'governance') {
             route.children = [
               {
+                path: 'newProposal',
+                name: 'newProposal',
+                meta: {
+                  title: 'New Proposal',
+                  breadcrumb: 'New Proposal',
+                  skipAuth: false
+                },
+                component: () =>
+                  import(
+                    /* webpackChunkName: 'newProposal' */ `@/views/startup/tabs/governance/NewProposal.vue`
+                  )
+              },
+              {
                 path: ':proposalId/',
                 name: 'proposalDetail',
                 meta: {
                   title: `Proposal Detail`,
                   breadcrumb: 'ProposalDetails',
-                  skipAuth: false
+                  skipAuth: true
                 },
                 component: () =>
                   import(
