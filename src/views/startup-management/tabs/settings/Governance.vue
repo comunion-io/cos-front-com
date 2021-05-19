@@ -18,15 +18,83 @@
           :disabled="isEdit"
         />
       </a-form-model-item>
-
-      <a-form-model-item label="Governance" prop="governance">
-        <a-select size="large" v-model="form.voteType" :disabled="isEdit">
-          <a-select-option value="FounderAssign">Founder Assign</a-select-option>
-          <a-select-option value="pos">POS</a-select-option>
-          <a-select-option value="all">ALL</a-select-option>
+      <a-form-model-item label="Governance Proposer" prop="governanceProposer">
+        <a-select size="large" v-model="form.governanceProposer" :disabled="isEdit">
+          <a-select-option
+            v-for="(value, name) in governanceTypesMap"
+            :key="name"
+            :value="Number(name)"
+          >
+            {{ value }}
+          </a-select-option>
         </a-select>
       </a-form-model-item>
-      <template v-if="form.voteType === 'FounderAssign'">
+      <template v-if="form.governanceProposer === 1">
+        <a-form-model-item
+          v-for="(address, index) in form.proposerAssignAddrs"
+          :key="index"
+          :label="index ? '' : 'Assign Address'"
+          :prop="`proposerAssignAddrs.${index}`"
+          :rules="{ required: true, validator: validateEthAddress }"
+        >
+          <a-input
+            size="large"
+            v-model="form.proposerAssignAddrs[index]"
+            placeholder="Ethereum Address"
+            style="width: 60%"
+            :max-length="42"
+            :disabled="isEdit"
+          />
+          <a-button
+            v-if="form.proposerAssignAddrs.length !== 1"
+            size="large"
+            class="ml-16"
+            style="width:10%"
+            @click="removeAddress(index, 'proposer')"
+            :disabled="isEdit"
+          >
+            <a-icon type="delete" />
+          </a-button>
+          <a-button
+            v-if="index === form.proposerAssignAddrs.length - 1"
+            size="large"
+            type="primary"
+            class="ml-16"
+            @click="addAddress('proposer')"
+            style="width:20%"
+            :disabled="isEdit"
+          >
+            <a-icon type="plus" />Add
+          </a-button>
+        </a-form-model-item>
+      </template>
+      <a-form-model-item v-if="form.governanceProposer === 2" prop="proposerTokenLimit">
+        <label slot="label"
+          >TokenBalance<span class="ml-16 t-grey"
+            >设置最小持币量，满足的地址可以参与发起提案</span
+          ></label
+        >
+        <a-input-number
+          class="w-100p"
+          size="large"
+          v-model="form.proposerTokenLimit"
+          placeholder="Token Balance"
+          :min="0"
+          :disabled="isEdit"
+        />
+      </a-form-model-item>
+      <a-form-model-item label="Governance Voter" prop="governanceVoter">
+        <a-select size="large" v-model="form.voteType" :disabled="isEdit">
+          <a-select-option
+            v-for="(value, name) in governanceTypesMap"
+            :key="name"
+            :value="Number(name)"
+          >
+            {{ value }}
+          </a-select-option>
+        </a-select>
+      </a-form-model-item>
+      <template v-if="form.voteType === 1">
         <a-form-model-item
           v-for="(address, index) in form.voteAssignAddrs"
           :key="index"
@@ -68,7 +136,7 @@
           </a-button>
         </a-form-model-item>
       </template>
-      <a-form-model-item v-if="form.voteType === 'pos'" prop="voteTokenLimit">
+      <a-form-model-item v-if="form.voteType === 2" prop="voteTokenLimit">
         <label slot="label"
           >TokenBalance<span class="ml-16 t-grey"
             >设置最小持币量，满足的地址可以参与投票</span
@@ -215,6 +283,7 @@ import { Slider } from 'ant-design-vue';
 import { positiveInteger, validateAddress } from '@/utils/validators';
 import mixins from '../../../startup/steps/mixins';
 import services from '@/services';
+import { governanceTypesMap } from '@/constants';
 
 export default {
   name: 'governance',
@@ -231,10 +300,14 @@ export default {
   },
   data() {
     return {
+      governanceTypesMap: governanceTypesMap,
       validateEthAddress: validateAddress,
       form: {
         ...{
-          voteType: 'FounderAssign',
+          governanceProposer: 1, // 1.FounderAssign 2.POS 3.All
+          proposerAssignAddrs: [''],
+          proposerTokenLimit: '',
+          voteType: 1, // 1.FounderAssign 2.POS 3.All
           voteAssignAddrs: [''],
           voteTokenLimit: '',
           voteSupportPercent: 100,
@@ -260,6 +333,14 @@ export default {
         //   //   callback();
         //   // }
         // },
+        proposerTokenLimit: {
+          type: 'number',
+          required: true,
+          message: 'Please input the proposer token limit.'
+          // validator: (rule, value, callback) => {
+          //   callback();
+          // }
+        },
         voteTokenLimit: {
           type: 'number',
           required: true,
@@ -287,11 +368,19 @@ export default {
   methods: {
     positiveInteger,
     // add assign address
-    addAddress() {
-      this.form.voteAssignAddrs.push('');
+    addAddress(type) {
+      if (type === 'proposer') {
+        this.form.proposerAssignAddrs.push('');
+      } else {
+        this.form.voteAssignAddrs.push('');
+      }
     },
-    removeAddress(index) {
-      this.form.voteAssignAddrs.splice(index, 1);
+    removeAddress(index, type) {
+      if (type === 'proposer') {
+        this.form.proposerAssignAddrs.splice(index, 1);
+      } else {
+        this.form.voteAssignAddrs.splice(index, 1);
+      }
     },
     edit() {
       this.isEdit = false;
@@ -307,6 +396,9 @@ export default {
 
     const governance = {
       blockChainAddr: startup.transaction.blockAddr,
+      governanceProposer: settings.proposerType,
+      proposerAssignAddrs: settings.assignedProposers,
+      proposerTokenLimit: settings.proposerTokenLimit,
       voteType: settings.type,
       voteAssignAddrs: settings.voteAssignAddrs,
       voteTokenLimit: settings.voteTokenLimit,
