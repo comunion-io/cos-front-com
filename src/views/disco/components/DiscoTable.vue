@@ -55,7 +55,7 @@ const tableColumns = [
     ellipsis: true
   },
   {
-    title: 'Foud-RaisingETH(min)',
+    title: 'Found-RaisingETH(min)',
     dataIndex: 'minFundRaising',
     width: 200,
     ellipsis: true
