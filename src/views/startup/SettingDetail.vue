@@ -134,8 +134,8 @@ export default {
         proposerType: Number(this.form.governance.governanceProposer),
         // 提案投票者类型
         voterType: Number(this.form.governance.voteType),
-        // 提案最少成案比例
-        proposalSupportPercent: this.form.governance.voteSupportPercent,
+        // 提案最少成案人数
+        proposalSupporters: this.form.governance.supportNeed,
         // 提案最少通过比例
         proposalMinApprovalPercent: this.form.governance.voteMinApprovalPercent,
         // 提案最少投票天数
@@ -143,17 +143,17 @@ export default {
         // 提案最多投票天数
         proposalMaxDuration: this.form.governance.maxDuration.days
       };
-      if (body.proposerType === 2) {
+      if (body.proposerType === 1) {
         // 指定提案发起者列表
         body.assignedProposers = this.form.governance.proposerAssignAddrs;
-      } else if (body.proposerType === 3) {
+      } else if (body.proposerType === 2) {
         // 发起提案最低Token数量
         body.proposerTokenLimit = this.form.governance.proposerTokenLimit;
       }
-      if (body.voterType === 2) {
+      if (body.voterType === 1) {
         // 指定提案发起者列表
         body.assignedVoters = this.form.governance.voteAssignAddrs;
-      } else if (body.voterType === 3) {
+      } else if (body.voterType === 2) {
         // 提案投票最低Token数量
         body.voterTokenLimit = this.form.governance.voteTokenLimit;
       }
@@ -223,7 +223,7 @@ export default {
         });
       }
       /** 发起合约 */
-      const contractSetting = await contract.methods.newSetting(
+      const contractSetting = await contract.methods.fullSet(
         id,
         data.tokenName,
         data.tokenSymbol,
@@ -237,7 +237,7 @@ export default {
         data.voterTokenLimit ? data.voterTokenLimit.toString() : '',
         // Founder assign
         assignedVoters,
-        data.proposalSupportPercent.toString(),
+        data.proposalSupporters.toString(),
         data.proposalMinApprovalPercent.toString(),
         data.proposalMinDuration.toString(),
         data.proposalMaxDuration.toString()

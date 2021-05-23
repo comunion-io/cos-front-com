@@ -132,16 +132,14 @@
       </a-form-model-item>
       <a-form-model-item label="Vote Setting">
         <a-card style="background:rgba(247,248,255,1); border:1px dashed rgba(191,191,191,1);">
-          <a-form-model-item label="SUPPORT %">
-            <a-slider v-model="form.voteSupportPercent" class="slider-item" />
-            <a-input-number
+          <a-form-model-item label="SUPPORT NEED">
+            <number-input
               size="large"
-              v-model="form.voteSupportPercent"
-              style="width:12%"
               :min="0"
-              :max="100"
+              v-model="form.supportNeed"
+              addon-after="Address"
+              style="max-width: 240px"
             />
-            <span class="ml-4">%</span>
           </a-form-model-item>
           <a-form-model-item label="MINIMUM APPROVAL %" class="mb-00">
             <a-slider v-model="form.voteMinApprovalPercent" class="slider-item" />
@@ -160,7 +158,7 @@
         >
           <a-form-model-item label="VOTE DURATION" class="mb-00">
             <a-row :gutter="24">
-              <a-col :span="5">MinDuration</a-col>
+              <a-col :span="6">MinDuration</a-col>
               <a-col :span="8">
                 <a-form-model-item prop="minDuration.days">
                   <a-input-number
@@ -173,7 +171,7 @@
                   <span class="ml-4">Days</span>
                 </a-form-model-item>
               </a-col>
-              <a-col :span="8">
+              <!-- <a-col :span="8">
                 <a-form-model-item prop="minDuration.hours">
                   <a-input-number
                     size="large"
@@ -184,10 +182,10 @@
                   />
                   <span class="ml-4">Hours</span>
                 </a-form-model-item>
-              </a-col>
+              </a-col> -->
             </a-row>
             <a-row :gutter="24">
-              <a-col :span="5">MaxDuration</a-col>
+              <a-col :span="6">MaxDuration</a-col>
               <a-col :span="8">
                 <a-form-model-item prop="maxDuration.days" class="mb-0">
                   <a-input-number
@@ -200,7 +198,7 @@
                   <span class="ml-4">Days</span>
                 </a-form-model-item>
               </a-col>
-              <a-col :span="8">
+              <!-- <a-col :span="8">
                 <a-form-model-item prop="maxDuration.hours" class="mb-0">
                   <a-input-number
                     size="large"
@@ -211,7 +209,7 @@
                   />
                   <span class="ml-4">Hours</span>
                 </a-form-model-item>
-              </a-col>
+              </a-col> -->
             </a-row>
           </a-form-model-item>
         </a-card>
@@ -243,6 +241,7 @@
 
 <script>
 import { Slider } from 'ant-design-vue';
+import NumberInput from '@/components/form/NumberInput';
 import { positiveInteger } from '@/utils/validators';
 import mixins from './mixins';
 import { governanceTypesMap } from '@/constants';
@@ -267,7 +266,8 @@ export default {
   name: 'governance',
   mixins: [mixins],
   components: {
-    [Slider.name]: Slider
+    [Slider.name]: Slider,
+    NumberInput
   },
   data() {
     return {
@@ -281,7 +281,7 @@ export default {
           voteType: 1, // 提案投票者类型 1.FounderAssign 2.POS 3.All
           voteAssignAddrs: [''],
           voteTokenLimit: '',
-          voteSupportPercent: 100,
+          supportNeed: 0,
           voteMinApprovalPercent: 100,
           // voteMinDurationHours: 0,
           // voteMaxDurationHours: 0
