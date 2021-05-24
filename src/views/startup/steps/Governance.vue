@@ -11,12 +11,16 @@
     >
       <a-form-model-item label="Governance Proposer" prop="governanceProposer">
         <a-select size="large" v-model="form.governanceProposer">
-          <a-select-option value="2">Founder Assign</a-select-option>
-          <a-select-option value="3">POS</a-select-option>
-          <a-select-option value="1">ALL</a-select-option>
+          <a-select-option
+            v-for="(value, name) in governanceTypesMap"
+            :key="name"
+            :value="Number(name)"
+          >
+            {{ value }}
+          </a-select-option>
         </a-select>
       </a-form-model-item>
-      <template v-if="form.governanceProposer === '2'">
+      <template v-if="form.governanceProposer === 1">
         <a-form-model-item
           v-for="(address, index) in form.proposerAssignAddrs"
           :key="'proposer.' + index"
@@ -52,7 +56,7 @@
           </a-button>
         </a-form-model-item>
       </template>
-      <a-form-model-item v-if="form.governanceProposer === '3'" prop="proposerTokenLimit">
+      <a-form-model-item v-if="form.governanceProposer === 2" prop="proposerTokenLimit">
         <label slot="label">Token Balance</label>
         <a-input-number
           class="w-100p"
@@ -65,12 +69,16 @@
 
       <a-form-model-item label="Governance Voter" prop="governance">
         <a-select size="large" v-model="form.voteType">
-          <a-select-option value="2">Founder Assign</a-select-option>
-          <a-select-option value="3">POS</a-select-option>
-          <a-select-option value="1">ALL</a-select-option>
+          <a-select-option
+            v-for="(value, name) in governanceTypesMap"
+            :key="name"
+            :value="Number(name)"
+          >
+            {{ value }}
+          </a-select-option>
         </a-select>
       </a-form-model-item>
-      <template v-if="form.voteType === '2'">
+      <template v-if="form.voteType === 1">
         <a-form-model-item
           v-for="(address, index) in form.voteAssignAddrs"
           :key="index"
@@ -109,7 +117,7 @@
           </a-button>
         </a-form-model-item>
       </template>
-      <a-form-model-item v-if="form.voteType === '3'" prop="voteTokenLimit">
+      <a-form-model-item v-if="form.voteType === 2" prop="voteTokenLimit">
         <label slot="label"
           >Token Balance
           <!-- <span class="ml-16 t-grey">设置最小持币量，满足的地址可以参与投票</span> -->
@@ -124,16 +132,14 @@
       </a-form-model-item>
       <a-form-model-item label="Vote Setting">
         <a-card style="background:rgba(247,248,255,1); border:1px dashed rgba(191,191,191,1);">
-          <a-form-model-item label="SUPPORT %">
-            <a-slider v-model="form.voteSupportPercent" class="slider-item" />
-            <a-input-number
+          <a-form-model-item label="SUPPORT NEED">
+            <number-input
               size="large"
-              v-model="form.voteSupportPercent"
-              style="width:12%"
               :min="0"
-              :max="100"
+              v-model="form.supportNeed"
+              addon-after="Address"
+              style="max-width: 240px"
             />
-            <span class="ml-4">%</span>
           </a-form-model-item>
           <a-form-model-item label="MINIMUM APPROVAL %" class="mb-00">
             <a-slider v-model="form.voteMinApprovalPercent" class="slider-item" />
@@ -152,7 +158,7 @@
         >
           <a-form-model-item label="VOTE DURATION" class="mb-00">
             <a-row :gutter="24">
-              <a-col :span="5">MinDuration</a-col>
+              <a-col :span="6">MinDuration</a-col>
               <a-col :span="8">
                 <a-form-model-item prop="minDuration.days">
                   <a-input-number
@@ -165,7 +171,7 @@
                   <span class="ml-4">Days</span>
                 </a-form-model-item>
               </a-col>
-              <a-col :span="8">
+              <!-- <a-col :span="8">
                 <a-form-model-item prop="minDuration.hours">
                   <a-input-number
                     size="large"
@@ -176,10 +182,10 @@
                   />
                   <span class="ml-4">Hours</span>
                 </a-form-model-item>
-              </a-col>
+              </a-col> -->
             </a-row>
             <a-row :gutter="24">
-              <a-col :span="5">MaxDuration</a-col>
+              <a-col :span="6">MaxDuration</a-col>
               <a-col :span="8">
                 <a-form-model-item prop="maxDuration.days" class="mb-0">
                   <a-input-number
@@ -192,7 +198,7 @@
                   <span class="ml-4">Days</span>
                 </a-form-model-item>
               </a-col>
-              <a-col :span="8">
+              <!-- <a-col :span="8">
                 <a-form-model-item prop="maxDuration.hours" class="mb-0">
                   <a-input-number
                     size="large"
@@ -203,7 +209,7 @@
                   />
                   <span class="ml-4">Hours</span>
                 </a-form-model-item>
-              </a-col>
+              </a-col> -->
             </a-row>
           </a-form-model-item>
         </a-card>
@@ -235,8 +241,10 @@
 
 <script>
 import { Slider } from 'ant-design-vue';
+import NumberInput from '@/components/form/NumberInput';
 import { positiveInteger } from '@/utils/validators';
 import mixins from './mixins';
+import { governanceTypesMap } from '@/constants';
 
 const tokenLimitRule = {
   type: 'number',
@@ -258,21 +266,22 @@ export default {
   name: 'governance',
   mixins: [mixins],
   components: {
-    [Slider.name]: Slider
+    [Slider.name]: Slider,
+    NumberInput
   },
   data() {
     return {
+      governanceTypesMap: governanceTypesMap,
       validateEthAddress: validateAddress,
-
       form: {
         ...{
-          governanceProposer: '2', // 提案发起者类型 1.ALL 2.FounderAssign 3.Pos
+          governanceProposer: 1, // 提案发起者类型 1.FounderAssign 2.POS 3.All
           proposerAssignAddrs: [''],
           proposerTokenLimit: '',
-          voteType: '2', // 提案投票者类型 1.ALL 2.FounderAssign 3.Pos
+          voteType: 1, // 提案投票者类型 1.FounderAssign 2.POS 3.All
           voteAssignAddrs: [''],
           voteTokenLimit: '',
-          voteSupportPercent: 100,
+          supportNeed: 0,
           voteMinApprovalPercent: 100,
           // voteMinDurationHours: 0,
           // voteMaxDurationHours: 0
