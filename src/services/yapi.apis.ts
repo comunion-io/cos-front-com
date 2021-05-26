@@ -33,23 +33,46 @@ export const apis: Apis = {
     m: 'POST',
     d: 1
   },
-  'cores@proposal-获取': {
-    u: '/cores/proposal/:id',
-    m: 'GET',
-    p: ['id'],
-    d: 0
-  },
-  'cores@proposal-列表': {
-    u: '/cores/proposals',
-    m: 'GET',
-    q: ['limit', 'offset', 'keyword', 'type', 'startupId', 'statuses[]'],
-    d: 0
-  },
   'cores@startup-follow-创建': {
     u: '/cores/startups/{startupId}/follows',
     m: 'POST',
     p: ['startupId'],
     d: 1
+  },
+  'cores@startup-获取_copy': {
+    u: '/cores/startups/{startupId}_1621761342664',
+    m: 'GET',
+    p: ['startupId'],
+    d: 1
+  },
+  'cores@proposal-创建': {
+    u: '/cores/proposals',
+    m: 'POST',
+    d: 1
+  },
+  'cores@proposal-获取': {
+    u: '/cores/proposals/:id',
+    m: 'GET',
+    p: ['id'],
+    d: 1
+  },
+  'cores@proposal-列表': {
+    u: '/cores/proposals',
+    m: 'GET',
+    q: ['limit', 'offset', 'keyword', 'type', 'startupId', 'statuses[]'],
+    d: 1
+  },
+  'cores@proposal-更新': {
+    u: '/cores/proposal/:id',
+    m: 'PUT',
+    p: ['id'],
+    d: 0
+  },
+  'cores@proposal-投票': {
+    u: '/cores/proposal/:id/vote',
+    m: 'POST',
+    p: ['id'],
+    d: 0
   },
   'cores@disco-增长eth数量统计': {
     u: '/cores/discos:statDiscoEthIncrease',

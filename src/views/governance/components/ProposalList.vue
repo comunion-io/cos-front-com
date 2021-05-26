@@ -28,7 +28,7 @@ import services from '@/services';
 const pageSize = 10;
 
 export const proposalTypeMap = {
-  all: '',
+  all: 'all',
   created: 'created',
   voted: 'voted'
 };
@@ -112,12 +112,12 @@ export default {
     async loadProposals(params) {
       this.requestState = 'processing';
 
-      const { offset = 0, keyword, type, startupId, status } = params || {};
+      const { offset = 0, keyword, type = proposalTypeMap.all, startupId, status } = params || {};
       const { error, data } = await services['cores@proposal-列表']({
         limit: pageSize,
         offset,
         keyword,
-        type: type || undefined,
+        type,
         startupId,
         statuses: status ? [status] : []
       });
