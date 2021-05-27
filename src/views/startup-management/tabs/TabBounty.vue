@@ -12,7 +12,7 @@
     <section class="bounty-list">
       <bounty-list :fetchData="fetchData">
         <template v-slot:closeBtn="slotProps">
-          <div class="ml-auto flex ai-center">
+          <div class="flex ml-auto ai-center">
             <template
               v-if="slotProps.bounty.status !== 2 && slotProps.bounty.transactionState === 2"
             >
@@ -138,10 +138,10 @@ export default {
      * @returns {Promise<*>}
      */
     async fetchData(query) {
-      const { error, data } = await services['cores@startup-bounty-列表'](
-        { startupId: this.$route.params.id },
-        query
-      );
+      const { error, data } = await services['cores@startup-bounty-列表']({
+        startupId: this.$route.params.id,
+        ...query
+      });
       return error ? [[], 0] : [data.result, data.total];
     },
 
@@ -177,10 +177,7 @@ export default {
       try {
         // const res = await paidBounty(bountyId, { userId: hunter.userId });
 
-        const { error } = await services['cores@bounty-paid'](
-          { bountyId },
-          { userId: hunter.userId }
-        );
+        const { error } = await services['cores@bounty-paid']({ bountyId, userId: hunter.userId });
         const res = !error;
         if (res) {
           hunter.status = res.status;
@@ -195,10 +192,10 @@ export default {
       try {
         // const res = await rejectedBounty(bountyId, { userId: hunter.userId });
 
-        const { error } = await services['cores@bounty-rejected'](
-          { bountyId },
-          { userId: hunter.userId }
-        );
+        const { error } = await services['cores@bounty-rejected']({
+          bountyId,
+          userId: hunter.userId
+        });
         const res = !error;
         if (res) {
           hunter.status = res.status;
