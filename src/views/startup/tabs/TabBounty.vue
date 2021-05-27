@@ -26,10 +26,10 @@ export default {
   },
   methods: {
     async fetchData(query) {
-      const { error, data } = await services['cores@startup-bounty-列表'](
-        { startupId: this.id },
-        query
-      );
+      const { error, data } = await services['cores@startup-bounty-列表']({
+        startupId: this.id,
+        ...query
+      });
       this.total = data.total;
       return error ? [[], 0] : [data.result, data.total];
 
