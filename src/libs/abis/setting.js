@@ -77,9 +77,9 @@ export const settingAbi = [
           {
             components: [
               {
-                internalType: 'string',
+                internalType: 'enum IRO.VoteType',
                 name: 'voteType',
-                type: 'string'
+                type: 'uint8'
               },
               {
                 internalType: 'string',
@@ -188,9 +188,9 @@ export const settingAbi = [
           {
             components: [
               {
-                internalType: 'string',
+                internalType: 'enum IRO.VoteType',
                 name: 'voteType',
-                type: 'string'
+                type: 'uint8'
               },
               {
                 internalType: 'string',
@@ -301,9 +301,9 @@ export const settingAbi = [
           {
             components: [
               {
-                internalType: 'string',
+                internalType: 'enum IRO.VoteType',
                 name: 'voteType',
-                type: 'string'
+                type: 'uint8'
               },
               {
                 internalType: 'string',
@@ -400,9 +400,9 @@ export const settingAbi = [
     name: 'getVoterSetting',
     outputs: [
       {
-        internalType: 'string',
+        internalType: 'enum IRO.VoteType',
         name: 'voteType',
-        type: 'string'
+        type: 'uint8'
       },
       {
         internalType: 'string',
@@ -509,9 +509,9 @@ export const settingAbi = [
           {
             components: [
               {
-                internalType: 'string',
+                internalType: 'enum IRO.VoteType',
                 name: 'voteType',
-                type: 'string'
+                type: 'uint8'
               },
               {
                 internalType: 'string',

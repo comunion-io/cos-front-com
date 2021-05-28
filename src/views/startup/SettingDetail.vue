@@ -223,25 +223,26 @@ export default {
         });
       }
       /** 发起合约 */
-      const contractSetting = await contract.methods.fullSet(
+      const contractSetting = await contract.methods.fullSet([
         id,
-        data.tokenName,
-        data.tokenSymbol,
-        data.tokenAddr,
-        walletAddrs,
-        data.proposerType,
-        data.proposerTokenLimit ? data.proposerTokenLimit.toString() : '',
-        assignedProposers,
-        data.voteType,
-        // POS
-        data.voterTokenLimit ? data.voterTokenLimit.toString() : '',
-        // Founder assign
-        assignedVoters,
-        data.proposalSupporters.toString(),
-        data.proposalMinApprovalPercent.toString(),
-        data.proposalMinDuration.toString(),
-        data.proposalMaxDuration.toString()
-      );
+        [data.tokenName, data.tokenSymbol, data.tokenAddr, walletAddrs],
+        [
+          data.proposerType,
+          data.proposerTokenLimit ? data.proposerTokenLimit : 0,
+          assignedProposers
+        ],
+        [
+          data.voterType,
+          // POS
+          data.voterTokenLimit ? data.voterTokenLimit.toString() : '',
+          // Founder assign
+          assignedVoters,
+          data.proposalSupporters,
+          data.proposalMinApprovalPercent.toString(),
+          data.proposalMinDuration.toString(),
+          data.proposalMaxDuration.toString()
+        ]
+      ]);
       return contractSetting;
     },
 
