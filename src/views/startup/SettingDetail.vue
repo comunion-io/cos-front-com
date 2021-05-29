@@ -182,24 +182,26 @@ export default {
         data: codeData,
         value: 0,
         nonce: web3.utils.numberToHex(countAll),
-        gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
+        gasPrice: web3.utils.numberToHex(Math.pow(10, 12)),
         gasLimit: web3.utils.numberToHex(183943),
         chainId: chainId
       };
-      window.ethereum.sendAsync(
-        {
-          method: 'eth_sendTransaction',
-          params: [tx],
-          from: window.ethereum.selectedAddress
-        },
-        (err, result) => {
-          if (err) {
-            return console.error(err);
-          }
-          const txid = result.result;
-          this.createSetting(formData, txid);
-        }
-      );
+
+      contractStatpUp.send(tx);
+      // window.ethereum.sendAsync(
+      //   {
+      //     method: 'eth_sendTransaction',
+      //     params: [tx],
+      //     from: window.ethereum.selectedAddress
+      //   },
+      //   (err, result) => {
+      //     if (err) {
+      //       return console.error(err);
+      //     }
+      //     const txid = result.result;
+      //     this.createSetting(formData, txid);
+      //   }
+      // );
     },
 
     /**
@@ -222,26 +224,28 @@ export default {
           assignedProposers.push(item || '0x0000000000000000000000000000000000000000');
         });
       }
-      /** 发起合约 */
-      const contractSetting = await contract.methods.fullSet(
+      const params = [
         id,
-        data.tokenName,
-        data.tokenSymbol,
-        data.tokenAddr,
-        walletAddrs,
-        data.proposerType,
-        data.proposerTokenLimit ? data.proposerTokenLimit.toString() : '',
-        assignedProposers,
-        data.voteType,
-        // POS
-        data.voterTokenLimit ? data.voterTokenLimit.toString() : '',
-        // Founder assign
-        assignedVoters,
-        data.proposalSupporters.toString(),
-        data.proposalMinApprovalPercent.toString(),
-        data.proposalMinDuration.toString(),
-        data.proposalMaxDuration.toString()
-      );
+        [data.tokenName, data.tokenSymbol, data.tokenAddr, walletAddrs],
+        [
+          data.proposerType,
+          data.proposerTokenLimit ? data.proposerTokenLimit : 0,
+          assignedProposers
+        ],
+        [
+          data.voterType,
+          // POS
+          data.voterTokenLimit ? data.voterTokenLimit.toString() : '',
+          // Founder assign
+          assignedVoters,
+          data.proposalSupporters,
+          data.proposalMinApprovalPercent.toString(),
+          data.proposalMinDuration.toString(),
+          data.proposalMaxDuration.toString()
+        ]
+      ];
+      /** 发起合约 */
+      const contractSetting = await contract.methods.fullSet(params);
       return contractSetting;
     },
 

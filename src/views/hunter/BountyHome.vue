@@ -4,12 +4,12 @@
     <p class="hunter-name">{{ hunterName }}</p>
 
     <!-- hunter信息 -->
-    <div class="info-table f-15 mb-32">
+    <div class="mb-32 info-table f-15">
       <Descriptions :columns="fields" :dataSource="hunterInfo" />
     </div>
 
     <!-- bounty列表 -->
-    <div class="flex ai-end mb-16">
+    <div class="flex mb-16 ai-end">
       <img :src="icon" alt="icon" height="18" />
       <span class="ml-8 t-bold f-18 lh-1">Bounty</span>
     </div>
@@ -78,10 +78,10 @@ export default {
     async fetchData(query) {
       // const [data, total] = await getUserBounties(query, this.$route.params.userId);
       // return [data, total];
-      const { error, data } = await services['cores@bounty-列表-用户'](
-        { userId: this.$route.params.userId },
-        query
-      );
+      const { error, data } = await services['cores@bounty-列表-用户']({
+        userId: this.$route.params.userId,
+        ...query
+      });
       this.total = data.total;
       return error ? [[], 0] : [data.result, data.total];
     },
