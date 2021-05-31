@@ -187,21 +187,21 @@ export default {
         chainId: chainId
       };
 
-      contractStatpUp.send(tx);
-      // window.ethereum.sendAsync(
-      //   {
-      //     method: 'eth_sendTransaction',
-      //     params: [tx],
-      //     from: window.ethereum.selectedAddress
-      //   },
-      //   (err, result) => {
-      //     if (err) {
-      //       return console.error(err);
-      //     }
-      //     const txid = result.result;
-      //     this.createSetting(formData, txid);
-      //   }
-      // );
+      // contractStatpUp.send(tx);
+      window.ethereum.sendAsync(
+        {
+          method: 'eth_sendTransaction',
+          params: [tx],
+          from: window.ethereum.selectedAddress
+        },
+        (err, result) => {
+          if (err) {
+            return console.error(err);
+          }
+          const txid = result.result;
+          this.createSetting(formData, txid);
+        }
+      );
     },
 
     /**
