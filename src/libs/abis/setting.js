@@ -5,7 +5,6 @@
 export const settingAbi = [
   {
     inputs: [],
-    payable: false,
     stateMutability: 'nonpayable',
     type: 'constructor'
   },
@@ -127,7 +126,6 @@ export const settingAbi = [
     type: 'event'
   },
   {
-    constant: false,
     inputs: [
       {
         components: [
@@ -235,12 +233,93 @@ export const settingAbi = [
     ],
     name: 'fullSet',
     outputs: [],
-    payable: false,
     stateMutability: 'nonpayable',
     type: 'function'
   },
   {
-    constant: false,
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'id',
+        type: 'string'
+      }
+    ],
+    name: 'getTokenSetting',
+    outputs: [
+      {
+        internalType: 'string',
+        name: 'tokenName',
+        type: 'string'
+      },
+      {
+        internalType: 'string',
+        name: 'tokenSymbol',
+        type: 'string'
+      },
+      {
+        internalType: 'string',
+        name: 'tokenAddr',
+        type: 'string'
+      },
+      {
+        internalType: 'address[]',
+        name: 'walletAddrs',
+        type: 'address[]'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'id',
+        type: 'string'
+      }
+    ],
+    name: 'getVoterSetting',
+    outputs: [
+      {
+        internalType: 'enum IRO.VoteType',
+        name: 'voteType',
+        type: 'uint8'
+      },
+      {
+        internalType: 'string',
+        name: 'voteTokenLimit',
+        type: 'string'
+      },
+      {
+        internalType: 'address[]',
+        name: 'voteAssignAddrs',
+        type: 'address[]'
+      },
+      {
+        internalType: 'uint256',
+        name: 'voteMinSupporters',
+        type: 'uint256'
+      },
+      {
+        internalType: 'string',
+        name: 'voteMinApprovalPercent',
+        type: 'string'
+      },
+      {
+        internalType: 'string',
+        name: 'voteMinDurationHours',
+        type: 'string'
+      },
+      {
+        internalType: 'string',
+        name: 'voteMaxDurationHours',
+        type: 'string'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
     inputs: [
       {
         components: [
@@ -348,99 +427,10 @@ export const settingAbi = [
     ],
     name: 'partialSet',
     outputs: [],
-    payable: false,
     stateMutability: 'nonpayable',
     type: 'function'
   },
   {
-    constant: true,
-    inputs: [
-      {
-        internalType: 'string',
-        name: 'id',
-        type: 'string'
-      }
-    ],
-    name: 'getTokenSetting',
-    outputs: [
-      {
-        internalType: 'string',
-        name: 'tokenName',
-        type: 'string'
-      },
-      {
-        internalType: 'string',
-        name: 'tokenSymbol',
-        type: 'string'
-      },
-      {
-        internalType: 'string',
-        name: 'tokenAddr',
-        type: 'string'
-      },
-      {
-        internalType: 'address[]',
-        name: 'walletAddrs',
-        type: 'address[]'
-      }
-    ],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    constant: true,
-    inputs: [
-      {
-        internalType: 'string',
-        name: 'id',
-        type: 'string'
-      }
-    ],
-    name: 'getVoterSetting',
-    outputs: [
-      {
-        internalType: 'enum IRO.VoteType',
-        name: 'voteType',
-        type: 'uint8'
-      },
-      {
-        internalType: 'string',
-        name: 'voteTokenLimit',
-        type: 'string'
-      },
-      {
-        internalType: 'address[]',
-        name: 'voteAssignAddrs',
-        type: 'address[]'
-      },
-      {
-        internalType: 'uint256',
-        name: 'voteMinSupporters',
-        type: 'uint256'
-      },
-      {
-        internalType: 'string',
-        name: 'voteMinApprovalPercent',
-        type: 'string'
-      },
-      {
-        internalType: 'string',
-        name: 'voteMinDurationHours',
-        type: 'string'
-      },
-      {
-        internalType: 'string',
-        name: 'voteMaxDurationHours',
-        type: 'string'
-      }
-    ],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    constant: true,
     inputs: [
       {
         internalType: 'string',
@@ -554,7 +544,6 @@ export const settingAbi = [
         type: 'tuple'
       }
     ],
-    payable: false,
     stateMutability: 'view',
     type: 'function'
   }
