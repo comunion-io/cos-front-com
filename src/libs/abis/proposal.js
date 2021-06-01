@@ -1,0 +1,1245 @@
+/*
+ * @Description: proposal 上链的abi
+ * @Author: travelclover(travelclover@163.com)
+ * @Date: 2021-06-01 23:55:46
+ */
+const proposalAbi = [
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_iroAddress',
+        type: 'address'
+      },
+      {
+        internalType: 'address',
+        name: '_discoAddress',
+        type: 'address'
+      }
+    ],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'constructor'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'string',
+        name: 'id',
+        type: 'string'
+      },
+      {
+        components: [
+          {
+            internalType: 'string',
+            name: 'discoId',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'serialId',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'title',
+            type: 'string'
+          },
+          {
+            internalType: 'enum Proposal.ProposalStatus',
+            name: 'status',
+            type: 'uint8'
+          },
+          {
+            internalType: 'enum Proposal.ProposalMode',
+            name: 'mode',
+            type: 'uint8'
+          },
+          {
+            internalType: 'string',
+            name: 'contact',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'description',
+            type: 'string'
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'payer',
+                type: 'address'
+              },
+              {
+                internalType: 'enum Proposal.PaymentMode',
+                name: 'mode',
+                type: 'uint8'
+              },
+              {
+                internalType: 'uint256',
+                name: 'totalMonths',
+                type: 'uint256'
+              },
+              {
+                internalType: 'string',
+                name: 'date',
+                type: 'string'
+              },
+              {
+                internalType: 'uint256',
+                name: 'paymentAmount',
+                type: 'uint256'
+              },
+              {
+                internalType: 'uint256',
+                name: 'totalAmount',
+                type: 'uint256'
+              },
+              {
+                internalType: 'contract IERC20',
+                name: 'token',
+                type: 'address'
+              },
+              {
+                internalType: 'contract FundPool',
+                name: 'pool',
+                type: 'address'
+              }
+            ],
+            internalType: 'struct Proposal.Payment',
+            name: 'payment',
+            type: 'tuple'
+          },
+          {
+            components: [
+              {
+                internalType: 'enum IRO.ProposerDriver',
+                name: 'driver',
+                type: 'uint8'
+              }
+            ],
+            internalType: 'struct Proposal.ProposerSetup',
+            name: 'proposerSetup',
+            type: 'tuple'
+          },
+          {
+            components: [
+              {
+                internalType: 'uint256',
+                name: 'voteMinSupporters',
+                type: 'uint256'
+              },
+              {
+                internalType: 'string',
+                name: 'voteMinApprovalPercent',
+                type: 'string'
+              },
+              {
+                internalType: 'uint256',
+                name: 'voteDurationHours',
+                type: 'uint256'
+              },
+              {
+                internalType: 'uint256',
+                name: 'voteEndTime',
+                type: 'uint256'
+              }
+            ],
+            internalType: 'struct Proposal.VoterSetup',
+            name: 'voteSetup',
+            type: 'tuple'
+          },
+          {
+            internalType: 'uint256',
+            name: 'blockTime',
+            type: 'uint256'
+          },
+          {
+            internalType: 'address',
+            name: 'proposer',
+            type: 'address'
+          }
+        ],
+        indexed: false,
+        internalType: 'struct Proposal.ProposalDetail',
+        name: 'proposal',
+        type: 'tuple'
+      },
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'index',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: 'token',
+            type: 'uint256'
+          },
+          {
+            internalType: 'string',
+            name: 'terms',
+            type: 'string'
+          }
+        ],
+        indexed: false,
+        internalType: 'struct Proposal.PaymentDetail[]',
+        name: 'paymentDetails',
+        type: 'tuple[]'
+      }
+    ],
+    name: 'accepted',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'string',
+        name: 'id',
+        type: 'string'
+      },
+      {
+        indexed: false,
+        internalType: 'enum Proposal.ProposalStatus',
+        name: 'original',
+        type: 'uint8'
+      },
+      {
+        indexed: false,
+        internalType: 'enum Proposal.ProposalStatus',
+        name: 'target',
+        type: 'uint8'
+      }
+    ],
+    name: 'statusChanged',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'string',
+        name: 'id',
+        type: 'string'
+      },
+      {
+        components: [
+          {
+            internalType: 'string',
+            name: 'discoId',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'serialId',
+            type: 'string'
+          },
+          {
+            internalType: 'address',
+            name: 'voter',
+            type: 'address'
+          },
+          {
+            internalType: 'uint256',
+            name: 'pos',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: 'neg',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: 'voteBt',
+            type: 'uint256'
+          }
+        ],
+        indexed: false,
+        internalType: 'struct Proposal.Vote',
+        name: 'v',
+        type: 'tuple'
+      }
+    ],
+    name: 'voted',
+    type: 'event'
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        components: [
+          {
+            internalType: 'string',
+            name: 'discoId',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'serialId',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'title',
+            type: 'string'
+          },
+          {
+            internalType: 'enum Proposal.ProposalStatus',
+            name: 'status',
+            type: 'uint8'
+          },
+          {
+            internalType: 'enum Proposal.ProposalMode',
+            name: 'mode',
+            type: 'uint8'
+          },
+          {
+            internalType: 'string',
+            name: 'contact',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'description',
+            type: 'string'
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'payer',
+                type: 'address'
+              },
+              {
+                internalType: 'enum Proposal.PaymentMode',
+                name: 'mode',
+                type: 'uint8'
+              },
+              {
+                internalType: 'uint256',
+                name: 'totalMonths',
+                type: 'uint256'
+              },
+              {
+                internalType: 'string',
+                name: 'date',
+                type: 'string'
+              },
+              {
+                internalType: 'uint256',
+                name: 'paymentAmount',
+                type: 'uint256'
+              },
+              {
+                internalType: 'uint256',
+                name: 'totalAmount',
+                type: 'uint256'
+              },
+              {
+                internalType: 'contract IERC20',
+                name: 'token',
+                type: 'address'
+              },
+              {
+                internalType: 'contract FundPool',
+                name: 'pool',
+                type: 'address'
+              }
+            ],
+            internalType: 'struct Proposal.Payment',
+            name: 'payment',
+            type: 'tuple'
+          },
+          {
+            components: [
+              {
+                internalType: 'enum IRO.ProposerDriver',
+                name: 'driver',
+                type: 'uint8'
+              }
+            ],
+            internalType: 'struct Proposal.ProposerSetup',
+            name: 'proposerSetup',
+            type: 'tuple'
+          },
+          {
+            components: [
+              {
+                internalType: 'uint256',
+                name: 'voteMinSupporters',
+                type: 'uint256'
+              },
+              {
+                internalType: 'string',
+                name: 'voteMinApprovalPercent',
+                type: 'string'
+              },
+              {
+                internalType: 'uint256',
+                name: 'voteDurationHours',
+                type: 'uint256'
+              },
+              {
+                internalType: 'uint256',
+                name: 'voteEndTime',
+                type: 'uint256'
+              }
+            ],
+            internalType: 'struct Proposal.VoterSetup',
+            name: 'voteSetup',
+            type: 'tuple'
+          },
+          {
+            internalType: 'uint256',
+            name: 'blockTime',
+            type: 'uint256'
+          },
+          {
+            internalType: 'address',
+            name: 'proposer',
+            type: 'address'
+          }
+        ],
+        internalType: 'struct Proposal.ProposalDetail',
+        name: 'proposal',
+        type: 'tuple'
+      },
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'index',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: 'token',
+            type: 'uint256'
+          },
+          {
+            internalType: 'string',
+            name: 'terms',
+            type: 'string'
+          }
+        ],
+        internalType: 'struct Proposal.PaymentDetail[]',
+        name: 'paymentDetails',
+        type: 'tuple[]'
+      }
+    ],
+    name: 'accept',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'string',
+            name: 'discoId',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'serialId',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'title',
+            type: 'string'
+          },
+          {
+            internalType: 'enum Proposal.ProposalStatus',
+            name: 'status',
+            type: 'uint8'
+          },
+          {
+            internalType: 'enum Proposal.ProposalMode',
+            name: 'mode',
+            type: 'uint8'
+          },
+          {
+            internalType: 'string',
+            name: 'contact',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'description',
+            type: 'string'
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'payer',
+                type: 'address'
+              },
+              {
+                internalType: 'enum Proposal.PaymentMode',
+                name: 'mode',
+                type: 'uint8'
+              },
+              {
+                internalType: 'uint256',
+                name: 'totalMonths',
+                type: 'uint256'
+              },
+              {
+                internalType: 'string',
+                name: 'date',
+                type: 'string'
+              },
+              {
+                internalType: 'uint256',
+                name: 'paymentAmount',
+                type: 'uint256'
+              },
+              {
+                internalType: 'uint256',
+                name: 'totalAmount',
+                type: 'uint256'
+              },
+              {
+                internalType: 'contract IERC20',
+                name: 'token',
+                type: 'address'
+              },
+              {
+                internalType: 'contract FundPool',
+                name: 'pool',
+                type: 'address'
+              }
+            ],
+            internalType: 'struct Proposal.Payment',
+            name: 'payment',
+            type: 'tuple'
+          },
+          {
+            components: [
+              {
+                internalType: 'enum IRO.ProposerDriver',
+                name: 'driver',
+                type: 'uint8'
+              }
+            ],
+            internalType: 'struct Proposal.ProposerSetup',
+            name: 'proposerSetup',
+            type: 'tuple'
+          },
+          {
+            components: [
+              {
+                internalType: 'uint256',
+                name: 'voteMinSupporters',
+                type: 'uint256'
+              },
+              {
+                internalType: 'string',
+                name: 'voteMinApprovalPercent',
+                type: 'string'
+              },
+              {
+                internalType: 'uint256',
+                name: 'voteDurationHours',
+                type: 'uint256'
+              },
+              {
+                internalType: 'uint256',
+                name: 'voteEndTime',
+                type: 'uint256'
+              }
+            ],
+            internalType: 'struct Proposal.VoterSetup',
+            name: 'voteSetup',
+            type: 'tuple'
+          },
+          {
+            internalType: 'uint256',
+            name: 'blockTime',
+            type: 'uint256'
+          },
+          {
+            internalType: 'address',
+            name: 'proposer',
+            type: 'address'
+          }
+        ],
+        internalType: 'struct Proposal.ProposalDetail',
+        name: '',
+        type: 'tuple'
+      }
+    ],
+    payable: true,
+    stateMutability: 'payable',
+    type: 'function'
+  },
+  {
+    constant: true,
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'id',
+        type: 'string'
+      },
+      {
+        internalType: 'string',
+        name: 'serialId',
+        type: 'string'
+      }
+    ],
+    name: 'proposalDetail',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'string',
+            name: 'discoId',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'serialId',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'title',
+            type: 'string'
+          },
+          {
+            internalType: 'enum Proposal.ProposalStatus',
+            name: 'status',
+            type: 'uint8'
+          },
+          {
+            internalType: 'enum Proposal.ProposalMode',
+            name: 'mode',
+            type: 'uint8'
+          },
+          {
+            internalType: 'string',
+            name: 'contact',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'description',
+            type: 'string'
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'payer',
+                type: 'address'
+              },
+              {
+                internalType: 'enum Proposal.PaymentMode',
+                name: 'mode',
+                type: 'uint8'
+              },
+              {
+                internalType: 'uint256',
+                name: 'totalMonths',
+                type: 'uint256'
+              },
+              {
+                internalType: 'string',
+                name: 'date',
+                type: 'string'
+              },
+              {
+                internalType: 'uint256',
+                name: 'paymentAmount',
+                type: 'uint256'
+              },
+              {
+                internalType: 'uint256',
+                name: 'totalAmount',
+                type: 'uint256'
+              },
+              {
+                internalType: 'contract IERC20',
+                name: 'token',
+                type: 'address'
+              },
+              {
+                internalType: 'contract FundPool',
+                name: 'pool',
+                type: 'address'
+              }
+            ],
+            internalType: 'struct Proposal.Payment',
+            name: 'payment',
+            type: 'tuple'
+          },
+          {
+            components: [
+              {
+                internalType: 'enum IRO.ProposerDriver',
+                name: 'driver',
+                type: 'uint8'
+              }
+            ],
+            internalType: 'struct Proposal.ProposerSetup',
+            name: 'proposerSetup',
+            type: 'tuple'
+          },
+          {
+            components: [
+              {
+                internalType: 'uint256',
+                name: 'voteMinSupporters',
+                type: 'uint256'
+              },
+              {
+                internalType: 'string',
+                name: 'voteMinApprovalPercent',
+                type: 'string'
+              },
+              {
+                internalType: 'uint256',
+                name: 'voteDurationHours',
+                type: 'uint256'
+              },
+              {
+                internalType: 'uint256',
+                name: 'voteEndTime',
+                type: 'uint256'
+              }
+            ],
+            internalType: 'struct Proposal.VoterSetup',
+            name: 'voteSetup',
+            type: 'tuple'
+          },
+          {
+            internalType: 'uint256',
+            name: 'blockTime',
+            type: 'uint256'
+          },
+          {
+            internalType: 'address',
+            name: 'proposer',
+            type: 'address'
+          }
+        ],
+        internalType: 'struct Proposal.ProposalDetail',
+        name: '',
+        type: 'tuple'
+      },
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'index',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: 'token',
+            type: 'uint256'
+          },
+          {
+            internalType: 'string',
+            name: 'terms',
+            type: 'string'
+          }
+        ],
+        internalType: 'struct Proposal.PaymentDetail[]',
+        name: 'paymentDetails',
+        type: 'tuple[]'
+      }
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    constant: true,
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'id',
+        type: 'string'
+      }
+    ],
+    name: 'discoProposalCount',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'id',
+        type: 'string'
+      },
+      {
+        internalType: 'string',
+        name: 'serialId',
+        type: 'string'
+      },
+      {
+        internalType: 'enum Proposal.ProposalStatus',
+        name: 'target',
+        type: 'uint8'
+      }
+    ],
+    name: 'decide',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    constant: true,
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'id',
+        type: 'string'
+      },
+      {
+        internalType: 'string',
+        name: 'serialId',
+        type: 'string'
+      }
+    ],
+    name: 'proposalStatus',
+    outputs: [
+      {
+        internalType: 'enum Proposal.ProposalStatus',
+        name: '',
+        type: 'uint8'
+      }
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        components: [
+          {
+            internalType: 'string',
+            name: 'discoId',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'serialId',
+            type: 'string'
+          },
+          {
+            internalType: 'address',
+            name: 'voter',
+            type: 'address'
+          },
+          {
+            internalType: 'uint256',
+            name: 'pos',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: 'neg',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: 'voteBt',
+            type: 'uint256'
+          }
+        ],
+        internalType: 'struct Proposal.Vote',
+        name: 'v',
+        type: 'tuple'
+      }
+    ],
+    name: 'doVote',
+    outputs: [],
+    payable: true,
+    stateMutability: 'payable',
+    type: 'function'
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'discoId',
+        type: 'string'
+      },
+      {
+        internalType: 'string',
+        name: 'serialId',
+        type: 'string'
+      }
+    ],
+    name: 'releaseProposal',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        components: [
+          {
+            internalType: 'string',
+            name: 'discoId',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'serialId',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'title',
+            type: 'string'
+          },
+          {
+            internalType: 'enum Proposal.ProposalStatus',
+            name: 'status',
+            type: 'uint8'
+          },
+          {
+            internalType: 'enum Proposal.ProposalMode',
+            name: 'mode',
+            type: 'uint8'
+          },
+          {
+            internalType: 'string',
+            name: 'contact',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'description',
+            type: 'string'
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'payer',
+                type: 'address'
+              },
+              {
+                internalType: 'enum Proposal.PaymentMode',
+                name: 'mode',
+                type: 'uint8'
+              },
+              {
+                internalType: 'uint256',
+                name: 'totalMonths',
+                type: 'uint256'
+              },
+              {
+                internalType: 'string',
+                name: 'date',
+                type: 'string'
+              },
+              {
+                internalType: 'uint256',
+                name: 'paymentAmount',
+                type: 'uint256'
+              },
+              {
+                internalType: 'uint256',
+                name: 'totalAmount',
+                type: 'uint256'
+              },
+              {
+                internalType: 'contract IERC20',
+                name: 'token',
+                type: 'address'
+              },
+              {
+                internalType: 'contract FundPool',
+                name: 'pool',
+                type: 'address'
+              }
+            ],
+            internalType: 'struct Proposal.Payment',
+            name: 'payment',
+            type: 'tuple'
+          },
+          {
+            components: [
+              {
+                internalType: 'enum IRO.ProposerDriver',
+                name: 'driver',
+                type: 'uint8'
+              }
+            ],
+            internalType: 'struct Proposal.ProposerSetup',
+            name: 'proposerSetup',
+            type: 'tuple'
+          },
+          {
+            components: [
+              {
+                internalType: 'uint256',
+                name: 'voteMinSupporters',
+                type: 'uint256'
+              },
+              {
+                internalType: 'string',
+                name: 'voteMinApprovalPercent',
+                type: 'string'
+              },
+              {
+                internalType: 'uint256',
+                name: 'voteDurationHours',
+                type: 'uint256'
+              },
+              {
+                internalType: 'uint256',
+                name: 'voteEndTime',
+                type: 'uint256'
+              }
+            ],
+            internalType: 'struct Proposal.VoterSetup',
+            name: 'voteSetup',
+            type: 'tuple'
+          },
+          {
+            internalType: 'uint256',
+            name: 'blockTime',
+            type: 'uint256'
+          },
+          {
+            internalType: 'address',
+            name: 'proposer',
+            type: 'address'
+          }
+        ],
+        internalType: 'struct Proposal.ProposalDetail',
+        name: 'proposal',
+        type: 'tuple'
+      },
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'index',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: 'token',
+            type: 'uint256'
+          },
+          {
+            internalType: 'string',
+            name: 'terms',
+            type: 'string'
+          }
+        ],
+        internalType: 'struct Proposal.PaymentDetail[]',
+        name: 'paymentDetails',
+        type: 'tuple[]'
+      }
+    ],
+    name: 'fullSet',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'string',
+            name: 'discoId',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'serialId',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'title',
+            type: 'string'
+          },
+          {
+            internalType: 'enum Proposal.ProposalStatus',
+            name: 'status',
+            type: 'uint8'
+          },
+          {
+            internalType: 'enum Proposal.ProposalMode',
+            name: 'mode',
+            type: 'uint8'
+          },
+          {
+            internalType: 'string',
+            name: 'contact',
+            type: 'string'
+          },
+          {
+            internalType: 'string',
+            name: 'description',
+            type: 'string'
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'payer',
+                type: 'address'
+              },
+              {
+                internalType: 'enum Proposal.PaymentMode',
+                name: 'mode',
+                type: 'uint8'
+              },
+              {
+                internalType: 'uint256',
+                name: 'totalMonths',
+                type: 'uint256'
+              },
+              {
+                internalType: 'string',
+                name: 'date',
+                type: 'string'
+              },
+              {
+                internalType: 'uint256',
+                name: 'paymentAmount',
+                type: 'uint256'
+              },
+              {
+                internalType: 'uint256',
+                name: 'totalAmount',
+                type: 'uint256'
+              },
+              {
+                internalType: 'contract IERC20',
+                name: 'token',
+                type: 'address'
+              },
+              {
+                internalType: 'contract FundPool',
+                name: 'pool',
+                type: 'address'
+              }
+            ],
+            internalType: 'struct Proposal.Payment',
+            name: 'payment',
+            type: 'tuple'
+          },
+          {
+            components: [
+              {
+                internalType: 'enum IRO.ProposerDriver',
+                name: 'driver',
+                type: 'uint8'
+              }
+            ],
+            internalType: 'struct Proposal.ProposerSetup',
+            name: 'proposerSetup',
+            type: 'tuple'
+          },
+          {
+            components: [
+              {
+                internalType: 'uint256',
+                name: 'voteMinSupporters',
+                type: 'uint256'
+              },
+              {
+                internalType: 'string',
+                name: 'voteMinApprovalPercent',
+                type: 'string'
+              },
+              {
+                internalType: 'uint256',
+                name: 'voteDurationHours',
+                type: 'uint256'
+              },
+              {
+                internalType: 'uint256',
+                name: 'voteEndTime',
+                type: 'uint256'
+              }
+            ],
+            internalType: 'struct Proposal.VoterSetup',
+            name: 'voteSetup',
+            type: 'tuple'
+          },
+          {
+            internalType: 'uint256',
+            name: 'blockTime',
+            type: 'uint256'
+          },
+          {
+            internalType: 'address',
+            name: 'proposer',
+            type: 'address'
+          }
+        ],
+        internalType: 'struct Proposal.ProposalDetail',
+        name: '',
+        type: 'tuple'
+      }
+    ],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_iroAddress',
+        type: 'address'
+      }
+    ],
+    name: 'setIROBase',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_discoAddress',
+        type: 'address'
+      }
+    ],
+    name: 'setDiscoBase',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function'
+  }
+];
+
+export default proposalAbi;

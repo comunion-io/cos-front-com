@@ -4,7 +4,7 @@
       <div class="total-info">
         Propsals: <span>{{ total }}</span>
       </div>
-      <a-button type="primary" class="ml-auto">
+      <a-button type="primary" class="ml-auto" @click="createNewProposal">
         + New Proposal
       </a-button>
     </div>
@@ -28,6 +28,11 @@ export default {
     };
   },
   methods: {
+    createNewProposal() {
+      this.$router.push({
+        name: 'newProposal'
+      });
+    },
     onUpdateTotal(val) {
       this.total = val || 0;
     }
