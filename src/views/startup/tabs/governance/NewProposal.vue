@@ -37,12 +37,12 @@
       <bbs-input v-model="form.descriptionAddr" prop="descriptionAddr" />
       <!-- Governance Voter -->
       <a-form-model-item label="Governance Voter" prop="governanceVoter" class="form-item">
-        <span>{{ form.governanceVoter }}</span>
+        <span>{{ governanceVoterText }}</span>
       </a-form-model-item>
       <!-- Vote Setting -->
       <a-form-model-item label="Vote Setting" prop="voteSetting" class="form-item">
         <span>
-          <span style="margin-right: 16px;">{{ form.supportPercent }}% Support</span>
+          <span style="margin-right: 16px;">{{ form.proposalSupporters }} Support</span>
           <span>{{ form.minApprovalPercent }}% Approval</span>
         </span>
       </a-form-model-item>
@@ -157,11 +157,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { Slider } from 'ant-design-vue';
 import BbsInput from '@/components/form/BbsInput';
 import NumberInput from '@/components/form/NumberInput';
 import { proposalTypeTxtMap } from '@/constants/proposal';
+import { governanceTypesMap } from '@/constants/governance';
 import paymentTerms from './PaymentTerms';
+import proposalAbi from '@/libs/abis/proposal';
+import { web3 } from '@/libs/web3';
+import { COMMUNION_PROPOSAL_ACCOUNT } from '@/configs/app';
 
 // 正数验证器
 function positiveNumberValidator(rule, value, callback) {
@@ -187,15 +192,15 @@ export default {
       ],
       form: {
         proposalTitle: '',
-        proposalType: '',
+        proposalType: undefined,
         contact: '',
         descriptionAddr: '',
-        governanceVoter: 'FounderAssign',
-        supportPercent: '--',
+        governanceVoter: 1,
+        proposalSupporters: '--', // 提案最少成案人数
         minApprovalPercent: '--',
-        voteDuration: 34,
-        voteDurationMin: 10,
-        voteDurationMax: 90,
+        voteDuration: 1,
+        voteDurationMin: 1,
+        voteDurationMax: 1,
         payment: false,
         paymentAddress: '',
         payments: 2, // 支付形式，1：One Time Pay，2：Monthly Pay 默认为2（按月支付）
@@ -270,6 +275,12 @@ export default {
       type: Object
     }
   },
+  computed: {
+    governanceVoterText() {
+      return governanceTypesMap[this.form.governanceVoter];
+    },
+    ...mapGetters(['account'])
+  },
   components: {
     BbsInput,
     NumberInput,
@@ -277,10 +288,14 @@ export default {
     [Slider.name]: Slider
   },
   mounted() {
+    console.log(this.startup);
     this.form.tokenSymbol = this.startup?.settings?.tokenSymbol;
-    this.form.governanceVoter = this.startup?.settings?.type;
-    this.form.supportPercent = this.startup?.settings?.voteSupportPercent;
-    this.form.minApprovalPercent = this.startup?.settings?.voteMinApprovalPercent;
+    this.form.governanceVoter = this.startup?.settings?.voterType;
+    this.form.proposalSupporters = this.startup?.settings?.proposalSupporters;
+    this.form.minApprovalPercent = this.startup?.settings?.proposalMinApprovalPercent;
+    this.form.voteDuration = this.startup?.settings?.proposalMinDuration;
+    this.form.voteDurationMin = this.startup?.settings?.proposalMinDuration;
+    this.form.voteDurationMax = this.startup?.settings?.proposalMaxDuration;
   },
   methods: {
     totalMonthsOnChange(value) {
@@ -317,25 +332,72 @@ export default {
               params.terms = this.form.paymentTermsValue;
             }
           }
-          this.makeContract(params);
+          this.ethSendTransaction(params);
         }
       });
     },
     paymentTermsValueOnChange(value) {
       this.form.paymentTermsValue = value;
     },
-    // 合约上链
-    makeContract(params) {
-      console.log(params);
+
+    /**
+     * @description 发起交易
+     * @param formData
+     * @returns {Promise<void>}
+     */
+    async ethSendTransaction(formData) {
+      console.log(formData);
       this.loading = true;
-      // todo...
-      setTimeout(() => {
-        this.loading = false;
-        this.$message.success('Operation is successful');
-        this.$router.push({
-          name: 'startupDetailGovernance'
-        });
-      }, 1500);
+      const contractStatpUp = await this.getContractInstance(formData);
+      const codeData = await contractStatpUp.encodeABI();
+      const countAll = await web3.eth.getTransactionCount(this.account, 'pending');
+      const chainId = await web3.eth.getChainId();
+
+      const tx = {
+        from: this.account,
+        to: COMMUNION_PROPOSAL_ACCOUNT,
+        data: codeData,
+        value: 0,
+        nonce: web3.utils.numberToHex(countAll),
+        gasPrice: web3.utils.numberToHex(Math.pow(10, 12)),
+        gasLimit: web3.utils.numberToHex(183943),
+        chainId: chainId
+      };
+
+      // contractStatpUp.send(tx);
+      window.ethereum.sendAsync(
+        {
+          method: 'eth_sendTransaction',
+          params: [tx],
+          from: window.ethereum.selectedAddress
+        },
+        (err, result) => {
+          this.loading = false;
+          if (err) {
+            return console.error(err);
+          }
+          // const txid = result.result;
+          this.$message.success('Operation is successful');
+          this.$router.push({
+            name: 'startupDetailGovernance'
+          });
+        }
+      );
+    },
+
+    /**
+     * @description 获取合约实例
+     * @returns {Promise<*>}
+     */
+    async getContractInstance(formData) {
+      const data = JSON.parse(JSON.stringify(formData));
+      const contract = new web3.eth.Contract(proposalAbi, COMMUNION_PROPOSAL_ACCOUNT);
+      const params = [
+        data // TODO... 需要按照正确格式设置参数
+      ];
+      /** 发起合约 */
+      const contractProposal = await contract.methods.fullSet(params);
+      return contractProposal;
     }
   }
 };
