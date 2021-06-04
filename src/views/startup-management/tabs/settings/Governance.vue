@@ -153,17 +153,15 @@
       </a-form-model-item>
       <a-form-model-item label="Vote Setting">
         <a-card style="background:rgba(247,248,255,1); border:1px dashed rgba(191,191,191,1);">
-          <a-form-model-item label="SUPPORT %">
-            <a-slider v-model="form.voteSupportPercent" class="slider-item" :disabled="isEdit" />
-            <a-input-number
+          <a-form-model-item label="SUPPORT NEED">
+            <number-input
               size="large"
-              v-model="form.voteSupportPercent"
-              style="width:12%"
               :min="0"
-              :max="100"
+              v-model="form.voteSupport"
               :disabled="isEdit"
+              addon-after="Address"
+              style="max-width: 240px"
             />
-            <span class="ml-4">%</span>
           </a-form-model-item>
           <a-form-model-item label="MINIMUM APPROVAL %" class="mb-00">
             <a-slider
@@ -187,60 +185,34 @@
         >
           <a-form-model-item label="VOTE DURATION" class="mb-00">
             <a-row :gutter="24">
-              <a-col :span="5">MinDuration</a-col>
-              <a-col :span="8">
-                <a-form-model-item prop="minDuration.days">
+              <a-col :span="10">MinDuration</a-col>
+              <a-col :span="14">
+                <a-form-model-item prop="minDuration">
                   <a-input-number
                     size="large"
-                    v-model="form.minDuration.days"
+                    v-model="form.minDuration"
                     :min="0"
                     :max="100"
                     :parser="positiveInteger"
                     :disabled="isEdit"
                   />
                   <span class="ml-4">Days</span>
-                </a-form-model-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-model-item prop="minDuration.hours">
-                  <a-input-number
-                    size="large"
-                    v-model="form.minDuration.hours"
-                    :min="0"
-                    :max="24"
-                    :parser="positiveInteger"
-                    :disabled="isEdit"
-                  />
-                  <span class="ml-4">Hours</span>
                 </a-form-model-item>
               </a-col>
             </a-row>
             <a-row :gutter="24">
-              <a-col :span="5">MaxDuration</a-col>
-              <a-col :span="8">
-                <a-form-model-item prop="maxDuration.days" class="mb-0">
+              <a-col :span="10">MaxDuration</a-col>
+              <a-col :span="14">
+                <a-form-model-item prop="maxDuration" class="mb-0">
                   <a-input-number
                     size="large"
-                    v-model="form.maxDuration.days"
+                    v-model="form.maxDuration"
                     :min="0"
                     :max="100"
                     :parser="positiveInteger"
                     :disabled="isEdit"
                   />
                   <span class="ml-4">Days</span>
-                </a-form-model-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-model-item prop="maxDuration.hours" class="mb-0">
-                  <a-input-number
-                    size="large"
-                    v-model="form.maxDuration.hours"
-                    :min="0"
-                    :max="24"
-                    :parser="positiveInteger"
-                    :disabled="isEdit"
-                  />
-                  <span class="ml-4">Hours</span>
                 </a-form-model-item>
               </a-col>
             </a-row>
@@ -281,6 +253,7 @@
 <script>
 import { Slider } from 'ant-design-vue';
 import { positiveInteger, validateAddress } from '@/utils/validators';
+import NumberInput from '@/components/form/NumberInput';
 import mixins from '../../../startup/steps/mixins';
 import services from '@/services';
 import { governanceTypesMap } from '@/constants';
@@ -296,7 +269,8 @@ export default {
     }
   },
   components: {
-    [Slider.name]: Slider
+    [Slider.name]: Slider,
+    NumberInput
   },
   data() {
     return {
@@ -310,18 +284,12 @@ export default {
           voteType: 1, // 1.FounderAssign 2.POS 3.All
           voteAssignAddrs: [''],
           voteTokenLimit: '',
-          voteSupportPercent: 100,
+          voteSupport: 0,
           voteMinApprovalPercent: 100,
           // voteMinDurationHours: 0,
           // voteMaxDurationHours: 0
-          minDuration: {
-            hours: 0,
-            days: 0
-          },
-          maxDuration: {
-            hours: 0,
-            days: 0
-          }
+          minDuration: 0,
+          maxDuration: 0
         },
         ...this.defaultData
       },
@@ -349,11 +317,11 @@ export default {
           //   callback();
           // }
         },
-        'maxDuration.days': {
+        maxDuration: {
           type: 'number',
           trigger: 'change',
           validator: (rule, value, callback) => {
-            if (value < this.form.minDuration.days) {
+            if (value < this.form.minDuration) {
               // eslint-disable-next-line standard/no-callback-literal
               callback("Must greater than 'MinDuration' days.");
             } else {
@@ -390,28 +358,19 @@ export default {
     const { error, data } = await services['cores@startup-我的-获取']({ startupId: this.id });
     const startup = error ? {} : data;
     const { settings } = startup;
-    // 后端返回数据转化为前端格式
-    const voteMinDurationDays = Math.floor(settings.voteMinDurationHours / 24);
-    const voteMaxDurationDays = Math.floor(settings.voteMaxDurationHours / 24);
 
     const governance = {
       blockChainAddr: startup.transaction.blockAddr,
       governanceProposer: settings.proposerType,
-      proposerAssignAddrs: settings.assignedProposers,
+      proposerAssignAddrs: settings.assignedProposers || [],
       proposerTokenLimit: settings.proposerTokenLimit,
-      voteType: settings.type,
-      voteAssignAddrs: settings.voteAssignAddrs,
-      voteTokenLimit: settings.voteTokenLimit,
-      voteSupportPercent: settings.voteSupportPercent,
-      voteMinApprovalPercent: settings.voteMinApprovalPercent,
-      minDuration: {
-        hours: settings.voteMinDurationHours - voteMinDurationDays * 24,
-        days: voteMinDurationDays
-      },
-      maxDuration: {
-        hours: settings.voteMaxDurationHours - voteMaxDurationDays * 24,
-        days: voteMaxDurationDays
-      }
+      voteType: settings.voterType,
+      voteAssignAddrs: settings.assignedVoters || [],
+      voteTokenLimit: settings.voterTokenLimit,
+      voteSupport: settings.proposalSupporters,
+      voteMinApprovalPercent: settings.proposalMinApprovalPercent,
+      minDuration: settings.proposalMinDuration,
+      maxDuration: settings.proposalMaxDuration
     };
 
     this.form = {
