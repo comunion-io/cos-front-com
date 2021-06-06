@@ -433,9 +433,9 @@ export default {
               // token;
               '',
               // pool
-              0
+              ''
             ]
-          : ['', 0, 0, 0, 0, 0, '', 0],
+          : ['', 0, 0, '', 0, 0, '', ''],
         // ProposerSetup
         [
           // driver
@@ -446,7 +446,7 @@ export default {
           // voteMinSupporters
           this.startup.settings.proposalSupporters,
           // voteMinApprovalPercent
-          this.startup.settings.proposalMinApprovalPercent,
+          `${this.startup.settings.proposalMinApprovalPercent / 100}`,
           // voteDurationHours
           formData.duration * 24,
           // voteEndTime
@@ -463,7 +463,7 @@ export default {
           token: item.number,
           terms: item.text
         })) ?? [];
-      console.log('proposal contract', proposal, paymentDetails);
+      console.log('proposal contract', proposal, paymentDetails, contract.methods);
       /** 发起合约 */
       const contractProposal = await contract.methods.fullSet(proposal, paymentDetails);
       return contractProposal;
