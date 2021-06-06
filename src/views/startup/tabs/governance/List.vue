@@ -4,15 +4,17 @@
       <div class="total-info">
         Propsals: <span>{{ total }}</span>
       </div>
-      <a-button type="primary" class="ml-auto" @click="createNewProposal">
+      <a-button type="primary" class="ml-auto" @click="toCreate">
         + New Proposal
       </a-button>
     </div>
-    <proposal-list :startupId="startupId"></proposal-list>
+    <proposal-list :startupId="id"></proposal-list>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+// import { canInitiateProposal } from '@/utils/proposal';
 import ProposalList from '@/views/governance/components/ProposalList.vue';
 
 export default {
@@ -20,18 +22,23 @@ export default {
     ProposalList
   },
   props: {
-    startupId: String
+    id: String,
+    startup: Object
   },
   data() {
     return {
       total: 0
     };
   },
+  computed: {
+    ...mapGetters(['account'])
+  },
   methods: {
-    createNewProposal() {
-      this.$router.push({
-        name: 'newProposal'
-      });
+    toCreate() {
+      // if (canInitiateProposal(this.startup, this.account)) {
+
+      // }
+      this.$router.push({ name: 'newProposal', params: { id: this.id } });
     },
     onUpdateTotal(val) {
       this.total = val || 0;
