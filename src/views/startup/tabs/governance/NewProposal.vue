@@ -167,6 +167,7 @@ import paymentTerms from './PaymentTerms';
 import proposalAbi from '@/libs/abis/proposal';
 import { web3 } from '@/libs/web3';
 import { COMMUNION_PROPOSAL_ACCOUNT } from '@/configs/app';
+import services from '@/services';
 
 // 正数验证器
 function positiveNumberValidator(rule, value, callback) {
@@ -207,10 +208,10 @@ export default {
         totalMonths: 0,
         paymentDate: '',
         tokenSymbol: '*TOKEN*',
-        paymentAmount: '',
+        paymentAmount: null,
         paymentTerms: false,
         paymentTermsValue: [],
-        totalPaymentAmount: ''
+        totalPaymentAmount: null
       },
       rules: {
         proposalTitle: [
@@ -271,6 +272,7 @@ export default {
     };
   },
   props: {
+    id: String,
     startup: {
       type: Object
     }
@@ -347,7 +349,7 @@ export default {
      */
     async ethSendTransaction(formData) {
       console.log(formData);
-      this.loading = true;
+      // this.loading = true;
       const contractStatpUp = await this.getContractInstance(formData);
       const codeData = await contractStatpUp.encodeABI();
       const countAll = await web3.eth.getTransactionCount(this.account, 'pending');
@@ -390,13 +392,80 @@ export default {
      * @returns {Promise<*>}
      */
     async getContractInstance(formData) {
-      const data = JSON.parse(JSON.stringify(formData));
+      // const data = JSON.parse(JSON.stringify(formData));
       const contract = new web3.eth.Contract(proposalAbi, COMMUNION_PROPOSAL_ACCOUNT);
-      const params = [
-        data // TODO... 需要按照正确格式设置参数
+      // 取后端一个id
+      const { error, data } = await services['cores@startup-获取prepareid']();
+      if (error) {
+        this.$message.error('Error when create proposal.');
+        throw error;
+      }
+      const proposal = [
+        // discoId
+        this.startup.settings.id,
+        // serialId
+        data.id,
+        // title
+        formData.title,
+        // ProposalStatus Voting
+        0,
+        // ProposalMode
+        +formData.type - 1,
+        // contact
+        formData.contact,
+        // description
+        formData.description,
+        // Payment
+        formData.hasPayment
+          ? [
+              // payer
+              formData.paymentAddr,
+              // mode
+              2 - formData.paymentType,
+              // totalMonths
+              formData.paymentMonthes,
+              // date
+              formData.paymentDate,
+              // paymentAmount
+              formData.paymentAmount,
+              // totalAmount
+              formData.totalPaymentAmount,
+              // token;
+              '',
+              // pool
+              0
+            ]
+          : ['', 0, 0, 0, 0, 0, '', 0],
+        // ProposerSetup
+        [
+          // driver
+          this.startup.settings.proposerType
+        ],
+        // voteSetup
+        [
+          // voteMinSupporters
+          this.startup.settings.proposalSupporters,
+          // voteMinApprovalPercent
+          this.startup.settings.proposalMinApprovalPercent,
+          // voteDurationHours
+          formData.duration * 24,
+          // voteEndTime
+          0
+        ],
+        // blockTime
+        0,
+        // proposer
+        this.account
       ];
+      const paymentDetails =
+        formData.terms?.map((item, index) => ({
+          index,
+          token: item.number,
+          terms: item.text
+        })) ?? [];
+      console.log('proposal contract', proposal, paymentDetails);
       /** 发起合约 */
-      const contractProposal = await contract.methods.fullSet(params);
+      const contractProposal = await contract.methods.fullSet(proposal, paymentDetails);
       return contractProposal;
     }
   }

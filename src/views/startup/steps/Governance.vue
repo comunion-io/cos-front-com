@@ -164,7 +164,7 @@
                   <a-input-number
                     size="large"
                     v-model="form.minDuration.days"
-                    :min="0"
+                    :min="1"
                     :max="100"
                     :parser="positiveInteger"
                   />
@@ -191,7 +191,7 @@
                   <a-input-number
                     size="large"
                     v-model="form.maxDuration.days"
-                    :min="0"
+                    :min="1"
                     :max="100"
                     :parser="positiveInteger"
                   />
