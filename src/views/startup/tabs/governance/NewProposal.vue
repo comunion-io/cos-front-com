@@ -464,8 +464,31 @@ export default {
           terms: item.text
         })) ?? [];
       console.log('proposal contract', proposal, paymentDetails, contract.methods);
+      const mockProposalData = [
+        '2835919231776726891',
+        '2836603165846020000',
+        'zehui-proposal-z',
+        0,
+        0,
+        'sbura@sina.com',
+        'http://baidu.com',
+        [
+          '0xf98a7f9e86dce7298f3be4778acd692d649c5228',
+          0,
+          0,
+          '',
+          0,
+          0,
+          '0xf98a7f9e86dce7298f3be4778acd692d649c5228',
+          '0xf98a7f9e86dce7298f3be4778acd692d649c5228'
+        ],
+        [1],
+        [3, '1', 48, 0],
+        0,
+        '0xf98a7f9e86dce7298f3be4778acd692d649c5228'
+      ];
       /** 发起合约 */
-      const contractProposal = await contract.methods.fullSet(proposal, paymentDetails);
+      const contractProposal = await contract.methods.fullSet(mockProposalData, paymentDetails);
       return contractProposal;
     }
   }
