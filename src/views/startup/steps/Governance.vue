@@ -132,10 +132,10 @@
       </a-form-model-item>
       <a-form-model-item label="Vote Setting">
         <a-card style="background:rgba(247,248,255,1); border:1px dashed rgba(191,191,191,1);">
-          <a-form-model-item label="SUPPORT NEED">
+          <a-form-model-item label="SUPPORT NEED" prop="supportNeed">
             <number-input
               size="large"
-              :min="0"
+              :min="1"
               v-model="form.supportNeed"
               addon-after="Address"
               style="max-width: 240px"
@@ -281,7 +281,7 @@ export default {
           voteType: 1, // 提案投票者类型 1.FounderAssign 2.POS 3.All
           voteAssignAddrs: [''],
           voteTokenLimit: '',
-          supportNeed: 0,
+          supportNeed: 1, // 默认1，最低1
           voteMinApprovalPercent: 100,
           // voteMinDurationHours: 0,
           // voteMaxDurationHours: 0
@@ -306,6 +306,17 @@ export default {
         // },
         voteTokenLimit: tokenLimitRule,
         proposerTokenLimit: tokenLimitRule,
+        supportNeed: {
+          type: 'number',
+          trigger: 'change',
+          validator(rule, value, callback) {
+            const num = Number(value);
+            if (isNaN(num) || num < 1 || Math.ceil(num) !== num) {
+              callback(new Error('Please enter an integer greater than 1 .'));
+            }
+            callback();
+          }
+        },
         'maxDuration.days': {
           type: 'number',
           trigger: 'change',
