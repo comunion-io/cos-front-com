@@ -107,8 +107,8 @@ export default {
 
       await this.approval();
       const params = {
-        // TODO ether的地址， 开发时，ether的地址是我的钱包地址
-        tokenA: this.account,
+        // FIXME ether 的合约地址， 暂时使用hardcode， 需要在.dev环境中配置
+        tokenA: "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
         tokenB: this.startup.settings.tokenAddr,
         amountADesired: web3.utils.numberToHex(this.tokenAmount * Math.pow(10, 18)),
         amountBDesired: web3.utils.numberToHex(this.tokenBAmount * Math.pow(10, 18)),
