@@ -168,6 +168,7 @@ import proposalAbi from '@/libs/abis/proposal';
 import { web3 } from '@/libs/web3';
 import { COMMUNION_PROPOSAL_ACCOUNT } from '@/configs/app';
 import services from '@/services';
+import { emptyWalletAddress } from '@/constants';
 
 // 正数验证器
 function positiveNumberValidator(rule, value, callback) {
@@ -431,20 +432,11 @@ export default {
               // totalAmount
               formData.totalPaymentAmount,
               // token;
-              '',
+              emptyWalletAddress,
               // pool
-              ''
+              emptyWalletAddress
             ]
-          : [
-              '0x0000000000000000000000000000000000000000',
-              0,
-              0,
-              '',
-              0,
-              0,
-              '0x0000000000000000000000000000000000000000',
-              '0x0000000000000000000000000000000000000000'
-            ],
+          : [emptyWalletAddress, 0, 0, '', 0, 0, emptyWalletAddress, emptyWalletAddress],
         // ProposerSetup
         [
           // driver
@@ -472,7 +464,7 @@ export default {
           token: item.number,
           terms: item.text
         })) ?? [];
-      // console.log('proposal contract', proposal, paymentDetails, contract.methods);
+      console.log('proposal contract', proposal, paymentDetails, contract.methods);
       /** 发起合约 */
       const contractProposal = await contract.methods.fullSet(proposal, paymentDetails);
       return contractProposal;
