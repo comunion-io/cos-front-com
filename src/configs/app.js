@@ -22,3 +22,5 @@ export const COMUNION_VUE_APP_SWAPROUTER01_FACTORY = process.env.VUE_APP_SWAPROU
 export const COMUNION_VUE_APP_SWAPROUTER01_WETH = process.env.VUE_APP_SWAPROUTER01_WETH;
 // comunion proposal 地址
 export const COMMUNION_PROPOSAL_ACCOUNT = process.env.VUE_APP_PROPOSAL;
+// 当前环境是否是生产环境
+export const IS_RELEASE_ENV = process.env.IS_RELEASE_ENV;

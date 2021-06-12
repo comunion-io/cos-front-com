@@ -14,7 +14,7 @@
               <a-input-number
                 :min="0"
                 :step="0.1"
-                v-model="tokenAmount"
+                v-model="tokenAamount"
                 class="token-input"
                 type="text"
               />
@@ -33,7 +33,7 @@
               <a-input-number
                 :min="0"
                 :step="0.1"
-                v-model="tokenBAmount"
+                v-model="tokenBamount"
                 class="token-input"
                 type="text"
               />
@@ -53,7 +53,7 @@
       automatically earn fees proportional to your share of the pool, and can be redeemed at any
       time
     </p>
-    <a-button type="primary" class="btn" @click="addLiquidity">
+    <a-button type="primary" :disabled="loading" class="btn" @click="addLiquidity">
       Add - Liquidity
     </a-button>
   </div>
@@ -63,16 +63,25 @@
 import { SwapTranscation } from '@/utils/contract/swap';
 // import services from '@/services';
 import { mapGetters } from 'vuex';
-import { COMUNION_VUE_APP_UNISWAPV2ROUTER01 } from '@/configs/app';
+import {
+  COMUNION_VUE_APP_UNISWAPV2ROUTER01,
+  COMUNION_VUE_APP_SWAPROUTER01_WETH
+} from '@/configs/app';
 import { web3 } from '@/libs/web3';
-import { getEtherBalance, getTokenBalance, getTokenContract } from '@/services/utils';
+import {
+  getEtherBalance,
+  getTokenBalance,
+  getTokenContract,
+  unitTransfer,
+  getGasPrice
+} from '@/services/utils';
 
 export default {
   data() {
     return {
       loading: false,
-      tokenAmount: 0,
-      tokenBAmount: 0,
+      tokenAamount: 0,
+      tokenBamount: 0,
       myTokenAmount: 0,
       etherAmount: 0
     };
@@ -106,12 +115,13 @@ export default {
       this.loading = true;
 
       await this.approval();
+      const valueA = await unitTransfer(this.tokenAamount, 'ether');
+      const valueB = await unitTransfer(this.tokenBamount, 'ether');
       const params = {
-        // FIXME ether 的合约地址， 暂时使用hardcode， 需要在.dev环境中配置
-        tokenA: "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
+        tokenA: COMUNION_VUE_APP_SWAPROUTER01_WETH,
         tokenB: this.startup.settings.tokenAddr,
-        amountADesired: web3.utils.numberToHex(this.tokenAmount * Math.pow(10, 18)),
-        amountBDesired: web3.utils.numberToHex(this.tokenBAmount * Math.pow(10, 18)),
+        amountADesired: web3.utils.numberToHex(valueA),
+        amountBDesired: web3.utils.numberToHex(valueB),
         amountAMin: web3.utils.numberToHex(0),
         amountBMin: web3.utils.numberToHex(0),
         to: this.startup.settings.walletAddrs[0].addr,
@@ -127,14 +137,40 @@ export default {
      * @description: approval token for contract addrsss, and it will be transfer to liquuid pool
      */
     async approval() {
+      await this.approvalEther();
+      await this.approvalToken();
+    },
+
+    /**
+     * @description: approval ether for router01 address
+     */
+
+    async approvalEther() {
+      const tokenContract = await getTokenContract(COMUNION_VUE_APP_SWAPROUTER01_WETH);
+      const value = await unitTransfer(this.tokenAamount, 'ether');
+      const gasPrice = await getGasPrice();
+      await tokenContract.methods
+        .approve(COMUNION_VUE_APP_UNISWAPV2ROUTER01, web3.utils.numberToHex(value))
+        .send({
+          from: this.account,
+          gasPrice: gasPrice
+        });
+    },
+
+    /**
+     * @description: approval token for router01 address
+     */
+    async approvalToken() {
       // 募资提供的token
       const tokenContract = await getTokenContract(this.startup.settings.tokenAddr);
+      const value = await unitTransfer(this.tokenBamount, 'ether');
+      const gasPrice = await getGasPrice();
       await tokenContract.methods
-        .approve(
-          COMUNION_VUE_APP_UNISWAPV2ROUTER01,
-          web3.utils.numberToHex(this.tokenAmount * Math.pow(10, 18))
-        )
-        .send({ from: this.account });
+        .approve(COMUNION_VUE_APP_UNISWAPV2ROUTER01, web3.utils.numberToHex(value))
+        .send({
+          from: this.account,
+          gasPrice: gasPrice
+        });
     }
   }
 };
