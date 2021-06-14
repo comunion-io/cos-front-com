@@ -1,6 +1,7 @@
 import { request } from './request';
 import { web3 } from '@/libs/web3';
 import axios from 'axios';
+import { IS_RELEASE_ENV } from '@/configs/app';
 
 // 列表形式的通用返回
 export async function commonList(url, query) {
@@ -32,4 +33,22 @@ export async function getTokenContract(tokenAddr) {
   const tokenABI = await axios.get('/static/Erc20ABI.json');
   const tokenContract = new web3.eth.Contract(tokenABI.data.abi, tokenAddr);
   return tokenContract;
+}
+
+/**
+ * @description 单位换算
+ * @export
+ * @param {*} value： 值
+ * @param {*} unit： 需要转换的单位， 相对于 wei
+ * @return {*}
+ */
+export async function unitTransfer(value, unit) {
+  // eg： web3.utils.toWei('1', 'ether'); // "1000000000000000000"
+  const res = await web3.utils.toWei(value + '', unit);
+  return +res;
+}
+
+export async function getGasPrice() {
+  const gasPrice = await web3.eth.getGasPrice();
+  return IS_RELEASE_ENV ? gasPrice : gasPrice * 3;
 }

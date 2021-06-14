@@ -7,6 +7,7 @@
 import { COMUNION_VUE_APP_UNISWAPV2ROUTER01 } from '@/configs/app';
 import { web3 } from '@/libs/web3';
 import axios from 'axios';
+import { getGasPrice } from '@/services/utils';
 
 /**
  * @name: Zehui
@@ -146,8 +147,7 @@ export class SwapTranscation {
       to,
       deadline
     } = params;
-    const countAll = await web3.eth.getTransactionCount(myWalletAddress, 'pending');
-    const chainId = await web3.eth.getChainId();
+    const gasPrice = await getGasPrice();
     const data = await this.contractInstance.methods
       .addLiquidity(
         tokenA,
@@ -161,11 +161,7 @@ export class SwapTranscation {
       )
       .send({
         from: myWalletAddress,
-        value: web3.utils.numberToHex(0),
-        nonce: web3.utils.numberToHex(countAll),
-        gasPrice: web3.utils.numberToHex(Math.pow(10, 11)),
-        gasLimit: web3.utils.numberToHex(183943),
-        chainId: chainId
+        gasPrice: gasPrice
       });
     return data;
   }
