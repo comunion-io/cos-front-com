@@ -1,61 +1,67 @@
 <template>
   <div class="add-liquidity">
-    <p class="title">Add Liquidity</p>
-    <div class="wrap">
-      <div class="content">
-        <div class="input-item">
-          <div class="header">
-            <span class="label">Input</span>
-            <span class="balance">Balance {{ etherAmount }} ETH</span>
+    <a-spin
+      class="flex ai-center jc-center mt-24 w-100p loading-wrapper"
+      size="large"
+      :spinning="loading"
+    >
+      <p class="title">Add Liquidity</p>
+      <div class="wrap">
+        <div class="content">
+          <div class="input-item">
+            <div class="header">
+              <span class="label">Input</span>
+              <span class="balance">Balance {{ etherAmount }} ETH</span>
+            </div>
+            <div class="body">
+              <div class="name">ETH</div>
+              <div class="input-wrap">
+                <a-input-number
+                  :min="0"
+                  :step="0.1"
+                  v-model="tokenAamount"
+                  class="token-input"
+                  type="text"
+                />
+              </div>
+            </div>
           </div>
-          <div class="body">
-            <div class="name">ETH</div>
-            <div class="input-wrap">
-              <a-input-number
-                :min="0"
-                :step="0.1"
-                v-model="tokenAamount"
-                class="token-input"
-                type="text"
-              />
+          <div class="symbol"></div>
+          <div class="input-item">
+            <div class="header">
+              <span class="label">Input</span>
+              <span class="balance">Balance {{ myTokenAmount }} {{ tokenSymbol }}</span>
+            </div>
+            <div class="body">
+              <div class="name">{{ tokenSymbol }}</div>
+              <div class="input-wrap">
+                <a-input-number
+                  :min="0"
+                  :step="0.1"
+                  v-model="tokenBamount"
+                  class="token-input"
+                  type="text"
+                />
+              </div>
             </div>
           </div>
         </div>
-        <div class="symbol"></div>
-        <div class="input-item">
-          <div class="header">
-            <span class="label">Input</span>
-            <span class="balance">Balance {{ myTokenAmount }} {{ tokenSymbol }}</span>
-          </div>
-          <div class="body">
-            <div class="name">{{ tokenSymbol }}</div>
-            <div class="input-wrap">
-              <a-input-number
-                :min="0"
-                :step="0.1"
-                v-model="tokenBamount"
-                class="token-input"
-                type="text"
-              />
-            </div>
-          </div>
+        <div class="info">
+          <span style="font-weight: bold">Initial prices and pool share：</span>
+          <span>1 ({{ tokenSymbol }} per ETH)</span>
+          <span>1 (ETH per {{ tokenSymbol }})</span>
+          <span>100% (Share of Pool)</span>
         </div>
       </div>
-      <div class="info">
-        <span style="font-weight: bold">Initial prices and pool share：</span>
-        <span>1 ({{ tokenSymbol }} per ETH)</span>
-        <span>1 (ETH per {{ tokenSymbol }})</span>
-        <span>100% (Share of Pool)</span>
-      </div>
-    </div>
-    <p class="tip">
-      When you add liquidity,you are given pool tokens representing your position.These tokens
-      automatically earn fees proportional to your share of the pool, and can be redeemed at any
-      time
-    </p>
-    <a-button type="primary" :disabled="loading" class="btn" @click="addLiquidity">
-      Add - Liquidity
-    </a-button>
+      <p class="tip">
+        When you add liquidity,you are given pool tokens representing your position.These tokens
+        automatically earn fees proportional to your share of the pool, and can be redeemed at any
+        time
+      </p>
+      <a-button type="primary" :disabled="loading" class="btn" @click="addLiquidity">
+        Add - Liquidity
+      </a-button>
+    </a-spin>
   </div>
 </template>
 
@@ -112,26 +118,32 @@ export default {
      * @description: add liquuidity
      */
     async addLiquidity() {
-      this.loading = true;
-
-      await this.approval();
-      const valueA = await unitTransfer(this.tokenAamount, 'ether');
-      const valueB = await unitTransfer(this.tokenBamount, 'ether');
-      const params = {
-        tokenA: COMUNION_VUE_APP_SWAPROUTER01_WETH,
-        tokenB: this.startup.settings.tokenAddr,
-        amountADesired: web3.utils.numberToHex(valueA),
-        amountBDesired: web3.utils.numberToHex(valueB),
-        amountAMin: web3.utils.numberToHex(0),
-        amountBMin: web3.utils.numberToHex(0),
-        to: this.startup.settings.walletAddrs[0].addr,
-        deadline: Math.round(new Date().getTime() / 1000) + 20 * 60
-      };
-      await this.swapInstance.addLiquidity(params, this.account);
-      this.loading = false;
-      this.$router.push({
-        name: 'startupManagementDISCOSwap'
-      });
+      try {
+        this.loading = true;
+        await this.approval();
+        const valueA = await unitTransfer(this.tokenAamount, 'ether');
+        const valueB = await unitTransfer(this.tokenBamount, 'ether');
+        const params = {
+          tokenA: COMUNION_VUE_APP_SWAPROUTER01_WETH,
+          tokenB: this.startup.settings.tokenAddr,
+          amountADesired: web3.utils.numberToHex(valueA),
+          amountBDesired: web3.utils.numberToHex(valueB),
+          amountAMin: web3.utils.numberToHex(0),
+          amountBMin: web3.utils.numberToHex(0),
+          to: this.startup.settings.walletAddrs[0].addr,
+          deadline: Math.round(new Date().getTime() / 1000) + 20 * 60
+        };
+        await this.swapInstance.addLiquidity(params, this.account);
+        this.$router.push({
+          name: 'startupManagementDISCOSwap'
+        });
+      } catch (error) {
+        console.error(error);
+        // FIXME - 提示语需要产品确认
+        this.$message.error('there is something wrong with network, please waiting...');
+      } finally {
+        this.loading = false;
+      }
     },
     /**
      * @description: approval token for contract addrsss, and it will be transfer to liquuid pool
