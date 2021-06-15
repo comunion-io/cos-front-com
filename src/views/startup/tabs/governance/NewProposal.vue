@@ -403,7 +403,8 @@ export default {
       }
       const proposal = [
         // discoId
-        this.startup.settings.id,
+        // this.startup.settings.id,
+        this.id,
         // serialId
         data.id,
         // title
