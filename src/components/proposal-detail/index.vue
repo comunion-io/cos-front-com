@@ -8,7 +8,8 @@ import {
 } from '@/constants';
 import Loading from '../loading';
 import services from '@/services';
-import { fmtProposalLeftDays, canVote } from '@/utils';
+// import { fmtProposalLeftDays, canVote } from '@/utils';
+import { fmtProposalLeftDays } from '@/utils';
 import Descriptions from '@/components/display/Descriptions';
 import Progress from './progress';
 import Terms from './terms';
@@ -41,6 +42,15 @@ export default {
   },
   computed: {
     ...mapGetters(['account']),
+    // 投赞成的百分比
+    yesPercent() {
+      return this.proposal.votes.length
+        ? Math.round(
+            (this.proposal.votes.filter(vote => vote.isApproved).length * 100) /
+              this.proposal.votes.length
+          ) / 100
+        : 0;
+    },
     detailFields() {
       return [
         {
@@ -208,7 +218,8 @@ export default {
       this.proposal = data;
     }
     this.fetched = true;
-    this.canDoVote = await canVote(this.startup, this.account);
+    // this.canDoVote = await canVote(this.startup, this.account);
+    this.canDoVote = true;
   },
   render(h) {
     return (
@@ -229,19 +240,43 @@ export default {
                 </div>
               </div>
               <div class="proposal-header-card flex-1 flex-column ai-center jc-center ml-16">
-                <Progress percent={48} />
+                <Progress percent={this.proposal.votes.length} />
                 <div class="mt-20 f-14">
-                  <span style={{ color: isMathced(5, this.proposal.supportPercent) }}>5</span>
-                  <span class="t-grey">({this.proposal.supportPercent} support needed)</span>
+                  <span
+                    style={{
+                      color: isMathced(
+                        this.proposal.votes.length,
+                        this.startup.settings.proposalSupporters
+                      )
+                    }}
+                  >
+                    {this.proposal.votes.length}
+                  </span>
+                  <span class="t-grey">
+                    ({this.startup.settings.proposalSupporters} support
+                    {this.startup.settings.proposalSupporters > 0 ? 's' : ''} needed)
+                  </span>
                 </div>
               </div>
               <div class="proposal-header-card flex-1 flex-column ai-center jc-center ml-16">
-                <Progress percent={48} target={this.proposal.minApprovalPercent} />
+                <Progress
+                  percent={this.yesPercent}
+                  target={this.startup.settings.proposalMinApprovalPercent}
+                />
                 <div class="mt-20 f-14 t-error">
-                  <span style={{ color: isMathced(48, this.proposal.minApprovalPercent) }}>
-                    48%
+                  <span
+                    style={{
+                      color: isMathced(
+                        this.yesPercent,
+                        this.startup.settings.proposalMinApprovalPercent
+                      )
+                    }}
+                  >
+                    {this.yesPercent}%
                   </span>
-                  <span class="t-grey">({this.proposal.minApprovalPercent}% approval needed)</span>
+                  <span class="t-grey">
+                    ({this.startup.settings.proposalMinApprovalPercent}% approval needed)
+                  </span>
                 </div>
               </div>
             </div>
@@ -260,9 +295,12 @@ export default {
                 Please input the number of your votes. Each vote is 1 token. Your token will be
                 locked during the voting period and released after the voting.
               </p>
-              <NumberInput vModel={this.voteAmount} addonAfter={this.startup.setting.tokenSymbol} />
+              <NumberInput
+                vModel={this.voteAmount}
+                addonAfter={this.startup.settings.tokenSymbol}
+              />
               <p class="mt-8">
-                Balance：{this.tokenBalance} {this.startup.setting.tokenSymbol}
+                Balance：{this.tokenBalance} {this.startup.settings.tokenSymbol}
               </p>
             </a-modal>
           </div>

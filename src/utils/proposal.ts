@@ -34,18 +34,21 @@ export function fmtProposalLeftDays(duration: number): string {
 export async function canVote(
   startup: any,
   myAccount: string,
-  // TODO: 字段可能需要修改
-  assignAddrsField = 'voteAssignAddrs'
+  // 分配类型字段
+  typeField = 'voterType',
+  // 分配人列表字段
+  assignAddrsField = 'assignedVoters'
 ): Promise<boolean> {
   const settings = startup.settings;
-  if (settings.type === 'FounderAssign') {
+  if (!settings) return false;
+  if (settings.type === 1) {
     return settings[assignAddrsField].includes(myAccount);
   }
   const tokenBalance = await getTokenBalance(startup.settings.tokenAddr, myAccount);
-  if (settings.type === 'pos') {
+  if (settings.type === 2) {
     return tokenBalance >= settings.voteTokenLimit;
   }
-  if (settings.type === 'all') {
+  if (settings.type === 3) {
     return tokenBalance > 0;
   }
   return false;
@@ -58,5 +61,5 @@ export async function canVote(
  * @returns 是否可以发起提案
  */
 export function canInitiateProposal(startup: any, myAccount: string): Promise<boolean> {
-  return canVote(startup, myAccount, 'assignedProposers');
+  return canVote(startup, myAccount, 'proposerType', 'assignedProposers');
 }
