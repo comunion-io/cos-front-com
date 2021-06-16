@@ -287,11 +287,11 @@ export default {
           // voteMaxDurationHours: 0
           minDuration: {
             hours: 0,
-            days: 0
+            days: 1
           },
           maxDuration: {
             hours: 0,
-            days: 0
+            days: 1
           }
         },
         ...this.defaultData
