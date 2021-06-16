@@ -14,6 +14,7 @@
       </div>
     </div>
     <proposal-list
+      :type="selectedTabKey"
       :show-comer="false"
       :keyword="keyword"
       @update:total="onUpdateTotal"
@@ -114,6 +115,6 @@ export default {
 }
 
 .search-input {
-  width: 180px;
+  width: 220px;
 }
 </style>

@@ -55,9 +55,9 @@ export default {
   },
   props: {
     keyword: String,
-    type: Number,
+    type: String,
     startupId: String,
-    status: Number,
+    status: [Number, String],
     showComer: {
       type: Boolean,
       default: true
@@ -79,7 +79,12 @@ export default {
     this.watchFilterParams();
   },
   mounted() {
-    this.loadProposals();
+    this.loadProposals({
+      keyword: this.keyword,
+      type: this.type,
+      startupId: this.startupId,
+      status: this.status
+    });
   },
   watch: {
     offset(next) {
@@ -142,8 +147,10 @@ export default {
       this.unwatchFilterParams = this.$watch(
         function() {
           return {
+            startupId: this.startupId,
             keyword: this.keyword,
-            type: this.type
+            type: this.type,
+            status: this.status
           };
         },
         async function(next, prev) {

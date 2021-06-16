@@ -15,7 +15,7 @@
         >There are <span>{{ total }}</span> proposals in total</span
       >
     </div>
-    <proposal-list :status="status" @update:total="onUpdateTotal" />
+    <proposal-list :startupId="id" :status="status" @update:total="onUpdateTotal" />
   </div>
 </template>
 
@@ -27,6 +27,10 @@ const typeOptions = [
   {
     label: 'All',
     value: ''
+  },
+  {
+    label: proposalStatusTxtMap[proposalStatusMap.notStarted],
+    value: proposalStatusMap.notStarted
   },
   {
     label: proposalStatusTxtMap[proposalStatusMap.voting],
@@ -41,10 +45,6 @@ const typeOptions = [
     value: proposalStatusMap.finished
   },
   {
-    label: proposalStatusTxtMap[proposalStatusMap.passed],
-    value: proposalStatusMap.passed
-  },
-  {
     label: proposalStatusTxtMap[proposalStatusMap.rejected],
     value: proposalStatusMap.rejected
   },
@@ -57,6 +57,9 @@ const typeOptions = [
 export default {
   components: {
     ProposalList
+  },
+  props: {
+    id: String
   },
   data() {
     return {
@@ -80,8 +83,10 @@ export default {
 .toolbar {
   display: flex;
   align-items: center;
+  margin-bottom: 15px;
+
   /deep/ .toolbar-select {
-    width: 120px;
+    width: 160px;
     margin-right: 8px;
   }
 }
@@ -93,7 +98,7 @@ export default {
   text-align: left;
   color: #999999;
   line-height: 20px;
-  margin-bottom: 15px;
+
   > span {
     color: #3ac47d;
   }
