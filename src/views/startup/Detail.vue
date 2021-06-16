@@ -49,7 +49,7 @@ export default {
             ))}
           </a-tabs>
         </a-card>
-        {this.loading ? (
+        {this.loading || !this.startup.name ? (
           <loading />
         ) : (
           <a-card class="flex-1">
