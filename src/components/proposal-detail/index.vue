@@ -350,6 +350,7 @@ export default {
               dataSource={this.proposal}
             />
             <a-modal
+              vModel={this.voteDialogVisible}
               title={`Vote ${this.voteYes ? 'YES' : 'NO'} Confirm`}
               okText="Submit"
               onOk={this.doVote}
