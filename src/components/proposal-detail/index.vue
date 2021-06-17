@@ -16,6 +16,9 @@ import Terms from './terms';
 import { mapGetters } from 'vuex';
 import NumberInput from '../form/NumberInput.vue';
 import { getTokenBalance } from '@/services/utils';
+import proposalAbi from '@/libs/abis/proposal';
+import { web3 } from '@/libs/web3';
+import { COMMUNION_PROPOSAL_ACCOUNT } from '@/configs/app';
 
 /**
  * 投票是否满足条件了，返回文字颜色
@@ -208,15 +211,75 @@ export default {
       this.voteYes = yes;
       this.tokenBalance = await getTokenBalance(this.startup.settings.tokenAddr, this.account);
     },
+    async fetchData() {
+      const { data } = await services['cores@proposal-获取']({ id: this.id });
+      if (data) {
+        this.proposal = data;
+      }
+    },
     async doVote() {
-      // TODO 调投票合约
+      // 调投票合约
+      if (this.canDoVote) {
+        const contract = new web3.eth.Contract(proposalAbi, COMMUNION_PROPOSAL_ACCOUNT);
+        // 取后端一个id
+        const { error, data } = await services['cores@startup-获取prepareid']();
+        if (error) {
+          this.$message.error('Error when vote.');
+          throw error;
+        }
+        const args = [
+          // string discoId;
+          this.startup.id,
+          // string serialId;
+          data.id,
+          // address voter;
+          this.account,
+          // uint256 pos;
+          this.voteYes ? this.voteAmount : 0,
+          // uint256 neg;
+          this.voteYes ? 0 : this.voteAmount,
+          // uint256 voteBt;
+          0
+        ];
+        console.log('vote data', args);
+        const voteContract = await contract.methods.doVote(args);
+        const codeData = await voteContract.encodeABI();
+        const countAll = await web3.eth.getTransactionCount(this.account, 'pending');
+        const chainId = await web3.eth.getChainId();
+
+        const tx = {
+          from: this.account,
+          to: COMMUNION_PROPOSAL_ACCOUNT,
+          data: codeData,
+          value: 0,
+          nonce: web3.utils.numberToHex(countAll),
+          gasPrice: web3.utils.numberToHex(Math.pow(10, 12)),
+          gasLimit: web3.utils.numberToHex(183943),
+          chainId: chainId
+        };
+
+        // contractStatpUp.send(tx);
+        window.ethereum.sendAsync(
+          {
+            method: 'eth_sendTransaction',
+            params: [tx],
+            from: window.ethereum.selectedAddress
+          },
+          (err, result) => {
+            this.loading = false;
+            if (err) {
+              return console.error(err);
+            }
+            // const txid = result.result;
+            this.$message.success('Voting');
+            this.fetchData();
+          }
+        );
+      }
     }
   },
   async mounted() {
-    const { data } = await services['cores@proposal-获取']({ id: this.id });
-    if (data) {
-      this.proposal = data;
-    }
+    await this.fetchData();
     this.fetched = true;
     // this.canDoVote = await canVote(this.startup, this.account);
     this.canDoVote = true;
