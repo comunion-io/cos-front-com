@@ -132,10 +132,17 @@ export default {
     },
     getStateColor(state) {
       switch (state) {
-        case 8: // 等待开始
+        case 1: // 等待
+        case 3: // 等待
+        case 4: // 等待
+        case 8: // 等待
           return '#E18D00';
         case 7: // 进行中
           return '#6271D2';
+        case 2:
+          return '#EC0000';
+        case 5:
+          return '#14b52c';
         default:
           return '-';
       }
