@@ -7,7 +7,7 @@
 import { COMUNION_VUE_APP_UNISWAPV2ROUTER01 } from '@/configs/app';
 import { web3 } from '@/libs/web3';
 import axios from 'axios';
-import { getGasPrice } from '@/services/utils';
+import { getGasPrice, unitTransfer, getTokenContract } from '@/services/utils';
 
 /**
  * @name: Zehui
@@ -112,12 +112,15 @@ export class SwapTranscation {
   async swapExactETHForTokens(params: ISwap, myWalletAddress: string) {
     if (this.contractInstance) {
       const gasPrice = await getGasPrice();
-      const amount = params.amount; // await unitTransfer(params.amount, 'ether');
+      const transfer2EtherAmount = web3.utils.numberToHex(
+        await unitTransfer(params.amount, 'ether')
+      );
       const res = await this.contractInstance.methods
-        .swapETHForExactTokens(amount, params.path, params.to, params.deadline)
+        .swapETHForExactTokens(transfer2EtherAmount, params.path, params.to, params.deadline)
         .send({
           from: myWalletAddress,
-          gasPrice: gasPrice
+          gasPrice: gasPrice,
+          value: transfer2EtherAmount
         });
       return res;
     }
@@ -129,14 +132,27 @@ export class SwapTranscation {
    */
   async swapExactTokensForETH(params: ISwap, myWalletAddress: string) {
     const gasPrice = await getGasPrice();
-    const amount = params.amount; // await unitTransfer(params.amount, 'ether');
-
+    const transfer2TokenAmount = web3.utils.numberToHex(await unitTransfer(params.amount, 'ether'));
+    await this.approvalToken(params.path[0], transfer2TokenAmount, myWalletAddress);
     const res = await this.contractInstance.methods
-      .swapExactTokensForETH(amount, 0, params.path, params.to, params.deadline)
+      .swapExactTokensForETH(transfer2TokenAmount, 0, params.path, params.to, params.deadline)
       .send({
         from: myWalletAddress,
         gasPrice: gasPrice
       });
+  }
+
+  /**
+   * @description: approval token for router01 address
+   */
+  async approvalToken(tokenAddr: string, value: string, myWalletAddress: string) {
+    // 募资提供的token
+    const tokenContract = await getTokenContract(tokenAddr);
+    const gasPrice = await getGasPrice();
+    await tokenContract.methods.approve(COMUNION_VUE_APP_UNISWAPV2ROUTER01, value).send({
+      from: myWalletAddress,
+      gasPrice: gasPrice
+    });
   }
 
   /**
