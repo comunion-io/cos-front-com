@@ -1,7 +1,6 @@
 /*
  * @Author: zehui
  * @Date: 2020-12-13 23:40:00
- * @LastEditTime : 2021-03-23 22:26:26
  * @LastEditors  : Please set LastEditors
  * @Description: disco 合约编译的abi, 用于web3新建disco的合约实例
  * @FilePath     : \cos-front-com\src\libs\abis\disco.ts
