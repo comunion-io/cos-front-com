@@ -15,7 +15,7 @@ import Progress from './progress';
 import Terms from './terms';
 import { mapGetters } from 'vuex';
 import NumberInput from '../form/NumberInput.vue';
-import { getTokenBalance } from '@/services/utils';
+import { getTokenBalance, getTokenContract, getGasPrice } from '@/services/utils';
 import proposalAbi from '@/libs/abis/proposal';
 import { web3 } from '@/libs/web3';
 import { COMMUNION_PROPOSAL_ACCOUNT } from '@/configs/app';
@@ -40,7 +40,8 @@ export default {
       voteDialogVisible: false,
       voteYes: true,
       voteAmount: undefined,
-      tokenBalance: undefined
+      tokenBalance: undefined,
+      loading: false
     };
   },
   computed: {
@@ -55,7 +56,7 @@ export default {
         : 0;
     },
     detailFields() {
-      return [
+      let ret = [
         {
           label: 'Proposal Title',
           value: 'title'
@@ -105,104 +106,111 @@ export default {
             )
               .add(v, 'days')
               .format('YYYY-MM-DD')})`
-        },
-        {
-          label: 'Payment Address',
-          value: 'paymentAddr',
-          copyable: true
-        },
-        {
-          label: 'Payments',
-          value: 'paymentType',
-          render: v => {
-            // 支付类型 1.一次性支付 2.按月支付
-            return { 1: 'One Time Pay', 2: 'Monthly Pay' }[v];
+        }
+      ];
+      if (this.proposal.hasPayment) {
+        ret = ret.concat([
+          {
+            label: 'Payment Address',
+            value: 'paymentAddr',
+            copyable: true
+          },
+          {
+            label: 'Payments',
+            value: 'paymentType',
+            render: v => {
+              // 支付类型 1.一次性支付 2.按月支付
+              return { 1: 'One Time Pay', 2: 'Monthly Pay' }[v];
+            }
+          },
+          {
+            label: 'Total Months',
+            value: 'paymentMonthes',
+            render: v => `${v} month${v > 1 ? 's' : ''}`
+          },
+          {
+            label: 'Payment Date',
+            value: 'paymentDate'
+          },
+          {
+            label: 'Payment Amount',
+            value: 'paymentAmount',
+            render: (v, proposal) => `${v} ${proposal.startup.tokenSymbol}`
           }
-        },
-        {
-          label: 'Total Months',
-          value: 'paymentMonthes',
-          render: v => `${v} month${v > 1 ? 's' : ''}`
-        },
-        {
-          label: 'Payment Date',
-          value: 'paymentDate'
-        },
-        {
-          label: 'Payment Amount',
-          value: 'paymentAmount',
-          render: (v, proposal) => `${v} ${proposal.startup.tokenSymbol}`
-        },
-        {
-          label: 'Payment Terms',
-          value: 'terms',
-          render: (v, proposal) => <Terms symbol={proposal.startup.tokenSymbol} terms={v} />
-        },
-        {
+        ]);
+        if (this.proposal.terms?.length) {
+          ret.push({
+            label: 'Payment Terms',
+            value: 'terms',
+            render: (v, proposal) => <Terms symbol={proposal.startup.tokenSymbol} terms={v} />
+          });
+        }
+        ret = ret.push({
           label: 'Total Amount',
           value: 'totalPaymentAmount',
           render: (v, proposal) => `${v} ${proposal.startup.tokenSymbol}`
-        },
-        {
-          label: 'Vote',
-          render: (v, proposal) => {
-            const voted = proposal.votes.find(vote => vote.walletAddr === this.account);
-            if (voted) {
-              return (
-                <a-button type="primary" size="large" style="width:320px">
-                  <a-icon type={voted.isApproved ? 'like' : 'dislike'} class="mr-4" />
-                  <span class="mx-4">Vote {voted.isApproved ? 'YES' : 'NO'}</span>
-                  <span>+{voted.amount}</span>
-                </a-button>
-              );
-            }
-            // voting
-            if (proposal.status === proposalStatusMap.voting) {
-              const yesBtn = (
-                <a-button
-                  type="primary"
-                  size="large"
-                  disabled={!this.canDoVote}
-                  style="width:164px"
-                  onClick={() => this.startVote(true)}
-                >
-                  <a-icon type="like" class="mr-4" />
-                  Vote YES
-                </a-button>
-              );
-              const noBtn = (
-                <a-button
-                  type="green"
-                  size="large"
-                  disabled={!this.canDoVote}
-                  class="ml-16"
-                  style="width:164px"
-                  onClick={() => this.startVote(false)}
-                >
-                  <a-icon type="dislike" class="mr-4" />
-                  Vote NO
-                </a-button>
-              );
-              if (this.canDoVote) {
-                return (
-                  <div>
-                    {yesBtn}
-                    {noBtn}
-                  </div>
-                );
-              } else {
-                return (
-                  <div>
-                    <a-tooltip title="You have no privilege to vote.">{yesBtn}</a-tooltip>
-                    <a-tooltip title="You have no privilege to vote.">{noBtn}</a-tooltip>
-                  </div>
-                );
-              }
-            }
-            return proposalStatusTxtMap[proposal.status];
+        });
+      }
+      ret.push({
+        label: 'Vote',
+        render: (v, proposal) => {
+          const voted = proposal.votes.find(vote => vote.walletAddr === this.account);
+          if (voted) {
+            return (
+              <a-button type="primary" size="large" style="width:320px">
+                <a-icon type={voted.isApproved ? 'like' : 'dislike'} class="mr-4" />
+                <span class="mx-4">Vote {voted.isApproved ? 'YES' : 'NO'}</span>
+                <span>+{voted.amount}</span>
+              </a-button>
+            );
           }
+          // voting
+          if (proposal.status === proposalStatusMap.voting) {
+            const yesBtn = (
+              <a-button
+                type="primary"
+                size="large"
+                disabled={!this.canDoVote}
+                style="width:164px"
+                onClick={() => this.startVote(true)}
+              >
+                <a-icon type="like" class="mr-4" />
+                Vote YES
+              </a-button>
+            );
+            const noBtn = (
+              <a-button
+                type="green"
+                size="large"
+                disabled={!this.canDoVote}
+                class="ml-16"
+                style="width:164px"
+                onClick={() => this.startVote(false)}
+              >
+                <a-icon type="dislike" class="mr-4" />
+                Vote NO
+              </a-button>
+            );
+            if (this.canDoVote) {
+              return (
+                <div>
+                  {yesBtn}
+                  {noBtn}
+                </div>
+              );
+            } else {
+              return (
+                <div>
+                  <a-tooltip title="You have no privilege to vote.">{yesBtn}</a-tooltip>
+                  <a-tooltip title="You have no privilege to vote.">{noBtn}</a-tooltip>
+                </div>
+              );
+            }
+          }
+          return proposalStatusTxtMap[proposal.status];
         }
-      ];
+      });
+      return ret;
     }
   },
   methods: {
@@ -220,7 +228,18 @@ export default {
     async doVote() {
       // 调投票合约
       if (this.canDoVote) {
-        const contract = new web3.eth.Contract(proposalAbi, COMMUNION_PROPOSAL_ACCOUNT);
+        this.loading = true;
+        // 发起一个质押合约
+        // FIXME: @zehui
+        const approveContract = await getTokenContract(this.startup.settings.tokenAddr);
+        const gasPrice = await getGasPrice();
+        await approveContract.methods
+          .approve(COMMUNION_PROPOSAL_ACCOUNT, web3.utils.numberToHex(this.voteAmount))
+          .send({
+            from: this.account,
+            gasPrice
+          });
+        const voteContract = new web3.eth.Contract(proposalAbi, COMMUNION_PROPOSAL_ACCOUNT);
         // 取后端一个id
         const { error, data } = await services['cores@startup-获取prepareid']();
         if (error) {
@@ -242,39 +261,11 @@ export default {
           0
         ];
         console.log('vote data', args);
-        const voteContract = await contract.methods.doVote(args);
-        const codeData = await voteContract.encodeABI();
-        const countAll = await web3.eth.getTransactionCount(this.account, 'pending');
-        const chainId = await web3.eth.getChainId();
-
-        const tx = {
-          from: this.account,
-          to: COMMUNION_PROPOSAL_ACCOUNT,
-          data: codeData,
-          value: 0,
-          nonce: web3.utils.numberToHex(countAll),
-          gasPrice: web3.utils.numberToHex(Math.pow(10, 12)),
-          gasLimit: web3.utils.numberToHex(183943),
-          chainId: chainId
-        };
-
-        // contractStatpUp.send(tx);
-        window.ethereum.sendAsync(
-          {
-            method: 'eth_sendTransaction',
-            params: [tx],
-            from: window.ethereum.selectedAddress
-          },
-          (err, result) => {
-            this.loading = false;
-            if (err) {
-              return console.error(err);
-            }
-            // const txid = result.result;
-            this.$message.success('Voting');
-            this.fetchData();
-          }
-        );
+        await voteContract.methods.doVote(args);
+        this.loading = false;
+        // const txid = result.result;
+        this.$message.success('Voting');
+        this.fetchData();
       }
     }
   },
