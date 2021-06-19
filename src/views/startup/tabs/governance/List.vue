@@ -8,7 +8,7 @@
         + New Proposal
       </a-button>
     </div>
-    <proposal-list :startupId="id"></proposal-list>
+    <proposal-list :startupId="id" @update:total="onUpdateTotal"></proposal-list>
   </div>
 </template>
 

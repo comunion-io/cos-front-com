@@ -31,6 +31,7 @@
 import { fmtNumber } from '@/utils/fmt';
 import { fmtProposalLeftDays } from '@/utils';
 import { proposalStatusMap, proposalStatusTxtMap } from '@/constants';
+import logo from '@/assets/images/file@2x.png';
 
 export default {
   props: {
@@ -42,7 +43,7 @@ export default {
   },
   computed: {
     startupLogo() {
-      return this.record?.startup?.logo || '';
+      return this.record?.startup?.logo || logo;
     },
     startupName() {
       return this.record?.startup?.name;
@@ -117,7 +118,6 @@ export default {
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  border: 1px solid #999;
 }
 
 .amount {
