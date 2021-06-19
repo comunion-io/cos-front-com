@@ -8,6 +8,7 @@
   <div>
     <div class="wrap">
       <div class="input-item">
+        <!-- you pay -->
         <div class="header">
           <span class="label">You Pay</span>
           <span class="balance">Balance {{ payTokenBalance }} {{ payTokenSymbol }}</span>
@@ -25,6 +26,7 @@
         </div>
       </div>
       <div class="input-item input-item-disabled">
+        <!-- you recrive -->
         <div class="header">
           <span class="label">You Receive</span>
           <span class="balance"
@@ -54,10 +56,11 @@
 <script>
 import { mapGetters } from 'vuex';
 import { SwapTranscation } from '@/utils/contract/swap';
-import services from '@/services';
+// import services from '@/services';
 import { getEtherBalance, getTokenBalance } from '@/services/utils';
 import TransactionSettings from './TransactionSettings';
 import ExchangeSVG from './exchange.svg';
+import { COMUNION_VUE_APP_SWAPROUTER01_WETH } from '@/configs/app';
 
 export default {
   data() {
@@ -73,9 +76,7 @@ export default {
       /** eth余额 */
       etherBalance: undefined,
       /** token 的发布地址 */
-      tokenAddr: '',
-      /** 交易池募资地址 */
-      fundRaisingContractAddr: ''
+      tokenAddr: ''
     };
   },
   props: {
@@ -113,7 +114,9 @@ export default {
     },
     /** 兑换比例 */
     exchangeRatio() {
-      let ratio = this.reversed ? this.ether / this.token : this.token / this.ether;
+      let ratio = this.reversed
+        ? this.etherBalance / this.tokenBalance
+        : this.tokenBalance / this.etherBalance;
       return isNaN(ratio) ? 0 : Math.floor(ratio * 1000) / 1000;
     }
   },
@@ -122,6 +125,7 @@ export default {
     TransactionSettings
   },
   async mounted() {
+    this.tokenAddr = this.startup.settings.tokenAddr;
     this.swapInstance = SwapTranscation.getInstance();
     this.etherBalance = await getEtherBalance(this.account);
     this.tokenBalance = await getTokenBalance(this.tokenAddr, this.account);
@@ -129,59 +133,47 @@ export default {
   methods: {
     onReverse() {
       this.reversed = !this.reversed;
+      this.token = 0;
+      this.ether = 0;
+      this.payToken = 0;
     },
     /**
      * @description 需要支付的货币数值发生变化
      * @return {void}
      */
     changedPayToken() {
-      this.reversed ? this.changedToken() : this.changedEther();
+      if (this.payToken > 0) {
+        this.reversed ? this.changedToken() : this.changedEther();
+      }
     },
     /**
      * @name: Zehui
-     * @description token 兑换 ether
+     * @description token 兑换 ether( 卖出token, 买入ether )
      * @param {*} value
      * @return {*}
      */
     async changedToken() {
-      const params = this.getParams(true, true, this.payToken);
-      const res = await this.swapInstance.swapExactTokensForETH(params);
-      [this.token, this.ether] = res;
-    },
-
-    /**
-     * @name: Zehui
-     * @description 获取交易的参数
-     * @param isTokenToEther 是否是 token 兑换ether
-     * @param value 兑换的值
-     * @param isMock 是否是真实交易
-     * @return {*}
-     */
-    getParams(isTokenToEther, isMock, value) {
-      const path = isTokenToEther
-        ? [this.tokenAddr, this.fundRaisingContractAddr]
-        : [this.fundRaisingContractAddr, this.tokenAddr];
       const params = {
-        amount: value,
-        amountOutMin: 0,
-        path: path,
-        to: this.account,
-        // 只需要获取能兑换的ether, 不需要真是兑换， 交易时间为0， 让交易直接失败, 合约的时间最小但是为秒
-        deadline: isMock ? 0 : 20 * 60
+        amount: this.payToken,
+        reserveIn: 10,
+        reserveOut: 100
       };
-      return params;
+      this.ether = await this.swapInstance.getAmountOut(params);
     },
 
     /**
      * @name: Zehui
-     * @description ether 兑换 tokens
+     * @description ether 兑换 tokens (卖出ether, 买入token)
      * @param {*} value
      * @return {*}
      */
     async changedEther() {
-      const params = this.getParams(false, true, this.payToken);
-      const res = await this.swapInstance.swapExactETHForTokens(params);
-      [this.ether, this.token] = res;
+      const params = {
+        amount: this.payToken,
+        reserveIn: 10,
+        reserveOut: 100
+      };
+      this.token = await this.swapInstance.getAmountIn(params);
     },
 
     /**
@@ -191,12 +183,27 @@ export default {
      * @return {*}
      */
     async swap() {
-      // TODO @xiaodong 当前前端界面支持 ether 兑换 token
-      const params = this.getParams(false, false, this.ether);
-      const res = await this.swapInstance.swapExactETHForTokens(params);
-      [this.token, this.ether] = res;
-      this.swapCallBack();
-    },
+      const path = this.reversed
+        ? [this.tokenAddr, COMUNION_VUE_APP_SWAPROUTER01_WETH]
+        : [COMUNION_VUE_APP_SWAPROUTER01_WETH, this.tokenAddr];
+      const params = {
+        amount: this.payToken,
+        path: path,
+        to: this.account,
+        deadline: Math.round(new Date().getTime() / 1000 + 20 * 60)
+      };
+
+      /* ----------------------------- 指定卖出ERC20代币数量，得到ETH， ----------------------------- */
+      if (this.reversed) {
+        this.swapInstance.swapExactTokensForETH(params, this.account);
+      } else {
+        /* ----------------------------- 指定卖出ETH数量，得到另一种ERC20代币 ----------------------------- */
+        this.swapInstance.swapExactETHForTokens(params, this.account);
+      }
+
+      // [this.token, this.ether] = res;
+      // this.swapCallBack();
+    }
 
     /**
      * @name: Zehui
@@ -204,7 +211,7 @@ export default {
      * @param {*} txid
      * @return {*}
      */
-    async swapCallBack() {
+    /*   async swapCallBack() {
       if (this.exchangeId) {
         const params = {
           exchangeId: this.exchangeId,
@@ -220,7 +227,7 @@ export default {
           console.error(error);
         }
       }
-    }
+    } */
   }
 };
 </script>

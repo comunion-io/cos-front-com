@@ -18,8 +18,6 @@ import { getGasPrice } from '@/services/utils';
 export interface ISwap {
   /** 用户打算兑换ether(token)的token(ether) */
   amount: number;
-  /** 用户希望兑换的最小值， 当前是0 */
-  amountOutMin: number;
   /**
    *  地址数组， 两个值，
    *  第一个是token（ether） 的发布地址，
@@ -30,6 +28,12 @@ export interface ISwap {
   to: string;
   /** 交易的超时时间 */
   deadline: number;
+}
+
+export interface IChangeToken {
+  amount: number;
+  reserveIn: number;
+  reserveOut: number;
 }
 
 /**
@@ -101,33 +105,70 @@ export class SwapTranscation {
   }
 
   /**
-   * @name: Zehui
-   * @description: token 兑换 ether
-   * @param {*}
-   * @return {*}
+   * @description:  指定卖出ETH数量，得到另一种ERC20代币
+   * @param {ISwap} params
+   * @param {string} myWalletAddress
    */
-  async swapExactTokensForETH(params: ISwap) {
+  async swapExactETHForTokens(params: ISwap, myWalletAddress: string) {
     if (this.contractInstance) {
-      const { amount: amountIn, amountOutMin, path, to: account, deadline } = params;
+      const gasPrice = await getGasPrice();
+      const amount = params.amount; // await unitTransfer(params.amount, 'ether');
       const res = await this.contractInstance.methods
-        .swapExactTokensForETH(amountIn, amountOutMin, path, account, deadline)
-        .call();
+        .swapETHForExactTokens(amount, params.path, params.to, params.deadline)
+        .send({
+          from: myWalletAddress,
+          gasPrice: gasPrice
+        });
       return res;
     }
   }
 
   /**
-   * @name: Zehui
-   * @description: ether 兑换 token
-   * @param {*}
-   * @return {*}
+   * @description: 指定卖出ERC20代币数量，得到ETH，
+   * @param {ISwap} params
    */
-  async swapExactETHForTokens(params: ISwap) {
-    const { amount: amountOut, amountOutMin, path, to: account, deadline } = params;
+  async swapExactTokensForETH(params: ISwap, myWalletAddress: string) {
+    const gasPrice = await getGasPrice();
+    const amount = params.amount; // await unitTransfer(params.amount, 'ether');
+
     const res = await this.contractInstance.methods
-      .swapExactETHForTokens(amountOutMin, path, account, deadline)
+      .swapExactTokensForETH(amount, 0, params.path, params.to, params.deadline)
+      .send({
+        from: myWalletAddress,
+        gasPrice: gasPrice
+      });
+  }
+
+  /**
+   * @dev 获取单个输出数额
+   * @notice 给定一项资产的输入量和配对的储备，返回另一项资产的最大输出量
+   * @param amountIn 输入数额
+   * @param reserveIn 储备量In
+   * @param reserveOut 储备量Out
+   * @return amounts  输出数额
+   */
+  async getAmountOut(params: IChangeToken): Promise<number> {
+    const amount = params.amount; // await unitTransfer(params.amount, 'ether');
+    const targetAmount = await this.contractInstance.methods
+      .getAmountOut(amount, params.reserveIn, params.reserveOut)
       .call();
-    return res;
+    return targetAmount;
+  }
+
+  /**
+   * @dev 获取单个输出数额
+   * @notice 给定一项资产的输出量和对储备，返回其他资产的所需输入量
+   * @param amountOut 输出数额
+   * @param reserveIn 储备量In
+   * @param reserveOut 储备量Out
+   * @return amounts  输入数额
+   */
+  async getAmountIn(params: IChangeToken): Promise<number> {
+    const amount = params.amount; // await unitTransfer(params.amount, 'ether');
+    const targetAmount = await this.contractInstance.methods
+      .getAmountIn(BigInt(amount), params.reserveIn, params.reserveOut)
+      .call();
+    return targetAmount;
   }
 
   /**
