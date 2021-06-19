@@ -345,6 +345,7 @@ export default {
               title={`Vote ${this.voteYes ? 'YES' : 'NO'} Confirm`}
               okText="Submit"
               onOk={this.doVote}
+              confirmLoading={this.loading}
             >
               <p class="mb-8">
                 Please input the number of your votes. Each vote is 1 token. Your token will be
@@ -355,7 +356,7 @@ export default {
                 addonAfter={this.startup.settings.tokenSymbol}
               />
               <p class="mt-8">
-                Balance：{this.tokenBalance} {this.startup.settings.tokenSymbol}
+                Balance：{this.tokenBalance || 0} {this.startup.settings.tokenSymbol}
               </p>
             </a-modal>
           </div>
