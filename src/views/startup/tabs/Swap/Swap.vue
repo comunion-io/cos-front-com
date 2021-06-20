@@ -197,7 +197,7 @@ export default {
       if (this.reversed) {
         this.swapInstance.swapExactTokensForETH(params, this.account);
       } else {
-        /* ----------------------------- 指定卖出ETH数量，得到另一种ERC20代币 ----------------------------- */
+        /* ----------------------------- 指定卖出ETH数量，得到ERC20代币 ----------------------------- */
         this.swapInstance.swapExactETHForTokens(params, this.account);
       }
 
