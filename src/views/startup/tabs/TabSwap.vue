@@ -29,7 +29,11 @@
           </div>
         </div>
         <Swap :exchangeId="exchangeId" :startup="startup" v-if="activeTab === 'Swap'" />
-        <FundsPool :exchangeId="exchangeId" v-else-if="activeTab === 'Funds Pool'" />
+        <FundsPool
+          :exchangeId="exchangeId"
+          :startup="startup"
+          v-else-if="activeTab === 'Funds Pool'"
+        />
       </div>
     </div>
 
