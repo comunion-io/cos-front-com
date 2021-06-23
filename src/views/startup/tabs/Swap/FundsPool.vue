@@ -167,8 +167,11 @@ export default {
       tokenAddr: '',
       /** 交易池募资地址 */
       fundRaisingContractAddr: '',
+      /** balance of my token */
       myTokenAmount: 0,
-      etherAmount: 0
+      /** balance of my ether */
+      etherAmount: 0,
+      loading: false
     };
   },
   methods: {
@@ -194,7 +197,7 @@ export default {
         const valueA = await unitTransfer(this.addedEther, 'ether');
         const valueB = await unitTransfer(this.addedToken, 'ether');
         const params = {
-          tokenA: this.COMUNION_VUE_APP_SWAPROUTER01_WETH,
+          tokenA: COMUNION_VUE_APP_SWAPROUTER01_WETH,
           tokenB: this.startup.settings.tokenAddr,
           amountADesired: web3.utils.numberToHex(valueA),
           amountBDesired: web3.utils.numberToHex(valueB),
