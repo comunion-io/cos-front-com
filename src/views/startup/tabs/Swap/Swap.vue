@@ -76,7 +76,9 @@ export default {
       /** eth余额 */
       etherBalance: undefined,
       /** token 的发布地址 */
-      tokenAddr: ''
+      tokenAddr: '',
+      tokenInFundPoolAmount: 0,
+      etherInFundPoolAmount: 0
     };
   },
   props: {
@@ -84,8 +86,8 @@ export default {
       type: Object,
       default: () => {}
     },
-    exchangeId: {
-      type: String,
+    exchange: {
+      type: Object,
       default() {
         return '';
       }
@@ -115,8 +117,8 @@ export default {
     /** 兑换比例 */
     exchangeRatio() {
       let ratio = this.reversed
-        ? this.etherBalance / this.tokenBalance
-        : this.tokenBalance / this.etherBalance;
+        ? this.etherInFundPoolAmount / this.tokenInFundPoolAmount
+        : this.tokenInFundPoolAmount / this.etherInFundPoolAmount;
       return isNaN(ratio) ? 0 : Math.floor(ratio * 1000) / 1000;
     }
   },
@@ -129,6 +131,13 @@ export default {
     this.swapInstance = SwapTranscation.getInstance();
     this.etherBalance = await getEtherBalance(this.account);
     this.tokenBalance = await getTokenBalance(this.tokenAddr, this.account);
+
+    this.etherInFundPoolAmount = await getTokenBalance(
+      COMUNION_VUE_APP_SWAPROUTER01_WETH,
+      this.exchange.pairAddress
+    );
+
+    this.tokenInFundPoolAmount = await getTokenBalance(this.tokenAddr, this.exchange.pairAddress);
   },
   methods: {
     onReverse() {
@@ -204,30 +213,6 @@ export default {
       // [this.token, this.ether] = res;
       // this.swapCallBack();
     }
-
-    /**
-     * @name: Zehui
-     * @description 上链后的回调
-     * @param {*} txid
-     * @return {*}
-     */
-    /*   async swapCallBack() {
-      if (this.exchangeId) {
-        const params = {
-          exchangeId: this.exchangeId,
-          // txid,
-          type: 3,
-          account: this.account,
-          tokenAmount1: this.token,
-          tokenAmount2: this.ether
-        };
-        let { error } = await services['cores@exchange_transaction-创建'](params);
-
-        if (error) {
-          console.error(error);
-        }
-      }
-    } */
   }
 };
 </script>

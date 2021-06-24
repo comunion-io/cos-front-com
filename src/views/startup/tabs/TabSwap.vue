@@ -28,7 +28,7 @@
             {{ tab }}
           </div>
         </div>
-        <Swap :exchangeId="exchangeId" :startup="startup" v-if="activeTab === 'Swap'" />
+        <Swap :exchange="exchange" :startup="startup" v-if="activeTab === 'Swap'" />
         <FundsPool
           :exchangeId="exchangeId"
           :startup="startup"
