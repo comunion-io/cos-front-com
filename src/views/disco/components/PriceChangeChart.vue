@@ -35,7 +35,7 @@ export default {
   watch: {
     chartData: {
       handler(next) {
-        this.setChartSeriesAndXAxis(this.chartData);
+        this.setChartSeriesAndXAxis(next);
       },
       deep: true
     }
