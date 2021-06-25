@@ -64,40 +64,77 @@
         </template>
         <!-- 删除流动性 -->
         <template v-else-if="activeTab === tabs[1]">
-          <div class="wrap">
-            <div class="input-item">
-              <div class="header">
-                <span class="label">Liquidity Pool</span>
-              </div>
-              <div class="body">
-                <div class="name">ETH</div>
-                <div class="input-wrap">
-                  <input class="input" v-model="deleteEther" type="text" />
+          <div style="margin-bottom: 22px;">
+            <div class="wrap">
+              <div class="input-item">
+                <div class="header">
+                  <span class="label">Liquidity Pool</span>
+                </div>
+                <div class="body">
+                  <div class="name">ETH</div>
+                  <div class="input-wrap">
+                    <input class="input" v-model="deleteEther" type="text" />
+                  </div>
+                </div>
+                <div class="footer">
+                  <span class="balance">Balance 0.9486</span>
                 </div>
               </div>
-              <div class="footer">
-                <span class="balance">Balance 1000 ETH + 100000 UVU</span>
-              </div>
-            </div>
-            <div style="flex: 0 0 80px;"></div>
-            <div class="input-item">
-              <div class="header">
-                <span class="label">Input</span>
-              </div>
-              <div class="body">
-                <div class="name">Total</div>
-                <div class="input-wrap">
-                  <input class="input" v-model="deleteToken" type="text" />
+              <div style="flex: 0 0 30px;"></div>
+              <div class="input-item input-item-disabled" style="flex: 2;">
+                <div class="header">
+                  <span class="label">Output</span>
+                </div>
+                <div style="display: flex;align-items: center;">
+                  <div class="body">
+                    <div class="name">'UVU'</div>
+                    <div class="input-wrap">
+                      <input class="input" v-model="deleteToken" type="text" disabled />
+                    </div>
+                  </div>
+                  <div style="flex: 0 0 30px;text-align: center;">+</div>
+                  <div class="body">
+                    <div class="name">ETH</div>
+                    <div class="input-wrap">
+                      <input class="input" v-model="deleteToken" type="text" disabled />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Transaction Settings -->
-            <TransactionSettings class="transaction-settings" />
+              <!-- Transaction Settings -->
+              <TransactionSettings class="transaction-settings" />
+            </div>
+            <div class="uvu-eth">
+              <span style="margin-right: 40px;">· 1 'UVU' = 0.1 ETH</span>
+              <span>· 1 ETH = 10 'UVU'</span>
+            </div>
           </div>
-          <p class="text">exchange rate: --</p>
-          <p class="text">The current size of the pool of funds: --</p>
-          <p class="text">Your fund pool share(%): --</p>
+
+          <div class="your-position">
+            <div class="title">Your position</div>
+            <div class="row">
+              <div class="label">'UVU'/ETH:</div>
+              <div class="value">0.9486</div>
+            </div>
+            <div class="row">
+              <div class="label">Your pool share:</div>
+              <div class="value">100.000000%</div>
+              <div class="label">'UVU':</div>
+              <div class="value">2.999999</div>
+              <div class="label">ETH:</div>
+              <div class="value">0.299999</div>
+            </div>
+            <div class="tip">
+              <span style="font-weight: bold;margin-right: 8px;">Tip:</span>
+              <span
+                >Delete pool tokens converts your position back into underlying tokens at the
+                current rate, proportional to your share of the pool. Accrued fees are included in
+                the amounts you receive.</span
+              >
+            </div>
+          </div>
+
           <a-button class="btn" @click="removeLiquidity" type="primary">
             Delete - Liquidity
           </a-button>
@@ -335,6 +372,46 @@ export default {
       &:hover {
         color: #6271d2;
         background-color: #f6f7fc;
+      }
+    }
+  }
+
+  .wrap {
+    margin-bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding-bottom: 8px;
+  }
+
+  .uvu-eth {
+    border-radius: 12px;
+    background-color: #f6f7fc;
+    padding: 0 30px 30px 30px;
+    font-weight: bold;
+  }
+
+  .your-position {
+    background-color: #f6f7fc;
+    border-radius: 12px;
+    padding: 20px 30px;
+
+    .title {
+      border-left: 4px solid #6170ff;
+      font-weight: bold;
+      height: 16px;
+      line-height: 16px;
+      padding-left: 8px;
+      margin-bottom: 16px;
+    }
+
+    .row {
+      display: flex;
+      .label {
+        font-weight: bold;
+        margin: 0 8px 8px 0;
+      }
+      .value {
+        margin: 0 40px 8px 0;
       }
     }
   }
