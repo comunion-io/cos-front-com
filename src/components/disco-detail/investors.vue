@@ -52,7 +52,7 @@ export default {
         },
         {
           dataIndex: 'ethCount',
-          customRender: v => `${v / 10 ** 17} ETH`
+          customRender: v => `${v / 10 ** 18} ETH`
         },
         {
           dataIndex: 'createdAt',

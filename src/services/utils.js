@@ -24,9 +24,14 @@ export async function getEtherBalance(account) {
  * @param {*} tokenAddr
  */
 export async function getTokenBalance(tokenAddr, account) {
-  const tokenContract = await getTokenContract(tokenAddr);
-  const tokenAmount = await tokenContract.methods.balanceOf(account).call();
-  return Math.round((tokenAmount / Math.pow(10, 18)) * 10000) / 10000;
+  try {
+    const tokenContract = await getTokenContract(tokenAddr);
+    const tokenAmount = await tokenContract.methods.balanceOf(account).call();
+    return Math.round((tokenAmount / Math.pow(10, 18)) * 10000) / 10000;
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
 }
 
 export async function getTokenContract(tokenAddr) {
