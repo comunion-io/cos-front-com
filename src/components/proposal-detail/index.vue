@@ -261,7 +261,10 @@ export default {
           0
         ];
         console.log('vote data', args);
-        await voteContract.methods.doVote(args);
+        await voteContract.methods.doVote(args).send({
+          from: this.account,
+          gasPrice
+        });
         this.loading = false;
         // const txid = result.result;
         this.$message.success('Voting');
