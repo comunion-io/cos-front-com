@@ -25,46 +25,54 @@
         </div>
         <!-- 增加流动性 -->
         <template v-if="activeTab === tabs[0]">
-          <div class="wrap">
-            <div class="input-item">
-              <div class="header">
-                <span class="label">Input</span>
-                <span class="balance">Balance {{ etherAmount }} ETH</span>
+          <div class="section">
+            <div class="wrap">
+              <div class="input-item">
+                <div class="header">
+                  <span class="label">Input</span>
+                </div>
+                <div class="body">
+                  <div class="name">ETH</div>
+                  <div class="input-wrap">
+                    <input class="input" v-model="addedEther" type="text" />
+                  </div>
+                </div>
+                <div class="footer">
+                  <span class="balance">Balance {{ etherAmount }} ETH</span>
+                </div>
               </div>
-              <div class="body">
-                <div class="name">ETH</div>
-                <div class="input-wrap">
-                  <input class="input" v-model="addedEther" type="text" />
+              <div class="symbol"></div>
+              <div class="input-item">
+                <div class="header">
+                  <span class="label">Input</span>
+                </div>
+                <div class="body">
+                  <div class="name">{{ tokenSymbol }}</div>
+                  <div class="input-wrap">
+                    <input class="input" v-model="addedToken" type="text" />
+                  </div>
+                </div>
+                <div class="footer">
+                  <span class="balance">Balance {{ myTokenAmount }} {{ tokenSymbol }}</span>
                 </div>
               </div>
             </div>
-            <div class="symbol"></div>
-            <div class="input-item">
-              <div class="header">
-                <span class="label">Input</span>
-                <span class="balance">Balance {{ myTokenAmount }} {{ tokenSymbol }}</span>
-              </div>
-              <div class="body">
-                <div class="name">{{ tokenSymbol }}</div>
-                <div class="input-wrap">
-                  <input class="input" v-model="addedToken" type="text" />
-                </div>
-              </div>
+            <div class="prices-pool">
+              <span class="label">Prices and pool share：</span>
+              <span class="value-item">9.97（'UVU' per ETH）</span>
+              <span class="value-item">1 （ETH per 'UVU'）</span>
+              <span class="value-item">50% （Share of Pool）</span>
             </div>
-
-            <!-- Transaction Settings -->
-            <TransactionSettings class="transaction-settings" />
           </div>
-          <p class="text">exchange rate: 10 UVU per ETH</p>
-          <p class="text">The current size of the pool of funds: 100ETH / 1000UVU</p>
-          <p class="text">Your fund pool share(%): 1%</p>
+
+          <YourPosition type="add" />
           <a-button class="btn" @click="addLiquidity" type="primary">
             Add - Liquidity
           </a-button>
         </template>
         <!-- 删除流动性 -->
         <template v-else-if="activeTab === tabs[1]">
-          <div style="margin-bottom: 22px;">
+          <div class="section">
             <div class="wrap">
               <div class="input-item">
                 <div class="header">
@@ -101,9 +109,6 @@
                   </div>
                 </div>
               </div>
-
-              <!-- Transaction Settings -->
-              <TransactionSettings class="transaction-settings" />
             </div>
             <div class="uvu-eth">
               <span style="margin-right: 40px;">· 1 'UVU' = 0.1 ETH</span>
@@ -111,29 +116,7 @@
             </div>
           </div>
 
-          <div class="your-position">
-            <div class="title">Your position</div>
-            <div class="row">
-              <div class="label">'UVU'/ETH:</div>
-              <div class="value">0.9486</div>
-            </div>
-            <div class="row">
-              <div class="label">Your pool share:</div>
-              <div class="value">100.000000%</div>
-              <div class="label">'UVU':</div>
-              <div class="value">2.999999</div>
-              <div class="label">ETH:</div>
-              <div class="value">0.299999</div>
-            </div>
-            <div class="tip">
-              <span style="font-weight: bold;margin-right: 8px;">Tip:</span>
-              <span
-                >Delete pool tokens converts your position back into underlying tokens at the
-                current rate, proportional to your share of the pool. Accrued fees are included in
-                the amounts you receive.</span
-              >
-            </div>
-          </div>
+          <YourPosition type="delete" />
 
           <a-button class="btn" @click="removeLiquidity" type="primary">
             Delete - Liquidity
@@ -148,7 +131,6 @@
 import { mapGetters } from 'vuex';
 // import services from '@/services';
 import { SwapTranscation } from '@/utils/contract/swap';
-import TransactionSettings from './TransactionSettings';
 import {
   getEtherBalance,
   getTokenBalance,
@@ -161,6 +143,7 @@ import {
   COMUNION_VUE_APP_SWAPROUTER01_WETH
 } from '@/configs/app';
 import { web3 } from '@/libs/web3';
+import YourPosition from './YourPosition';
 
 export default {
   computed: {
@@ -182,7 +165,7 @@ export default {
     }
   },
   components: {
-    TransactionSettings
+    YourPosition
   },
   async mounted() {
     this.swapInstance = SwapTranscation.getInstance();
@@ -376,6 +359,22 @@ export default {
     }
   }
 
+  .section {
+    margin-bottom: 22px;
+    border-radius: 12px;
+    background-color: #f6f7fc;
+
+    .prices-pool {
+      padding: 0 30px 30px;
+      .label {
+        font-weight: bold;
+      }
+      .value-item {
+        margin: 0 8px;
+      }
+    }
+  }
+
   .wrap {
     margin-bottom: 0;
     border-bottom-left-radius: 0;
@@ -384,36 +383,8 @@ export default {
   }
 
   .uvu-eth {
-    border-radius: 12px;
-    background-color: #f6f7fc;
     padding: 0 30px 30px 30px;
     font-weight: bold;
-  }
-
-  .your-position {
-    background-color: #f6f7fc;
-    border-radius: 12px;
-    padding: 20px 30px;
-
-    .title {
-      border-left: 4px solid #6170ff;
-      font-weight: bold;
-      height: 16px;
-      line-height: 16px;
-      padding-left: 8px;
-      margin-bottom: 16px;
-    }
-
-    .row {
-      display: flex;
-      .label {
-        font-weight: bold;
-        margin: 0 8px 8px 0;
-      }
-      .value {
-        margin: 0 40px 8px 0;
-      }
-    }
   }
 }
 </style>
