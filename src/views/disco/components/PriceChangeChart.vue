@@ -5,6 +5,7 @@
     :tooltip="tooltip"
     :animation="false"
     :x-axis="xAxis"
+    :y-axis="[{ show: false, type: 'value' }]"
     :series="series"
   />
 </template>
@@ -25,7 +26,7 @@ export default {
       xAxis: [],
       series: [],
       tooltip: {
-        show: false
+        trigger: 'axis'
       }
     };
   },
@@ -55,6 +56,9 @@ export default {
       this.xAxis = [
         {
           ...DEFAULT_XAXIS,
+          show: false,
+          areaStyle: {},
+          showAllSymbol: true,
           data: xAxisData
         }
       ];
