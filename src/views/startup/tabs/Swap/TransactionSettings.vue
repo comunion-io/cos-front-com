@@ -188,7 +188,7 @@ export default {
     }
 
     .deadline {
-      width: 140px;
+      width: 150px;
       margin-bottom: 8px;
       .input {
         width: 75px;
