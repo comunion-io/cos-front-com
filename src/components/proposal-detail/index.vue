@@ -145,7 +145,7 @@ export default {
             render: (v, proposal) => <Terms symbol={proposal.startup.tokenSymbol} terms={v} />
           });
         }
-        ret = ret.push({
+        ret = ret.concat({
           label: 'Total Amount',
           value: 'totalPaymentAmount',
           render: (v, proposal) => `${v} ${proposal.startup.tokenSymbol}`
