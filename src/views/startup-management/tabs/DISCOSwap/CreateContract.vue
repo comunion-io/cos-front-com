@@ -8,7 +8,7 @@
   <!-- 创建 disco  -->
   <div class="create-contract">
     <DISCOSteps :step="createFundFaisingContractSucceed ? 2 : 1" />
-    <div class="content">
+    <div v-if="ready" class="content">
       <a-form-model
         layout="vertical"
         ref="form"
@@ -161,6 +161,7 @@
         </a-form-model-item>
       </a-form-model>
     </div>
+    <loading v-else />
   </div>
 </template>
 
@@ -223,7 +224,9 @@ export default {
       balance: {
         eth: undefined,
         token: undefined
-      }
+      },
+      // 是否完成数据加载
+      ready: false
     };
   },
   computed: {
@@ -243,7 +246,10 @@ export default {
     this.discoInstance = DiscoTranscation.getInstance();
     // 获取disco
     if (this.$route.query.mode !== 'create') {
-      this.getDisco();
+      await this.getDisco();
+      this.ready = true;
+    } else {
+      this.ready = true;
     }
     this.balance.eth = await getEtherBalance(this.account);
     this.balance.token = await getTokenBalance(this.tokenAddr, this.account);
@@ -321,9 +327,9 @@ export default {
         } catch (error) {
           console.error(error);
           this.$message.error(error.message || 'Error');
+          this.loading = false;
         }
       }
-      this.loading = false;
     },
 
     /**
@@ -348,6 +354,7 @@ export default {
           console.error(error);
         }
       }
+      this.loading = false;
     },
 
     updateTotalDepositToken() {
@@ -372,8 +379,10 @@ export default {
      * @param {*}
      * @return {*}
      */
-    enablDisco() {
-      this.discoInstance.approval(this.disco, this.account);
+    async enablDisco() {
+      this.loading = true;
+      await this.discoInstance.approval(this.disco, this.account);
+      this.loading = false;
       // this.$message.success('Enabling, please waiting.');
       // 返回DISCO & Swap页面
       // this.$router.push({ name: 'startupManagementDISCOSwap' });
