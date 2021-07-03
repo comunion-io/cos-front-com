@@ -2,16 +2,18 @@
   <div class="your-position">
     <div class="title">Your position</div>
     <div class="row">
-      <div class="label">'UVU'/ETH:</div>
-      <div class="value">0.9486</div>
+      <div class="label">{{ tokenSymbol }} /ETH:</div>
+      <div class="value">
+        {{ Math.floor((etherInFundPoolAmount / tokenInFundPoolAmount) * 1000) / 1000 }}
+      </div>
     </div>
     <div class="row">
       <div class="label">Your pool share:</div>
       <div class="value">100.000000%</div>
-      <div class="label">'UVU':</div>
-      <div class="value">2.999999</div>
+      <div class="label">{{ tokenSymbol }}:</div>
+      <div class="value">{{ tokenInFundPoolAmount }}</div>
       <div class="label">ETH:</div>
-      <div class="value">0.299999</div>
+      <div class="value">{{ etherInFundPoolAmount }}</div>
     </div>
     <div class="tip">
       <span style="font-weight: bold;margin-right: 8px;">Tip:</span>
@@ -21,22 +23,52 @@
 </template>
 
 <script>
+import { getTokenBalance } from '@/services/utils';
+import { COMUNION_VUE_APP_SWAPROUTER01_WETH } from '@/configs/app';
 export default {
   props: {
     type: {
       type: String,
       default: 'add'
+    },
+    startup: {
+      type: Object,
+      default: () => {}
+    },
+    exchange: {
+      type: Object,
+      default() {
+        return '';
+      }
     }
   },
   data() {
-    return {};
+    return {
+      /** 流动池中的token */
+      tokenInFundPoolAmount: 0,
+      /** 流动池中的ather */
+      etherInFundPoolAmount: 0,
+      /** token 的发布地址 */
+      tokenAddr: ''
+    };
   },
   computed: {
     tip() {
       return this.type === 'add'
         ? 'When you add liquidity, you will receive pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.'
         : 'Delete pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.';
+    },
+    tokenSymbol() {
+      return this.startup?.settings?.tokenSymbol || '';
     }
+  },
+  async mounted() {
+    this.tokenAddr = this.startup.settings.tokenAddr;
+    this.etherInFundPoolAmount = await getTokenBalance(
+      COMUNION_VUE_APP_SWAPROUTER01_WETH,
+      this.exchange.pairAddress
+    );
+    this.tokenInFundPoolAmount = await getTokenBalance(this.tokenAddr, this.exchange.pairAddress);
   }
 };
 </script>

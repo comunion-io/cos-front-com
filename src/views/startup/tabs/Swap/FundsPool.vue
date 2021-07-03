@@ -60,8 +60,10 @@
             <div class="prices-pool">
               <span class="label">Prices and pool share：</span>
               <span class="value-item"
-                >{{ Math.floor((tokenInFundPoolAmount / etherInFundPoolAmount) * 1000) / 1000
-                }}{{ tokenSymbol }} per ETH）</span
+                >{{ Math.floor((tokenInFundPoolAmount / etherInFundPoolAmount) * 1000) / 1000 }} ({{
+                  tokenSymbol
+                }}
+                per ETH）</span
               >
               <span class="value-item"
                 >{{
@@ -73,7 +75,7 @@
             </div>
           </div>
 
-          <YourPosition type="add" />
+          <YourPosition :exchange="exchange" :startup="startup" type="add" />
           <a-button class="btn" @click="addLiquidity" type="primary"> Add - Liquidity </a-button>
         </template>
         <!-- 删除流动性 -->
@@ -117,12 +119,20 @@
               </div>
             </div>
             <div class="uvu-eth">
-              <span style="margin-right: 40px">· 1 'UVU' = 0.1 ETH</span>
-              <span>· 1 ETH = 10 'UVU'</span>
+              <span style="margin-right: 40px"
+                >· 1 'UVU' =
+                {{ Math.floor((etherInFundPoolAmount / tokenInFundPoolAmount) * 1000) / 1000 }}
+                ETH</span
+              >
+              <span
+                >· 1 ETH =
+                {{ Math.floor((tokenInFundPoolAmount / etherInFundPoolAmount) * 1000) / 1000 }}
+                'UVU'</span
+              >
             </div>
           </div>
 
-          <YourPosition type="delete" />
+          <YourPosition :exchange="exchange" :startup="startup" type="delete" />
 
           <a-button class="btn" @click="removeLiquidity" type="primary">
             Delete - Liquidity
