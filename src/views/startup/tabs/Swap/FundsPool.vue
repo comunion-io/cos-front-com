@@ -59,16 +59,22 @@
             </div>
             <div class="prices-pool">
               <span class="label">Prices and pool share：</span>
-              <span class="value-item">9.97（'UVU' per ETH）</span>
-              <span class="value-item">1 （ETH per 'UVU'）</span>
+              <span class="value-item"
+                >{{ Math.floor((tokenInFundPoolAmount / etherInFundPoolAmount) * 1000) / 1000
+                }}{{ tokenSymbol }} per ETH）</span
+              >
+              <span class="value-item"
+                >{{
+                  Math.floor((etherInFundPoolAmount / tokenInFundPoolAmount) * 1000) / 1000
+                }}
+                （ETH per {{ tokenSymbol }}）</span
+              >
               <span class="value-item">50% （Share of Pool）</span>
             </div>
           </div>
 
           <YourPosition type="add" />
-          <a-button class="btn" @click="addLiquidity" type="primary">
-            Add - Liquidity
-          </a-button>
+          <a-button class="btn" @click="addLiquidity" type="primary"> Add - Liquidity </a-button>
         </template>
         <!-- 删除流动性 -->
         <template v-else-if="activeTab === tabs[1]">
@@ -88,19 +94,19 @@
                   <span class="balance">Balance 0.9486</span>
                 </div>
               </div>
-              <div style="flex: 0 0 30px;"></div>
-              <div class="input-item input-item-disabled" style="flex: 2;">
+              <div style="flex: 0 0 30px"></div>
+              <div class="input-item input-item-disabled" style="flex: 2">
                 <div class="header">
                   <span class="label">Output</span>
                 </div>
-                <div style="display: flex;align-items: center;">
+                <div style="display: flex; align-items: center">
                   <div class="body">
                     <div class="name">'UVU'</div>
                     <div class="input-wrap">
                       <input class="input" v-model="deleteToken" type="text" disabled />
                     </div>
                   </div>
-                  <div style="flex: 0 0 30px;text-align: center;">+</div>
+                  <div style="flex: 0 0 30px; text-align: center">+</div>
                   <div class="body">
                     <div class="name">ETH</div>
                     <div class="input-wrap">
@@ -111,7 +117,7 @@
               </div>
             </div>
             <div class="uvu-eth">
-              <span style="margin-right: 40px;">· 1 'UVU' = 0.1 ETH</span>
+              <span style="margin-right: 40px">· 1 'UVU' = 0.1 ETH</span>
               <span>· 1 ETH = 10 'UVU'</span>
             </div>
           </div>
@@ -153,8 +159,8 @@ export default {
     }
   },
   props: {
-    exchangeId: {
-      type: String,
+    exchange: {
+      type: Object,
       default() {
         return '';
       }
@@ -168,7 +174,13 @@ export default {
     YourPosition
   },
   async mounted() {
+    this.tokenAddr = this.startup.settings.tokenAddr;
     this.swapInstance = SwapTranscation.getInstance();
+    this.etherInFundPoolAmount = await getTokenBalance(
+      COMUNION_VUE_APP_SWAPROUTER01_WETH,
+      this.exchange.pairAddress
+    );
+    this.tokenInFundPoolAmount = await getTokenBalance(this.tokenAddr, this.exchange.pairAddress);
     await this.getMyBalance();
   },
   data() {
@@ -191,7 +203,11 @@ export default {
       myTokenAmount: 0,
       /** balance of my ether */
       etherAmount: 0,
-      loading: false
+      loading: false,
+      /** 流动池中的token */
+      tokenInFundPoolAmount: 0,
+      /** 流动池中的ather */
+      etherInFundPoolAmount: 0
     };
   },
   methods: {
@@ -201,7 +217,7 @@ export default {
 
     async getMyBalance() {
       this.etherAmount = await getEtherBalance(this.account);
-      this.myTokenAmount = await getTokenBalance(this.startup.settings.tokenAddr, this.account);
+      this.myTokenAmount = await getTokenBalance(this.tokenAddr, this.account);
     },
 
     /**
@@ -218,7 +234,7 @@ export default {
         const valueB = await unitTransfer(this.addedToken, 'ether');
         const params = {
           tokenA: COMUNION_VUE_APP_SWAPROUTER01_WETH,
-          tokenB: this.startup.settings.tokenAddr,
+          tokenB: this.tokenAddr,
           amountADesired: web3.utils.numberToHex(valueA),
           amountBDesired: web3.utils.numberToHex(valueB),
           amountAMin: web3.utils.numberToHex(0),
@@ -258,7 +274,7 @@ export default {
      */
     async approvalToken() {
       // 募资提供的token
-      const tokenContract = await getTokenContract(this.startup.settings.tokenAddr);
+      const tokenContract = await getTokenContract(this.tokenAddr);
       const value = await unitTransfer(this.addedToken, 'ether');
       const gasPrice = await getGasPrice();
       await tokenContract.methods
@@ -268,29 +284,6 @@ export default {
           gasPrice: gasPrice
         });
     },
-
-    /**
-     * @name: Zehui
-     * @description 增加流动性上链后的回调
-     * @param {txid} 上链后的交易hash
-     * @return {*}
-     */
-    /*  async addLiquidityCallBack() {
-      if (this.exchangeId) {
-        const params = {
-          // txid,
-          exchangeId: this.exchangeId,
-          account: this.account,
-          type: 1,
-          tokenAmount1: this.addedToken,
-          tokenAmount2: this.addedEther
-        };
-        let { error } = await services['cores@exchange_transaction-创建'](params);
-        if (error) {
-          console.error(error);
-        }
-      }
-    }, */
 
     /**
      * @name: Zehui
@@ -312,27 +305,6 @@ export default {
       this.swapInstance.removeLiquidity(params);
       this.removeLiquidityCallBack();
     }
-
-    /**
-     * @name: Zehui
-     * @description 删除流动性上链后的回调
-     * @param {txid} 上链后的交易hash
-     * @return {*}
-     */
-    /*  async removeLiquidityCallBack() {
-      const params = {
-        // txid,
-        account: this.account,
-        type: 2,
-        exchangeId: this.exchangeId,
-        tokenAmount1: this.deleteToken,
-        tokenAmount2: this.deleteEther
-      };
-      let { error } = await services['cores@exchange_transaction-创建'](params);
-      if (!error) {
-        console.error(error);
-      }
-    } */
   }
 };
 </script>
