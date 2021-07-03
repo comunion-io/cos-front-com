@@ -1,7 +1,7 @@
 <template>
   <a href @click.prevent="openDialog">
     {{ total }} &gt;&gt;
-    <a-modal title="Investors List" :width="720" v-model="dialogVisible" :footer="null">
+    <a-modal title="Investors List" :width="764" v-model="dialogVisible" :footer="null">
       <div class="mb-16 flex ai-center">
         <span
           >Investors: <span class="t-bold">{{ total }}</span></span
@@ -56,7 +56,7 @@ export default {
         },
         {
           dataIndex: 'createdAt',
-          customRender: v => moment(v).format('YYYY-MM-DD')
+          customRender: v => moment(v).format('YYYY-MM-DD hh:mm')
         }
       ])
     };

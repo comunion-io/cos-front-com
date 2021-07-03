@@ -1,10 +1,12 @@
 <script>
 import Descriptions from '@/components/display/Descriptions';
 import services from '@/services';
+import { getEtherBalance } from '@/services/utils';
 import moment from 'moment';
 import Investors from './investors';
 import { mapGetters } from 'vuex';
 import { DiscoTranscation } from '@/utils/contract/disco';
+import NumberInput from '../form/NumberInput.vue';
 
 // -1 未开启
 // 0 创建中
@@ -45,7 +47,11 @@ export default {
     return {
       status: null,
       loading: true,
-      detail: {}
+      detail: {},
+      investCountVisible: false,
+      investAmount: undefined,
+      ethBalance: undefined,
+      investLoading: false
     };
   },
   computed: {
@@ -216,11 +222,26 @@ export default {
     updateInvestorsHandler(totalETH) {
       this.$set(this.detail, 'tokenRaised', totalETH);
     },
+    async openInvest() {
+      this.investCountVisible = true;
+      this.investAmount = undefined;
+      this.ethBalance = await getEtherBalance(this.account);
+    },
     /**
      * @description: invest this  disco
      */
     async doInvest() {
-      await this.discoInstance.invest(this.detail.id, this.account);
+      if (this.investAmount > 0) {
+        this.investLoading = true;
+        try {
+          await this.discoInstance.invest(this.detail.id, this.account, this.investAmount);
+        } catch (error) {
+          console.error(error);
+        }
+        this.investLoading = false;
+      } else {
+        this.$message.warn('Invest amount must large than 0.');
+      }
     }
   },
   render(h) {
@@ -266,7 +287,8 @@ export default {
                 type="primary"
                 size="large"
                 block
-                onClick={this.doInvest}
+                loading={this.investLoading}
+                onClick={this.openInvest}
               >
                 Invest
               </a-button>
@@ -280,6 +302,17 @@ export default {
                 </span>
               </div>
             )}
+            <a-modal
+              vModel={this.investCountVisible}
+              title={`Invest token count`}
+              okText="Submit"
+              onOk={this.doInvest}
+              confirmLoading={this.investLoading}
+            >
+              <p class="mb-8">Please input the number of your ETH you want to invest.</p>
+              <NumberInput vModel={this.investAmount} addonAfter="ETH" min={0.01} />
+              <p class="mt-8">Balance：{this.ethBalance || 0} ETH</p>
+            </a-modal>
           </div>
         );
     }

@@ -229,7 +229,7 @@ export class DiscoTranscation {
         console.log('Approval transaction failed.');
         return;
       }
-      this.enableDisco(disco.id, fromAddress);
+      await this.enableDisco(disco.id, fromAddress);
     } catch (error) {
       console.error(error);
       return false;
@@ -264,7 +264,7 @@ export class DiscoTranscation {
    * @author Ze Hui
    * @date 24/01/2021
    */
-  public async invest(id: string, account: string) {
+  public async invest(id: string, account: string, amount: number) {
     // if (!this.contractInstance) {
     //   const coinBase = await this.contractInstance.methods.setCoinBase(account);
     //   await this.setCoinbase(coinBase, account);
@@ -273,7 +273,7 @@ export class DiscoTranscation {
       const now = Math.round(new Date().getTime() / 1000); // ms -> s
       await this.contractInstance.methods.investor(id, now).send({
         from: account,
-        value: web3.utils.numberToHex(Math.pow(10, 17))
+        value: web3.utils.numberToHex(amount * 10 ** 18)
       });
     }
   }
