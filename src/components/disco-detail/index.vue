@@ -170,12 +170,9 @@ export default {
               // detail里的state 0 默认状态，1 等待开始，2 进行中，3 失败，4 成功
               this.detail = res.data;
             }
-
-            this.loading = false;
           }
-        } else {
-          this.loading = false;
         }
+        this.loading = false;
       }
     }
   },
