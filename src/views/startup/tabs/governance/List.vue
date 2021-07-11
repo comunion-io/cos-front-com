@@ -14,7 +14,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-// import { canInitiateProposal } from '@/utils/proposal';
+import { canInitiateProposal } from '@/utils/proposal';
 import ProposalList from '@/views/governance/components/ProposalList.vue';
 
 export default {
@@ -35,10 +35,9 @@ export default {
   },
   methods: {
     toCreate() {
-      // if (canInitiateProposal(this.startup, this.account)) {
-
-      // }
-      this.$router.push({ name: 'newProposal', params: { id: this.id } });
+      if (canInitiateProposal(this.startup, this.account)) {
+        this.$router.push({ name: 'newProposal', params: { id: this.id } });
+      }
     },
     onUpdateTotal(val) {
       this.total = val || 0;

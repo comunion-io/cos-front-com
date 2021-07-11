@@ -2,6 +2,7 @@
 import CopyableAddress from '@/components/helper/CopyableAddress';
 import Descriptions from '@/components/display/Descriptions';
 import StartupInfo from './blocks/StartupInfo';
+import { governanceTypesMap } from '@/constants';
 
 export default {
   props: {
@@ -12,17 +13,17 @@ export default {
   computed: {
     // 模块
     modules() {
-      // Governance type
-      const governance = this.startup.settings?.type?.toLowerCase();
+      // Governance proposal type
+      const governance = this.startup.settings?.proposerType;
       // 投票地址过多，展示为可点击
       let voteAssignAddr;
       // 当Governance选项为pos时
-      if (governance === 'founderassign') {
-        const addrs = this.startup.settings.voteAssignAddrs;
+      if (governance === 1) {
+        const addrs = this.startup.settings.assignedVoters;
         voteAssignAddr = addrs.slice(0, 2).map((addr, index) => {
           return {
             label: index === 0 ? 'Assign Address' : '',
-            value: `settings.voteAssignAddrs[${index}]`,
+            value: `settings.assignedVoters[${index}]`,
             copyable: true
           };
         });
@@ -73,46 +74,50 @@ export default {
         },
         {
           icon: require('./images/governance.png'),
-          title: 'Governance',
+          title: 'Opertion Information',
           fields: [
-            { label: 'Governance', value: 'settings.type' },
-            ...(governance === 'all'
+            {
+              label: 'Governance',
+              value: 'settings.proposerType',
+              render: v => governanceTypesMap[v]
+            },
+            ...(governance === 3
               ? []
-              : governance === 'founderassign'
+              : governance === 1
               ? voteAssignAddr || []
-              : [{ label: 'Token Balance', value: 'settings.voteTokenLimit' }]),
+              : [{ label: 'Token Balance', value: 'settings.voterTokenLimit' }]),
             {
               label: 'Vote',
-              value: 'settings.voteSupportPercent',
-              prefix: 'Support: ',
-              suffix: '%'
+              value: 'settings.proposalSupporters',
+              prefix: 'Support: '
+              // suffix: '%'
             },
             {
-              value: 'settings.voteMinApprovalPercent',
+              value: 'settings.proposalMinApprovalPercent',
               prefix: 'Minimum Approval: ',
               suffix: '%'
             },
             {
-              value: 'settings.voteMinDurationHours',
+              value: 'settings.proposalMinDuration',
               prefix: 'MinDuration: ',
               suffix: 'Days'
             },
             {
-              value: 'settings.voteMaxDurationHours',
+              value: 'settings.proposalMaxDuration',
               prefix: 'MaxDuration: ',
               suffix: 'Days'
             }
           ]
-        },
-        {
-          icon: require('./images/team.png'),
-          title: (
-            <span>
-              Team Member: <span class="t-primary f-16">2</span>
-            </span>
-          ),
-          fields: []
         }
+        // {
+        //   icon: require('./images/team.png'),
+        //   title: (
+        //     <span>
+        //       Team Member: <span class="t-primary f-16">2</span>
+        //     </span>
+        //   ),
+        //   fields: []
+        // }
       ];
     }
   },
@@ -125,7 +130,7 @@ export default {
         width: 600,
         maskClosable: true,
         content: h => {
-          const addrs = this.startup.settings.voteAssignAddrs;
+          const addrs = this.startup.settings.assignedVoters;
           return (
             <div style="margin-left:-38px">
               <p class="f-15">
