@@ -8,8 +8,7 @@ import {
 } from '@/constants';
 import Loading from '../loading';
 import services from '@/services';
-// import { fmtProposalLeftDays, canVote } from '@/utils';
-import { fmtProposalLeftDays } from '@/utils';
+import { fmtProposalLeftDays, canVote } from '@/utils';
 import Descriptions from '@/components/display/Descriptions';
 import Progress from './progress';
 import Terms from './terms';
@@ -275,7 +274,7 @@ export default {
   async mounted() {
     await this.fetchData();
     this.fetched = true;
-    // this.canDoVote = await canVote(this.startup, this.account);
+    this.canDoVote = await canVote(this.startup, this.account);
     this.canDoVote = true;
   },
   render(h) {

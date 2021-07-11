@@ -313,9 +313,9 @@ export default {
           governance: {
             voteType: settings.type,
             voteAssignAddrs: settings.voteAssignAddrs,
-            voteTokenLimit: settings.voteTokenLimit,
-            voteSupportPercent: settings.voteSupportPercent,
-            voteMinApprovalPercent: settings.voteMinApprovalPercent,
+            voteTokenLimit: settings.voterTokenLimit,
+            supportNeed: settings.proposalSupporters,
+            voteMinApprovalPercent: settings.proposalMinApprovalPercent,
             minDuration: {
               hours: settings.voteMinDurationHours - voteMinDurationDays * 24,
               days: voteMinDurationDays

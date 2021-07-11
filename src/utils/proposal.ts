@@ -41,14 +41,17 @@ export async function canVote(
 ): Promise<boolean> {
   const settings = startup.settings;
   if (!settings) return false;
-  if (settings.type === 1) {
+  // found assign
+  if (settings.voterType === 1) {
     return settings[assignAddrsField].includes(myAccount);
   }
   const tokenBalance = await getTokenBalance(startup.settings.tokenAddr, myAccount);
-  if (settings.type === 2) {
-    return tokenBalance >= settings.voteTokenLimit;
+  // pos
+  if (settings.voterType === 2) {
+    return tokenBalance >= settings.voterTokenLimit;
   }
-  if (settings.type === 3) {
+  // all
+  if (settings.voterType === 3) {
     return tokenBalance > 0;
   }
   return false;
