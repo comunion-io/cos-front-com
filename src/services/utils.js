@@ -57,3 +57,13 @@ export async function getGasPrice() {
   const gasPrice = await web3.eth.getGasPrice();
   return IS_RELEASE_ENV ? gasPrice : gasPrice * 3;
 }
+
+export async function getGas() {
+  const gasPrice = await web3.eth.getGasPrice();
+  const lastBlock = await web3.eth.getBlock('latest');
+  console.log(gasPrice, lastBlock);
+  return {
+    gasPrice: web3.utils.numberToHex(IS_RELEASE_ENV ? gasPrice : gasPrice * 2),
+    gasLimit: web3.utils.numberToHex(IS_RELEASE_ENV ? lastBlock.gasLimit : lastBlock.gasLimit * 2)
+  };
+}
