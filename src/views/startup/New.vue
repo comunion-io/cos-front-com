@@ -118,7 +118,7 @@ import { startupAbi } from '@/libs/abis/startup';
 import services from '@/services';
 import { merge } from '@/utils';
 import BbsInput from '@/components/form/BbsInput';
-import { getEtherBalance } from '@/services/utils';
+import { getEtherBalance, getGas } from '@/services/utils';
 
 export default {
   name: 'NewStartup',
@@ -220,10 +220,10 @@ export default {
         from: this.account,
         to: COMUNION_RECEIVER_STARTUP_ACCOUNT,
         data: codeData,
-        value: web3.utils.numberToHex(Math.pow(10, 17)),
+        value: 0,
+        // value: web3.utils.numberToHex(Math.pow(10, 17)),
         nonce: web3.utils.numberToHex(countAll),
-        gasPrice: web3.utils.numberToHex(Math.pow(10, 9)),
-        gasLimit: web3.utils.numberToHex(183943),
+        ...(await getGas()),
         chainId: chainId
       };
       window.ethereum.sendAsync(

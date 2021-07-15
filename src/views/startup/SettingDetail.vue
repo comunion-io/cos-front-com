@@ -61,6 +61,7 @@ import { web3 } from '@/libs/web3';
 import { COMMUNION_SETTING_RECEIVE_ACCOUNT } from '@/configs/app';
 import { STARTUP_SETTING_STORE_KEY } from '@/configs/storage';
 import services from '@/services';
+import { getGas } from '@/services/utils';
 import { merge } from '@/utils';
 import Finance from './steps/Finance';
 import Governance from './steps/Governance';
@@ -182,8 +183,7 @@ export default {
         data: codeData,
         value: 0,
         nonce: web3.utils.numberToHex(countAll),
-        gasPrice: web3.utils.numberToHex(Math.pow(10, 12)),
-        gasLimit: web3.utils.numberToHex(183943),
+        ...(await getGas()),
         chainId: chainId
       };
 

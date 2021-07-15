@@ -167,7 +167,7 @@ export default {
           Bounty Detail
         </div>
         <div class="flex w-100p">
-          <div class="flex-1">
+          <div class="flex-1 t-trunc">
             <a-card class="flex-1 detail-card" bordered={false} title={detail.title}>
               <div>
                 {(detail.keywords || []).map(tag => (
@@ -214,11 +214,11 @@ export default {
                 <Step title="InProgress" />
                 <Step
                   title="Closed"
-                  description={
+                  sub-title={
                     leftDays === false
                       ? ''
                       : closed
-                      ? 'closed'
+                      ? moment(detail.expiredAt).format('YYYY-MM-DD hh:mm')
                       : `${leftDays} day${leftDays > 1 ? 's' : ''} left`
                   }
                 />
