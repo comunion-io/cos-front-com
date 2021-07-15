@@ -26,7 +26,7 @@ export default {
               <label class="t-bold no-shrink" style={{ width: `${labelWidth}px` }}>
                 {column.label ? `${column.label}:` : ''}
               </label>
-              <p class="mb-0 t-grey">
+              <p class="mb-0 t-grey t-trunc">
                 {column.prefix}
                 {/** 可复制的 */}
                 {column.copyable ? (
