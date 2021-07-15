@@ -61,6 +61,10 @@ export default {
     showComer: {
       type: Boolean,
       default: true
+    },
+    withMe: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -83,20 +87,28 @@ export default {
       keyword: this.keyword,
       type: this.type,
       startupId: this.startupId,
-      status: this.status
+      status: this.status,
+      offset: 0
     });
   },
   watch: {
     offset(next) {
-      this.loadProposals(
-        {
-          keyword: this.keyword,
-          type: this.type,
-          startupId: this.startupId,
-          status: this.status
-        },
-        next
-      );
+      this.loadProposals({
+        keyword: this.keyword,
+        type: this.type,
+        startupId: this.startupId,
+        status: this.status,
+        offset: next || 0
+      });
+    },
+    withMe(next) {
+      this.loadProposals({
+        keyword: this.keyword,
+        type: this.type,
+        startupId: this.startupId,
+        status: this.status,
+        offset: 0
+      });
     }
   },
   computed: {
@@ -117,8 +129,15 @@ export default {
     async loadProposals(params) {
       this.requestState = 'processing';
 
-      const { offset = 0, keyword, type = proposalTypeMap.all, startupId, status } = params || {};
-      const { error, data } = await services['cores@proposal-列表']({
+      const { offset = 0, keyword, type = proposalTypeMap.all, startupId, status, withMe } =
+        params || {};
+
+      let getProposals = services['cores@proposal-列表'];
+      if (withMe) {
+        getProposals = services['cores@proposal-me-列表'];
+      }
+
+      const { error, data } = await getProposals({
         limit: pageSize,
         offset,
         keyword,
@@ -154,7 +173,10 @@ export default {
           };
         },
         async function(next, prev) {
-          this.loadProposals(next, 0);
+          this.loadProposals({
+            ...next,
+            offset: 0
+          });
         }
       );
     }

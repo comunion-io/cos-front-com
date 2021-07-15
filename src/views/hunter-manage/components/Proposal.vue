@@ -17,6 +17,7 @@
       :type="selectedTabKey"
       :show-comer="false"
       :keyword="keyword"
+      :with-me="true"
       @update:total="onUpdateTotal"
     ></proposal-list>
   </div>
@@ -66,7 +67,7 @@ export default {
       this.createdByMeTotal = val || 0;
     },
     async initLoadVotedProposals() {
-      const { error, data } = await services['cores@proposal-列表']({
+      const { error, data } = await services['cores@proposal-me-列表']({
         limit: 10,
         offset: 0,
         type: proposalTypeMap.voted
