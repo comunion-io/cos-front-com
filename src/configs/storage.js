@@ -12,3 +12,6 @@ export const NET_WORK_NAME = 'network.name';
 
 // 登录的时间
 export const LOGIN_TIME = 'login.time';
+
+// swap交易设置
+export const SWAP_TRANSACTION_SETTINGS = 'swap.transaction.settings';

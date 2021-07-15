@@ -20,8 +20,8 @@
         </div>
         <div class="radio-input input-wrap" :class="{ active: isSlippageToleranceCustom }">
           <input
-            ref="radioInput"
             class="input"
+            ref="radioInput"
             type="number"
             @input="radioInputOnChange"
             @focus="radioInputOnFocus"
@@ -31,7 +31,13 @@
       </div>
       <div class="name">Transaction Deadline</div>
       <div class="input-wrap deadline">
-        <input class="input" type="number" v-model="transactionDeadline" />
+        <input
+          class="input"
+          type="number"
+          v-model="transactionDeadline"
+          @input="saveSettings"
+          @change="transactionDeadlineOnChange"
+        />
         <span class="input-after">minutes</span>
       </div>
       <div class="name">Interface Settings</div>
@@ -42,6 +48,7 @@
           checked-children="on"
           un-checked-children="off"
           v-model="toggleExpertMode"
+          @change="saveSettings"
         />
       </div>
       <div class="switch-item">
@@ -51,6 +58,7 @@
           checked-children="on"
           un-checked-children="off"
           v-model="disableMultihops"
+          @change="saveSettings"
         />
       </div>
     </div>
@@ -58,6 +66,9 @@
 </template>
 
 <script>
+import { SWAP_TRANSACTION_SETTINGS } from '@/configs/storage';
+const TRANSACTION_DEADLINE_DEFAULT = 20;
+
 export default {
   data() {
     return {
@@ -70,10 +81,37 @@ export default {
       /** 滑点值 */
       slippageTolerance: 0.1,
       /** 交易截止时间 单位:minutes */
-      transactionDeadline: '',
+      transactionDeadline: TRANSACTION_DEADLINE_DEFAULT,
       toggleExpertMode: false,
       disableMultihops: false
     };
+  },
+  watch: {
+    panelVisible(value) {
+      if (value) {
+        let settingInfo = localStorage.getItem(SWAP_TRANSACTION_SETTINGS);
+        if (settingInfo) {
+          settingInfo = JSON.parse(settingInfo);
+          this.toggleExpertMode = !!settingInfo.interfaceSettings?.toggleExpertMode;
+          this.disableMultihops = !!settingInfo.interfaceSettings?.disableMultihops;
+          this.transactionDeadline =
+            settingInfo.transactionDeadline || TRANSACTION_DEADLINE_DEFAULT;
+          if (settingInfo.slippageTolerance) {
+            this.slippageTolerance = settingInfo.slippageTolerance;
+            if (this.slippageToleranceList.indexOf(settingInfo.slippageTolerance) === -1) {
+              this.isSlippageToleranceCustom = true;
+              this.$nextTick(() => {
+                this.$refs.radioInput.value = settingInfo.slippageTolerance;
+              });
+            } else {
+              this.isSlippageToleranceCustom = false;
+            }
+          } else {
+            this.slippageTolerance = this.slippageToleranceList[0];
+          }
+        }
+      }
+    }
   },
   methods: {
     // 设置按钮被点击
@@ -84,12 +122,33 @@ export default {
     selectSlippageTolerance(value) {
       this.slippageTolerance = value;
       this.isSlippageToleranceCustom = false;
+      this.saveSettings();
     },
     radioInputOnChange(e) {
-      this.slippageTolerance = e.target.value;
+      this.slippageTolerance = Number(e.target.value);
+      this.saveSettings();
     },
     radioInputOnFocus() {
       this.isSlippageToleranceCustom = true;
+      this.saveSettings();
+    },
+    transactionDeadlineOnChange(e) {
+      if (!e.target.value) {
+        this.transactionDeadline = TRANSACTION_DEADLINE_DEFAULT;
+        this.saveSettings();
+      }
+    },
+    // 保存设置参数
+    saveSettings() {
+      let settings = {
+        slippageTolerance: this.slippageTolerance, // 滑点值
+        transactionDeadline: Number(this.transactionDeadline),
+        interfaceSettings: {
+          toggleExpertMode: this.toggleExpertMode,
+          disableMultihops: this.disableMultihops
+        }
+      };
+      localStorage.setItem(SWAP_TRANSACTION_SETTINGS, JSON.stringify(settings));
     }
   }
 };
@@ -217,6 +276,7 @@ export default {
       @{deep} {
         .ant-switch-checked .ant-switch-inner {
           margin-left: 6px;
+          margin-right: 24px;
         }
         .ant-switch-inner {
           margin-left: 24px;
