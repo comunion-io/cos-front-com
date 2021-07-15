@@ -59,20 +59,26 @@ export const apis: Apis = {
   'cores@proposal-列表': {
     u: '/cores/proposals',
     m: 'GET',
-    q: ['limit', 'offset', 'keyword', 'type', 'startupId', 'statuses[]'],
+    q: ['limit', 'offset', 'keyword', 'type', 'startupId', 'statuses'],
+    d: 1
+  },
+  'cores@proposal-me-列表': {
+    u: '/cores/proposals/me',
+    m: 'GET',
+    q: ['limit', 'offset', 'keyword', 'type', 'startupId', 'statuses'],
     d: 1
   },
   'cores@proposal-更新': {
     u: '/cores/proposal/:id',
     m: 'PUT',
     p: ['id'],
-    d: 0
+    d: 1
   },
   'cores@proposal-投票': {
     u: '/cores/proposal/:id/vote',
     m: 'POST',
     p: ['id'],
-    d: 0
+    d: 1
   },
   'cores@disco-增长eth数量统计': {
     u: '/cores/discos:statDiscoEthIncrease',
