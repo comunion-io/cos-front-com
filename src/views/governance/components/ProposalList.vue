@@ -15,7 +15,7 @@
       />
     </a-spin>
     <div v-show="showPagination" class="pagination">
-      <pagination v-bind="pagination" @update:offset="handlePaginationChange" />
+      <pagination :offset="offset" v-bind="pagination" @update:offset="handlePaginationChange" />
     </div>
   </div>
 </template>
@@ -129,11 +129,10 @@ export default {
     async loadProposals(params) {
       this.requestState = 'processing';
 
-      const { offset = 0, keyword, type = proposalTypeMap.all, startupId, status, withMe } =
-        params || {};
+      const { offset = 0, keyword, type = proposalTypeMap.all, startupId, status } = params || {};
 
       let getProposals = services['cores@proposal-列表'];
-      if (withMe) {
+      if (this.withMe) {
         getProposals = services['cores@proposal-me-列表'];
       }
 
@@ -152,6 +151,7 @@ export default {
         this.proposalItems = result || [];
         this.pagination = { ...p, limit: pageSize };
         const total = p.total || 0;
+        this.offset = offset;
         this.showAlert = total === 0;
         this.$emit('update:total', total);
       } else {
